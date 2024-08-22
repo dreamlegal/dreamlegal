@@ -1,0 +1,291 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  type          String          @default("user")
+  skip          Boolean?        @default(false)
+  accounts      Account[]
+  sessions      Session[]
+  // Optional for WebAuthn support
+  Authenticator Authenticator[]
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  companyInfo companyInfo[]
+  Product     Product[]
+  Review      Review[]
+  userAccount userAccount[]
+
+  SaveProduct SaveProduct[]
+
+}
+
+model userAccount {
+  id             String  @id @default(cuid())
+  userId         String
+  OrgType        String?
+  Contact        String?
+  Location       String?
+  Address        String?
+  Designation    String?
+  CompanyType    String?
+  CompanyAddress String?
+  CompanyEmail   String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, credentialID])
+}
+
+model Otp {
+  id        String   @id @default(cuid())
+  email     String
+  otp       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model companyInfo {
+  id                        String     @id @default(cuid())
+  userId                    String
+  companyName               String?
+  website                   String?
+  yearFounded               String?
+  headQuaters               String?
+  NameOfFounders            String?
+  contact                   String?
+  founderVision             String?
+  regionServed              String?
+  TeamSize                  String?
+  overview                  String?
+  Awards                    String?
+  PointOfContactName        String?
+  PointOfContactPhone       String?
+  PointOfContactDesignation String?
+  user                      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Product                   Product[]
+ 
+}
+
+model Product {
+  id                      String      @id @default(cuid())
+  userId                  String
+  companyId               String
+  name                    String
+  slug                    String      @unique
+  logoUrl                 String
+  active                  String      @default("draft")
+  featured                Boolean     @default(false)
+  category                String[]
+  deployement             String[]
+  mobileAvailable         String?
+  focusCountries          String[]
+  avgTimeAdoption         String?
+  languages               String[]
+  securityCertificate     String?
+  integration             String[]
+  description             String?
+  usp                     String?
+  upcomingUpdates         String?
+  userCategory            String[]
+  userCategoryPercentage  String[]
+  industry                String[]
+  industryPercentage      String[]
+  practiceAreas           String[]
+  practiceAreasPercentage String[]
+  teamSize                String[]
+  teamsizePercentage      String[]
+  processLifecycle        Json?
+  features                Json?
+  freeTrial               String?
+  timePeriod              String?
+  freeVersion             String?
+  pricingModel            String[]
+  contractPeriod          String?
+  nameofPlan              String[]
+  validity                String[]
+  price                   String[]
+  pricingParams           String[]
+  Demo                    String[]
+  DemoNote                String?
+  support                 String[]
+  supportNote             String?
+  training                String[]
+  trainingNote            String?
+  storage                 String[]
+  storageNote             String?
+  fileSize                String[]
+  fileSizeNote            String?
+  maintenance             String?
+  maintenanceNote         String?
+  reqForChange            String?
+  reqForChangeNote        String?
+  trainingReq             String?
+  trainingReqNote         String?
+  dataMigration           String?
+  dataMigrationNote       String?
+  Images                  String[]
+  videoUrl                String?
+  attachments             String[]
+  youtubeUrl              String?
+  linkedinUrl             String?
+  twitterUrl              String?
+  instagramUrl            String?
+  createdAt               DateTime    @default(now())
+  updatedAt               DateTime    @updatedAt
+  user                    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company                 companyInfo @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  Review                  Review[]
+
+  SaveProduct SaveProduct[]
+  
+}
+
+model Review {
+  id               String   @id @default(cuid())
+  userId           String
+  productId        String
+  involvement      String[]
+  WhyBought        String[]
+  GoalBehind       String[]
+  otherProducts    String
+  oftenUsed        String
+  overallExperienc String
+  bestThing        String
+  worstThing       String
+  easeOfLearning   Int
+  integration      Int
+  support          Int
+  roi              Int
+  functionality    Json
+  processStep      Json
+  recommend        Int
+  reference        String
+  attachement      String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Analytics {
+  id           String  @id @default(cuid())
+  productId    String  @unique
+  shares       Int?
+  followers    Int?
+  views        Int?
+  loginsViews  Int?
+  leads        Int?
+  desktopViews Int?
+  mobileViews  Int?
+  tabletViews  Int?
+  country      Json?
+  month        String?
+
+  createdAt DateTime @default(now())
+}
+
+model ClickCount {
+  id        Int    @id @default(autoincrement())
+  productId String @unique
+  feature   Json   @default("[]")
+}
+
+model SaveProduct {
+  id        String    @id @default(cuid())
+  userId    String
+  productId String[]
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Product   Product[]
+}
+
+model Admins {
+  id       String  @id @default(cuid())
+  email    String  @unique
+  password String
+  user     String?
+}
+
+model Interest {
+  id                  String   @id @default(cuid())
+  userId              String
+  productId           String
+  companyId           String // Added companyId
+  companyTypeFromUser String
+  createdAt           DateTime @default(now())
+
+
+
+}

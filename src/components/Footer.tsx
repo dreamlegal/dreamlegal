@@ -217,7 +217,7 @@ export const Footer = () => {
                     href="/sign-in"
                     className="bg-primary2 border-2 border-gray-800 text-gray-800 px-3 py-3 rounded-[30px] hover:border-primary2 transition-all duration-300 shadow-md"
                   >
-                    Sign In
+                    Log In
                   </a>
                   <a
                     href="/sign-up"

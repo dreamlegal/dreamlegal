@@ -34,8 +34,34 @@ function CuratedCollection() {
         router.push("/directory?customer=Enterprises");
       },
     },
+    {
+      title: "Solution for Government departments",
+      description:
+        " Browse tools and solutions for legal management and legal cost efficiency.",
+      image: "/app2.png",
+      onclickRoute: () => {
+        router.push("/directory?customer=Government%20departments");
+      },
+    },
+    {
+      title: "Solution for Startups",
+      description:
+        " Browse tools and solutions for legal management and legal cost efficiency.",
+      image: "/app3.png",
+      onclickRoute: () => {
+        router.push("/directory?customer=Startups");
+      },
+    },
+    {
+      title: "Solution for Judiciary",
+      description:
+        " Browse tools and solutions for legal management and legal cost efficiency.",
+      image: "/app1.png",
+      onclickRoute: () => {
+        router.push("/directory?customer=Judiciary");
+      },
+    },
   ];
-
 
   return (
     <div className="px-4 py-10 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-10 font-clarity">
@@ -44,7 +70,7 @@ function CuratedCollection() {
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
         {curratedCollection.map((item, index) => (
-          <CuratedCollectionCard key={index} {...item}   />
+          <CuratedCollectionCard key={index} {...item} />
         ))}
       </div>
     </div>
@@ -55,12 +81,12 @@ function CuratedCollectionCard({
   title,
   description,
   image,
-  onclickRoute
+  onclickRoute,
 }: {
   title: string;
   description: string;
   image: string;
-  onclickRoute: () => void
+  onclickRoute: () => void;
 }) {
   return (
     <div className="w-full rounded-lg overflow-hidden shadow-md group transition-all duration-200 hover:cursor-pointer hover:translate-y-1">
@@ -71,11 +97,10 @@ function CuratedCollectionCard({
             {title}
           </h3>
           <p className=" text-sm text-slate-500">{description}</p>
-          <button 
-          
-          onClick={onclickRoute} 
-          
-          className=" flex gap-2 rounded-full  text-gray-900 font-bold  text-sm transition-all  w-fit items-center group-hover:text-primary1 group-hover:gap-4">
+          <button
+            onClick={onclickRoute}
+            className=" flex gap-2 rounded-full  text-gray-900 font-bold  text-sm transition-all  w-fit items-center group-hover:text-primary1 group-hover:gap-4"
+          >
             Browse all app
             <IoIosArrowRoundForward className=" text-2xl" />
           </button>

@@ -156,8 +156,6 @@ const CheckboxDemo = ({ product }: any) => {
 
       if (response.ok) {
         const data = await response.json();
-        toast.success("Review added successfully", { duration: 5000 });
-        await new Promise((resolve) => setTimeout(resolve, 3000));
         console.log("Review added successfully:", data);
         router.push("/product/" + product.slug);
       } else {

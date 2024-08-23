@@ -45,48 +45,25 @@ function AboutHero() {
           ></Image>
         </div>
       </div>
-      <div className="flex flex-wrap justify-between items-center mt-12 mb-8">
+      <div className="flex flex-col flex-wrap justify-between items-center mt-12 mb-8">
         <div>
-          <span className="text-lg font-bold">Our Achievements</span>
+          <h2 className="max-w-lg mb-6 text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
+            Achievements and Mentions
+          </h2>
         </div>
-        <div className="flex gap-4 flex-wrap items-center justify-center  ">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-y-4">
           <a href="https://www.f6s.com/companies/legaltech/india/co">
-            <img
-              src="/1.png"
-              className=" h-8 md:h-20 w-auto filter grayscale mix-blend-multiply"
-              alt=""
-            />
+            <img src="/1.png" className=" h-20 md:h-32 w-auto" alt="" />
           </a>
 
           <a href="https://wardblawg.com/best-legal-technologists-consultants/ranjan-singhania-helping-legal-teams-to-find-the-best-technology-solutions-co-founder-legal-technology-enthusiast/">
-            <img
-              src="/2.png"
-              className=" h-8 md:h-20 w-auto filter grayscale mix-blend-multiply"
-              alt=""
-            />
+            <img src="/2.png" className=" h-20 md:h-32 w-auto" alt="" />
           </a>
 
-
-          <img
-            src="/3.png"
-            className=" h-8 md:h-20 w-auto filter grayscale mix-blend-multiply"
-            alt=""
-          />
-          <img
-            src="/4.png"
-            className=" h-8 md:h-20 w-auto filter grayscale mix-blend-multiply"
-            alt=""
-          />
-          <img
-            src="/5.png"
-            className=" h-8 md:h-20 w-auto filter grayscale mix-blend-multiply"
-            alt=""
-          />
-          <img
-            src="/6.png"
-            className=" h-8 md:h-20 w-auto filter grayscale mix-blend-multiply"
-            alt=""
-          />
+          <img src="/3.png" className=" h-20 md:h-32 w-auto" alt="" />
+          <img src="/6.png" className=" h-20 md:h-32 w-auto" alt="" />
+          <img src="/4.png" className=" h-20 md:h-32 w-auto" alt="" />
+          <img src="/5.png" className=" h-20 md:h-32 w-auto" alt="" />
         </div>
       </div>
     </div>

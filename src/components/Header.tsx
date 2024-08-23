@@ -19,7 +19,7 @@ export const Header = () => {
         <div className="flex items-center">
           <a href="/" className="inline-flex items-center mr-8">
             <span className="ml-2 text-xl  tracking-wide text-black font-bold ">
-              Dream <span className="text-primary1">Legal</span>
+              Dream<span className="text-primary1">Legal</span>
             </span>
           </a>
           <ul className=" ml-4 flex items-center hidden space-x-8 lg:flex">
@@ -100,7 +100,7 @@ export const Header = () => {
             <li>
               <Link href={"/sign-up"}>
                 <button className="inline-flex items-center justify-center gap-2 font-bold text-xs  text-gray-900 transition-all duration-300 hover:text-white hover:bg-primary1 rounded-full border border-black hover:border-primary1 px-5 py-3 hover:scale-95 hover:-translate-y-1">
-                  <RiLoginCircleLine className=" text-base" />  Signup
+                  <RiLoginCircleLine className=" text-base" /> Signup
                 </button>
               </Link>
             </li>
@@ -191,32 +191,26 @@ export const Header = () => {
                       </a>
                     </li>
                     {userId && (
-                     
-                        <li>
-                          <Link href={"/user/" + userId}>
-                            <button className="inline-flex items-center justify-center gap-2 font-bold text-xs  text-gray-900 transition-all duration-300 hover:text-white hover:bg-primary1 rounded-full border border-black hover:border-primary1 px-5 py-3 hover:scale-95 hover:-translate-y-1">
-                              <RiLoginCircleLine className=" text-base" />{" "}
-                              Profile
-                            </button>
-                          </Link>
-                        </li>
-                    
+                      <li>
+                        <Link href={"/user/" + userId}>
+                          <button className="inline-flex items-center justify-center gap-2 font-bold text-xs  text-gray-900 transition-all duration-300 hover:text-white hover:bg-primary1 rounded-full border border-black hover:border-primary1 px-5 py-3 hover:scale-95 hover:-translate-y-1">
+                            <RiLoginCircleLine className=" text-base" /> Profile
+                          </button>
+                        </Link>
+                      </li>
                     )}
                     {vendorId && (
-                     
-                        <li>
-                          <Link href={"/vendor"}>
-                            <button className="inline-flex items-center justify-center gap-2 font-bold text-xs  text-gray-900 transition-all duration-300 hover:text-white hover:bg-primary1 rounded-full border border-black hover:border-primary1 px-5 py-3 hover:scale-95 hover:-translate-y-1">
-                              <RiLoginCircleLine className=" text-base" />{" "}
-                              Profile
-                            </button>
-                          </Link>
-                        </li>
-                     
+                      <li>
+                        <Link href={"/vendor"}>
+                          <button className="inline-flex items-center justify-center gap-2 font-bold text-xs  text-gray-900 transition-all duration-300 hover:text-white hover:bg-primary1 rounded-full border border-black hover:border-primary1 px-5 py-3 hover:scale-95 hover:-translate-y-1">
+                            <RiLoginCircleLine className=" text-base" /> Profile
+                          </button>
+                        </Link>
+                      </li>
                     )}
 
                     {!userId && !vendorId && (
-                     <>
+                      <>
                         <li>
                           <Link href={"/sign-up"}>
                             <button className="inline-flex items-center justify-center gap-2 font-bold text-xs  text-gray-900 transition-all duration-300 hover:text-white hover:bg-primary1 rounded-full border border-black hover:border-primary1 px-5 py-3 hover:scale-95 hover:-translate-y-1">
@@ -232,7 +226,7 @@ export const Header = () => {
                             </button>
                           </Link>
                         </li>
-                        </>
+                      </>
                     )}
                   </ul>
                 </nav>

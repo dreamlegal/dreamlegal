@@ -12,6 +12,7 @@ import RatingScale from "./ratingSacle";
 import { ScrollArea } from "./ui/scroll-area";
 import { Input } from "./ui/input";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const CheckboxDemo = ({ product }: any) => {
   const [selectedInvolvements, setSelectedInvolvements] = useState<string[]>(
@@ -83,12 +84,12 @@ const CheckboxDemo = ({ product }: any) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-  
+
     // Consolidate all state values into an object
     const userId =
       typeof window !== "undefined" ? localStorage.getItem("userId") : null;
     const productId = product.id;
-  
+
     // Validate required fields
     if (
       !selectedInvolvements ||
@@ -113,13 +114,13 @@ const CheckboxDemo = ({ product }: any) => {
       alert("All fields are mandatory.");
       return;
     }
-  
+
     try {
       if (uploadedFile != null && uploadedFile.size > 0 && productId != null) {
         const response = await uploadFile(uploadedFile, "profile");
         setAttachmentUrl(response);
       }
-  
+
       const formData = {
         involvement: selectedInvolvements,
         WhyBought: selectedReasons,
@@ -142,7 +143,7 @@ const CheckboxDemo = ({ product }: any) => {
         productId,
         attachement: attachmentUrl,
       };
-  
+
       const response = await fetch("/api/add-review", {
         method: "POST",
         headers: {
@@ -150,11 +151,13 @@ const CheckboxDemo = ({ product }: any) => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       console.log("Form Data:", formData);
-  
+
       if (response.ok) {
         const data = await response.json();
+        toast.success("Review added successfully", { duration: 5000 });
+        await new Promise((resolve) => setTimeout(resolve, 3000));
         console.log("Review added successfully:", data);
         router.push("/product/" + product.slug);
       } else {
@@ -164,7 +167,6 @@ const CheckboxDemo = ({ product }: any) => {
       console.error("Error uploading file:", error);
     }
   };
-  
 
   const handleRatingClick = (value: number) => {
     setRating(value);
@@ -484,7 +486,7 @@ const CheckboxDemo = ({ product }: any) => {
         <div className="mt-2">
           <div className="flex flex-col space-y-4 mt-4">
             <p>
-              <b>6.	How is your overall experience?</b>
+              <b>6. How is your overall experience?</b>
             </p>
             <Textarea
               placeholder="Type your message here."
@@ -530,7 +532,6 @@ const CheckboxDemo = ({ product }: any) => {
             value={easeOfLearning}
             precision={0.5}
             onChange={handleEaseOfLearningChange}
-            
           />
 
           <p>Integration with existing workflow</p>

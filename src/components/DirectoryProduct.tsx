@@ -113,7 +113,6 @@ function DirectoryProduct() {
     // Add more filter parameters here
   });
 
-
   const fetchProducts = async (search = "") => {
     try {
       const response = await fetch("/api/get-all-products", {
@@ -124,14 +123,16 @@ function DirectoryProduct() {
         body: JSON.stringify({ number: 10 }),
       });
       const data = await response.json();
-  
+
       if (data.success) {
-        const products = data.products.filter((product:any) => product.active === "publish");
+        const products = data.products.filter(
+          (product: any) => product.active === "publish"
+        );
         const searchLower = search.toLowerCase();
-  
-        const filtered = products.filter((product:any) => {
+
+        const filtered = products.filter((product: any) => {
           const matchesName = product.name.toLowerCase().includes(searchLower);
-          const matchesCategory = product.category.some((cat:any) => {
+          const matchesCategory = product.category.some((cat: any) => {
             const keywords = categoryKeywords[cat] || [];
             return keywords.some(
               (keyword) =>
@@ -139,29 +140,30 @@ function DirectoryProduct() {
                 searchLower.includes(keyword.toLowerCase())
             );
           });
-  
+
           const matchesSelectedCategory =
             selectedFilters.categories.length === 0 ||
-            product.category.some((cat:any) => selectedFilters.categories.includes(cat as never));
-  
+            product.category.some((cat: any) =>
+              selectedFilters.categories.includes(cat as never)
+            );
+
           const matchesSelectedLanguage =
             selectedFilters.language.length === 0 ||
             selectedFilters.language.includes(product.language as never);
-  
+
           const matchesSelectedCountry =
             selectedFilters.country.length === 0 ||
             selectedFilters.country.includes(product.country as never);
-  
+
           // **User Category Filtering**
           const matchesSelectedUserCategory =
             selectedFilters.userCategory.length === 0 ||
-            product.userCategory.some((cat:any) =>
+            product.userCategory.some((cat: any) =>
               selectedFilters.userCategory.includes(cat as never)
             );
-  
+
           // **Add more filter matches here**
-  
-  
+
           return (
             (matchesName || matchesCategory) &&
             matchesSelectedCategory &&
@@ -171,16 +173,15 @@ function DirectoryProduct() {
             // **Add more filter matches here**
           );
         });
-  
-        setFeatureProduct(filtered.filter((product:any) => product.featured));
-        setLatestProduct(filtered.filter((product:any) => !product.featured));
+
+        setFeatureProduct(filtered.filter((product: any) => product.featured));
+        setLatestProduct(filtered.filter((product: any) => !product.featured));
         setFilteredProducts(filtered);
       }
     } catch (error) {
       console.error("An error occurred while fetching the products:", error);
     }
   };
-  
 
   useEffect(() => {
     fetchProducts();
@@ -195,28 +196,31 @@ function DirectoryProduct() {
     fetchProducts(searchTerm);
   };
 
-  const handleFilterChange = (filterType: keyof typeof selectedFilters, value: string) => {
+  const handleFilterChange = (
+    filterType: keyof typeof selectedFilters,
+    value: string
+  ) => {
     setSelectedFilters((prevFilters) => {
       const currentValues = prevFilters[filterType];
       return {
         ...prevFilters,
         [filterType]: currentValues.includes(value as never)
-          ? currentValues.filter((v) => v !== value as never)
+          ? currentValues.filter((v) => v !== (value as never))
           : [...currentValues, value as never],
       };
     });
   };
 
-
   return (
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 font-clarity">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="h-fit w-full md:w-[300px] md:col-span-1 sticky top-0 hidden md:block ">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">
-            Filters
-          </h2>
-          <DirectoryFilter selectedFilters={selectedFilters} handleFilterChange={handleFilterChange} setSelectedFilters={setSelectedFilters} />
-        
+          <h2 className="text-lg font-bold text-gray-900 mb-4">Filters</h2>
+          <DirectoryFilter
+            selectedFilters={selectedFilters}
+            handleFilterChange={handleFilterChange}
+            setSelectedFilters={setSelectedFilters}
+          />
         </div>
         <div className="col-span-2 overflow-y-scroll no-scrollbar">
           <div className="w-full flex flex-col md:flex-row items-center justify-between">
@@ -241,7 +245,11 @@ function DirectoryProduct() {
                     </button>
                   </SheetTrigger>
                   <SheetContent>
-                    <DirectoryFilter selectedFilters={selectedFilters} handleFilterChange={handleFilterChange} setSelectedFilters={setSelectedFilters} />
+                    <DirectoryFilter
+                      selectedFilters={selectedFilters}
+                      handleFilterChange={handleFilterChange}
+                      setSelectedFilters={setSelectedFilters}
+                    />
                   </SheetContent>
                 </Sheet>
               </div>

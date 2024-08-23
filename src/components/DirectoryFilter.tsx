@@ -20,12 +20,16 @@ function DirectoryFilter({
   const [paramLink, setParamLink] = useState(true);
   const category =
     typeof searchParams === "object" ? searchParams.get("category") : null;
-  const customer = typeof searchParams === "object" ? searchParams.get("customer") : null;
+  const customer =
+    typeof searchParams === "object" ? searchParams.get("customer") : null;
 
   const [paramSearch, setParamSearch] = useState(false);
 
   useEffect(() => {
-    if ((category && category !== "" && category !== null) || (customer && customer !== "" && customer !== null)) {
+    if (
+      (category && category !== "" && category !== null) ||
+      (customer && customer !== "" && customer !== null)
+    ) {
       setParamSearch(true);
     }
   }, [category, customer]);
@@ -425,6 +429,19 @@ function DirectoryFilter({
     practiceArea.toLowerCase().includes(searchQueryPractice.toLowerCase())
   );
 
+  const handleResetFilters = () => {
+    setSelectedFilters({
+      categories: [],
+      userCategory: [],
+      price: [],
+      language: [],
+      country: [],
+      industry: [],
+      practiceAreas: [],
+      mobileAvailable: [],
+    });
+  };
+
   useEffect(() => {
     if (category && category !== "") {
       setOpenCategory((prevState) => ({
@@ -485,7 +502,6 @@ function DirectoryFilter({
     }
   }, [category, customer, setSelectedFilters]);
 
-
   return (
     <ScrollArea className="h-screen pb-10 w-full">
       <div className="space-y-2 font-clarity">
@@ -501,15 +517,17 @@ function DirectoryFilter({
               </div>
             </div>
             <span
-              className={`transition-all ml-auto ${openCategory.category ? "rotate-90" : ""
-                }`}
+              className={`transition-all ml-auto ${
+                openCategory.category ? "rotate-90" : ""
+              }`}
             >
               <IoArrowForward />
             </span>
           </div>
           <div
-            className={`transition-height duration-300 ease-in-out ${openCategory.category ? "max-h-screen" : "max-h-0"
-              }`}
+            className={`transition-height duration-300 ease-in-out ${
+              openCategory.category ? "max-h-screen" : "max-h-0"
+            }`}
           >
             <ul className="space-y-1 border-t border-gray-200 p-4">
               <li>
@@ -798,15 +816,17 @@ function DirectoryFilter({
               <span className="text-sm font-medium">Users</span>
             </div>
             <span
-              className={`transition-all ml-auto ${openCategory.customer ? "rotate-90" : ""
-                }`}
+              className={`transition-all ml-auto ${
+                openCategory.customer ? "rotate-90" : ""
+              }`}
             >
               <IoArrowForward />
             </span>
           </div>
           <div
-            className={`overflow-hidden transition-all duration-300 ease-in-out ${openCategory.customer ? "max-h-screen" : "max-h-0"
-              }`}
+            className={`overflow-hidden transition-all duration-300 ease-in-out ${
+              openCategory.customer ? "max-h-screen" : "max-h-0"
+            }`}
           >
             <ul className="space-y-1 border-t border-gray-200 p-4">
               {/* Render checkboxes dynamically if possible */}
@@ -854,15 +874,17 @@ function DirectoryFilter({
               </div>
             </div>
             <span
-              className={`transition-all ml-auto ${openCategory.price ? "rotate-90" : ""
-                }`}
+              className={`transition-all ml-auto ${
+                openCategory.price ? "rotate-90" : ""
+              }`}
             >
               <IoArrowForward />
             </span>
           </div>
           <div
-            className={`transition-height duration-300 ease-in-out ${openCategory.price ? "max-h-screen" : "max-h-0"
-              }`}
+            className={`transition-height duration-300 ease-in-out ${
+              openCategory.price ? "max-h-screen" : "max-h-0"
+            }`}
           >
             <ul className="space-y-1 border-t border-gray-200 p-4">
               <li>
@@ -923,7 +945,6 @@ function DirectoryFilter({
           </div>
         </div>
 
-
         <div className="overflow-hidden rounded-lg border">
           <div
             className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition-all duration-200"
@@ -936,15 +957,17 @@ function DirectoryFilter({
               </div>
             </div>
             <span
-              className={`transition-all ml-auto ${openCategory.lang ? "rotate-90" : ""
-                }`}
+              className={`transition-all ml-auto ${
+                openCategory.lang ? "rotate-90" : ""
+              }`}
             >
               <IoArrowForward />
             </span>
           </div>
           <div
-            className={`transition-height duration-300 ease-in-out ${openCategory.lang ? "max-h-screen" : "max-h-0"
-              }`}
+            className={`transition-height duration-300 ease-in-out ${
+              openCategory.lang ? "max-h-screen" : "max-h-0"
+            }`}
           >
             <div className="p-4">
               <input
@@ -993,15 +1016,17 @@ function DirectoryFilter({
               </div>
             </div>
             <span
-              className={`transition-all ml-auto ${openCategory.country ? "rotate-90" : ""
-                }`}
+              className={`transition-all ml-auto ${
+                openCategory.country ? "rotate-90" : ""
+              }`}
             >
               <IoArrowForward />
             </span>
           </div>
           <div
-            className={`transition-height duration-300 ease-in-out ${openCategory.country ? "max-h-screen" : "max-h-0"
-              }`}
+            className={`transition-height duration-300 ease-in-out ${
+              openCategory.country ? "max-h-screen" : "max-h-0"
+            }`}
           >
             <ScrollArea className="h-[calc(100vh-300px)]">
               <div className="p-4">
@@ -1053,15 +1078,17 @@ function DirectoryFilter({
               </div>
             </div>
             <span
-              className={`transition-all ml-auto ${openCategory.industry ? "rotate-90" : ""
-                }`}
+              className={`transition-all ml-auto ${
+                openCategory.industry ? "rotate-90" : ""
+              }`}
             >
               <IoArrowForward />
             </span>
           </div>
           <div
-            className={`transition-height duration-300 ease-in-out ${openCategory.industry ? "max-h-screen" : "max-h-0"
-              }`}
+            className={`transition-height duration-300 ease-in-out ${
+              openCategory.industry ? "max-h-screen" : "max-h-0"
+            }`}
           >
             <ScrollArea className="h-[calc(100vh-300px)]">
               <div className="p-4">
@@ -1114,15 +1141,17 @@ function DirectoryFilter({
               </div>
             </div>
             <span
-              className={`transition-all ml-auto ${openCategory.practice ? "rotate-90" : ""
-                }`}
+              className={`transition-all ml-auto ${
+                openCategory.practice ? "rotate-90" : ""
+              }`}
             >
               <IoArrowForward />
             </span>
           </div>
           <div
-            className={`transition-height duration-300 ease-in-out ${openCategory.practice ? "max-h-screen" : "max-h-0"
-              }`}
+            className={`transition-height duration-300 ease-in-out ${
+              openCategory.practice ? "max-h-screen" : "max-h-0"
+            }`}
           >
             <ScrollArea className="h-[calc(100vh-300px)]">
               <div className="p-4">
@@ -1179,15 +1208,17 @@ function DirectoryFilter({
               </div>
             </div>
             <span
-              className={`transition-all ml-auto ${openCategory.mobile ? "rotate-90" : ""
-                }`}
+              className={`transition-all ml-auto ${
+                openCategory.mobile ? "rotate-90" : ""
+              }`}
             >
               <IoArrowForward />
             </span>
           </div>
           <div
-            className={`transition-height duration-300 ease-in-out ${openCategory.mobile ? "max-h-screen" : "max-h-0"
-              }`}
+            className={`transition-height duration-300 ease-in-out ${
+              openCategory.mobile ? "max-h-screen" : "max-h-0"
+            }`}
           >
             <ul className="space-y-1 border-t border-gray-200 p-4">
               <li>
@@ -1228,12 +1259,18 @@ function DirectoryFilter({
           </div>
         </div>
 
-    
-
         {/* Add more filter categories here */}
-        <button className="flex gap-2 rounded-full bg-primary1 text-white font-bold px-6 py-3 text-xs transition-all w-fit items-center hover:bg-gray-900 hover:gap-4 duration-200 my-3">
-          Apply
-        </button>
+        <div className="flex gap-2">
+          <button className="flex gap-2 rounded-full bg-primary1 text-white font-bold px-6 py-3 text-xs transition-all w-fit items-center hover:bg-gray-900 hover:gap-4 duration-200 my-3">
+            Apply
+          </button>
+          <button
+            className="flex gap-2 rounded-full bg-gray-900 text-white font-bold px-6 py-3 text-xs transition-all w-fit items-center hover:bg-primary1 hover:gap-4 duration-200 my-3"
+            onClick={handleResetFilters}
+          >
+            Reset
+          </button>
+        </div>
       </div>
     </ScrollArea>
   );

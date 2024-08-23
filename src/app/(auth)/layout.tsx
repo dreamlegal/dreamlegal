@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${ClarityCity.variable} `}>
         <Header />
-        {children}
+        <div className="py-16">{children}</div>
         <Footer />
       </body>
     </html>

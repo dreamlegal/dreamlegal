@@ -5,7 +5,7 @@ import VendorSignup from "../_components/VendorSignup";
 
 function page() {
   return (
-    <div className="flex justify-center font-clarity  ">
+    <div className="flex justify-center font-clarity">
       <div className="w-fit px-5 py-5 border shadow">
         <Tabs defaultValue="user" className="md:w-[400px] ">
           <TabsList className="grid w-full grid-cols-2">

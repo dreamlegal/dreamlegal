@@ -78,11 +78,35 @@ function AllReview({ type = "user", product }: any) {
   const sortedReviews = sortReviews(reviews, sortOption);
 
   return (
-    <div className="font-clarity mt-5">
-      <div className="flex flex-col md:flex-row items-center gap-5">
-        <div className="flex flex-col md:flex-row items-center justify-between mt-5">
-          <Select onValueChange={handleSortChange} value={sortOption}>
-            <SelectTrigger className="w-[180px]">
+    <div className="font-clarity mt-5 bg-primary2 p-5 rounded-2xl">
+
+      <div className="flex flex-col md:flex-row items-center gap-5 mt-5 w-full">
+        <div className="flex flex-col md:flex-row items-center gap-5 w-full">
+          {/* Reverse order for mobile view */}
+          {userId ? (
+            <Link
+              className="mt-5 w-full md:w-auto order-2 md:order-1"
+              href={{
+                pathname: `/review`,
+                query: {
+                  id: product.id,
+                },
+              }}
+            >
+              <button className="bg-primary1 text-white py-4 px-4 rounded-lg text-xs md:w-[200px] w-full">
+                Add Review
+              </button>
+            </Link>
+          ) : (
+            <Link href={"/sign-in"} className=" w-full md:w-auto order-2 md:order-1">
+              <button className="bg-primary1 text-white py-4 px-4 rounded-lg text-xs md:w-[200px] w-full">
+                Login to Review
+              </button>
+            </Link>
+          )}
+          
+          <Select onValueChange={handleSortChange} value={sortOption} className="w-full md:w-[180px] order-1 md:order-2">
+            <SelectTrigger>
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -92,30 +116,18 @@ function AllReview({ type = "user", product }: any) {
             </SelectContent>
           </Select>
         </div>
-        {userId ? (
-          <Link
-            className="ml-auto mt-5"
-            href={{
-              pathname: `/review`,
-              query: {
-                id: product.id,
-              },
-            }}
-          >
-            <button className="bg-primary1 text-white py-4 px-4 rounded-lg text-xs md:w-[200px]">
-              Add Review
-            </button>
-          </Link>
-        ) : (
-          <Link href={"/sign-in"} className="ml-auto mt-5">
-            <button className="ml-auto  bg-primary1 text-white py-4 px-4 rounded-lg text-xs md:w-[200px]">
-              Login to Review
-            </button>
-          </Link>
-        )}
       </div>
 
+
+
+
+
+
+   <div className=" p-0  mt-5">
+
+
       {loading ? (
+         
         <p>Loading reviews...</p>
       ) : error ? (
         <p>{error}</p>
@@ -130,6 +142,7 @@ function AllReview({ type = "user", product }: any) {
       ) : (
         <p>No reviews available.</p>
       )}
+       </div>
     </div>
   );
 }

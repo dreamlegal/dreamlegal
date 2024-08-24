@@ -70,12 +70,10 @@ function ProductService({ product }: { product: Product }) {
 
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2  items-center h-full">
         <div className="  mb-10">
           <h5 className="mb-6 text-lg font-bold leading-none">Demo</h5>
-          <p className="mb-6 text-xs text-slate-500">
-            {product?.DemoNote ? product?.DemoNote : " "}
-          </p>
+          
         </div>
         <div className=" px-5">
         <div className="grid gap-5 grid-cols-2 row-gap-5 md:grid-cols-3">
@@ -84,12 +82,10 @@ function ProductService({ product }: { product: Product }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 my-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 items-center h-full">
         <div className=" mb-10">
           <h5 className="mb-6 text-lg font-bold leading-none">Supports</h5>
-          <p className="mb-6 text-xs text-slate-500">
-            {product?.supportNote ? product?.supportNote : " "}
-          </p>
+        
         </div>
         <div className=" px-5">
         <div className="grid gap-5 grid-cols-2 row-gap-5 md:grid-cols-3">
@@ -98,12 +94,10 @@ function ProductService({ product }: { product: Product }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 items-center h-full ">
         <div className=" mb-10">
           <h5 className="mb-6 text-lg font-bold leading-none">Training</h5>
-          <p className="mb-6 text-xs text-slate-500">
-            {product?.trainingNote ? product?.trainingNote : " "}
-          </p>
+        
         </div>
         <div className=" px-5">
         <div className="grid gap-5 grid-cols-2 row-gap-5 md:grid-cols-3">

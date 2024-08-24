@@ -317,7 +317,7 @@ function PageComponent({ data }: any) {
   if (!product) {
     return <Loading />;
   }
-
+  
   console.log(product);
   console.log(company);
 
@@ -1106,6 +1106,7 @@ function PageComponent({ data }: any) {
               <ProductService product={product} />
 
               <div className="w-full h-px bg-slate-200 my-4"></div>
+
               <div className="flex  gap-2 items-center">
                 <h2 id="post" className=" text-2xl font-bold text-gray-900">
                   Post Implementation

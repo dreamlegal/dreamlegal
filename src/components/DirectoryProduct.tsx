@@ -171,8 +171,7 @@ function DirectoryProduct() {
             matchesSelectedCategory &&
             matchesSelectedLanguage &&
             matchesSelectedCountry &&
-            matchesSelectedUserCategory &&
-            matchesPrice
+            matchesSelectedUserCategory
             // **Add more filter matches here**
           );
         });

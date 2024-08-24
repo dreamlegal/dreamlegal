@@ -56,7 +56,7 @@ function ProductFeature({ features, productId }: any) {
                 >
                   {feature.category}
                 </h6>
-                <div className="col-span-1 ml-3"><IoChevronDown className=" text-gray-400 " /></div>
+                <div className="col-span-1 ml-3"><IoChevronDown className=" text-gray-400 "  onClick={() => toggleExpand(index, feature.category)} /></div>
               </div>
 
               {expanded.includes(index) && (

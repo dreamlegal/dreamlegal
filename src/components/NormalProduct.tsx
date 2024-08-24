@@ -397,7 +397,7 @@ function NormalProduct({
           
           <div className="flex flex-col sm:flex-row sm:gap-5 mt-4 sm:mt-0">
             <div className="text-xs text-slate-400 mb-1">
-              <p className="text-sm text-gray-600">Average Adoption Time</p>
+              <p className="text-sm text-gray-600"> Average Adoption Time</p>
               <p>{product.avgTimeAdoption}</p>
             </div>
             <div className="text-xs text-slate-400 mb-1 flex flex-col">

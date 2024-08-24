@@ -105,16 +105,19 @@ function AllReview({ type = "user", product }: any) {
             </Link>
           )}
           
-          <Select onValueChange={handleSortChange} value={sortOption} className="w-full md:w-[180px] order-1 md:order-2">
-            <SelectTrigger>
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="latest">Latest</SelectItem>
-              <SelectItem value="best">Best</SelectItem>
-              <SelectItem value="worst">Worst</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="w-full md:w-[180px] order-1 md:order-2">
+            <Select onValueChange={handleSortChange} value={sortOption}>
+              <SelectTrigger>
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="latest">Latest</SelectItem>
+                <SelectItem value="best">Best</SelectItem>
+                <SelectItem value="worst">Worst</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
         </div>
       </div>
 

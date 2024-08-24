@@ -121,6 +121,8 @@ function DirectoryProduct() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ number: 10 }),
+        cache: "no-cache",
+        next: { revalidate: 10 },
       });
       const data = await response.json();
 
@@ -169,7 +171,8 @@ function DirectoryProduct() {
             matchesSelectedCategory &&
             matchesSelectedLanguage &&
             matchesSelectedCountry &&
-            matchesSelectedUserCategory
+            matchesSelectedUserCategory &&
+            matchesPrice
             // **Add more filter matches here**
           );
         });

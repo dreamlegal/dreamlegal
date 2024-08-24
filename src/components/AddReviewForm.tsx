@@ -157,8 +157,10 @@ const CheckboxDemo = ({ product }: any) => {
       if (response.ok) {
         const data = await response.json();
         console.log("Review added successfully:", data);
+        alert("Review submitted successfully!");
         router.push("/product/" + product.slug);
       } else {
+        alert("Failed to add review.");
         console.error("Failed to add review:", response.statusText);
       }
     } catch (error) {

@@ -75,9 +75,17 @@ function UserSignup() {
         const data = await response.json();
         console.log("OTP verified successfully");
         setOtpStep(true);
-        typeof window !== "undefined" ? localStorage.setItem("userId", data.user.id) : null;
-        typeof window !== "undefined" ? localStorage.setItem("userEmail", data.user.email) : null;
+        typeof window !== "undefined"
+          ? localStorage.setItem("userId", data.user.id)
+          : null;
+        typeof window !== "undefined"
+          ? localStorage.setItem("userEmail", data.user.email)
+          : null;
         alert("OTP verified successfully");
+        const emailSent = await fetch("/api/send-email", {
+          method: "POST",
+        });
+        alert("Email sent successfully");
         router.push(`/user/${data.user.id}/complete`);
       } else {
         console.error("Failed to verify OTP");
@@ -127,7 +135,9 @@ function UserSignup() {
             <Button className="w-full bg-primary1 my-4" type="submit">
               Submit
             </Button>
-            <span className="text-xs text-gray-400 px-3">Please check your email, and if not received check spam folder</span>
+            <span className="text-xs text-gray-400 px-3">
+              Please check your email, and if not received check spam folder
+            </span>
             <Button
               className="w-full bg-black text-white my-4"
               onClick={handleResendEmail}
@@ -147,7 +157,10 @@ function UserSignup() {
               <FcGoogle />
               Continue with Google
             </Button>
-            <p className="text-gray-400 text-xs">By Continue with Google, you agree to our Terms of Service and Privacy Policy</p>
+            <p className="text-gray-400 text-xs">
+              By Continue with Google, you agree to our Terms of Service and
+              Privacy Policy
+            </p>
             <p className="text-center text-gray-800">or</p>
             <hr />
             <div>

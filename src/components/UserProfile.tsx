@@ -14,6 +14,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Interface } from "readline";
 
 
 function UserProfile({ data, onEditClick, onChangePassword }: any) {
@@ -32,6 +33,7 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
     CompanyAddress: string;
     CompanyEmail: string;
     skip: boolean;
+    TeamSize:string;
   }
 
   const [details, setDetails] = useState(true);
@@ -110,62 +112,7 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
               {AccountDetails?.name || "Default Name"}
             </h3>
           </div>
-          <div className="py-5">
-            <div className=" flex justify-between items-center">
-              <h3
-                onClick={() => setDetails(!details)}
-                className=" text-sm font-bold text-gray-900 flex gap-2 pr-5 items-center hover:cursor-pointer"
-              >
-                <MdOutlineKeyboardArrowDown />
-                Details
-              </h3>
-              <button
-                onClick={onEditClick}
-                className="text-primary1 text-sm flex gap-2 pr-5"
-              >
-                <HiOutlinePencil />
-                Edit{" "}
-              </button>
-            </div>
-            <div className="w-fit">
-              <ul
-                className={`mt-2 space-y-2 transition-all duration-200 ${!details ? "hidden" : ""
-                  }`}
-              >
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <MdAlternateEmail className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Email</p>
-                  <p className=" text-sm text-gray-900">
-                    {AccountDetails?.email}
-                  </p>
-                </li>
-                
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <MdAlternateEmail className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Designation</p>
-                  <p className=" text-sm text-gray-900">
-                    {profile?.Designation}
-                  </p>
-                </li>
-              
-
-               
-
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <GoOrganization className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Contact</p>
-                  <p className=" text-sm text-gray-900">{profile?.Contact}</p>
-                </li>
-
-                <li onClick={onChangePassword} className="hover:cursor-pointer pr-5">
-                  {/* <GoOrganization className="text-primary1" /> */}
-                  <button onClick={onChangePassword}>
-                    <p className=" text-sm text-primary1">Change password</p>
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
+      
 
           <div className="py-5">
             <div className=" flex justify-between items-center">
@@ -181,59 +128,68 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
                 className="text-primary1 text-sm grid grid-cols-2 pr-5"
               >
                 <HiOutlinePencil />
-                Edit{" "}
+                
               </button>
             </div>
-            <div>
+            <div className="pt-4 pl-4">
               <ul
                 className={`mt-2 space-y-2 transition-all duration-200 ${!CompDetails ? "hidden" : ""
                   }`}
               >
                 
+                <li className="grid grid-cols-1 pr-5">
+                  {/* <GoOrganization className="text-primary1" /> */}
+                  <p className=" text-sm text-slate-500">Company Name</p>
+                  <p className=" text-sm text-gray-900">
+                    {profile?.CompanyAddress}
+                  </p>
+                </li>
+                <li className="grid grid-cols-1 pr-5">
+                  {/* <MdAlternateEmail className="text-primary1" /> */}
+                  <p className=" text-sm text-slate-500">Email</p>
+                  <p className=" text-sm text-gray-900">
+                    {AccountDetails?.email}
+                  </p>
+                </li>
+
+
 
                 <li className="grid grid-cols-1 pr-5">
+                  {/* <MdAlternateEmail className="text-primary1" /> */}
+                  <p className=" text-sm text-slate-500">Designation</p>
+                  <p className=" text-sm text-gray-900">
+                    {profile?.Designation}
+                  </p>
+                </li>
+                <li className="grid grid-cols-1 pr-5">
                   {/* <TiWorldOutline className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Location</p>
+                  <p className=" text-sm text-slate-500">Country</p>
                   <p className=" text-sm text-gray-900">{profile?.Location}</p>
                 </li>
 
-                <li className="grid grid-cols-1 pr-5">
+                <li className="grid grid-cols-1 pr-5 " >
                   {/* <TiWorldOutline className="text-primary1" /> */}
                   <p className=" text-sm text-slate-500">Type</p>
                   <p className=" text-sm text-gray-900">
                     {profile?.CompanyType}
                   </p>
                 </li>
-
                 <li className="grid grid-cols-1 pr-5">
-                  {/* <GoOrganization className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Address</p>
+                  {/* <TiWorldOutline className="text-primary1" /> */}
+                  <p className=" text-sm text-slate-500">ComPany Size </p>
                   <p className=" text-sm text-gray-900">
-                    {profile?.CompanyAddress}
+                    {profile?.TeamSize}
                   </p>
                 </li>
 
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <GoOrganization className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500"> Email</p>
-                  <p className=" text-sm text-gray-900">
-                    {profile?.CompanyEmail}
-                  </p>
-                </li>
-
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <GoOrganization className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Address</p>
-                  <p className=" text-sm text-gray-900">{profile?.Address}</p>
-                </li>
-
+                
                 {skipped === "skipped" && (
-                  <li className="bg-red-100 px-4 py-2 rounded-md">
+                  <li className="bg-red-100 px-4 py-2 rounded-md ">
                   <span className="text-red-500 text-sm">Your Profile is not completed</span>
               </li>
                 )}
 
-                <li>
+                <li className="pt-4">
                   <Link href={"/directory"}>
 
                     <button className=" flex w-full gap-2 rounded-lg  px-4 py-2 bg-primary2 text-sm font-medium text-primary1 items-center">
@@ -271,28 +227,38 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
             </h3>
             <p className=" text-sm text-slate-500">{AccountDetails?.email}</p>
           </div>
+          
+
           <div className="py-5">
             <div className=" flex justify-between items-center">
               <h3
-                onClick={() => setDetails(!details)}
+                onClick={() => setCompDetails(!CompDetails)}
                 className=" text-sm font-bold text-gray-900 flex gap-2 pr-5 items-center hover:cursor-pointer"
               >
                 <MdOutlineKeyboardArrowDown />
-                Details
+                Organisation Details
               </h3>
               <button
                 onClick={onEditClick}
-                className="text-primary1 text-sm flex gap-2 pr-5"
+                className="text-primary1 text-sm grid grid-cols-1 pr-5"
               >
                 <HiOutlinePencil />
-                Edit{" "}
+                
               </button>
             </div>
             <div>
               <ul
-                className={`mt-2 space-y-2 transition-all duration-200 ${!details ? "hidden" : ""
+                className={`mt-2 space-y-2 transition-all duration-200 ${!CompDetails ? "hidden" : ""
                   }`}
               >
+
+                <li className="grid grid-cols-1 pr-5">
+                  {/* <GoOrganization className="text-primary1" /> */}
+                  <p className=" text-sm text-slate-500">Company Name</p>
+                  <p className=" text-sm text-gray-900">
+                    {profile?.CompanyAddress}
+                  </p>
+                </li>
                 <li className="grid grid-cols-1 pr-5">
                   {/* <MdAlternateEmail className="text-primary1" /> */}
                   <p className=" text-sm text-slate-500">Email</p>
@@ -309,61 +275,13 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
                   </p>
                 </li>
 
-                
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <GoOrganization className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Contact</p>
-                  <p className=" text-sm text-gray-900">{profile?.Contact}</p>
-                </li>
-
-                <li onClick={onChangePassword} className="hover:cursor-pointer pr-5">
-                  {/* <GoOrganization className="text-primary1" /> */}
-
-                  <button >
-                    <p className=" text-sm text-primary1">Change password</p>
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="py-5">
-            <div className=" flex justify-between items-center">
-              <h3
-                onClick={() => setCompDetails(!CompDetails)}
-                className=" text-sm font-bold text-gray-900 flex gap-2 pr-5 items-center hover:cursor-pointer"
-              >
-                <MdOutlineKeyboardArrowDown />
-                Organisation Details
-              </h3>
-              <button
-                onClick={onEditClick}
-                className="text-primary1 text-sm grid grid-cols-1 pr-5"
-              >
-                <HiOutlinePencil />
-                Edit{" "}
-              </button>
-            </div>
-            <div>
-              <ul
-                className={`mt-2 space-y-2 transition-all duration-200 ${!CompDetails ? "hidden" : ""
-                  }`}
-              >
-                
-
                 <li className="grid grid-cols-1 pr-5">
                   {/* <TiWorldOutline className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Location</p>
+                  <p className=" text-sm text-slate-500">Country</p>
                   <p className=" text-sm text-gray-900">{profile?.Location}</p>
                 </li>
 
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <GoOrganization className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Address</p>
-                  <p className=" text-sm text-gray-900">{profile?.Address}</p>
-                </li>
-
-
+                
                 <li className="grid grid-cols-1 pr-5">
                   {/* <TiWorldOutline className="text-primary1" /> */}
                   <p className=" text-sm text-slate-500">Type</p>
@@ -371,23 +289,17 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
                     {profile?.CompanyType}
                   </p>
                 </li>
-
                 <li className="grid grid-cols-1 pr-5">
-                  {/* <GoOrganization className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Address</p>
+                  {/* <TiWorldOutline className="text-primary1" /> */}
+                  <p className=" text-sm text-slate-500">ComPany Size </p>
                   <p className=" text-sm text-gray-900">
-                    {profile?.CompanyAddress}
+                    {profile?.TeamSize}
                   </p>
                 </li>
 
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <GoOrganization className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500"> Email</p>
-                  <p className=" text-sm text-gray-900">
-                    {profile?.CompanyEmail}
-                  </p>
-                </li>
+                
 
+                
                 <li>
                   <Link href={"/directory"}>
                     {" "}

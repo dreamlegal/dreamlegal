@@ -175,13 +175,13 @@ function Complete() {
   return (
     <div>
       <>
-        <section className="bg-white font-clarity">
+      <section className="bg-white font-clarity">
           <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-            <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
+            <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6 sm:py-4">
               <img
-                alt=""
-                src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                className="absolute inset-0 h-full w-full object-cover opacity-80"
+                alt={`/signup_page_image.png`}
+                src={`/signup_page_image.png`}
+                className="absolute inset-0 h-full w-full object-cover "
               />
 
               <div className="hidden lg:relative lg:block lg:p-12">
@@ -200,18 +200,11 @@ function Complete() {
                   </svg>
                 </a>
 
-                <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-                  Welcome to Dreamlegal 🔥
-                </h2>
-
-                <p className="mt-4 leading-relaxed text-white/90">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Eligendi nam dolorum aliquam, quibusdam aperiam voluptatum.
-                </p>
+             
               </div>
             </section>
 
-            <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
+            <main className="flex items-center justify-center px-8 py-4 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
               <div className="max-w-xl lg:max-w-3xl">
                 <div className="relative -mt-16 block lg:hidden">
                   <a
@@ -232,16 +225,20 @@ function Complete() {
                     </svg>
                   </a>
 
-                  <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                    Welcome to Dreamlegal 🔥
-                  </h1>
-
-                  <p className="mt-4 leading-relaxed text-gray-500">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Eligendi nam dolorum aliquam, quibusdam aperiam voluptatum.
-                  </p>
+                 
                 </div>
-                <h1 className="mt-2 text-xl font-bold text-gray-900 sm:text-xl md:text-xl">
+
+
+                <h2 className="-mt-10 text-2xl font-bold text-gray sm:text-3xl md:text-4xl">
+                WELCOME TO DREAMLEGAL 🔥
+                </h2>
+
+                <p className="mt-4 leading-relaxed text-gray">
+                
+                All your Legal Tech needs at one place with us
+
+                </p>
+                <h1 className="mt-10 text-xl font-bold text-gray-900 sm:text-xl md:text-xl">
                   Please complete your Profile
                 </h1>
 
@@ -249,38 +246,22 @@ function Complete() {
                   onSubmit={handleSubmit}
                   className="mt-8 grid grid-cols-6 gap-6"
                 >
-                  <div className="col-span-6 ">
+                
+                   <div className="col-span-6 sm:col-span-3">
                     <label
-                      htmlFor="Location"
+                      htmlFor="CompanyAddress"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Profile Image{" "}
-                      <span className="text-slate-400">optional</span>
-                    </label>
-
-                    <Input
-                      type="file"
-                      id="ProfileImage"
-                      name="ProfileImage"
-                      accept="image/*"
-                      onChange={handleChange}
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="Contact"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Contact Number
+                      {" "}
+                      Organisation  Name{" "}
                     </label>
 
                     <input
                       type="text"
-                      id="Contact"
-                      name="Contact"
+                      id="CompanyAddress"
+                      name="CompanyAddress"
                       required
-                      value={formData.Contact}
+                      value={formData.CompanyAddress}
                       onChange={handleChange}
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                     />
@@ -291,7 +272,7 @@ function Complete() {
                       htmlFor="Location"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Location
+                      Country
                     </label>
 
                     <select
@@ -309,25 +290,7 @@ function Complete() {
                     </select>
                   </div>
 
-                  <div className="col-span-6">
-                    <label
-                      htmlFor="Address"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      {" "}
-                      Address{" "}
-                    </label>
-
-                    <input
-                      type="text"
-                      id="Address"
-                      required
-                      name="Address"
-                      value={formData.Address}
-                      onChange={handleChange}
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                    />
-                  </div>
+              
 
                   <div className="col-span-6 sm:col-span-3">
                     <label
@@ -372,25 +335,7 @@ function Complete() {
                     </select>
                   </div>
 
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="CompanyAddress"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      {" "}
-                      Organisation  Address{" "}
-                    </label>
-
-                    <input
-                      type="text"
-                      id="CompanyAddress"
-                      name="CompanyAddress"
-                      required
-                      value={formData.CompanyAddress}
-                      onChange={handleChange}
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                    />
-                  </div>
+                 
 
 
                   <div className="col-span-6 sm:col-span-3">
@@ -419,26 +364,7 @@ function Complete() {
                    
                   </div>
 
-                  <div className="col-span-6">
-                    <label
-                      htmlFor="CompanyEmail"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      {" "}
-                      Organisation  Email{" "}
-                    </label>
-
-                    <input
-                      type="email"
-                      id="CompanyEmail"
-                      name="CompanyEmail"
-                      required
-                      value={formData.CompanyEmail}
-                      onChange={handleChange}
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                    />
-                  </div>
-
+                
                   <div className="col-span-6">
                     <label htmlFor="MarketingAccept" className="flex gap-4">
                       <input
@@ -479,7 +405,7 @@ function Complete() {
 
             </main>
           </div>
-        </section>
+      </section>
       </>
     </div>
   );

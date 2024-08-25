@@ -302,7 +302,7 @@ function PdfDownload({ data }: any) {
               </div>
             </div>
             <div className="w-full h-px bg-slate-200 my-4"></div>
-            <div className="flex flex-col md:flex-row  w-full gap-4">
+            <div className="flex flex-col md:flex-row  w-full gap-4 mt-20">
               <div className="flex-1">
                 <div className="flex gap-2 items-center">
                   <h2 className="text-2xl font-bold text-gray-900 mb-3">
@@ -384,8 +384,9 @@ function PdfDownload({ data }: any) {
                 </div>
               </div>
             </div>
+
             <div className="w-full h-px bg-slate-200 my-4"></div>
-            <div className="flex flex-col md:flex-row w-full gap-4">
+            <div className="flex flex-col md:flex-row w-full gap-4 mt-20">
               <div className="flex-1">
                 <div className="flex gap-2 items-center">
                   <h2 className="text-2xl mb-3 font-bold text-gray-900">
@@ -472,7 +473,15 @@ function PdfDownload({ data }: any) {
 
           <div className="w-full h-px bg-slate-200 my-4"></div>
 
-          <div className="flex  gap-2 items-center">
+
+
+
+
+
+
+
+
+          <div className="flex  gap-2 items-center mt-10">
             <h2 id="lifecycle" className=" text-2xl font-bold text-gray-900">
               Process Lifecycle
             </h2>

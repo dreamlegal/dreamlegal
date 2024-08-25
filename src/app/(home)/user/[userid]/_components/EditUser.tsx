@@ -21,6 +21,7 @@ function EditUser({ data , onCloseEdit}: any) {
     Contact: data.profile?.Contact || "",
     Location: data.profile?.Location || "",
     Address: data.profile?.Address || "",
+    TeamSize: data.profile?.TeamSize || "",
     Designation: data.profile?.Designation || "",
     CompanyType: data.profile?.CompanyType || "",
     CompanyAddress: data.profile?.CompanyAddress || "",
@@ -112,14 +113,31 @@ function EditUser({ data , onCloseEdit}: any) {
       console.error("Error submitting form:", error);
     }
     console.log("Form submitted:", formData);
+   
   };
+  const teamSize = [
+    "1-10",
+    "11-50",
+    "51-100",
+    "101-250",
+    "251-500",
+    "501-1000",
+    "1001-5000",
+    "5001-10000",
+    "10001-50000",
+    "50001-100000",
+  ]
   return (
     <main className="">
       <div className="max-w-xl lg:max-w-3xl">
        
-        <h1 className="mt-2 text-xl font-bold text-gray-900 sm:text-xl md:text-xl">
+       <div className="flex justify-between">
+       <h1 className="mt-2 text-xl font-bold text-gray-900 sm:text-xl md:text-xl">
           Edit Profile 
         </h1>
+        <a href="#">back</a>
+       </div>
+       
 
         <form onSubmit={handleSubmit} className="mt-8 grid grid-cols-6 gap-6">
           <div className="col-span-6 ">
@@ -139,31 +157,32 @@ function EditUser({ data , onCloseEdit}: any) {
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
             />
           </div>
+        
           <div className="col-span-6 sm:col-span-3">
             <label
-              htmlFor="Contact"
+              htmlFor="CompanyAddress"
               className="block text-sm font-medium text-gray-700"
             >
-              Contact Number
+              {" "}
+              Company Name{" "}
             </label>
 
             <input
               type="text"
-              id="Contact"
-              name="Contact"
+              id="CompanyAddress"
+              name="CompanyAddress"
               required
-              value={formData.Contact}
+              value={formData.CompanyAddress}
               onChange={handleChange}
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
             />
           </div>
-
           <div className="col-span-6 sm:col-span-3">
             <label
               htmlFor="Location"
               className="block text-sm font-medium text-gray-700"
             >
-              Location
+              Country
             </label>
 
             <input
@@ -177,25 +196,7 @@ function EditUser({ data , onCloseEdit}: any) {
             />
           </div>
 
-          <div className="col-span-6">
-            <label
-              htmlFor="Address"
-              className="block text-sm font-medium text-gray-700"
-            >
-              {" "}
-              Address{" "}
-            </label>
-
-            <input
-              type="text"
-              id="Address"
-              required
-              name="Address"
-              value={formData.Address}
-              onChange={handleChange}
-              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            />
-          </div>
+         
 
           <div className="col-span-6 sm:col-span-3">
             <label
@@ -240,45 +241,35 @@ function EditUser({ data , onCloseEdit}: any) {
                     </select>
           </div>
 
-          <div className="col-span-6">
-            <label
-              htmlFor="CompanyAddress"
-              className="block text-sm font-medium text-gray-700"
-            >
-              {" "}
-              Company Address{" "}
-            </label>
+          <div className="col-span-6 sm:col-span-3">
+                    <label
+                      htmlFor="CompanyAddress"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      {" "}
+                      Team size{" "}
+                    </label>
 
-            <input
-              type="text"
-              id="CompanyAddress"
-              name="CompanyAddress"
-              required
-              value={formData.CompanyAddress}
-              onChange={handleChange}
-              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            />
+                    <select
+                      name="TeamSize"
+                      value={formData.TeamSize}
+                      onChange={handleChange}
+                      className="w-full p-2 border border-gray-300 rounded text-gray-600"
+                    >
+                      <option value="" className="text-gray-400">Select Team Size</option>
+                      {teamSize.map((type) => (
+                        <option key={type} value={type}>
+                          {type}
+                        </option>
+                      ))}
+                    </select>
+
+                   
           </div>
 
-          <div className="col-span-6">
-            <label
-              htmlFor="CompanyEmail"
-              className="block text-sm font-medium text-gray-700"
-            >
-              {" "}
-              Company Email{" "}
-            </label>
+          
 
-            <input
-              type="email"
-              id="CompanyEmail"
-              name="CompanyEmail"
-              required
-              value={formData.CompanyEmail}
-              onChange={handleChange}
-              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            />
-          </div>
+       
 
           
 

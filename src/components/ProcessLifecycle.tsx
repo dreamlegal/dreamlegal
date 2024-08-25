@@ -143,54 +143,63 @@ const ProcessLifecycle = ({ product }: any) => {
 
   return (
     <div>
-      {lifecycle && (
-        <>
-          <div className="relative grid gap-4 row-gap-4 mb-8 md:row-gap-4 lg:grid-cols-3 sm:grid-cols-2">
-            <div className="absolute inset-0 flex items-center justify-center sm:hidden lg:flex"></div>
-            {lifecycle.stages.slice(0, 3).map((stage, index) => (
-              <div
-                key={index}
-                className={`p-5 duration-300 transform bg-white border rounded shadow-sm hover:-translate-y-2 ${
-                  selectedStages.includes(stage) ? "border-teal-500" : "border-red-500 opacity-90"
-                }`}
-              >
-                <div className="flex items-center gap-5">
-                <p className={`flex items-center justify-center w-6 h-6 font-bold rounded  ${
-                  selectedStages.includes(stage) ? "text-teal-500 bg-teal-100" : "text-red-500 bg-red-100"
-                } `}>
-                    {index + 1}
-                  </p>
-                  <p className="text-sm font-bold leading-5 mb-2">{stage}</p>
-                  
-                </div>
+    {lifecycle && (
+      <>
+        <div className="grid gap-4 mb-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {lifecycle.stages.slice(0, 3).map((stage, index) => (
+            <div
+              key={index}
+              className={`p-5 duration-300 transform bg-white border rounded shadow-sm hover:-translate-y-2 ${
+                selectedStages.includes(stage)
+                  ? "border-teal-500"
+                  : "border-red-500 opacity-90"
+              }`}
+            >
+              <div className="flex items-center gap-5">
+                <p
+                  className={`flex items-center justify-center w-6 h-6 font-bold rounded ${
+                    selectedStages.includes(stage)
+                      ? "text-teal-500 bg-teal-100"
+                      : "text-red-500 bg-red-100"
+                  }`}
+                >
+                  {index + 1}
+                </p>
+                <p className="text-sm font-bold leading-5 mb-2">{stage}</p>
               </div>
-            ))}
-          </div>
-
-          <div className="relative grid gap-4 row-gap-4 mb-8 md:row-gap-4 lg:grid-cols-3 sm:grid-cols-2">
-            <div className="absolute inset-0 flex items-center justify-center sm:hidden lg:flex"></div>
-            {lifecycle.stages.slice(3).map((stage, index) => (
-              <div
-                key={index + 3}
-                className={`p-5 duration-300 transform bg-white border rounded shadow-sm hover:-translate-y-2 ${
-                  selectedStages.includes(stage) ? "border-teal-500" : "border-red-500  opacity-90"
-                }`}
-              >
-                <div className="flex items-center gap-5">
-                <p className={`flex items-center justify-center w-6 h-6 font-bold rounded  ${
-                  selectedStages.includes(stage) ? "text-teal-500 bg-teal-100" : "text-red-500 bg-red-100"
-                } `}>
-                    {index + 4}
-                  </p>
-                  <p className="text-sm font-bold leading-5 mb-2">{stage}</p>
-                  
-                </div>
+            </div>
+          ))}
+        </div>
+  
+        <div className="grid gap-4 mb-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {lifecycle.stages.slice(3).map((stage, index) => (
+            <div
+              key={index + 3}
+              className={`p-5 duration-300 transform bg-white border rounded shadow-sm hover:-translate-y-2 ${
+                selectedStages.includes(stage)
+                  ? "border-teal-500"
+                  : "border-red-500 opacity-90"
+              }`}
+            >
+              <div className="flex items-center gap-5">
+                <p
+                  className={`flex items-center justify-center w-6 h-6 font-bold rounded ${
+                    selectedStages.includes(stage)
+                      ? "text-teal-500 bg-teal-100"
+                      : "text-red-500 bg-red-100"
+                  }`}
+                >
+                  {index + 4}
+                </p>
+                <p className="text-sm font-bold leading-5 mb-2">{stage}</p>
               </div>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
+            </div>
+          ))}
+        </div>
+      </>
+    )}
+  </div>
+  
   );
 };
 

@@ -18,6 +18,7 @@ function UserSignup() {
   const [otp, setOtp] = useState("");
   const [terms, setTerms] = useState(false);
   const [error, setError] = useState(""); // New state for error messages
+  const [msg, setMsg] = useState(""); // New state for success messages
 
   const router = useRouter();
 
@@ -54,6 +55,7 @@ function UserSignup() {
 
       if (response.ok) {
         console.log("Account created successfully!");
+        setMsg("Account created successfully! Redirecting to OTP verification");
         setOtpStep(true);
       } else if (response.status === 409) {
         // Conflict status code for user already exists
@@ -82,6 +84,7 @@ function UserSignup() {
       if (response.ok) {
         const data = await response.json();
         console.log("OTP verified successfully");
+        setMsg("OTP verified successfully");
         setOtpStep(true);
         typeof window !== "undefined"
           ? localStorage.setItem("userId", data.user.id)
@@ -217,6 +220,7 @@ function UserSignup() {
               <p>I agree to the T&Cs and receive mails </p>
             </div>
             {error && <p className="text-red-500">{error}</p>}{" "}
+            {msg && <p className="text-green-500">{msg}</p>}
             {/* Display error */}
             <Button
               className="w-full bg-primary1 my-4"

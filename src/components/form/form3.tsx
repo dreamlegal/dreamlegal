@@ -41,8 +41,8 @@ function Form3() {
         [name]: checked
           ? [...(prevValues[name as keyof FormValues] as string[]), value]
           : (prevValues[name as keyof FormValues] as string[]).filter(
-            (item) => item !== value
-          ),
+              (item) => item !== value
+            ),
       }));
     } else if (type === "file") {
       const file = (event.target as HTMLInputElement).files?.[0];
@@ -65,10 +65,23 @@ function Form3() {
   };
 
   const handleUserCategoriesChange = (selectedCategories: string[]) => {
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      userCategory: selectedCategories,
-    }));
+    setFormValues((prevValues) => {
+      const newUserCategoryPercentage = new Array(
+        selectedCategories.length
+      ).fill(0);
+      const totalPercentage = 100;
+      const percentagePerCategory = Math.floor(
+        totalPercentage / selectedCategories.length
+      );
+      selectedCategories.forEach((_, index) => {
+        newUserCategoryPercentage[index] = percentagePerCategory;
+      });
+      return {
+        ...prevValues,
+        userCategory: selectedCategories,
+        userCategoryPercentage: newUserCategoryPercentage,
+      };
+    });
   };
 
   const handleIndustriesChange = (selectedCategories: string[]) => {
@@ -171,7 +184,6 @@ function Form3() {
       return { ...prevValues, teamSizePercentage };
     });
   };
-
 
   const userCategories = [
     "Individual Practitioner",
@@ -304,7 +316,9 @@ function Form3() {
           </div>
           {formValues.userCategory.length > 0 && (
             <div>
-              <span className="text-gray-600 italic text-sm">Mention the distibution for the selected options</span>
+              <span className="text-gray-600 italic text-sm">
+                Mention the distibution for the selected options
+              </span>
               {formValues.userCategory.map((category, index) => (
                 <div key={category} className="mt-4">
                   <div className="inline-flex gap-5 items-center">
@@ -386,7 +400,9 @@ function Form3() {
 
           {formValues.industry.length > 0 && (
             <div>
-              <span className="text-gray-600 italic text-sm">Mention the distibution for the selected options</span>
+              <span className="text-gray-600 italic text-sm">
+                Mention the distibution for the selected options
+              </span>
               {formValues.industry.map((category, index) => (
                 <div key={category} className="mt-4">
                   <div className="inline-flex gap-5 items-center">
@@ -467,7 +483,9 @@ function Form3() {
           </div>
           {formValues.practiceAreas.length > 0 && (
             <div>
-              <span className="text-gray-600 italic text-sm">Mention the distibution for the selected options</span>
+              <span className="text-gray-600 italic text-sm">
+                Mention the distibution for the selected options
+              </span>
 
               {formValues.practiceAreas.map((category, index) => (
                 <div key={category} className="mt-4">
@@ -554,7 +572,9 @@ function Form3() {
         </div>
         {formValues.teamSize.length > 0 && (
           <div>
-              <span className="text-gray-600 italic text-sm">Mention the distibution for the selected options</span>
+            <span className="text-gray-600 italic text-sm">
+              Mention the distibution for the selected options
+            </span>
 
             {formValues.teamSize.map((category, index) => (
               <div key={category} className="mt-4">

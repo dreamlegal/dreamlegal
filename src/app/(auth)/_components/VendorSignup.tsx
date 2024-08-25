@@ -19,6 +19,8 @@ function VendorSignup() {
   });
   const [otp, setOtp] = useState("");
   const [terms, setTerms] = useState(false);
+  const [error, setError] = useState("");
+  const [msg, setMsg] = useState("");
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -51,7 +53,11 @@ function VendorSignup() {
 
       if (response.ok) {
         console.log("Account created successfully!");
+        setMsg("Account created successfully! Redirecting to OTP verification");
         setOtpStep(true);
+      } else if (response.status === 409) {
+        console.log("User with this email already exists");
+        setError("User with this email already exists");
       } else {
         console.error("Failed to create account");
       }
@@ -72,6 +78,7 @@ function VendorSignup() {
         body: JSON.stringify({ email: formData.email, otp }),
       });
       if (response.ok) {
+        setMsg("OTP verified successfully");
         console.log("OTP verified successfully");
         setOtpStep(true);
         const data = await response.json();
@@ -136,14 +143,17 @@ function VendorSignup() {
             >
               Resend Email
             </Button>
-            <span className="text-sm text-gray-400"> Please check your spam folder if you did not receive the email </span>
+            <span className="text-sm text-gray-400">
+              {" "}
+              Please check your spam folder if you did not receive the email{" "}
+            </span>
           </form>
         </div>
       ) : (
         <div>
           <form onSubmit={handleSubmit}>
             <h1 className="text-lg font-bold">Create Account</h1>
-           
+
             <div>
               <Label htmlFor="email">Email</Label>
               <Input
@@ -187,7 +197,8 @@ function VendorSignup() {
               />{" "}
               <p>I agree to the T&Cs and receive mails </p>
             </div>
-
+            {error && <p className="text-red-500">{error}</p>}
+            {msg && <p className="text-green-500">{msg}</p>}
             <Button
               className="w-full bg-primary1 my-4"
               type="submit"

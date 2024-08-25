@@ -246,7 +246,8 @@ function Form9({ editing }: { editing: boolean }) {
               subcategories: prevValues.AdvancedSearchCapabilities,
             });
           } else {
-            newFeatures[index].subcategories = prevValues.AdvancedSearchCapabilities;
+            newFeatures[index].subcategories =
+              prevValues.AdvancedSearchCapabilities;
           }
         }
 
@@ -2002,19 +2003,19 @@ function Form9({ editing }: { editing: boolean }) {
 
   const handleImagesChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (files && files.length <= 15) {
+    if (files && files.length <= 5) {
       setFormValues((prevValues) => ({
         ...prevValues,
         Images: Array.from(files),
       }));
     } else {
-      alert("You can upload up to 15 images.");
+      alert("You can upload up to 5 images.");
     }
   };
 
   const handleAttachmentsChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (files && files.length <= 15) {
+    if (files && files.length <= 2) {
       const validFiles = Array.from(files).filter(
         (file) => file.size <= 10 * 1024 * 1024
       );
@@ -2027,7 +2028,7 @@ function Form9({ editing }: { editing: boolean }) {
         alert("Each file must be less than 10 MB.");
       }
     } else {
-      alert("You can upload up to 15 attachments.");
+      alert("You can upload up to 2 attachments.");
     }
   };
   return (
@@ -2036,7 +2037,7 @@ function Form9({ editing }: { editing: boolean }) {
         <div className=" mt-2">
           <Label>
             Images{" "}
-            {/* <span className="text-yellow-500 italic text-xs">upto 5</span> */}
+            <span className="text-yellow-500 italic text-xs">(up to 5)</span>
           </Label>
           <Input
             type="file"
@@ -2059,8 +2060,8 @@ function Form9({ editing }: { editing: boolean }) {
         </div>
         <div className=" mt-2">
           <Label>
-            Attachment{" "}
-            {/* <span className="text-yellow-500 italic text-xs">upto 2</span> */}
+            Attachments{" "}
+            <span className="text-yellow-500 italic text-xs">(up to 2)</span>
           </Label>
           <Input
             type="file"

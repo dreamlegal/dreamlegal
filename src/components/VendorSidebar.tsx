@@ -9,6 +9,7 @@ import { FaRegStar } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 
 function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
+  const [selectedItem, setSelectedItem] = useState("Products");
   const [Dashboard, setDashboard] = useState(false);
   const [Products, setProducts] = useState(true);
   const [Review, setReview] = useState(false);
@@ -17,19 +18,25 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
   const [Support, setSupport] = useState(false);
   const router = useRouter();
 
+  const handleMenuClick = (item: string) => {
+    setSelectedItem(item);
+    onMenuItemClick(item);
+  };
+
   const handleReview = () => {
     setReview(!Review);
-    onMenuItemClick("Review");
+    handleMenuClick("Review");
   };
 
   const handleProfile = () => {
     setProfile(!Profile);
-    onMenuItemClick("Profile");
+    handleMenuClick("Profile");
   };
 
   const handlelogout = () => {
     localStorage.removeItem("vendorId");
     router.push("/");
+    handleMenuClick("Logout");
   };
   return (
     <div className="bg-[#002C76] h-screen font-clarity px-4 py-6 flex flex-col">
@@ -38,12 +45,15 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
         <span className="text-slate-300"> Menu</span>
         <div className="flex flex-col flex-grow">
           <ul className="space-y-2 flex-grow">
-           
-
             <li
-              onClick={() => setProducts(!Products)}
+              onClick={() => {
+                setProducts(!Products);
+                handleMenuClick("Products");
+              }}
               className={`flex justify-between text-sm items-center px-4 py-4 rounded-md transition-all duration-200 hover:cursor-pointer ${
-                Products ? "text-white bg-[#034b8a]" : "text-slate-300"
+                selectedItem === "Products"
+                  ? "text-white bg-[#034b8a]"
+                  : "text-slate-300"
               }`}
             >
               <span className={`flex gap-2 items-center `}>
@@ -55,17 +65,17 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
             <li className="ml-10">
               <ul className={`space-y-2 ${Products ? "block" : "hidden"}`}>
                 <li
-                  onClick={() => onMenuItemClick("AddProduct")}
+                  onClick={() => handleMenuClick("AddProduct")}
                   className={`text-slate-300 hover:cursor-pointer ${
-                    selectedMenu === "AddProduct" ? "text-white" : ""
+                    selectedItem === "AddProduct" ? "text-white" : ""
                   }`}
                 >
                   Add Product
                 </li>
                 <li
-                  onClick={() => onMenuItemClick("allProducts")}
+                  onClick={() => handleMenuClick("allProducts")}
                   className={`text-slate-300 hover:cursor-pointer ${
-                    selectedMenu === "allProducts" ? "text-white" : ""
+                    selectedItem === "allProducts" ? "text-white" : ""
                   }`}
                 >
                   All Products
@@ -74,9 +84,14 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
             </li>
 
             <li
-              onClick={() => setDashboard(!Dashboard)}
+              onClick={() => {
+                setDashboard(!Dashboard);
+                handleMenuClick("Dashboard");
+              }}
               className={`flex justify-between text-sm items-center px-4 py-4 rounded-md transition-all duration-200 hover:cursor-pointer ${
-                Dashboard ? "text-white bg-[#034b8a]" : "text-slate-300"
+                selectedItem === "Dashboard"
+                  ? "text-white bg-[#034b8a]"
+                  : "text-slate-300"
               }`}
             >
               <span className={`flex gap-2 items-center `}>
@@ -88,9 +103,9 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
             <li className="ml-10">
               <ul className={`space-y-2 ${Dashboard ? "block" : "hidden"}`}>
                 <li
-                  onClick={() => onMenuItemClick("Dashboard")}
+                  onClick={() => handleMenuClick("Dashboard")}
                   className={`text-slate-300 hover:cursor-pointer ${
-                    selectedMenu === "Dashboard" ? "text-white" : ""
+                    selectedItem === "Dashboard" ? "text-white" : ""
                   }`}
                 >
                   Product Analytics
@@ -99,9 +114,14 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
             </li>
 
             <li
-              onClick={handleReview}
+              onClick={() => {
+                setReview(!Review);
+                handleMenuClick("Review");
+              }}
               className={`flex justify-between text-sm items-center px-4 py-4 rounded-md transition-all duration-200 hover:cursor-pointer ${
-                Review ? "text-white bg-[#034b8a]" : "text-slate-300"
+                selectedItem === "Review"
+                  ? "text-white bg-[#034b8a]"
+                  : "text-slate-300"
               }`}
             >
               <span className={`flex gap-2 items-center `}>
@@ -111,9 +131,14 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
             </li>
 
             <li
-              onClick={handleProfile}
+              onClick={() => {
+                setProfile(!Profile);
+                handleMenuClick("Profile");
+              }}
               className={`flex justify-between text-sm items-center px-4 py-4 rounded-md transition-all duration-200 hover:cursor-pointer ${
-                Profile ? "text-white bg-[#034b8a]" : "text-slate-300"
+                selectedItem === "Profile"
+                  ? "text-white bg-[#034b8a]"
+                  : "text-slate-300"
               }`}
             >
               <span className={`flex gap-2 items-center `}>
@@ -123,9 +148,14 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
             </li>
 
             <li
-              onClick={handlelogout}
+              onClick={() => {
+                handlelogout();
+                handleMenuClick("Logout");
+              }}
               className={`flex justify-between text-sm items-center px-4 py-4 rounded-md transition-all duration-200 hover:cursor-pointer ${
-                Logout ? "text-white bg-[#034b8a]" : "text-slate-300"
+                selectedItem === "Logout"
+                  ? "text-white bg-[#034b8a]"
+                  : "text-slate-300"
               }`}
             >
               <span className={`flex gap-2 items-center `}>
@@ -137,9 +167,14 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
           <div className="mt-auto text-white">
             <ul className="space-y-2">
               <li
-                onClick={() => setSupport(!Support)}
+                onClick={() => {
+                  setSupport(!Support);
+                  handleMenuClick("Support");
+                }}
                 className={`flex justify-between text-sm items-center px-4 py-4 rounded-md transition-all duration-200 hover:cursor-pointer ${
-                  Support ? "text-white bg-[#034b8a]" : "text-slate-300"
+                  selectedItem === "Support"
+                    ? "text-white bg-[#034b8a]"
+                    : "text-slate-300"
                 }`}
               >
                 <span className={`flex gap-2 items-center `}>

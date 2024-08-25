@@ -18,7 +18,15 @@ import AddProduct from "@/components/AddProduct";
 import AllProducts from "@/components/ui/AllProducts";
 import VendorReview from "@/components/VendorReview";
 import VendorProfile from "@/components/VendorProfile";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function VendorDashboardPage({ verified }: { verified: boolean }) {
   const [selectedMenu, setSelectedMenu] = useState("allProducts");
@@ -27,7 +35,8 @@ function VendorDashboardPage({ verified }: { verified: boolean }) {
   const [productId, setProductId] = useState<string | null>(null);
   const [products, setProducts] = useState<any[]>([]);
 
-  const getVendorId = typeof window !== "undefined" ? localStorage.getItem("vendorId") : null;
+  const getVendorId =
+    typeof window !== "undefined" ? localStorage.getItem("vendorId") : null;
 
   useEffect(() => {
     if (verified) {
@@ -52,7 +61,6 @@ function VendorDashboardPage({ verified }: { verified: boolean }) {
 
       fetchProfile();
 
-
       const fetchProducts = async () => {
         try {
           const response = await fetch(`/api/get-products-userid`, {
@@ -75,7 +83,6 @@ function VendorDashboardPage({ verified }: { verified: boolean }) {
       };
 
       fetchProducts();
-
     } else {
       const storedVendorId = localStorage.getItem("vendorId");
       const fetchProfile = async () => {
@@ -135,17 +142,21 @@ function VendorDashboardPage({ verified }: { verified: boolean }) {
                   </div>
                 </div>
 
-          
-
-                <IoIosNotificationsOutline className=" ml-auto text-2xl" />
+                {/* <IoIosNotificationsOutline className=" ml-auto text-2xl" /> */}
               </div>
             </div>
             <div className=" px-5">
               {/* <p>{vendorId}</p> */}
-              {selectedMenu === "Dashboard" && <VendorDashborad productId={productId!} />}
+              {selectedMenu === "Dashboard" && (
+                <VendorDashborad productId={productId!} />
+              )}
               {selectedMenu === "AddProduct" && <AddProduct />}
-              {selectedMenu === "allProducts" && <AllProducts userId={vendorId! || getVendorId!} />}
-              {selectedMenu === "Review" && <VendorReview userId={vendorId! || getVendorId!} />}
+              {selectedMenu === "allProducts" && (
+                <AllProducts userId={vendorId! || getVendorId!} />
+              )}
+              {selectedMenu === "Review" && (
+                <VendorReview userId={vendorId! || getVendorId!} />
+              )}
               {selectedMenu === "Profile" && (
                 <VendorProfile verified={verified} getProfile={profile} />
               )}

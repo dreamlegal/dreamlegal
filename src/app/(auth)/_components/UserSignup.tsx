@@ -17,6 +17,7 @@ function UserSignup() {
   });
   const [otp, setOtp] = useState("");
   const [terms, setTerms] = useState(false);
+  const [error, setError] = useState(""); // New state for error messages
 
   const router = useRouter();
 
@@ -34,9 +35,11 @@ function UserSignup() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setError(""); // Reset error message
     console.log(formData);
+
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      setError("Passwords do not match");
       return;
     }
 
@@ -52,10 +55,15 @@ function UserSignup() {
       if (response.ok) {
         console.log("Account created successfully!");
         setOtpStep(true);
+      } else if (response.status === 409) {
+        // Conflict status code for user already exists
+        setError("User with this email already exists");
       } else {
+        setError("Failed to create account. Please try again.");
         console.error("Failed to create account");
       }
     } catch (error) {
+      setError("An error occurred. Please try again.");
       console.error("An error occurred:", error);
     }
   };
@@ -80,9 +88,11 @@ function UserSignup() {
         alert("OTP verified successfully");
         router.push(`/user/${data.user.id}/complete`);
       } else {
+        setError("Failed to verify OTP");
         console.error("Failed to verify OTP");
       }
     } catch (error) {
+      setError("An error occurred. Please try again.");
       console.error("An error occurred:", error);
     }
   };
@@ -100,9 +110,11 @@ function UserSignup() {
       if (response.ok) {
         alert("Verification email resent successfully!");
       } else {
+        setError("Failed to resend email. Please try again.");
         console.error("Failed to resend email");
       }
     } catch (error) {
+      setError("An error occurred. Please try again.");
       console.error("An error occurred:", error);
     }
   };
@@ -115,7 +127,6 @@ function UserSignup() {
             <h1 className="text-lg font-bold">OTP Verification</h1>
             <p>Enter the OTP sent to your email</p>
             <div>
-              <Label htmlFor="otp">OTP</Label>
               <Input
                 type="text"
                 name="otp"
@@ -124,6 +135,7 @@ function UserSignup() {
                 onChange={handleOtpChange}
               />
             </div>
+            {error && <p className="text-red-500">{error}</p>} {/* Display error */}
             <Button className="w-full bg-primary1 my-4" type="submit">
               Submit
             </Button>
@@ -150,17 +162,6 @@ function UserSignup() {
             <p className="text-gray-400 text-xs">By Continue with Google, you agree to our Terms of Service and Privacy Policy</p>
             <p className="text-center text-gray-800">or</p>
             <hr />
-            <div>
-              <Label htmlFor="name">Name</Label>
-              <Input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Enter your name"
-              />
-            </div>
-
             <div>
               <Label htmlFor="email">Email</Label>
               <Input
@@ -204,6 +205,8 @@ function UserSignup() {
               />{" "}
               <p>I agree to the T&Cs and receive mails </p>
             </div>
+
+            {error && <p className="text-red-500">{error}</p>} {/* Display error */}
 
             <Button
               className="w-full bg-primary1 my-4"

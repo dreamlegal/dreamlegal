@@ -2010,6 +2010,7 @@ function Form9({ editing }: { editing: boolean }) {
       }));
     } else {
       alert("You can upload up to 5 images.");
+      event.target.value = ""; // Clear the input field
     }
   };
 
@@ -2026,9 +2027,11 @@ function Form9({ editing }: { editing: boolean }) {
         }));
       } else {
         alert("Each file must be less than 10 MB.");
+        event.target.value = ""; // Clear the input field
       }
     } else {
       alert("You can upload up to 2 attachments.");
+      event.target.value = ""; // Clear the input field
     }
   };
   return (

@@ -35,7 +35,6 @@ model User {
   userAccount userAccount[]
 
   SaveProduct SaveProduct[]
-
 }
 
 model userAccount {
@@ -117,7 +116,7 @@ model Otp {
 }
 
 model companyInfo {
-  id                        String     @id @default(cuid())
+  id                        String    @id @default(cuid())
   userId                    String
   companyName               String?
   website                   String?
@@ -133,9 +132,8 @@ model companyInfo {
   PointOfContactName        String?
   PointOfContactPhone       String?
   PointOfContactDesignation String?
-  user                      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   Product                   Product[]
- 
 }
 
 model Product {
@@ -209,7 +207,6 @@ model Product {
   Review                  Review[]
 
   SaveProduct SaveProduct[]
-  
 }
 
 model Review {
@@ -285,7 +282,4 @@ model Interest {
   companyId           String // Added companyId
   companyTypeFromUser String
   createdAt           DateTime @default(now())
-
-
-
 }

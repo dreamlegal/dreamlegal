@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import UserDashboard from "@/components/UserDashboard";
 import React, { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
@@ -12,7 +12,7 @@ function UserPage({ data }: any) {
   const path = useParams();
   const searchParams = useSearchParams();
   const userId = path?.userid;
-  const [view, setView] = useState('dashboard');
+  const [view, setView] = useState("dashboard");
 
   // Add logging for debugging
   useEffect(() => {
@@ -25,31 +25,37 @@ function UserPage({ data }: any) {
   }
 
   const handleEditClick = () => {
-    setView('edit');
+    setView("edit");
   };
 
   // Function to switch back to the dashboard view
   const handleCloseEdit = () => {
-    setView('dashboard');
+    setView("dashboard");
   };
 
   const handlePasswordClick = () => {
-    setView('change-password');
-    console.log('Password clicked');
+    setView("change-password");
+    console.log("Password clicked");
   };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 px-4">
       <div className="col-span-1">
         <div style={{ maxWidth: "100%" }}>
-          <UserProfile data={data} onEditClick={handleEditClick} onChangePassword={handlePasswordClick} />
+          <UserProfile
+            data={data}
+            onEditClick={handleEditClick}
+            onChangePassword={handlePasswordClick}
+          />
         </div>
       </div>
       <div className="col-span-4">
         <ScrollArea className="h-screen px-5">
-        {view === 'dashboard' && <UserDashboard />}
-        {view === 'edit' && <EditUser data={data} onCloseEdit={handleCloseEdit}  />}
-        {view === 'change-password' && <ChangePass />}
+          {view === "dashboard" && <UserDashboard />}
+          {view === "edit" && (
+            <EditUser data={data} onCloseEdit={handleCloseEdit} />
+          )}
+          {view === "change-password" && <ChangePass />}
         </ScrollArea>
       </div>
     </div>

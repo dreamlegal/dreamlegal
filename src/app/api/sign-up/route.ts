@@ -5,6 +5,22 @@ export async function POST(request: Request) {
   try {
     const { name, email, password, type = "user" } = await request.json();
 
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (existingUser) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          msg: "User with this email already exists",
+        }),
+        { status: 409 }
+      );
+    }
+
     // Create a new user in the Prisma User model
     const user = await prisma.user.create({
       data: {
@@ -30,16 +46,19 @@ export async function POST(request: Request) {
     // Send the OTP via email
     await sendVerificationEmail(email, otp);
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/sendotp`,  {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({  email , otp }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/sendotp`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, otp }),
+      }
+    );
 
     if (!response.ok) {
-      console.error('Failed to send welcome email');
+      console.error("Failed to send welcome email");
     }
 
     return new Response(

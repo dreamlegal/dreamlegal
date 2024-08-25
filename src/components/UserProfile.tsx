@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Interface } from "readline";
 
-
 function UserProfile({ data, onEditClick, onChangePassword }: any) {
   interface Account {
     name: string;
@@ -33,7 +32,7 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
     CompanyAddress: string;
     CompanyEmail: string;
     skip: boolean;
-    TeamSize:string;
+    TeamSize: string;
   }
 
   const [details, setDetails] = useState(true);
@@ -46,7 +45,7 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
   );
   const [Image, setImage] = useState(data.account.image);
 
-  console.log(profile)
+  console.log(profile);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   // useEffect(() => {
@@ -112,7 +111,6 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
               {AccountDetails?.name || "Default Name"}
             </h3>
           </div>
-      
 
           <div className="py-5">
             <div className=" flex justify-between items-center">
@@ -128,15 +126,14 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
                 className="text-primary1 text-sm grid grid-cols-2 pr-5"
               >
                 <HiOutlinePencil />
-                
               </button>
             </div>
             <div className="pt-4 pl-4">
               <ul
-                className={`mt-2 space-y-2 transition-all duration-200 ${!CompDetails ? "hidden" : ""
-                  }`}
+                className={`mt-2 space-y-2 transition-all duration-200 ${
+                  !CompDetails ? "hidden" : ""
+                }`}
               >
-                
                 <li className="grid grid-cols-1 pr-5">
                   {/* <GoOrganization className="text-primary1" /> */}
                   <p className=" text-sm text-slate-500">Company Name</p>
@@ -152,8 +149,6 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
                   </p>
                 </li>
 
-
-
                 <li className="grid grid-cols-1 pr-5">
                   {/* <MdAlternateEmail className="text-primary1" /> */}
                   <p className=" text-sm text-slate-500">Designation</p>
@@ -167,7 +162,7 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
                   <p className=" text-sm text-gray-900">{profile?.Location}</p>
                 </li>
 
-                <li className="grid grid-cols-1 pr-5 " >
+                <li className="grid grid-cols-1 pr-5 ">
                   {/* <TiWorldOutline className="text-primary1" /> */}
                   <p className=" text-sm text-slate-500">Type</p>
                   <p className=" text-sm text-gray-900">
@@ -176,26 +171,25 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
                 </li>
                 <li className="grid grid-cols-1 pr-5">
                   {/* <TiWorldOutline className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">ComPany Size </p>
-                  <p className=" text-sm text-gray-900">
-                    {profile?.TeamSize}
-                  </p>
+                  <p className=" text-sm text-slate-500">Team Size </p>
+                  <p className=" text-sm text-gray-900">{profile?.TeamSize}</p>
                 </li>
 
-                
                 {skipped === "skipped" && (
                   <li className="bg-red-100 px-4 py-2 rounded-md ">
-                  <span className="text-red-500 text-sm">Your Profile is not completed</span>
-              </li>
+                    <span className="text-red-500 text-sm">
+                      Your Profile is not completed
+                    </span>
+                  </li>
                 )}
 
                 <li className="pt-4">
                   <Link href={"/directory"}>
-
                     <button className=" flex w-full gap-2 rounded-lg  px-4 py-2 bg-primary2 text-sm font-medium text-primary1 items-center">
                       <FaStar />
                       Add Review
-                    </button></Link>
+                    </button>
+                  </Link>
                 </li>
                 <li>
                   <button
@@ -213,8 +207,9 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
       </div>
 
       <div
-        className={`font-clarity border rounded-md shadow md:hidden ${Account ? "block" : "hidden"
-          }`}
+        className={`font-clarity border rounded-md shadow md:hidden ${
+          Account ? "block" : "hidden"
+        }`}
       >
         <div className=" py-6 px-6 ">
           <div className="flex flex-col justify-center items-center">
@@ -227,7 +222,6 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
             </h3>
             <p className=" text-sm text-slate-500">{AccountDetails?.email}</p>
           </div>
-          
 
           <div className="py-5">
             <div className=" flex justify-between items-center">
@@ -243,15 +237,14 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
                 className="text-primary1 text-sm grid grid-cols-1 pr-5"
               >
                 <HiOutlinePencil />
-                
               </button>
             </div>
             <div>
               <ul
-                className={`mt-2 space-y-2 transition-all duration-200 ${!CompDetails ? "hidden" : ""
-                  }`}
+                className={`mt-2 space-y-2 transition-all duration-200 ${
+                  !CompDetails ? "hidden" : ""
+                }`}
               >
-
                 <li className="grid grid-cols-1 pr-5">
                   {/* <GoOrganization className="text-primary1" /> */}
                   <p className=" text-sm text-slate-500">Company Name</p>
@@ -281,7 +274,6 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
                   <p className=" text-sm text-gray-900">{profile?.Location}</p>
                 </li>
 
-                
                 <li className="grid grid-cols-1 pr-5">
                   {/* <TiWorldOutline className="text-primary1" /> */}
                   <p className=" text-sm text-slate-500">Type</p>
@@ -292,14 +284,9 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
                 <li className="grid grid-cols-1 pr-5">
                   {/* <TiWorldOutline className="text-primary1" /> */}
                   <p className=" text-sm text-slate-500">ComPany Size </p>
-                  <p className=" text-sm text-gray-900">
-                    {profile?.TeamSize}
-                  </p>
+                  <p className=" text-sm text-gray-900">{profile?.TeamSize}</p>
                 </li>
 
-                
-
-                
                 <li>
                   <Link href={"/directory"}>
                     {" "}

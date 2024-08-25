@@ -143,7 +143,8 @@ function UserSignup() {
                 onChange={handleOtpChange}
               />
             </div>
-            {error && <p className="text-red-500">{error}</p>} {/* Display error */}
+            {error && <p className="text-red-500">{error}</p>}{" "}
+            {/* Display error */}
             <Button className="w-full bg-primary1 my-4" type="submit">
               Submit
             </Button>
@@ -185,7 +186,6 @@ function UserSignup() {
                 placeholder="Enter your email"
               />
             </div>
-
             <div>
               <Label htmlFor="password">Password</Label>
               <Input
@@ -196,7 +196,6 @@ function UserSignup() {
                 placeholder="Enter your Password"
               />
             </div>
-
             <div>
               <Label htmlFor="confirmPassword">Confirm Password</Label>
               <Input
@@ -207,7 +206,6 @@ function UserSignup() {
                 placeholder="Enter your Password Again"
               />
             </div>
-
             <div className="flex gap-3 items-center my-3">
               <Input
                 type="checkbox"
@@ -218,9 +216,8 @@ function UserSignup() {
               />{" "}
               <p>I agree to the T&Cs and receive mails </p>
             </div>
-
-            {error && <p className="text-red-500">{error}</p>} {/* Display error */}
-
+            {error && <p className="text-red-500">{error}</p>}{" "}
+            {/* Display error */}
             <Button
               className="w-full bg-primary1 my-4"
               disabled={!terms}
@@ -228,7 +225,6 @@ function UserSignup() {
             >
               Create Account
             </Button>
-
             <hr />
           </form>
 

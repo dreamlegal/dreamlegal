@@ -139,7 +139,7 @@ function Form6() {
             <div>
              
               <div className="flex gap-2">
-                <textarea
+                <Input
                   name="timePeriod"
                   
                   placeholder="Time period"
@@ -331,28 +331,20 @@ function Form6() {
             </div>
           )}
 
-          <div className="mt-2">
-            <Label htmlFor="category">Custom parameters (optional) </Label>
-            {["Parameter 1", "Parameter 2", "Parameter 3", "Parameter 4"].map(
-              (category) => (
-                <div key={category} className="items-top flex space-x-2 mt-2">
-                  <Input
-                    name="pricingParams"
-                    type="checkbox"
-                    value={category}
-                    checked={formValues.pricingParams.includes(category)}
-                    onChange={handleChange}
-                    className="w-5 h-5"
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <label className="text-sm font-medium leading-none">
-                      {category}
-                    </label>
-                  </div>
-                </div>
-              )
-            )}
+          <div className="mt-2 flex items-start">
+            <Label htmlFor="category" className="mr-2">
+              Custom parameters
+            </Label>
+          
+            <textarea
+              name="pricingParams"
+              value={formValues.pricingParams}
+              onChange={handleChange}
+              className="flex-1 mt-0  w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows="5"
+            />
           </div>
+
           <div className="mt-4 flex flex-col md:flex-row items-center gap-4">
             <Button type="submit" className="bg-primary1" disabled={loading}>
               {loading ? "Saving" : "Next"}

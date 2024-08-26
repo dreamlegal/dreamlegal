@@ -1,12 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import NormalProduct from "./NormalProduct";
+import CompareProduct from "./CompareProduct";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { FaArrowUp } from "react-icons/fa6";
 import Search from "./animated-ui/Search";
 import DirectoryFilter from "./DirectoryFilter";
 import Image from "next/image";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
+import { Component } from "lucide-react";
+import Modal from './Modal'; // Import the Modal component
 
 const placeholders = [
   "Contract Management",
@@ -113,6 +116,10 @@ function DirectoryProduct() {
     // Add more filter parameters here
   });
 
+  // const [compareProducts, setCompareProducts] = useState<any[]>([]);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+
+
   const fetchProducts = async (search = "") => {
     try {
       const response = await fetch("/api/get-all-products", {
@@ -213,55 +220,103 @@ function DirectoryProduct() {
     });
   };
 
+  // const toggleCompareProduct = (product: any) => {
+  //   setCompareProducts((prev) => {
+  //     const isAlreadySelected = prev.some((p) => p.id === product.id);
+  //     if (isAlreadySelected) {
+  //       return prev.filter((p) => p.id !== product.id);
+  //     }
+  //     return [...prev, product];
+  //   });
+  // };
+
+  // const handleCompareClick = () => {
+  //   setIsModalOpen(true);
+  // };
+
+  
+
   return (
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 font-clarity">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="h-fit w-full md:w-[300px] md:col-span-1 sticky top-0 hidden md:block ">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Filters</h2>
-          <DirectoryFilter
-            selectedFilters={selectedFilters}
-            handleFilterChange={handleFilterChange}
-            setSelectedFilters={setSelectedFilters}
-          />
-        </div>
-        <div className="col-span-2 overflow-y-scroll no-scrollbar">
-          <div className="w-full flex flex-col md:flex-row items-center justify-between">
-            <h2 className="text-xl font-bold mb-5 md:mb-0">Directory search</h2>
-            <div className="flex gap-2">
-              <Search
-                placeholders={placeholders}
-                onChange={handleChange}
-                onSubmit={onSubmit}
-              />
-              <div className="block md:hidden">
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <button className="flex gap-2 rounded-full bg-white text-gray-900 border border-gray-700 font-bold px-6 py-3 text-xs transition-all w-fit items-center hover:bg-primary1 hover:text-white hover:border-white">
-                      <Image
-                        src={"/filtericon.svg"}
-                        width={20}
-                        height={20}
-                        alt="icon"
-                      ></Image>
-                      <span className="text-sm mr-2">Filter</span>
-                    </button>
-                  </SheetTrigger>
-                  <SheetContent>
-                    <DirectoryFilter
-                      selectedFilters={selectedFilters}
-                      handleFilterChange={handleFilterChange}
-                      setSelectedFilters={setSelectedFilters}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="h-fit w-full md:w-[300px] md:col-span-1 sticky top-0 hidden md:block">
+        <h2 className="text-lg font-bold text-gray-900 mb-4">Filters</h2>
+        <DirectoryFilter
+          selectedFilters={selectedFilters}
+          handleFilterChange={handleFilterChange}
+          setSelectedFilters={setSelectedFilters}
+        />
+      </div>
+      <div className="col-span-2 overflow-y-scroll no-scrollbar">
+        <div className="w-full flex flex-col md:flex-row items-center justify-between">
+          <h2 className="text-xl font-bold mb-5 md:mb-0">Directory search</h2>
+          <div className="flex gap-2">
+            <Search
+              placeholders={placeholders}
+              onChange={handleChange}
+              onSubmit={onSubmit}
+            />
+            <div className="block md:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <button className="flex gap-2 rounded-full bg-white text-gray-900 border border-gray-700 font-bold px-6 py-3 text-xs transition-all w-fit items-center hover:bg-primary1 hover:text-white hover:border-white">
+                    <Image
+                      src={"/filtericon.svg"}
+                      width={20}
+                      height={20}
+                      alt="icon"
                     />
-                  </SheetContent>
-                </Sheet>
-              </div>
+                    <span className="text-sm mr-2">Filter</span>
+                  </button>
+                </SheetTrigger>
+                <SheetContent>
+                  <DirectoryFilter
+                    selectedFilters={selectedFilters}
+                    handleFilterChange={handleFilterChange}
+                    setSelectedFilters={setSelectedFilters}
+                  />
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
-          <div className="flex flex-col gap-4 mt-4 mb-4">
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product: any) => (
+        </div>
+        {/* Displaying Comparison Button */}
+        {/* {compareProducts.length === 2 && (
+          // <button
+          //   onClick={handleCompareClick}
+          //   className="mb-4 bg-green-500 text-white px-4 py-2 rounded"
+          // >
+          //   Compare Products
+          // </button>
+        )} */}
+        {/* Displaying Comparison Modal */}
+        {/* <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Product Comparison">
+        <div className="flex gap-4">
+  {compareProducts.length === 2 && (
+    <>
+      <div className="flex-1 border p-2 bg-white rounded-md flex">
+        <CompareProduct
+          data={{ product: compareProducts[0], company: {} }}
+          className="w-full h-full"
+        />
+      </div>
+      <div className="flex-1 border p-2 bg-white rounded-md flex">
+        <CompareProduct
+          data={{ product: compareProducts[1], company: {} }}
+          className="w-full h-full"
+        />
+      </div>
+    </>
+  )}
+</div>
+
+          </Modal> */}
+
+        <div className="flex flex-col gap-4 mt-4 mb-4">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product: any) => (
+              <div key={product.id} className="relative">
                 <NormalProduct
-                  key={product.id}
                   id={product.id}
                   image={product.logoUrl}
                   title={product.name}
@@ -269,21 +324,30 @@ function DirectoryProduct() {
                   category={product.category}
                   product={product}
                 />
-              ))
-            ) : (
-              <div className="text-center text-gray-600">No products found</div>
-            )}
-          </div>
-          <div className="w-full flex items-center justify-center mt-10">
-            <button className="flex gap-2 rounded-full bg-primary1 text-white font-bold px-6 py-3 text-xs transition-all w-fit items-center hover:bg-gray-900 hover:gap-4 duration-200">
-              Next
-              <IoIosArrowRoundForward className="text-xl" />
-            </button>
-          </div>
+                {/* <button
+                  onClick={() => toggleCompareProduct(product)}
+                  className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-xs"
+                >
+                  {compareProducts.some((p) => p.id === product.id)
+                    ? 'Remove from Compare'
+                    : 'Compare'}
+                </button> */}
+              </div>
+            ))
+          ) : (
+            <div className="text-center text-gray-600">No products found</div>
+          )}
+        </div>
+        <div className="w-full flex items-center justify-center mt-10">
+          <button className="flex gap-2 rounded-full bg-primary1 text-white font-bold px-6 py-3 text-xs transition-all w-fit items-center hover:bg-gray-900 hover:gap-4 duration-200">
+            Next
+            <IoIosArrowRoundForward className="text-xl" />
+          </button>
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default DirectoryProduct;

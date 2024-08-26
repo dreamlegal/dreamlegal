@@ -34,26 +34,201 @@ import { Textarea } from "./ui/textarea";
 import { useRouter } from "next/navigation";
 
 const countries = [
-  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
-  "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan",
-  "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
-  "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo (Congo-Brazzaville)", "Costa Rica",
-  "Croatia", "Cuba", "Cyprus", "Czechia (Czech Republic)", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador",
-  "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France",
-  "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau",
-  "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland",
-  "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan",
-  "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar",
-  "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia",
-  "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar (formerly Burma)", "Namibia", "Nauru", "Nepal",
-  "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan",
-  "Palau", "Palestine State", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar",
-  "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia",
-  "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa",
-  "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan",
-  "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan",
-  "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City",
-  "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+  "Afghanistan",
+  "Albania",
+  "Algeria",
+  "Andorra",
+  "Angola",
+  "Antigua and Barbuda",
+  "Argentina",
+  "Armenia",
+  "Australia",
+  "Austria",
+  "Azerbaijan",
+  "Bahamas",
+  "Bahrain",
+  "Bangladesh",
+  "Barbados",
+  "Belarus",
+  "Belgium",
+  "Belize",
+  "Benin",
+  "Bhutan",
+  "Bolivia",
+  "Bosnia and Herzegovina",
+  "Botswana",
+  "Brazil",
+  "Brunei",
+  "Bulgaria",
+  "Burkina Faso",
+  "Burundi",
+  "Cabo Verde",
+  "Cambodia",
+  "Cameroon",
+  "Canada",
+  "Central African Republic",
+  "Chad",
+  "Chile",
+  "China",
+  "Colombia",
+  "Comoros",
+  "Congo (Congo-Brazzaville)",
+  "Costa Rica",
+  "Croatia",
+  "Cuba",
+  "Cyprus",
+  "Czechia (Czech Republic)",
+  "Democratic Republic of the Congo",
+  "Denmark",
+  "Djibouti",
+  "Dominica",
+  "Dominican Republic",
+  "Ecuador",
+  "Egypt",
+  "El Salvador",
+  "Equatorial Guinea",
+  "Eritrea",
+  "Estonia",
+  "Eswatini",
+  "Ethiopia",
+  "Fiji",
+  "Finland",
+  "France",
+  "Gabon",
+  "Gambia",
+  "Georgia",
+  "Germany",
+  "Ghana",
+  "Greece",
+  "Grenada",
+  "Guatemala",
+  "Guinea",
+  "Guinea-Bissau",
+  "Guyana",
+  "Haiti",
+  "Honduras",
+  "Hungary",
+  "Iceland",
+  "India",
+  "Indonesia",
+  "Iran",
+  "Iraq",
+  "Ireland",
+  "Israel",
+  "Italy",
+  "Jamaica",
+  "Japan",
+  "Jordan",
+  "Kazakhstan",
+  "Kenya",
+  "Kiribati",
+  "Kuwait",
+  "Kyrgyzstan",
+  "Laos",
+  "Latvia",
+  "Lebanon",
+  "Lesotho",
+  "Liberia",
+  "Libya",
+  "Liechtenstein",
+  "Lithuania",
+  "Luxembourg",
+  "Madagascar",
+  "Malawi",
+  "Malaysia",
+  "Maldives",
+  "Mali",
+  "Malta",
+  "Marshall Islands",
+  "Mauritania",
+  "Mauritius",
+  "Mexico",
+  "Micronesia",
+  "Moldova",
+  "Monaco",
+  "Mongolia",
+  "Montenegro",
+  "Morocco",
+  "Mozambique",
+  "Myanmar (formerly Burma)",
+  "Namibia",
+  "Nauru",
+  "Nepal",
+  "Netherlands",
+  "New Zealand",
+  "Nicaragua",
+  "Niger",
+  "Nigeria",
+  "North Korea",
+  "North Macedonia",
+  "Norway",
+  "Oman",
+  "Pakistan",
+  "Palau",
+  "Palestine State",
+  "Panama",
+  "Papua New Guinea",
+  "Paraguay",
+  "Peru",
+  "Philippines",
+  "Poland",
+  "Portugal",
+  "Qatar",
+  "Romania",
+  "Russia",
+  "Rwanda",
+  "Saint Kitts and Nevis",
+  "Saint Lucia",
+  "Saint Vincent and the Grenadines",
+  "Samoa",
+  "San Marino",
+  "Sao Tome and Principe",
+  "Saudi Arabia",
+  "Senegal",
+  "Serbia",
+  "Seychelles",
+  "Sierra Leone",
+  "Singapore",
+  "Slovakia",
+  "Slovenia",
+  "Solomon Islands",
+  "Somalia",
+  "South Africa",
+  "South Korea",
+  "South Sudan",
+  "Spain",
+  "Sri Lanka",
+  "Sudan",
+  "Suriname",
+  "Sweden",
+  "Switzerland",
+  "Syria",
+  "Taiwan",
+  "Tajikistan",
+  "Tanzania",
+  "Thailand",
+  "Timor-Leste",
+  "Togo",
+  "Tonga",
+  "Trinidad and Tobago",
+  "Tunisia",
+  "Turkey",
+  "Turkmenistan",
+  "Tuvalu",
+  "Uganda",
+  "Ukraine",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States of America",
+  "Uruguay",
+  "Uzbekistan",
+  "Vanuatu",
+  "Vatican City",
+  "Venezuela",
+  "Vietnam",
+  "Yemen",
+  "Zambia",
+  "Zimbabwe",
 ];
 
 interface Profile {
@@ -73,25 +248,21 @@ interface Profile {
   overview: string;
 }
 
-import { z } from "zod"
+import { z } from "zod";
 
 const profileSchema = z.object({
   companyName: z.string().min(1, "Company Name is required"),
   website: z.string().url("Invalid website URL"),
   yearFounded: z.string().length(4, "Year Founded must be 4 digits"),
-  headQuaters: z.string().min(1, "Headquarters is required"),
   NameOfFounders: z.string().min(1, "Name of Founders is required"),
   contact: z.string().regex(/^\d{10}$/, "Contact must be a 10-digit number"),
-  founderVision: z.string().min(1, "Founder Vision is required"),
-  regionServed: z.string().min(1, "Region Served is required"),
-  TeamSize: z.string().min(1, "Team Size is required"),
   Awards: z.string().optional(),
   PointOfContactName: z.string().min(1, "Point of Contact Name is required"),
-  PointOfContactPhone: z.string().regex(/^\d{10}$/, "Phone must be a 10-digit number"),
+  PointOfContactPhone: z
+    .string()
+    .regex(/^\d{10}$/, "Phone must be a 10-digit number"),
   PointOfContactDesignation: z.string().min(1, "Designation is required"),
-  overview: z.string().min(1, "Overview is required"),
 });
-
 
 function VendorProfile({
   verified,
@@ -101,7 +272,7 @@ function VendorProfile({
   getProfile: any;
 }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
-  
+
   const [details, setDetails] = useState(true);
   const [CompDetails, setCompDetails] = useState(true);
   const [Account, setAccount] = useState(false);
@@ -188,6 +359,18 @@ function VendorProfile({
 
   const handleChange = (e: any) => {
     const { id, value } = e.target;
+
+    // Restrict length for contact, yearFounded, and Point Of Contact Phone
+    if (id === "contact" && value.length > 10) {
+      return; // Prevent further input
+    }
+    if (id === "yearFounded" && value.length > 4) {
+      return; // Prevent further input
+    }
+    if (id === "PointOfContactPhone" && value.length > 10) {
+      return; // Prevent further input
+    }
+
     setFormData({ ...formData, [id]: value });
   };
 
@@ -196,6 +379,18 @@ function VendorProfile({
     if (!vendorId) {
       console.error("Vendor ID is missing.");
       return;
+    }
+
+    // Validate form data against the profileSchema
+    const validationResult = profileSchema.safeParse(formData);
+    if (!validationResult.success) {
+      const errors = validationResult.error.errors.reduce((acc, error) => {
+        acc[error.path[0]] = error.message;
+        return acc;
+      }, {} as Record<string, string>);
+      setErrors(errors);
+      console.error("Validation errors:", errors);
+      return; // Stop submission if validation fails
     }
 
     try {
@@ -211,7 +406,7 @@ function VendorProfile({
       if (result.success) {
         console.log("Form data submitted:", result.profile);
         setOpen(false);
-        
+
         // Redirect to a success page or handle success
         window.location.href = "/vendor";
       } else {
@@ -335,7 +530,6 @@ function VendorProfile({
                             {profile.website}
                           </p>
                         </li>
-                       
 
                         <li className="grid grid-cols-2 pr-5">
                           {/* <TiWorldOutline className="text-primary1" /> */}
@@ -373,8 +567,6 @@ function VendorProfile({
                           </p>
                         </li>
 
-                        
-                       
                         <li className="grid grid-cols-2 pr-5">
                           {/* <GoOrganization className="text-primary1" /> */}
                           <p className=" text-sm text-slate-500">Team</p>
@@ -521,18 +713,20 @@ function VendorProfile({
                     Headquarters
                   </Label>
                   <select
-                      name="headQuaters"
-                      value={formData.headQuaters}
-                      onChange={handleChangeSelect}
-                      className="w-full p-2 border border-gray-300 rounded text-gray-600"
-                    >
-                      <option value="" className="text-gray-400">Select Country</option>
-                      {countries.map((type) => (
-                        <option key={type} value={type}>
-                          {type}
-                        </option>
-                      ))}
-                    </select>
+                    name="headQuaters"
+                    value={formData.headQuaters}
+                    onChange={handleChangeSelect}
+                    className="w-full p-2 border border-gray-300 rounded text-gray-600"
+                  >
+                    <option value="" className="text-gray-400">
+                      Select Country
+                    </option>
+                    {countries.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <Label className=" text-slate-600" htmlFor="NameOfFounders">
@@ -551,14 +745,13 @@ function VendorProfile({
                   </Label>
                   <Input
                     id="contact"
+                    type="number"
                     value={formData.contact}
                     onChange={handleChange}
                     required
                   />
                 </div>
-                
-               
-               
+
                 <div>
                   <Label className=" text-slate-600" htmlFor="TeamSize">
                     Team Size
@@ -683,13 +876,13 @@ function VendorProfile({
                     required
                   />
                 </div>
-                
+
                 <div>
                   <Label className=" text-slate-600" htmlFor="yearFounded">
                     Year Founded
                   </Label>
                   <Input
-                     type="number"
+                    type="number"
                     id="yearFounded"
                     value={formData.yearFounded}
                     onChange={handleChange}
@@ -701,18 +894,20 @@ function VendorProfile({
                     Headquarters
                   </Label>
                   <select
-                      name="headQuaters"
-                      value={formData.headQuaters}
-                      onChange={handleChangeSelect}
-                      className="w-full p-2 border border-gray-300 rounded text-gray-600"
-                    >
-                      <option value="" className="text-gray-400">Select Country</option>
-                      {countries.map((type) => (
-                        <option key={type} value={type}>
-                          {type}
-                        </option>
-                      ))}
-                    </select>
+                    name="headQuaters"
+                    value={formData.headQuaters}
+                    onChange={handleChangeSelect}
+                    className="w-full p-2 border border-gray-300 rounded text-gray-600"
+                  >
+                    <option value="" className="text-gray-400">
+                      Select Country
+                    </option>
+                    {countries.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <Label className=" text-slate-600" htmlFor="NameOfFounders">
@@ -736,8 +931,7 @@ function VendorProfile({
                     required
                   />
                 </div>
-                
-                
+
                 <div>
                   <Label className=" text-slate-600" htmlFor="TeamSize">
                     Team Size

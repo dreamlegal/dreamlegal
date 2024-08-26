@@ -1,56 +1,60 @@
-"use client";
 import { ChangeEvent, useState } from "react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { FormValues, useFormContext } from "@/context/formValueContext";
 import { useStepContext } from "@/context/formContext";
+import { z } from "zod";
+
+const formSchema = z.object({
+  description: z.string().max(50,"max word limit 50"),
+  usp: z.string().max(50,"max word limit 50"),
+  upcomingUpdates: z.string().max(50,"max word limit 50"),
+});
 
 function Form2() {
   const { formValues, setFormValues } = useFormContext();
   const [loading, setLoading] = useState(false);
   const { nextStep } = useStepContext();
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-
+  const validateField = (name: string, value: string) => {
+    const result = formSchema.safeParse({ [name]: value });
+    if (!result.success) {
+      return result.error.errors[0].message;
+    }
+    return "";
+  };
 
   const handleChange = (
-    event: ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    event: ChangeEvent<HTMLTextAreaElement>
   ) => {
-    const { name, type } = event.target;
-    if (type === "checkbox") {
-      const { value, checked } = event.target as HTMLInputElement;
-      setFormValues((prevValues) => ({
-        ...prevValues,
-        [name]: checked
-          ? [...(prevValues[name as keyof FormValues] as string[]), value]
-          : (prevValues[name as keyof FormValues] as string[]).filter(
-              (item) => item !== value
-            ),
-      }));
-    } else if (type === "file") {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (file && file.size <= 10 * 1024 * 1024) {
-        setFormValues((prevValues) => ({
-          ...prevValues,
-          [name]: file,
-        }));
-      } else {
-        // Display an error message or handle the oversized file in some way
-        alert("File size exceeds the limit (10 MB)");
-      }
-    } else {
-      const value = event.target.value;
-      setFormValues((prevValues) => ({
-        ...prevValues,
-        [name]: value,
-      }));
-    }
+    const { name, value } = event.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+    
+    const errorMessage = validateField(name, value);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: errorMessage,
+    }));
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
+
+    const validationErrors: Record<string, string> = {};
+    const formValidationResult = formSchema.safeParse(formValues);
+
+    if (!formValidationResult.success) {
+      formValidationResult.error.errors.forEach((error) => {
+        validationErrors[error.path[0]] = error.message;
+      });
+      setErrors(validationErrors);
+      return; // Stop form submission if there are validation errors
+    }
 
     const fieldsToCheck = ['description', 'usp', 'upcomingUpdates'];
 
@@ -62,30 +66,30 @@ function Form2() {
         alert(`The content in ${field} should contain at least 10 words.`);
         return; 
       }
-  
+
       if (wordCount > 50) {
         alert(`The content in ${field} should not exceed 50 words.`);
         return; // Stop form submission if any field exceeds 50 words
       }
     }
-  
+
     nextStep(); // Log form values
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 ">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
           {/* Description*/}
           <div className="mt-2">
             <Label className="prname">Brief description</Label>
             <Textarea
               name="description"
-              placeholder="Brief description, more long content will help in rankings"
               value={formValues.description}
               onChange={handleChange}
               required
             />
+            {errors.description && <p className="text-red-500">{errors.description}</p>}
           </div>
           {/* USP */}
           <div className="mt-2">
@@ -93,21 +97,21 @@ function Form2() {
             <Textarea
               name="usp"
               value={formValues.usp}
-              placeholder="Unique Selling Proposition,more long content will help in rankings"
               onChange={handleChange}
               required
             />
+            {errors.usp && <p className="text-red-500">{errors.usp}</p>}
           </div>
           {/* Category checkboxes */}
           <div className="mt-2">
             <Label htmlFor="category">Upcoming updates</Label>
             <Textarea
               name="upcomingUpdates"
-              placeholder="Upcoming updates, more long content will help in rankings"
               value={formValues.upcomingUpdates}
               onChange={handleChange}
               required
-            ></Textarea>
+            />
+            {errors.upcomingUpdates && <p className="text-red-500">{errors.upcomingUpdates}</p>}
           </div>
         </div>
         <div className="mt-4 flex flex-col md:flex-row items-center gap-4">

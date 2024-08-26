@@ -401,6 +401,42 @@ function Form4() {
                 </div>
               </div>
             )}
+
+             {formValues.category.includes(
+             "Legal Research"
+            ) && (
+              <div className="mt-2">
+                <div className="mt-2">
+                  <Label htmlFor="deployment">
+                   Legal Research
+                  </Label>
+                  {[
+                     "Query Identification",
+                     " Source and Type Selection",
+                     " Filtration and sorting",
+                     " Data extraction",
+                      "Data Analysis and Organization",
+                      "Storage or retrieval"
+                  ].map((crm) => (
+                    <div key={crm} className="items-top flex space-x-2 mt-2">
+                      <Input
+                        name="LitigationManagement"
+                        type="checkbox"
+                        value={crm}
+                        checked={formValues.legalResearch.includes(crm)}
+                        onChange={handleChange}
+                        className="w-5 h-5"
+                      />
+                      <div className="grid gap-1.5 leading-none">
+                        <label className="text-sm font-medium leading-none">
+                          {crm}
+                        </label>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           <div className="mt-4 flex flex-col md:flex-row items-center gap-4">
             <Button type="submit" className="bg-primary1" disabled={loading}>

@@ -137,16 +137,17 @@ function Form6() {
               </div>
             </div>
             <div>
-              <Label htmlFor="adoptionPeriod">Adoption period</Label>
-              <div className="flex gap-4">
-                <Input
+             
+              <div className="flex gap-2">
+                <textarea
                   name="timePeriod"
-                  type="text"
+                  
                   placeholder="Time period"
                   value={formValues.timePeriod}
                   onChange={handleChange}
                   required
                 />
+                
                 <Select
                   value={formValues.timePeriodUnit}
                   onValueChange={(value) =>

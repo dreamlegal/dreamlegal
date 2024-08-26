@@ -348,7 +348,7 @@ function Form5() {
 
           {/*  */}
 
-          {formValues.category.includes("Compliance and Risk Management") && (
+          {formValues.category.includes("Governance and Compliance and Risk Management") && (
             <div>
               <div className="mt-2">
                 <Label className="text-sm font-bold" htmlFor="">
@@ -880,7 +880,7 @@ function Form5() {
 
               <div className="mt-2">
                 <Label className="text-sm font-bold" htmlFor="">
-                  Authencation
+                  Authentication
                 </Label>
                 {[
                   "MFA (Multi factor Authentication)",
@@ -1381,7 +1381,127 @@ function Form5() {
           )}
 
           {formValues.category.includes("Legal Workflow Automation") && (
-            <div></div>
+              <div>
+              <div className="mt-2">
+                <Label className="text-sm font-bold" htmlFor="">
+                Workflow design and configuration
+
+                </Label>
+                {[
+                 
+                 " Workflow designer ",
+                  "Branching",
+                 " Task management ",
+                 " Data routing" ,
+                "  Workflow templates "
+
+                ].map((item) => (
+                  <div key={item} className="items-top flex space-x-2 mt-2">
+                    <Input
+                      name="IdeationAndCreation"
+                      type="checkbox"
+                      value={item}
+                      checked={formValues.legalWorkflow.includes(item)}
+                      onChange={handleChange}
+                      className="w-5 h-5"
+                    />
+                    <div className="grid gap-1.5 leading-none">
+                      <label className="text-sm font-medium leading-none">
+                        {item}
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-2">
+                <Label className="text-sm font-bold" htmlFor="">
+                Assignment allotment and tracking
+
+
+                </Label>
+                {[
+                 "Task creation",
+                 "Task allotment",
+                 "Task tracking"
+                ].map((item) => (
+                  <div key={item} className="items-top flex space-x-2 mt-2">
+                    <Input
+                      name="LifecycleManagement"
+                      type="checkbox"
+                      value={item}
+                      checked={formValues.legalWorkflow.includes(item)}
+                      onChange={handleChange}
+                      className="w-5 h-5"
+                    />
+                    <div className="grid gap-1.5 leading-none">
+                      <label className="text-sm font-medium leading-none">
+                        {item}
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-2">
+                <Label className="text-sm font-bold" htmlFor="">
+                Document creation and management
+
+                </Label>
+                {[
+                 "Document creation",
+                  "Templatization",
+                  "indexing and tagging of documents" ,
+                  "Document search and retrieval"
+                  
+                ].map((item) => (
+                  <div key={item} className="items-top flex space-x-2 mt-2">
+                    <Input
+                      name="SearchAndDiscovery"
+                      type="checkbox"
+                      value={item}
+                      checked={formValues.legalWorkflow.includes(item)}
+                      onChange={handleChange}
+                      className="w-5 h-5"
+                    />
+                    <div className="grid gap-1.5 leading-none">
+                      <label className="text-sm font-medium leading-none">
+                        {item}
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-2">
+                <Label className="text-sm font-bold" htmlFor="">
+                Laws, Compliance and Regulatory tracking
+
+                </Label>
+                {[
+                 " Sectoral differentiation",
+                "  Compliance applicability",
+                "  Law and compliance updates"
+                  
+                ].map((item) => (
+                  <div key={item} className="items-top flex space-x-2 mt-2">
+                    <Input
+                      name="StorageAndRepository"
+                      type="checkbox"
+                      value={item}
+                      checked={formValues.StorageAndRepository.includes(item)}
+                      onChange={handleChange}
+                      className="w-5 h-5"
+                    />
+                    <div className="grid gap-1.5 leading-none">
+                      <label className="text-sm font-medium leading-none">
+                        {item}
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
 
           <div className="mt-4 flex flex-col md:flex-row items-center gap-4">

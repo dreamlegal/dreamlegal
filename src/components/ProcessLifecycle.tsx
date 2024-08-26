@@ -131,6 +131,17 @@ const lifecycleStages = [
       "Optimization",
     ],
   },
+  {
+    category: "Legal Research",
+    stages: [
+      "Query Identification",
+     " Source and Type Selection",
+     " Filtration and sorting",
+     " Data extraction",
+      "Data Analysis and Organization",
+      "Storage or retrieval"
+    ],
+  },
 ];
 
 const ProcessLifecycle = ({ product }: any) => {

@@ -72,6 +72,27 @@ interface Profile {
   PointOfContactDesignation: string;
   overview: string;
 }
+
+import { z } from "zod"
+
+const profileSchema = z.object({
+  companyName: z.string().min(1, "Company Name is required"),
+  website: z.string().url("Invalid website URL"),
+  yearFounded: z.string().length(4, "Year Founded must be 4 digits"),
+  headQuaters: z.string().min(1, "Headquarters is required"),
+  NameOfFounders: z.string().min(1, "Name of Founders is required"),
+  contact: z.string().regex(/^\d{10}$/, "Contact must be a 10-digit number"),
+  founderVision: z.string().min(1, "Founder Vision is required"),
+  regionServed: z.string().min(1, "Region Served is required"),
+  TeamSize: z.string().min(1, "Team Size is required"),
+  Awards: z.string().optional(),
+  PointOfContactName: z.string().min(1, "Point of Contact Name is required"),
+  PointOfContactPhone: z.string().regex(/^\d{10}$/, "Phone must be a 10-digit number"),
+  PointOfContactDesignation: z.string().min(1, "Designation is required"),
+  overview: z.string().min(1, "Overview is required"),
+});
+
+
 function VendorProfile({
   verified,
   getProfile,
@@ -79,6 +100,8 @@ function VendorProfile({
   verified: boolean;
   getProfile: any;
 }) {
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  
   const [details, setDetails] = useState(true);
   const [CompDetails, setCompDetails] = useState(true);
   const [Account, setAccount] = useState(false);
@@ -312,13 +335,7 @@ function VendorProfile({
                             {profile.website}
                           </p>
                         </li>
-                        <li className="grid grid-cols-2 pr-5">
-                          {/* <MdAlternateEmail className="text-primary1" /> */}
-                          <p className=" text-sm text-slate-500">Overview</p>
-                          <p className=" text-sm text-gray-900">
-                            {profile.overview}
-                          </p>
-                        </li>
+                       
 
                         <li className="grid grid-cols-2 pr-5">
                           {/* <TiWorldOutline className="text-primary1" /> */}
@@ -481,6 +498,7 @@ function VendorProfile({
                   </Label>
                   <Input
                     id="website"
+                    type="url"
                     value={formData.website}
                     onChange={handleChange}
                     required
@@ -491,6 +509,7 @@ function VendorProfile({
                     Year Founded
                   </Label>
                   <Input
+                    type="number"
                     id="yearFounded"
                     value={formData.yearFounded}
                     onChange={handleChange}
@@ -538,17 +557,7 @@ function VendorProfile({
                   />
                 </div>
                 
-                <div>
-                  <Label className=" text-slate-600" htmlFor="overview">
-                    Overview
-                  </Label>
-                  <Textarea
-                    id="overview"
-                    value={formData.overview}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+               
                
                 <div>
                   <Label className=" text-slate-600" htmlFor="TeamSize">
@@ -674,22 +683,13 @@ function VendorProfile({
                     required
                   />
                 </div>
-                <div>
-                  <Label className=" text-slate-600" htmlFor="overview">
-                    Overview
-                  </Label>
-                  <Textarea
-                    id="overview"
-                    value={formData.overview}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+                
                 <div>
                   <Label className=" text-slate-600" htmlFor="yearFounded">
                     Year Founded
                   </Label>
                   <Input
+                     type="number"
                     id="yearFounded"
                     value={formData.yearFounded}
                     onChange={handleChange}

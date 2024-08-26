@@ -39,6 +39,7 @@ export interface FormValues {
   IPManagement: string[];
   LitigationManagement: string[];
   legalWorkflow: string[];
+  legalResearch: string[];
   features: { category: string; subcategories: string[] }[];
   freeTrial: string;
   timePeriod: string;
@@ -182,6 +183,7 @@ const initialFormValues: FormValues = {
   LitigationManagement: [],
   DocumentCreationAndTemplates: [],
   legalWorkflow: [],
+  legalResearch: [],
   
   features: [],
   freeTrial: "",
@@ -337,6 +339,7 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
     LitigationManagement: [],
     DocumentCreationAndTemplates: [],
     legalWorkflow: [],
+    legalResearch: [],
     features: [],
     freeTrial: "",
     timePeriod: "",

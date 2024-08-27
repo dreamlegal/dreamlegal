@@ -17,8 +17,6 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
   const [Logout, setLogout] = useState(false);
   const router = useRouter();
 
-
-
   const handleLogout = () => {
     localStorage.removeItem("adminId"); // Corrected to remove adminId
     router.push("/web-admin/login"); // Redirect to the login page
@@ -31,8 +29,6 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
         <span className="text-slate-300"> Menu</span>
         <div className="flex flex-col flex-grow">
           <ul className="space-y-2 flex-grow">
-            
-
             <li
               onClick={() => setProducts(!Products)}
               className={`flex justify-between text-sm items-center px-4 py-4 rounded-md transition-all duration-200 hover:cursor-pointer ${
@@ -45,8 +41,6 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
               </span>
               <FaChevronDown />
             </li>
-
-          
 
             <li className="ml-10">
               <ul className={`space-y-2 ${Products ? "block" : "hidden"}`}>
@@ -118,7 +112,6 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
 
             <li className="ml-10">
               <ul className={`space-y-2 ${Users ? "block" : "hidden"}`}>
-                
                 <li
                   onClick={() => onMenuItemClick("allUsers")}
                   className={`text-slate-300 hover:cursor-pointer ${
@@ -129,11 +122,6 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
                 </li>
               </ul>
             </li>
-
-           
-
-         
-
 
             <li
               onClick={() => setAdmins(!Admins)}
@@ -150,7 +138,7 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
 
             <li className="ml-10">
               <ul className={`space-y-2 ${Admins ? "block" : "hidden"}`}>
-              <li
+                <li
                   onClick={() => onMenuItemClick("addAdmin")}
                   className={`text-slate-300 hover:cursor-pointer ${
                     selectedMenu === "addAdmin" ? "text-white" : ""
@@ -173,13 +161,18 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
                     selectedMenu === "addAnalytics" ? "text-white" : ""
                   }`}
                 >
-                   Analytics
+                  Analytics
+                </li>
+                <li
+                  onClick={() => onMenuItemClick("sendNotification")}
+                  className={`text-slate-300 hover:cursor-pointer ${
+                    selectedMenu === "sendNotification" ? "text-white" : ""
+                  }`}
+                >
+                  Notifications
                 </li>
               </ul>
             </li>
-
-
-           
 
             <li
               onClick={handleLogout}
@@ -193,7 +186,6 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
               </span>
             </li>
           </ul>
-          
         </div>
       </div>
     </div>

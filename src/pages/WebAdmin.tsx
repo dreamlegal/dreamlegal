@@ -1,19 +1,20 @@
 "use client";
 
-import AddAdmin from '@/components/AddAdmin';
-import AddAnalytics from '@/components/AddAnalytics';
-import AllAdmins from '@/components/AllAdmins';
-import AllProductAdmin from '@/components/AllProductAdmin';
-import AllProducts from '@/components/AllProducts';
-import AllUsers from '@/components/AllUsers';
-import NewProductAdmin from '@/components/NewProductAdmin';
-import NewVendor from '@/components/NewVendor';
-import AdminSidebar from '@/components/ui/AdminSidebar';
+import AddAdmin from "@/components/AddAdmin";
+import AddAnalytics from "@/components/AddAnalytics";
+import AllAdmins from "@/components/AllAdmins";
+import AllProductAdmin from "@/components/AllProductAdmin";
+import AllProducts from "@/components/AllProducts";
+import AllUsers from "@/components/AllUsers";
+import NewProductAdmin from "@/components/NewProductAdmin";
+import NewVendor from "@/components/NewVendor";
+import SendNotification from "@/components/SendNotification";
+import AdminSidebar from "@/components/ui/AdminSidebar";
 
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import React, { useState } from 'react'
-import { RiMenu2Line } from 'react-icons/ri';
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import React, { useState } from "react";
+import { RiMenu2Line } from "react-icons/ri";
 
 function WebAdmin() {
   const [selectedMenu, setSelectedMenu] = useState("NewProduct");
@@ -22,12 +23,14 @@ function WebAdmin() {
   };
   return (
     <div>
-       <div className="grid grid-cols-1 md:grid-cols-5">
+      <div className="grid grid-cols-1 md:grid-cols-5">
         <div className="col-span-1">
           <div className="hidden md:block">
             {" "}
-            <AdminSidebar onMenuItemClick={handleMenuItemClick} selectedMenu={selectedMenu} />
-
+            <AdminSidebar
+              onMenuItemClick={handleMenuItemClick}
+              selectedMenu={selectedMenu}
+            />
           </div>
         </div>
         <div className="col-span-4">
@@ -52,19 +55,18 @@ function WebAdmin() {
                     <div className=" font-bold text-xl ">Dreamlegal</div>
                   </div>
                 </div>
-
-               
               </div>
             </div>
             <div className=" px-5">
               {selectedMenu === "NewProduct" && <NewProductAdmin />}
-            {selectedMenu === "AllProduct" && <AllProductAdmin />}
-            {selectedMenu === "NewVendor" && <NewVendor />}
-            {selectedMenu === "allProducts" && <AllProducts />}
-            {selectedMenu === "allUsers" && <AllUsers />}
-            {selectedMenu === "allAdmins" && <AllAdmins />}
-            {selectedMenu === "addAdmin" && <AddAdmin />}
-            {selectedMenu === "addAnalytics" && <AddAnalytics />}
+              {selectedMenu === "AllProduct" && <AllProductAdmin />}
+              {selectedMenu === "NewVendor" && <NewVendor />}
+              {selectedMenu === "allProducts" && <AllProducts />}
+              {selectedMenu === "allUsers" && <AllUsers />}
+              {selectedMenu === "allAdmins" && <AllAdmins />}
+              {selectedMenu === "addAdmin" && <AddAdmin />}
+              {selectedMenu === "addAnalytics" && <AddAnalytics />}
+              {selectedMenu === "sendNotification" && <SendNotification />}
 
               {/* {selectedMenu === "Dashboard" && <VendorDashborad />}
               {selectedMenu === "AddProduct" && <AddProduct />}
@@ -78,7 +80,7 @@ function WebAdmin() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default WebAdmin
+export default WebAdmin;

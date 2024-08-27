@@ -8,8 +8,6 @@ import UserReviewCard from "./UserReviewCard";
 import SavedItems from "./SavedItems";
 
 function UserDashboard() {
-
-
   type Review = {
     id: string;
     userId: string;
@@ -36,37 +34,34 @@ function UserDashboard() {
     product: JSON;
   };
 
-
-
-
-
   const [userReviews, setUserReviews] = React.useState<Review[]>([]);
-  const [savedProducts, setSavedProducts] = useState()
-  const [savedProductsResponse, setSavedProductsResponse] = useState([])
-  const userId = typeof window !== "undefined" ? localStorage.getItem('userId') : null;
+  const [savedProducts, setSavedProducts] = useState();
+  const [savedProductsResponse, setSavedProductsResponse] = useState([]);
+  const userId =
+    typeof window !== "undefined" ? localStorage.getItem("userId") : null;
   useEffect(() => {
     const fetchReviews = (userId: any) => {
       if (userId) {
-        fetch('/api/get-user-review', {
-          method: 'POST', // Use POST method
+        fetch("/api/get-user-review", {
+          method: "POST", // Use POST method
           headers: {
-            'Content-Type': 'application/json' // Set the content type to JSON
+            "Content-Type": "application/json", // Set the content type to JSON
           },
-          body: JSON.stringify({ userId }) // Send the userId in the request body
+          body: JSON.stringify({ userId }), // Send the userId in the request body
         })
-          .then(response => {
+          .then((response) => {
             if (!response.ok) {
-              throw new Error('Network response was not ok');
+              throw new Error("Network response was not ok");
             }
             return response.json();
           })
-          .then(data => {
+          .then((data) => {
             console.log(data);
             // Handle the fetched reviews data as needed
             setUserReviews(data.userReviews);
           })
-          .catch(error => {
-            console.error('Error fetching reviews:', error);
+          .catch((error) => {
+            console.error("Error fetching reviews:", error);
           });
       }
     };
@@ -97,15 +92,12 @@ function UserDashboard() {
       }
     };
 
-
     fetchReviews(userId);
     fetchSavedProducts(userId);
-
   }, [userId]);
 
   useEffect(() => {
     console.log("Saved products useEffect:", savedProductsResponse);
-
   }, [savedProductsResponse]);
 
   return (
@@ -119,23 +111,23 @@ function UserDashboard() {
 
             <ScrollArea className="md:h-72 border rounded-md px-4 py-5">
               {userReviews.length === 0 ? (
-                <p className=" text-gray-500 font-bold  text-center">No reviews yet</p>
+                <p className=" text-gray-500 font-bold  text-center">
+                  No reviews yet
+                </p>
               ) : (
                 userReviews.map((review: Review) => (
                   <UserReviewCard key={review.id} review={review} />
-
                 ))
               )}
             </ScrollArea>
           </div>
 
           <div>
-            <h2 className=" text-gray-900 text-xl font-bold ">
-              Notifications
-            </h2>
+            <h2 className=" text-gray-900 text-xl font-bold ">Notifications</h2>
             <ScrollArea className=" md:h-72 border rounded-md px-4 py-5">
-              <p className="text-gray-500 font-bold text-center">No notifications yet</p>
-
+              <p className="text-gray-500 font-bold text-center">
+                No notifications yet
+              </p>
 
               {/* <div className="">
         <div className="md:pb-24">
@@ -155,15 +147,14 @@ function UserDashboard() {
           </div>
         </div>
 
-        <h2 className=" text-gray-900 text-xl font-bold ">
-          Bookmarked
-        </h2>
+        <h2 className=" text-gray-900 text-xl font-bold ">Bookmarked</h2>
         <div className=" grid grid-cols-1 md:grid-cols-3 gap-4 my-4 ">
           <div className=" col-span-3">
             <SliderElement>
-
               {savedProductsResponse.length === 0 ? (
-                <p className="text-gray-500 font-bold text-center">No bookmarked items yet</p>
+                <p className="text-gray-500 font-bold text-center">
+                  No bookmarked items yet
+                </p>
               ) : (
                 savedProductsResponse?.map((product: any) => (
                   <BookMarkCard key={product.id} product={product} />

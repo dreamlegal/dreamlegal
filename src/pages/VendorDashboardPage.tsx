@@ -1,32 +1,14 @@
-"use client";
+import { useEffect, useState } from "react";
+import { IoIosNotificationsOutline } from "react-icons/io";
 import VendorSidebar from "@/components/VendorSidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { IoIosNotificationsOutline } from "react-icons/io";
 import VendorDashborad from "@/components/VendorDashborad";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { RiMenu2Line } from "react-icons/ri";
-
-import { useEffect, useState } from "react";
 import AddProduct from "@/components/AddProduct";
 import AllProducts from "@/components/ui/AllProducts";
 import VendorReview from "@/components/VendorReview";
 import VendorProfile from "@/components/VendorProfile";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { RiMenu2Line } from "react-icons/ri";
 
 function VendorDashboardPage({ verified }: { verified: boolean }) {
   const [selectedMenu, setSelectedMenu] = useState("allProducts");
@@ -34,6 +16,8 @@ function VendorDashboardPage({ verified }: { verified: boolean }) {
   const [profile, setProfile] = useState<any>(null);
   const [productId, setProductId] = useState<string | null>(null);
   const [products, setProducts] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const getVendorId =
     typeof window !== "undefined" ? localStorage.getItem("vendorId") : null;
@@ -107,12 +91,33 @@ function VendorDashboardPage({ verified }: { verified: boolean }) {
   const handleProductChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setProductId(event.target.value);
   };
+
+  const fetchNotifications = async () => {
+    try {
+      const response = await fetch(
+        `/api/get-notifications?vendorId=${vendorId}`
+      );
+      const data = await response.json();
+      if (data.success) {
+        setNotifications(data.notifications);
+      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
+  const handleBellClick = () => {
+    setShowNotifications(!showNotifications);
+    if (!showNotifications) {
+      fetchNotifications();
+    }
+  };
+
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-5">
         <div className="col-span-1">
           <div className="hidden md:block">
-            {" "}
             <VendorSidebar
               onMenuItemClick={handleMenuItemClick}
               selectedMenu={selectedMenu}
@@ -142,11 +147,32 @@ function VendorDashboardPage({ verified }: { verified: boolean }) {
                   </div>
                 </div>
 
-                <IoIosNotificationsOutline className=" ml-auto text-2xl" />
+                <div className="relative ml-auto">
+                  <IoIosNotificationsOutline
+                    className="text-2xl cursor-pointer"
+                    onClick={handleBellClick}
+                  />
+                  {showNotifications && (
+                    <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg p-4">
+                      <h3 className="font-bold mb-2 border-b">Notifications</h3>
+                      {notifications.length > 0 ? (
+                        notifications.map((notification, index) => (
+                          <div
+                            key={index}
+                            className="mb-2 p-1 border-b border-gray-200 hover:bg-neutral-300 rounded"
+                          >
+                            {notification.message}
+                          </div>
+                        ))
+                      ) : (
+                        <div>No notifications</div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             <div className=" px-5">
-              {/* <p>{vendorId}</p> */}
               {selectedMenu === "Dashboard" && (
                 <VendorDashborad productId={productId!} />
               )}
@@ -160,7 +186,7 @@ function VendorDashboardPage({ verified }: { verified: boolean }) {
               {selectedMenu === "Profile" && (
                 <VendorProfile verified={verified} getProfile={profile} />
               )}
-            </div>{" "}
+            </div>
           </ScrollArea>
         </div>
       </div>

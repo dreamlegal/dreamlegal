@@ -1,4 +1,3 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import BookMarkCard from "./BookMarkCard";
 import { IoIosNotifications } from "react-icons/io";
@@ -37,17 +36,19 @@ function UserDashboard() {
   const [userReviews, setUserReviews] = React.useState<Review[]>([]);
   const [savedProducts, setSavedProducts] = useState();
   const [savedProductsResponse, setSavedProductsResponse] = useState([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
   const userId =
     typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+
   useEffect(() => {
     const fetchReviews = (userId: any) => {
       if (userId) {
         fetch("/api/get-user-review", {
-          method: "POST", // Use POST method
+          method: "POST",
           headers: {
-            "Content-Type": "application/json", // Set the content type to JSON
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userId }), // Send the userId in the request body
+          body: JSON.stringify({ userId }),
         })
           .then((response) => {
             if (!response.ok) {
@@ -57,7 +58,6 @@ function UserDashboard() {
           })
           .then((data) => {
             console.log(data);
-            // Handle the fetched reviews data as needed
             setUserReviews(data.userReviews);
           })
           .catch((error) => {
@@ -84,7 +84,6 @@ function UserDashboard() {
           .then((data) => {
             console.log("Saved products:", data);
             setSavedProductsResponse(data.products);
-            // The state update happens asynchronously
           })
           .catch((error) => {
             console.error("Error fetching saved products:", error);
@@ -92,8 +91,28 @@ function UserDashboard() {
       }
     };
 
+    const fetchNotifications = (userId: any) => {
+      if (userId) {
+        fetch(`/api/get-user-notifications?userId=${userId}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Notifications:", data);
+            setNotifications(data.notifications);
+          })
+          .catch((error) => {
+            console.error("Error fetching notifications:", error);
+          });
+      }
+    };
+
     fetchReviews(userId);
     fetchSavedProducts(userId);
+    fetchNotifications(userId);
   }, [userId]);
 
   useEffect(() => {
@@ -125,24 +144,30 @@ function UserDashboard() {
           <div>
             <h2 className=" text-gray-900 text-xl font-bold ">Notifications</h2>
             <ScrollArea className=" md:h-72 border rounded-md px-4 py-5">
-              <p className="text-gray-500 font-bold text-center">
-                No notifications yet
-              </p>
-
-              {/* <div className="">
-        <div className="md:pb-24">
-          <div className="flex items-center gap-4 md:w-3/5">
-            <div className="bg-primary2 text-primary1 p-3 rounded-full">
-              <IoIosNotifications />
-            </div>
-            <span className="text-sm text-gray-900 font-bold">Dreamlegal</span>
-            <span className="text-xs text-slate-500 ">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-            </span>
-          </div>
-          <span className="text-xs text-slate-500 mt-5">1 day ago</span>
-        </div>
-      </div> */}
+              {notifications.length === 0 ? (
+                <p className="text-gray-500 font-bold text-center">
+                  No notifications yet
+                </p>
+              ) : (
+                notifications.map((notification) => (
+                  <div
+                    key={notification.id}
+                    className="flex items-center gap-4 py-1"
+                  >
+                    <div className="bg-primary2 text-primary1 p-3 rounded-full">
+                      <IoIosNotifications />
+                    </div>
+                    <div className="space-x-2">
+                      <span className="text-sm text-gray-900 font-bold">
+                        {notification.message}
+                      </span>
+                      <span className="text-xs text-slate-500">
+                        {new Date(notification.createdAt).toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
             </ScrollArea>
           </div>
         </div>
@@ -164,21 +189,6 @@ function UserDashboard() {
           </div>
         </div>
       </div>
-
-      {/* <div className="">
-        <div className="md:pb-24">
-          <div className="flex items-center gap-4 md:w-3/5">
-            <div className="bg-primary2 text-primary1 p-3 rounded-full">
-              <IoIosNotifications />
-            </div>
-            <span className="text-sm text-gray-900 font-bold">Dreamlegal</span>
-            <span className="text-xs text-slate-500 ">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-            </span>
-          </div>
-          <span className="text-xs text-slate-500 mt-5">1 day ago</span>
-        </div>
-      </div> */}
     </div>
   );
 }

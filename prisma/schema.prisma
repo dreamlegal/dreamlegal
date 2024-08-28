@@ -34,7 +34,8 @@ model User {
   Review      Review[]
   userAccount userAccount[]
 
-  SaveProduct SaveProduct[]
+  SaveProduct  SaveProduct[]
+  Notification Notification[]
 }
 
 model userAccount {
@@ -282,4 +283,15 @@ model Interest {
   companyId           String // Added companyId
   companyTypeFromUser String
   createdAt           DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  message   String
+  createdAt DateTime @default(now())
+  userId    String? // Nullable foreign key for User
+  type      String?
+  read      Boolean  @default(false) // Indicates whether the notification has been read
+
+  user User? @relation(fields: [userId], references: [id])
 }

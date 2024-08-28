@@ -142,7 +142,7 @@ function VendorDashboardPage({ verified }: { verified: boolean }) {
                   </div>
                 </div>
 
-                {/* <IoIosNotificationsOutline className=" ml-auto text-2xl" /> */}
+                <IoIosNotificationsOutline className=" ml-auto text-2xl" />
               </div>
             </div>
             <div className=" px-5">

@@ -1,31 +1,62 @@
 "use client";
-import React, { useState } from 'react';
-import { GoPencil } from 'react-icons/go';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
-import { FaRegTrashAlt, FaStar } from 'react-icons/fa';
-import { Button } from './ui/button';
-import Link from 'next/link';
+import React, { useState } from "react";
+import { GoPencil } from "react-icons/go";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import { FaRegTrashAlt, FaStar } from "react-icons/fa";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 async function toggleFeatured(productId: string) {
   try {
-    const response = await fetch('/api/make-featured', {
-      method: 'POST',
+    const response = await fetch("/api/make-featured", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ id: productId }),
     });
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.msg || 'Failed to toggle feature status');
+      throw new Error(data.msg || "Failed to toggle feature status");
     }
 
-    alert('Product feature status updated successfully');
+    alert("Product feature status updated successfully");
     return data.product;
   } catch (error) {
     console.error(error);
-    alert('Error toggling feature status: ');
+    alert("Error toggling feature status: ");
+  }
+}
+
+async function unpublishProduct(productId: string) {
+  try {
+    const response = await fetch("/api/unpublish-product", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: productId }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.msg || "Failed to unpublish product");
+    }
+
+    alert("Product unpublished successfully");
+    return data.product;
+  } catch (error) {
+    console.error(error);
+    alert("Error unpublishing product");
   }
 }
 
@@ -60,10 +91,16 @@ function AdminProductCard({ product }: any) {
               />
               <div>
                 <h3 className="font-bold text-base">{product.name}</h3>
-                <p className="text-sm text-slate-500 mt-2">{product.description}</p>
+                <p className="text-sm text-slate-500 mt-2">
+                  {product.description}
+                </p>
                 <div className="flex gap-3 items-center mt-3">
                   <button onClick={handleToggleFeatured}>
-                    <FaStar className={`text-2xl ${isFeatured ? 'text-primary1' : 'text-gray-400'}`} />
+                    <FaStar
+                      className={`text-2xl ${
+                        isFeatured ? "text-primary1" : "text-gray-400"
+                      }`}
+                    />
                   </button>
                 </div>
               </div>
@@ -73,9 +110,11 @@ function AdminProductCard({ product }: any) {
                 <button
                   onClick={handleUnpublishClick}
                   disabled={isUnpublishing}
-                  className={`flex gap-2 rounded-full ${isUnpublishing ? 'bg-gray-400' : 'bg-yellow-500'} text-white font-bold px-6 py-3 text-xs transition-all w-fit items-center hover:bg-gray-900 hover:gap-4`}
+                  className={`flex gap-2 rounded-full ${
+                    isUnpublishing ? "bg-gray-400" : "bg-yellow-500"
+                  } text-white font-bold px-6 py-3 text-xs transition-all w-fit items-center hover:bg-gray-900 hover:gap-4`}
                 >
-                  {isUnpublishing ? 'Unpublishing...' : 'Unpublish'}
+                  {isUnpublishing ? "Unpublishing..." : "Unpublish"}
                 </button>
                 <Link
                   href={`/web-admin/product/${product.id}`}
@@ -95,7 +134,9 @@ function AdminProductCard({ product }: any) {
                     <DialogHeader>
                       <DialogTitle>Are you absolutely sure?</DialogTitle>
                       <DialogDescription>
-                        This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+                        This action cannot be undone. This will permanently
+                        delete your account and remove your data from our
+                        servers.
                       </DialogDescription>
                     </DialogHeader>
                     <Button variant={"destructive"}>Delete Permanently</Button>
@@ -111,7 +152,3 @@ function AdminProductCard({ product }: any) {
 }
 
 export default AdminProductCard;
-function unpublishProduct(id: any) {
-  throw new Error('Function not implemented.');
-}
-

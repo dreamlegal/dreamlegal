@@ -10,6 +10,15 @@ export async function POST(request: Request) {
     notifyAllVendors,
   } = await request.json();
 
+  console.log(
+    message,
+    userId,
+    vendorId,
+    notifyAllAccounts,
+    notifyAllUsers,
+    notifyAllVendors
+  );
+
   if (
     !message ||
     (!userId &&

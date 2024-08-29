@@ -84,8 +84,8 @@ function HomeProduct() {
       link: "/directory?category=Client%20Management%20Software"
     },
     {
-      name: "Contract Management Software",
-      link: "/directory?category=Contract%20Management%20Software"
+      name: "Contract Lifecycle Management",
+      link: "/directory?category=Contract%20Lifecycle%20Management"
     },
     {
       name: "Digital Signature",
@@ -104,8 +104,8 @@ function HomeProduct() {
       link: "/directory?category=E-discovery"
     },
     {
-      name: "Governance and Compliance and Risk Management",
-      link: "/directory?category=Governance%20and%20Compliance%20and%20Risk%20Management"
+      name: "Governance, Risk and Compliance",
+      link: "/directory?category=Governance,%20Risk%20and%20Compliance"
     },
     {
       name: "Intellectual Property Management",

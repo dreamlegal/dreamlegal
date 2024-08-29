@@ -26,7 +26,7 @@ const categoryKeywords: { [key: string]: string[] } = {
     "CRM",
     "CMS",
   ],
-  "Governance and Compliance and Risk Management": [
+  "Governance, Risk and Compliance": [
     "GRC",
     "Governance",
     "Risk Compliance",
@@ -36,7 +36,7 @@ const categoryKeywords: { [key: string]: string[] } = {
     "Compliance Management",
     "GCR",
   ],
-  "Contract Management Software": [
+  "Contract Lifecycle Management": [
     "CLM",
     "CMS",
     "Contract Software",

@@ -627,8 +627,8 @@ function Form1() {
             <Label htmlFor="category">Select Category</Label>
             {[
               "Client Management Software",
-              "Governance and Compliance and Risk Management",
-              "Contract Management Software",
+              "Governance, Risk and Compliance",
+              "Contract Lifecycle Management",
               "Digital Signature",
               "Document Management and Automation",
               "E-billing and Invoicing",

@@ -348,7 +348,7 @@ function Form5() {
 
           {/*  */}
 
-          {formValues.category.includes("Governance and Compliance and Risk Management") && (
+          {formValues.category.includes("Governance, Risk and Compliance") && (
             <div>
               <div className="mt-2">
                 <Label className="text-sm font-bold" htmlFor="">
@@ -438,7 +438,7 @@ function Form5() {
             </div>
           )}
 
-          {formValues.category.includes("Contract Management Software") && (
+          {formValues.category.includes("Contract Lifecycle Management") && (
             <div>
               <div className="mt-2">
                 <Label className="text-sm font-bold" htmlFor="">

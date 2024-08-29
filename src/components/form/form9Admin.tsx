@@ -59,12 +59,12 @@ function Form9({ editing }: { editing: boolean }) {
 
         if (prevValues.contractManageSoftware.length > 0) {
           const contractManageSoftwareIndex = newProcessLifecycle.findIndex(
-            (item) => item.category === "Contract Management Software"
+            (item) => item.category === "Contract Lifecycle Management"
           );
 
           if (contractManageSoftwareIndex === -1) {
             newProcessLifecycle.push({
-              category: "Contract Management Software",
+              category: "Contract Lifecycle Management",
               subcategories: prevValues.contractManageSoftware,
             });
           } else {
@@ -1017,12 +1017,12 @@ function Form9({ editing }: { editing: boolean }) {
 
       if (prevValues.contractManageSoftware.length > 0) {
         const contractManageSoftwareIndex = newProcessLifecycle.findIndex(
-          (item) => item.category === "Contract Management Software"
+          (item) => item.category === "Contract Lifecycle Management"
         );
 
         if (contractManageSoftwareIndex === -1) {
           newProcessLifecycle.push({
-            category: "Contract Management Software",
+            category: "Contract Lifecycle Management",
             subcategories: prevValues.contractManageSoftware,
           });
         } else {

@@ -95,12 +95,12 @@ function Form4() {
             )}
 
             {formValues.category.includes(
-              "Governance and Compliance and Risk Management"
+              "Governance, Risk and Compliance"
             ) && (
               <div className="mt-2">
                 <div className="mt-2">
                   <Label htmlFor="deployment">
-                    Governance and Compliance and Risk Management
+                    Governance, Risk and Compliance
                   </Label>
                   {[
                     "Coverage",
@@ -132,11 +132,11 @@ function Form4() {
               </div>
             )}
 
-            {formValues.category.includes("Contract Management Software") && (
+            {formValues.category.includes("Contract Lifecycle Management") && (
               <div className="mt-2">
                 <div className="mt-2">
                   <Label htmlFor="deployment">
-                    Contract Management Software
+                    Contract Lifecycle Management
                   </Label>
                   {[
                     "Create",

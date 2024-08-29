@@ -22,7 +22,7 @@ const lifecycleStages = [
     ],
   },
   {
-    category: "Governance and Compliance and Risk Management",
+    category: "Governance, Risk and Compliance",
     stages: [
       "Coverage",
       "Assessment",
@@ -33,7 +33,7 @@ const lifecycleStages = [
     ],
   },
   {
-    category: "Contract Management Software",
+    category: "Contract Lifecycle Management",
     stages: [
       "Create",
       "Negotiation",

@@ -558,27 +558,27 @@ function DirectoryFilter({
               </li>
               <li>
                 <label
-                  htmlFor="Contract Management Software"
+                  htmlFor="Contract Lifecycle Management"
                   className="inline-flex items-center gap-2"
                 >
                   <input
                     type="checkbox"
-                    id="Contract Management Software"
+                    id="Contract Lifecycle Management"
                     className="size-5 rounded border-gray-300"
                     checked={selectedFilters.categories.includes(
-                      "Contract Management Software"
+                      "Contract Lifecycle Management"
                     )}
                     onChange={(e) =>
                       handleCheckboxChange(
                         e,
                         "categories",
-                        "Contract Management Software"
+                        "Contract Lifecycle Management"
                       )
                     }
                   />
                   <span className="text-sm font-medium text-gray-700">
                     {" "}
-                    Contract Management Software{" "}
+                    Contract Lifecycle Management{" "}
                   </span>
                 </label>
               </li>
@@ -678,27 +678,27 @@ function DirectoryFilter({
               </li>
               <li>
                 <label
-                  htmlFor="Governance and Compliance and Risk Management"
+                  htmlFor="Governance, Risk and Compliance"
                   className="inline-flex items-center gap-2"
                 >
                   <input
                     type="checkbox"
-                    id="Governance and Compliance and Risk Management"
+                    id="Governance, Risk and Compliance"
                     className="size-5 rounded border-gray-300"
                     checked={selectedFilters.categories.includes(
-                      "Governance and Compliance and Risk Management"
+                      "Governance, Risk and Compliance"
                     )}
                     onChange={(e) =>
                       handleCheckboxChange(
                         e,
                         "categories",
-                        "Governance and Compliance and Risk Management"
+                        "Governance, Risk and Compliance"
                       )
                     }
                   />
                   <span className="text-sm font-medium text-gray-700">
                     {" "}
-                    Governance and Compliance and Risk Management{" "}
+                    Governance, Risk and Compliance{" "}
                   </span>
                 </label>
               </li>

@@ -171,7 +171,7 @@ export const Header = () => {
                     </li>
                     <li>
                       <a
-                        href="/"
+                       href="https://blog.dreamlegal.in/"
                         aria-label="About us"
                         title="About us"
                         className=" font-medium text-sm tracking-wide text-gray-900 transition-colors duration-200 hover:text-primary1"

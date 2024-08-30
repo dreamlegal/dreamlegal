@@ -102,6 +102,10 @@ function FeaturedProduct({
       name: "Judiciary",
       icon: "/judge1.svg",
     },
+    {
+      name: "In-House Counsels",
+      icon: "/lawyers.svg",
+    },
   ];
 
   const handleBookmarkClick = async () => {
@@ -150,6 +154,74 @@ function FeaturedProduct({
       return categoryObj ? categoryObj : null;
     })
     .filter(Boolean); // Filter out null values
+
+
+
+    
+
+ const [ratings, setRatings] = useState({
+  overallRating: 0,
+  message: "",
+});
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState<string | null>(null);
+
+useEffect(() => {
+  const fetchRatings = async (id: any) => {
+    try {
+      const response = await fetch("/api/cal-review", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productId: id }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("data rating", data);
+
+      // Update the state with the fetched data
+      if (data.message === "No reviews found for this product") {
+        setRatings({ overallRating: 0, message: "No reviews found for this product" });
+      } else {
+        setRatings(data);
+      }
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Unknown error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (product && product.id) {
+    fetchRatings(product.id);
+  } else {
+    setLoading(false);
+    setError("Product ID is missing.");
+  }
+}, [product]);
+
+if (loading) {
+  return <p>Loading...</p>;
+}
+
+if (error) {
+  return <p>Error: {error}</p>;
+}
+
+const { overallRating } = ratings;
+
+// Round the overall rating
+const roundedOverallRating = (overallRating ?? 0).toFixed(1);
+
+
+
+
+
   return (
     <div className="w-full px-10 py-7 rounded-xl border  font-clarity bg-gray-50 border-gray-300 shadow-md ">
       <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between">
@@ -304,42 +376,49 @@ function FeaturedProduct({
             <p className="text-sm text-gray-600">{description}</p>
           </div>
         </div>
-        <div>
-          <div className="flex text-xs text-slate-400 mt-4 mb-1">
-            Industries
-          </div>
-          <div className="w-[200px] flex gap-2 flex-wrap">
-            {product.industry.map((industry: any, index: number) => (
-              <div key={industry}>
-                <p className="text-sm text-primary1">
-                  {industry}
-                  {index !== product.industry.length - 1 ? "," : ""}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
       <div>
         <div className="text-xs text-slate-400 mt-4 mb-1">Users</div>
-        <div className="flex gap-2">
-          {userCategoryIcons.map((userCategory: any, index: number) => (
-            <div
-              key={userCategory.name}
-              className="relative group flex gap-2 items-center bg-primary2 rounded-md p-2"
-            >
-              <img
-                src={userCategory.icon}
-                alt={userCategory.name}
-                className="w-6 h-6"
-              />
-              <div className="hidden group-hover:block text-[10px] font-clarity font-bold transition-all duration-200 cursor-pointer">
-                {userCategory.name}
+        <div className="flex flex-col sm:flex-row sm:justify-between">
+
+          <div className="flex gap-2 overflow-x-auto sm:flex-row sm:overflow-visible">
+            {userCategoryIcons.map((userCategory: any, index: number) => (
+              <div
+                key={userCategory.name}
+                className="relative group flex gap-2 items-center bg-primary2 rounded-md p-2"
+              >
+                <img
+                  src={userCategory.icon}
+                  alt={userCategory.name}
+                  className="w-6 h-6"
+                />
+                <div className="hidden group-hover:block text-[10px] font-clarity font-bold transition-all duration-200 cursor-pointer">
+                  {userCategory.name}
+                </div>
               </div>
+            ))}
+          </div>
+
+          
+          <div className="flex flex-col sm:flex-row sm:gap-5 mt-4 sm:mt-0">
+            <div className="text-xs text-slate-400 mb-1">
+              <p className="text-sm text-gray-600"> Average Adoption Time</p>
+              <p>{product.avgTimeAdoption}</p>
             </div>
-          ))}
+            <div className="text-xs text-slate-400 mb-1 flex flex-col">
+              <p className="text-sm text-gray-600">Rating</p>
+              <p className="text-[#FDB52A] text-[17px]">
+                {roundedOverallRating}
+                <span className="text-[12px]">/5</span>
+              </p>
+            </div>
+          </div>
         </div>
+
+       
       </div>
+
+
       <div className=" block md:hidden">
         <div className="md:ml-auto mt-4 md:mt-0 flex gap-4 items-center">
           <div>

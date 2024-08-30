@@ -8,7 +8,7 @@ function CuratedCollection() {
   const router = useRouter();
   const curratedCollection = [
     {
-      title: "Solution for Lawyers",
+      title: "Solution for Individual Practitioners",
       description:
         "Browse tools and solutions for modern practice and clientele growth.",
       image: "/app1.png",
@@ -35,10 +35,19 @@ function CuratedCollection() {
       },
     },
     {
+      title: "Solution for In-House Counsels",
+      description:
+        "Browse tools and solutions for streamlined legal operations and legal management",
+      image: "/app1.png",
+      onclickRoute: () => {
+        router.push("/directory?customer=In-House%20Counsels"); 
+      },
+    },
+    {
       title: "Solution for Government departments",
       description:
-        " Browse tools and solutions for legal management and legal cost efficiency.",
-      image: "/app2.png",
+        "Browse tools and solutions for compliance management and public sector legal operations",
+      image: "/app3.png",
       onclickRoute: () => {
         router.push("/directory?customer=Government%20departments");
       },
@@ -46,21 +55,13 @@ function CuratedCollection() {
     {
       title: "Solution for Startups",
       description:
-        " Browse tools and solutions for legal management and legal cost efficiency.",
-      image: "/app3.png",
+        "Browse tools and solutions for safer growth and meet important legal needs",
+      image: "/app2.png",
       onclickRoute: () => {
         router.push("/directory?customer=Startups");
       },
     },
-    {
-      title: "Solution for Judiciary",
-      description:
-        " Browse tools and solutions for legal management and legal cost efficiency.",
-      image: "/app1.png",
-      onclickRoute: () => {
-        router.push("/directory?customer=Judiciary");
-      },
-    },
+    
   ];
 
   return (

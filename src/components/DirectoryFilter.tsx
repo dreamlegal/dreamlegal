@@ -837,6 +837,7 @@ function DirectoryFilter({
                 "Startups",
                 "Enterprises",
                 "Judiciary",
+                "In-House Counsels"
               ].map((category) => (
                 <li key={category}>
                   <label

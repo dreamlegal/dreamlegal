@@ -134,6 +134,7 @@ function Complete() {
     "Startups",
     "Government Departments",
     "Judiciary",
+    "In-House Counsels",
   ];
 
   const countries = [

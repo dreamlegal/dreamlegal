@@ -101,6 +101,10 @@ function NormalProduct({
       name: "Judiciary",
       icon: "/judge1.svg",
     },
+    {
+      name: "In-House Counsels",
+      icon: "/lawyers.svg",
+    },
   ];
 
   const handleBookmarkClick = async () => {

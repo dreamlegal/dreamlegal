@@ -15,6 +15,7 @@ function EditUser({ data, onCloseEdit }: any) {
     "Startups",
     "Government Departments",
     "Judiciary",
+   "In-House Counsels"
   ];
   const userId = path?.userid;
   const router = useRouter();

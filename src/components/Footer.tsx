@@ -194,7 +194,7 @@ export const Footer = () => {
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
                   <Link href={"/directory?customer=Judiciary"}>
-                    Inhouse Counsel
+                    Judiciary
                   </Link>
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
@@ -202,6 +202,9 @@ export const Footer = () => {
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
                   <Link href={"/directory?customer=Startups"}>Startups</Link>
+                </li>
+                <li className="hover:text-primary1 transition-all cursor-pointer">
+                  <Link href={"/directory?customer=In-House%20Counsels"}>In-House Counsels</Link>
                 </li>
               </ul>
 

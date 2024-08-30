@@ -51,6 +51,12 @@ const categories = [
     img: "/judge1.svg",
     description: "Courtroom justice servers",
   },
+  {
+    name: "In-House Counsels",
+    href: "#",
+    img: "/lawyers.svg",
+    description: "Legal experts navigating companies",
+  },
 
 ];
 

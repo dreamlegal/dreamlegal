@@ -3,6 +3,7 @@ import React from "react";
 import UserSignup from "../_components/UserSignup";
 import VendorSignup from "../_components/VendorSignup";
 
+
 function page() {
   return (
     <div className="flex justify-center font-clarity">

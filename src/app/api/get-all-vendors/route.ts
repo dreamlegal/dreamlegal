@@ -1,10 +1,10 @@
-
-import prisma from '@/lib/prisma'; // Adjust the import according to your project structure
+import prisma from "@/lib/prisma"; // Adjust the import according to your project structure
 
 export async function GET() {
   try {
     const vendors = await prisma.user.findMany({
-      where: { type: 'vendor' },
+      where: { type: "vendor" },
+      orderBy: { createdAt: "desc" },
     });
 
     return Response.json(

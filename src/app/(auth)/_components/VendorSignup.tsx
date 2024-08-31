@@ -54,7 +54,9 @@ function VendorSignup() {
       });
 
       if (response.ok) {
-        setMsg("Account created successfully! Redirecting to OTP verification pls wait for a min...");
+        setMsg(
+          "Account created successfully. Please check your email for a verification cocde."
+        );
         setOtpStep(true);
       } else if (response.status === 409) {
         setError("User with this email already exists");
@@ -94,9 +96,10 @@ function VendorSignup() {
       }
     } catch (error) {
       setError("An error occurred during OTP verification");
-    } finally {
-      setPending(false);
     }
+    // finally {
+    //   setPending(false);
+    // }
   };
 
   const handleResendEmail = async () => {
@@ -129,109 +132,108 @@ function VendorSignup() {
         <div>{msg || "Loading..."}</div> // Display the loading message or a default one
       ) : (
         <>
-         <div className="font-clarity">
-        {otpStep ? (
-            <div>
-              <form onSubmit={handleOtpSubmit}>
-                <h1 className="text-lg font-bold">OTP Verification</h1>
-                <p>Enter the OTP sent to your email</p>
-                <div>
-                  <Label htmlFor="otp">OTP</Label>
-                  <Input
-                    type="text"
-                    name="otp"
-                    placeholder="Enter OTP"
-                    value={otp}
-                    onChange={handleOtpChange}
-                  />
-                </div>
-                {error && <p className="text-red-500">{error}</p>}
-                {msg && <p className="text-green-500">{msg}</p>}
-                <Button className="w-full bg-primary1 my-4" type="submit">
-                  Submit
-                </Button>
-                <Button
-                  className="w-full bg-black text-white my-4"
-                  onClick={handleResendEmail}
-                >
-                  Resend Email
-                </Button>
-                <span className="text-sm text-gray-400">
-                  Please check your spam folder if you did not receive the email
-                </span>
-              </form>
-            </div>
-          ) : (
-            <div>
-              <form onSubmit={handleSubmit}>
-                <h1 className="text-lg font-bold">Create Account</h1>
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="Enter your email"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Enter your Password"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
-                  <Input
-                    type="password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    placeholder="Enter your Password Again"
-                  />
-                </div>
-                <div className="flex gap-3 items-center my-3">
-                  <Input
-                    type="checkbox"
-                    name="terms"
-                    id="terms"
-                    className="w-2 h-5"
-                    onChange={() => setTerms(!terms)}
-                  />{" "}
-                  <p>I agree to the T&Cs and receive mails</p>
-                </div>
-                {error && <p className="text-red-500">{error}</p>}
-                {msg && <p className="text-green-500">{msg}</p>}
-                <Button
-                  className="w-full bg-primary1 my-4"
-                  type="submit"
-                  disabled={!terms}
-                >
-                  Create Account
-                </Button>
-              </form>
-              <p className="text-center">
-                Already have an account?{" "}
-                <a
-                  className="text-primary1 hover:pointer hover:underline"
-                  onClick={() => router.push("/sign-in")}
-                >
-                  Login
-                </a>
-              </p>
-            </div>
-          )}
-         </div>
-        </>     
+          <div className="font-clarity">
+            {otpStep ? (
+              <div>
+                <form onSubmit={handleOtpSubmit}>
+                  <h1 className="text-lg font-bold">OTP Verification</h1>
+                  <p>Enter the OTP sent to your email</p>
+                  <div>
+                    <Label htmlFor="otp">OTP</Label>
+                    <Input
+                      type="text"
+                      name="otp"
+                      placeholder="Enter OTP"
+                      value={otp}
+                      onChange={handleOtpChange}
+                    />
+                  </div>
+                  {error && <p className="text-red-500">{error}</p>}
+                  {msg && <p className="text-green-500">{msg}</p>}
+                  <Button className="w-full bg-primary1 my-4" type="submit">
+                    Submit
+                  </Button>
+                  <Button
+                    className="w-full bg-black text-white my-4"
+                    onClick={handleResendEmail}
+                  >
+                    Resend Email
+                  </Button>
+                  <span className="text-sm text-gray-400">
+                    Please check your spam folder if you did not receive the
+                    email
+                  </span>
+                </form>
+              </div>
+            ) : (
+              <div>
+                <form onSubmit={handleSubmit}>
+                  <h1 className="text-lg font-bold">Create Account</h1>
+                  <div>
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Enter your email"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="password">Password</Label>
+                    <Input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Enter your Password"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    <Input
+                      type="password"
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      placeholder="Enter your Password Again"
+                    />
+                  </div>
+                  <div className="flex gap-3 items-center my-3">
+                    <Input
+                      type="checkbox"
+                      name="terms"
+                      id="terms"
+                      className="w-2 h-5"
+                      onChange={() => setTerms(!terms)}
+                    />{" "}
+                    <p>I agree to the T&Cs and receive mails</p>
+                  </div>
+                  {error && <p className="text-red-500">{error}</p>}
+                  {msg && <p className="text-green-500">{msg}</p>}
+                  <Button
+                    className="w-full bg-primary1 my-4"
+                    type="submit"
+                    disabled={!terms}
+                  >
+                    Create Account
+                  </Button>
+                </form>
+                <p className="text-center">
+                  Already have an account?{" "}
+                  <a
+                    className="text-primary1 hover:pointer hover:underline"
+                    onClick={() => router.push("/sign-in")}
+                  >
+                    Login
+                  </a>
+                </p>
+              </div>
+            )}
+          </div>
+        </>
       )}
     </>
-
-    
   );
 }
 

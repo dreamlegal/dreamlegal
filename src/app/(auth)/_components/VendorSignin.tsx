@@ -9,6 +9,9 @@ import { useRouter } from "next/navigation";
 
 function VendorSignin() {
   const router = useRouter();
+
+  const [pending, setPending] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -25,7 +28,7 @@ function VendorSignin() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log(formData);
-
+    setPending(true);
     try {
       const response = await fetch("/api/sign-in", {
         method: "POST",
@@ -41,23 +44,24 @@ function VendorSignin() {
 
         // Save the user ID in localStorage if available in the response
         if (data.user && data.user.id) {
-          typeof window !== "undefined" ?
-          localStorage.setItem("vendorId", data.user.id): null;
+          typeof window !== "undefined"
+            ? localStorage.setItem("vendorId", data.user.id)
+            : null;
         }
 
         // Redirect to the home page or any other desired page
-        if(data.verified){
+        if (data.verified) {
           router.push("/vendor");
-        } else{
+        } else {
           router.push("/vendor?verified=true");
         }
-        
       } else {
         // Handle sign-in error
         console.error("Failed to sign in:", response.statusText);
       }
     } catch (error) {
       console.error("An error occurred:", error);
+    } finally {
     }
   };
 
@@ -66,31 +70,39 @@ function VendorSignin() {
       <form onSubmit={handleSubmit}>
         <h1 className="text-lg font-bold">Login to Account</h1>
 
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-          />
-        </div>
+        {pending ? (
+          <h1 className="text-md font-semibold">
+            Verifying your credentials. Please wait ..
+          </h1>
+        ) : (
+          <div>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+              />
+            </div>
 
-        <div>
-          <Label htmlFor="password">Password</Label>
-          <Input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Enter your Password"
-          />
-        </div>
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter your Password"
+              />
+            </div>
 
-        <Button className="w-full bg-primary1 my-4" type="submit">
-          Login
-        </Button>
+            <Button className="w-full bg-primary1 my-4" type="submit">
+              Login
+            </Button>
+          </div>
+        )}
       </form>
 
       <p className="text-center">

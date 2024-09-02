@@ -23,6 +23,8 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
 
   const [submitted, setSubmitted] = useState(false);
 
+  const [formPending, setFormPending] = useState(false);
+
   return (
     <>
       <div className="my-4 font-clarity">
@@ -38,7 +40,7 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Product Information
         </h2>
 
-        {step === 1 && <Form1 />}
+        {step === 1 && <Form1  />}
 
         <h2
           onClick={() => {
@@ -66,7 +68,7 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Customer Segment
         </h2>
 
-        {step === 3 && <Form3 />}
+        {step === 3 && <Form3  />}
 
         <h2
           onClick={() => {

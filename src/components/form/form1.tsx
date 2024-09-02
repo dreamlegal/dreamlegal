@@ -626,11 +626,11 @@ function Form1() {
           <div className="mt-2">
             <Label htmlFor="category">Select Category</Label>
             {[
-              "Client Management Software",
+              "Client Relationship Management ",
               "Governance, Risk and Compliance",
               "Contract Lifecycle Management",
-              "Digital Signature",
-              "Document Management and Automation",
+              "E-Signature",
+              "Document Management System",
               "E-billing and Invoicing",
               "E-discovery",
               "Intellectual Property Management",

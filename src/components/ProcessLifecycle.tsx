@@ -11,7 +11,7 @@ interface ProcessLifecycleProps {
 
 const lifecycleStages = [
   {
-    category: "Client Management Software",
+    category: "Client Relationship Management ",
     stages: [
       "Intake",
       "Assessment",
@@ -44,7 +44,7 @@ const lifecycleStages = [
     ],
   },
   {
-    category: "Digital Signature",
+    category: "E-Signature",
     stages: [
       "Document Preparation",
       "Authentication",
@@ -55,7 +55,7 @@ const lifecycleStages = [
     ],
   },
   {
-    category: "Document Management and Automation",
+    category: "Document Management System",
     stages: [
       "Capture",
       "Change management",
@@ -66,7 +66,7 @@ const lifecycleStages = [
     ],
   },
   {
-    category: "Document Management and Automation Software",
+    category: "Document Management System Software",
     stages: [
       "Capture",
       "Change management",

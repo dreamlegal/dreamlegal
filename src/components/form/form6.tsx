@@ -109,7 +109,7 @@ function Form6() {
             </div> */}
             <div className="mt-4">
               <div className="flex flex-col gap-4 ">
-                <Label htmlFor="freeTrial">Select Free Trial</Label>
+                <Label htmlFor="freeTrial">Free Trial</Label>
                 <Switch
                   checked={formValues.freeTrial === "yes"}
                   onChange={(value) =>

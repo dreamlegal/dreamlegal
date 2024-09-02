@@ -202,6 +202,7 @@ function Form3() {
     "Banking and Finance",
     "Construction and Engineering",
     "Consulting firms",
+    "Defence",
     "Education",
     "Energy and Utilities",
     "Government and Public Sector",
@@ -221,6 +222,7 @@ function Form3() {
   ];
 
   const practiseArea = [
+    "Neutral",
     "Appellate Law",
     "Antitrust Law",
     "Alternative Dispute Resolution",
@@ -287,7 +289,6 @@ function Form3() {
     event.preventDefault(); // Prevent default form submission
     nextStep(); // Log form values
   };
-
   return (
     <div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 ">
@@ -295,7 +296,7 @@ function Form3() {
           {/* user categories*/}
 
           <div className="mt-2">
-            <Label htmlFor="userCategories">Select User Categories</Label>
+            <Label htmlFor="userCategories">Target User Categories</Label>
 
             <MultiSelector
               values={formValues.userCategory}
@@ -318,7 +319,7 @@ function Form3() {
           {formValues.userCategory.length > 0 && (
             <div>
               <span className="text-gray-600 italic text-sm">
-                Mention the distibution for the selected options
+                Mention the  existing distibution for the selected options
               </span>
               {formValues.userCategory.map((category, index) => (
                 <div key={category} className="mt-4">
@@ -378,7 +379,7 @@ function Form3() {
           )}
           {/* Industries */}
           <div className="mt-2">
-            <Label htmlFor="industries">Select Industries</Label>
+            <Label htmlFor="industries">Target Industries</Label>
 
             <MultiSelector
               values={formValues.industry}
@@ -402,7 +403,7 @@ function Form3() {
           {formValues.industry.length > 0 && (
             <div>
               <span className="text-gray-600 italic text-sm">
-                Mention the distibution for the selected options
+                Mention the existing distibution for the selected options
               </span>
               {formValues.industry.map((category, index) => (
                 <div key={category} className="mt-4">
@@ -462,7 +463,7 @@ function Form3() {
           )}
 
           <div className="mt-2">
-            <Label htmlFor="userCategories">Select Practice Area</Label>
+            <Label htmlFor="userCategories">Target Practice Area</Label>
 
             <MultiSelector
               values={formValues.practiceAreas}
@@ -485,7 +486,7 @@ function Form3() {
           {formValues.practiceAreas.length > 0 && (
             <div>
               <span className="text-gray-600 italic text-sm">
-                Mention the distibution for the selected options
+                Mention the existing distibution for the selected options
               </span>
 
               {formValues.practiceAreas.map((category, index) => (
@@ -549,7 +550,7 @@ function Form3() {
         {/*Team Sixe */}
 
         <div className="mt-2">
-          <Label htmlFor="industries">Select Client Team size</Label>
+          <Label htmlFor="industries">Target Client Team size</Label>
 
           <MultiSelector
             values={formValues.teamSize}
@@ -574,7 +575,7 @@ function Form3() {
         {formValues.teamSize.length > 0 && (
           <div>
             <span className="text-gray-600 italic text-sm">
-              Mention the distibution for the selected options
+              Mention the existing distibution for the selected options
             </span>
 
             {formValues.teamSize.map((category, index) => (

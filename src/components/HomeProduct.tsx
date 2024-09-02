@@ -80,20 +80,20 @@ function HomeProduct() {
 
   const category = [
     {
-      name: "Client Management Software",
-      link: "/directory?category=Client%20Management%20Software"
+      name: "Client Relationship Management ",
+      link: "/directory?category=Client%20Relationship%20Management"
     },
     {
       name: "Contract Lifecycle Management",
       link: "/directory?category=Contract%20Lifecycle%20Management"
     },
     {
-      name: "Digital Signature",
-      link: "/directory?category=Digital%20Signature"
+      name: "E-Signature",
+      link: "/directory?category=E-Signature"
     },
     {
-      name: "Document Management and Automation",
-      link: "/directory?category=Document%20Management%20and%20Automation"
+      name: "Document Management System",
+      link: "/directory?category=Document%20Management%20System"
     },
     {
       name: "E-billing and Invoicing",

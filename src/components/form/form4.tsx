@@ -58,7 +58,7 @@ function Form4() {
       <div className="mt-4 ">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 ">
           <div>
-            {formValues.category.includes("Client Management Software") && (
+            {formValues.category.includes("Client Relationship Management ") && (
               <div className="mt-2">
                 <div className="mt-2">
                   <Label htmlFor="deployment">
@@ -168,10 +168,10 @@ function Form4() {
               </div>
             )}
 
-            {formValues.category.includes("Digital Signature") && (
+            {formValues.category.includes("E-Signature") && (
               <div className="mt-2">
                 <div className="mt-2">
-                  <Label htmlFor="deployment">Digital Signature</Label>
+                  <Label htmlFor="deployment">E-Signature</Label>
                   {[
                     "Document Preparation",
                     "Authentication",
@@ -201,12 +201,12 @@ function Form4() {
             )}
 
             {formValues.category.includes(
-              "Document Management and Automation"
+              "Document Management System"
             ) && (
               <div className="mt-2">
                 <div className="mt-2">
                   <Label htmlFor="deployment">
-                    Document Management and Automation Software
+                    Document Management System Software
                   </Label>
                   {[
                     "Capture",

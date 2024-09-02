@@ -16,44 +16,44 @@ import { MdArrowForward } from "react-icons/md";
 const categories = [
   {
     name: "Law firms",
-    href: "#",
+    href: "/directory?customer=Law%20firms",
     img: "/lawfirmicon.svg",
     description: "Expert legal services team",
   },
   
   {
     name: "Enterprises",
-    href: "#",
+    href: "/directory?customer=Enterprises",
     img: "/enterpriceicon.svg",
     description: "Corporate legal powerhouses",
   },
  {
    name: "Individual Practitioners",
-   href: "#",
+   href: "/directory?customer=Individual%20Practitioner",
    img: "/prac.svg",
    description: "Independent legal experts and chambers",
  },
   {
     name: "Startups",
-    href: "#",
+    href: "/directory?customer=Startups",
     img: "/startupicon.svg",
     description: "Young-age entities",
   },
   {
     name: "Government  Departments",
-    href: "#",
+    href: "/directory?customer=Government%20departments",
     img: "/govdepticon.svg",
     description: "Public sector legal teams",
   },
   {
     name: "Judiciary",
-    href: "#",
+    href: "/directory?customer=Judiciary",
     img: "/judge1.svg",
     description: "Courtroom justice servers",
   },
   {
     name: "In-House Counsels",
-    href: "#",
+    href: "/directory?customer=In-House%20Counsels",
     img: "/lawyers.svg",
     description: "Legal experts navigating companies",
   },
@@ -78,7 +78,9 @@ function FilterCategory() {
             <NavigationMenuContent>
               <ul className="flex flex-col gap-3 px-2 md:p-6 bg-white w-full md:w-[400px] rounded-lg shadow-md ">
                 {categories.map((category, idx) => (
+                  
                   <li key={idx}>
+                    <a href={category.href}>
                     <div className="flex items-center gap-2 cursor-pointer hover:bg-[#e1e7ffc3] px-3 py-4 rounded-lg">
                       <Image
                         src={category.img}
@@ -98,7 +100,9 @@ function FilterCategory() {
                         <MdArrowForward className="text-[#0c1830] text-lg" />
                       </div>
                     </div>
+                    </a>
                   </li>
+                 
                 ))}
               </ul>
             </NavigationMenuContent>

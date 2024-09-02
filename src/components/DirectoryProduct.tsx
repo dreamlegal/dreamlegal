@@ -18,11 +18,11 @@ const placeholders = [
 ];
 
 const categoryKeywords: { [key: string]: string[] } = {
-  "Client Management Software": [
+  "Client Relationship Management ": [
     "CRM",
     "Client Relationship Management",
     "Customer Relationship Management",
-    "Client Management Software",
+    "Client Relationship Management ",
     "CRM",
     "CMS",
   ],
@@ -43,16 +43,16 @@ const categoryKeywords: { [key: string]: string[] } = {
     "Contract Lifecycle Management",
     "Contract Management",
   ],
-  "Digital Signature": [
+  "E-Signature": [
     "E-Signature",
     "Electronic Signature",
-    "Digital Signature",
-    "Digital Signature",
+    "E-Signature",
+    "E-Signature",
     "Signature",
     "DS",
     "Signature Software",
   ],
-  "Document Management and Automation": [
+  "Document Management System": [
     "DMS",
     "DMA",
     "Document Management",

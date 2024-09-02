@@ -503,12 +503,12 @@
 
 //       if (prevValues.clientManagementSoftware.length > 0) {
 //         const clientManagementIndex = newProcessLifecycle.findIndex(
-//           (item) => item.category === "Client Management Software"
+//           (item) => item.category === "Client Relationship Management "
 //         );
 
 //         if (clientManagementIndex === -1) {
 //           newProcessLifecycle.push({
-//             category: "Client Management Software",
+//             category: "Client Relationship Management ",
 //             subcategories: prevValues.clientManagementSoftware,
 //           });
 //         } else {
@@ -551,12 +551,12 @@
 
 //       if (prevValues.DigitalSignature.length > 0) {
 //         const DigitalSignatureIndex = newProcessLifecycle.findIndex(
-//           (item) => item.category === "Digital Signature"
+//           (item) => item.category === "E-Signature"
 //         );
 
 //         if (DigitalSignatureIndex === -1) {
 //           newProcessLifecycle.push({
-//             category: "Digital Signature",
+//             category: "E-Signature",
 //             subcategories: prevValues.DigitalSignature,
 //           });
 //         } else {
@@ -568,12 +568,12 @@
 //       if (prevValues.DocumnetManagement.length > 0) {
 //         const DocumnetManagementIndex = newProcessLifecycle.findIndex(
 //           (item) =>
-//             item.category === "Document Management and Automation Software"
+//             item.category === "Document Management System Software"
 //         );
 
 //         if (DocumnetManagementIndex === -1) {
 //           newProcessLifecycle.push({
-//             category: "Document Management and Automation Software",
+//             category: "Document Management System Software",
 //             subcategories: prevValues.DocumnetManagement,
 //           });
 //         } else {
@@ -1386,11 +1386,11 @@
 //                 <div className="mt-2">
 //                   <Label htmlFor="category">Select Category</Label>
 //                   {[
-//                     "Client Management Software",
+//                     "Client Relationship Management ",
 //                     "Compliance and Risk Management",
 //                     "Contract Lifecycle Management",
-//                     "Digital Signature",
-//                     "Document Management and Automation",
+//                     "E-Signature",
+//                     "Document Management System",
 //                     "E-billing and Invoicing",
 //                     "E-discovery",
 //                     "Intellectual Property Management",
@@ -2080,7 +2080,7 @@
 //               <form onSubmit={temp1} className="flex flex-col gap-4 ">
 //                 <div>
 //                   {formValues.category.includes(
-//                     "Client Management Software"
+//                     "Client Relationship Management "
 //                   ) && (
 //                     <div className="mt-2">
 //                       <div className="mt-2">
@@ -2202,10 +2202,10 @@
 //                     </div>
 //                   )}
 
-//                   {formValues.category.includes("Digital Signature") && (
+//                   {formValues.category.includes("E-Signature") && (
 //                     <div className="mt-2">
 //                       <div className="mt-2">
-//                         <Label htmlFor="deployment">Digital Signature</Label>
+//                         <Label htmlFor="deployment">E-Signature</Label>
 //                         {[
 //                           "Document Preparation",
 //                           "Authentication",
@@ -2240,12 +2240,12 @@
 //                   )}
 
 //                   {formValues.category.includes(
-//                     "Document Management and Automation"
+//                     "Document Management System"
 //                   ) && (
 //                     <div className="mt-2">
 //                       <div className="mt-2">
 //                         <Label htmlFor="deployment">
-//                           Document Management and Automation Software
+//                           Document Management System Software
 //                         </Label>
 //                         {[
 //                           "Capture",
@@ -2615,8 +2615,8 @@
 //                   </div>
 //                 </div>
 //                 {/*  */}
-//                 {/* Client Management Software */}
-//                 {formValues.category.includes("Client Management Software") && (
+//                 {/* Client Relationship Management  */}
+//                 {formValues.category.includes("Client Relationship Management ") && (
 //                   <div>
 //                     <div className="mt-2">
 //                       <Label htmlFor="">Intake and Lead Management</Label>
@@ -3058,7 +3058,7 @@
 //                   </div>
 //                 )}
 
-//                 {formValues.category.includes("Digital Signature") && (
+//                 {formValues.category.includes("E-Signature") && (
 //                   <div>
 //                     <div className="mt-2">
 //                       <Label htmlFor="">Fields Creation</Label>
@@ -3184,7 +3184,7 @@
 //                 )}
 
 //                 {formValues.category.includes(
-//                   "Document Management and Automation"
+//                   "Document Management System"
 //                 ) && (
 //                   <div>
 //                     <div className="mt-2">

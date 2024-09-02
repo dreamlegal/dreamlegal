@@ -47,8 +47,10 @@ function Form2() {
 
     const validationErrors: Record<string, string> = {};
     const formValidationResult = formSchema.safeParse(formValues);
+    
 
     if (!formValidationResult.success) {
+
       formValidationResult.error.errors.forEach((error) => {
         validationErrors[error.path[0]] = error.message;
       });

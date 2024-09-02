@@ -26,12 +26,12 @@ function Form9({ editing }: { editing: boolean }) {
 
         if (prevValues.clientManagementSoftware.length > 0) {
           const clientManagementIndex = newProcessLifecycle.findIndex(
-            (item) => item.category === "Client Management Software"
+            (item) => item.category === "Client Relationship Management "
           );
 
           if (clientManagementIndex === -1) {
             newProcessLifecycle.push({
-              category: "Client Management Software",
+              category: "Client Relationship Management ",
               subcategories: prevValues.clientManagementSoftware,
             });
           } else {
@@ -75,12 +75,12 @@ function Form9({ editing }: { editing: boolean }) {
 
         if (prevValues.DigitalSignature.length > 0) {
           const DigitalSignatureIndex = newProcessLifecycle.findIndex(
-            (item) => item.category === "Digital Signature"
+            (item) => item.category === "E-Signature"
           );
 
           if (DigitalSignatureIndex === -1) {
             newProcessLifecycle.push({
-              category: "Digital Signature",
+              category: "E-Signature",
               subcategories: prevValues.DigitalSignature,
             });
           } else {
@@ -92,12 +92,12 @@ function Form9({ editing }: { editing: boolean }) {
         if (prevValues.DocumnetManagement.length > 0) {
           const DocumnetManagementIndex = newProcessLifecycle.findIndex(
             (item) =>
-              item.category === "Document Management and Automation Software"
+              item.category === "Document Management System Software"
           );
 
           if (DocumnetManagementIndex === -1) {
             newProcessLifecycle.push({
-              category: "Document Management and Automation Software",
+              category: "Document Management System Software",
               subcategories: prevValues.DocumnetManagement,
             });
           } else {
@@ -986,12 +986,12 @@ function Form9({ editing }: { editing: boolean }) {
 
       if (prevValues.clientManagementSoftware.length > 0) {
         const clientManagementIndex = newProcessLifecycle.findIndex(
-          (item) => item.category === "Client Management Software"
+          (item) => item.category === "Client Relationship Management "
         );
 
         if (clientManagementIndex === -1) {
           newProcessLifecycle.push({
-            category: "Client Management Software",
+            category: "Client Relationship Management ",
             subcategories: prevValues.clientManagementSoftware,
           });
         } else {
@@ -1034,12 +1034,12 @@ function Form9({ editing }: { editing: boolean }) {
 
       if (prevValues.DigitalSignature.length > 0) {
         const DigitalSignatureIndex = newProcessLifecycle.findIndex(
-          (item) => item.category === "Digital Signature"
+          (item) => item.category === "E-Signature"
         );
 
         if (DigitalSignatureIndex === -1) {
           newProcessLifecycle.push({
-            category: "Digital Signature",
+            category: "E-Signature",
             subcategories: prevValues.DigitalSignature,
           });
         } else {
@@ -1051,12 +1051,12 @@ function Form9({ editing }: { editing: boolean }) {
       if (prevValues.DocumnetManagement.length > 0) {
         const DocumnetManagementIndex = newProcessLifecycle.findIndex(
           (item) =>
-            item.category === "Document Management and Automation Software"
+            item.category === "Document Management System Software"
         );
 
         if (DocumnetManagementIndex === -1) {
           newProcessLifecycle.push({
-            category: "Document Management and Automation Software",
+            category: "Document Management System Software",
             subcategories: prevValues.DocumnetManagement,
           });
         } else {

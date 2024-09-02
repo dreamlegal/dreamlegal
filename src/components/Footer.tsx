@@ -82,7 +82,7 @@ export const Footer = () => {
               <ul className="text-gray-800 space-y-2 text-base">
                 <li className="hover:text-primary1 transition-all cursor-pointer">
                   <Link
-                    href={"/directory?category=Client%20Management%20Software"}
+                    href={"/directory?category=Client%20Relationship%20Management"}
                   >
                     Client Relationship Management
                   </Link>
@@ -99,10 +99,10 @@ export const Footer = () => {
                 <li className="hover:text-primary1 transition-all cursor-pointer">
                   <Link
                     href={
-                      "/directory?category=Document%20Management%20and%20Automation"
+                      "/directory?category=Document%20Management%20System"
                     }
                   >
-                    Document Management Software
+                    Document Management System
                   </Link>
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
@@ -118,7 +118,7 @@ export const Footer = () => {
                   </Link>
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
-                  <Link href={"/directory?category=Digital%20Signature"}>
+                  <Link href={"/directory?category=E-Signature"}>
                     E-Signature
                   </Link>
                 </li>

@@ -532,27 +532,27 @@ function DirectoryFilter({
             <ul className="space-y-1 border-t border-gray-200 p-4">
               <li>
                 <label
-                  htmlFor="Client Management Software"
+                  htmlFor="Client Relationship Management "
                   className="inline-flex items-center gap-2"
                 >
                   <input
                     type="checkbox"
-                    id="Client Management Software"
+                    id="Client Relationship Management"
                     className="size-5 rounded border-gray-300"
                     checked={selectedFilters.categories.includes(
-                      "Client Management Software"
+                      "Client Relationship Management"
                     )}
                     onChange={(e) =>
                       handleCheckboxChange(
                         e,
                         "categories",
-                        "Client Management Software"
+                        "Client Relationship Management"
                       )
                     }
                   />
                   <span className="text-sm font-medium text-gray-700">
                     {" "}
-                    Client Management Software{" "}
+                    Client Relationship Management {" "}
                   </span>
                 </label>
               </li>
@@ -584,49 +584,49 @@ function DirectoryFilter({
               </li>
               <li>
                 <label
-                  htmlFor="Digital Signature"
+                  htmlFor="E-Signature"
                   className="inline-flex items-center gap-2"
                 >
                   <input
                     type="checkbox"
-                    id="Digital Signature"
+                    id="E-Signature"
                     className="size-5 rounded border-gray-300"
                     checked={selectedFilters.categories.includes(
-                      "Digital Signature"
+                      "E-Signature"
                     )}
                     onChange={(e) =>
-                      handleCheckboxChange(e, "categories", "Digital Signature")
+                      handleCheckboxChange(e, "categories", "E-Signature")
                     }
                   />
                   <span className="text-sm font-medium text-gray-700">
                     {" "}
-                    Digital Signature{" "}
+                    E-Signature{" "}
                   </span>
                 </label>
               </li>
               <li>
                 <label
-                  htmlFor="Document Management and Automation"
+                  htmlFor="Document Management System"
                   className="inline-flex items-center gap-2"
                 >
                   <input
                     type="checkbox"
-                    id="Document Management and Automation"
+                    id="Document Management System"
                     className="size-5 rounded border-gray-300"
                     checked={selectedFilters.categories.includes(
-                      "Document Management and Automation"
+                      "Document Management System"
                     )}
                     onChange={(e) =>
                       handleCheckboxChange(
                         e,
                         "categories",
-                        "Document Management and Automation"
+                        "Document Management System"
                       )
                     }
                   />
                   <span className="text-sm font-medium text-gray-700">
                     {" "}
-                    Document Management and Automation{" "}
+                    Document Management System{" "}
                   </span>
                 </label>
               </li>

@@ -173,8 +173,8 @@ function Form5() {
             </div>
           </div>
           {/*  */}
-          {/* Client Management Software */}
-          {formValues.category.includes("Client Management Software") && (
+          {/* Client Relationship Management  */}
+          {formValues.category.includes("Client Relationship Management ") && (
             <div>
               <div className="mt-2">
                 <Label className="text-sm font-bold" htmlFor="">
@@ -583,7 +583,7 @@ function Form5() {
             </div>
           )}
 
-          {formValues.category.includes("Digital Signature") && (
+          {formValues.category.includes("E-Signature") && (
             <div>
               <div className="mt-2">
                 <Label className="text-sm font-bold" htmlFor="">
@@ -815,7 +815,7 @@ function Form5() {
           )}
 
           {formValues.category.includes(
-            "Document Management and Automation"
+            "Document Management System"
           ) && (
             <div>
               <div className="mt-2">

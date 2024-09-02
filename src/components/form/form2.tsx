@@ -6,13 +6,32 @@ import { FormValues, useFormContext } from "@/context/formValueContext";
 import { useStepContext } from "@/context/formContext";
 import { z } from "zod";
 
+interface FormProps {
+  
+  form2Pending: boolean;
+  setForm2Pending: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+// Custom word count validator
+const wordCount = (value: string, maxWords: number) => {
+  const wordCount = value.trim().split(/\s+/).length;
+  return wordCount <= maxWords;
+};
+
+// Schema with word count validation
 const formSchema = z.object({
-  description: z.string().max(50,"max word limit 50"),
-  usp: z.string().max(50,"max word limit 50"),
-  upcomingUpdates: z.string().max(50,"max word limit 50"),
+  description: z.string().refine(value => wordCount(value, 50), {
+    message: "max word limit 50",
+  }),
+  usp: z.string().refine(value => wordCount(value, 50), {
+    message: "max word limit 50",
+  }),
+  upcomingUpdates: z.string().refine(value => wordCount(value, 50), {
+    message: "max word limit 50",
+  }),
 });
 
-function Form2() {
+function Form2({form2Pending, setForm2Pending }: FormProps) {
   const { formValues, setFormValues } = useFormContext();
   const [loading, setLoading] = useState(false);
   const { nextStep } = useStepContext();
@@ -21,7 +40,9 @@ function Form2() {
   const validateField = (name: string, value: string) => {
     const result = formSchema.safeParse({ [name]: value });
     if (!result.success) {
+       setForm2Pending(false)
       return result.error.errors[0].message;
+     
     }
     return "";
   };
@@ -44,6 +65,9 @@ function Form2() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
+
+    
+    setForm2Pending(true)
 
     const validationErrors: Record<string, string> = {};
     const formValidationResult = formSchema.safeParse(formValues);

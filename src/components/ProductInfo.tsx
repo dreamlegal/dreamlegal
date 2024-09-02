@@ -23,7 +23,16 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
 
   const [submitted, setSubmitted] = useState(false);
 
-  const [formPending, setFormPending] = useState(false);
+  
+  const [form1Pending, setForm1Pending] = useState(false);
+  const [form2Pending, setForm2Pending] = useState(false);
+  const [form3Pending, setForm3Pending] = useState(false);
+  const [form4Pending, setForm4Pending] = useState(false);
+  const [form5Pending, setForm5Pending] = useState(false);
+  const [form6Pending, setForm6Pending] = useState(false);
+  const [form7Pending, setForm7Pending] = useState(false);
+  const [form8Pending, setForm8Pending] = useState(false);
+ 
 
   return (
     <>
@@ -40,7 +49,7 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Product Information
         </h2>
 
-        {step === 1 && <Form1  />}
+        {step=== 1 && <Form1  form1Pending={form1Pending} setForm1Pending={setForm1Pending} />}
 
         <h2
           onClick={() => {
@@ -54,7 +63,7 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Overview
         </h2>
 
-        {step === 2 && <Form2 />}
+        {step === 2  &&  form1Pending==true && <Form2  form2Pending={form2Pending} setForm2Pending={setForm2Pending}  />}
 
         <h2
           onClick={() => {
@@ -68,7 +77,7 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Customer Segment
         </h2>
 
-        {step === 3 && <Form3  />}
+        {step === 3  && form2Pending==true && <Form3 form3Pending={form3Pending} setForm3Pending={setForm3Pending}   />}
 
         <h2
           onClick={() => {
@@ -82,7 +91,7 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Process Lifecycle
         </h2>
 
-        {step === 4 && <Form4 />}
+        {step === 4  && form3Pending==true && <Form4 form4Pending={form4Pending} setForm4Pending={setForm4Pending}/>}
 
         <h2
           onClick={() => {
@@ -96,7 +105,7 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Features
         </h2>
 
-        {step === 5 && <Form5 />}
+        {step === 5  && form4Pending==true && <Form5 form5Pending={form5Pending} setForm5Pending={setForm5Pending} />}
 
         <h2
           onClick={() => {
@@ -110,7 +119,7 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Pricing
         </h2>
 
-        {step === 6 && <Form6 />}
+        {step === 6   && form5Pending==true && <Form6 form6Pending={form6Pending} setForm6Pending={setForm6Pending} />}
 
         <h2
           onClick={() => {
@@ -124,7 +133,7 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Service and Support
         </h2>
 
-        {step === 7 && <Form7 />}
+        {step === 7 && form6Pending==true && <Form7 form7Pending={form7Pending} setForm7Pending={setForm7Pending} />}
 
         <h2
           onClick={() => {
@@ -138,7 +147,7 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Post implementation service
         </h2>
 
-        {step === 8 && <Form8 />}
+        {step === 8   && form7Pending==true && <Form8  form8Pending={form8Pending} setForm8Pending={setForm8Pending}/>}
 
         <h2
           onClick={() => {
@@ -152,7 +161,7 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           References
         </h2>
 
-        {step === 9 && <Form9 editing={editing} />}
+        {step === 9  && form8Pending==true && <Form9 editing={editing}  />}
       </div>
       {step === 10 && (
         <>

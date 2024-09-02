@@ -7,7 +7,13 @@ import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { useStepContext } from "@/context/formContext";
 
-function Form8() {
+interface FormProps {
+  
+  form8Pending: boolean;
+  setForm8Pending: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Form8({form8Pending, setForm8Pending }: FormProps) {
   const { formValues, setFormValues } = useFormContext();
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -56,6 +62,7 @@ function Form8() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
+    setForm8Pending(true)
     nextStep(); // Log form values
   };
 

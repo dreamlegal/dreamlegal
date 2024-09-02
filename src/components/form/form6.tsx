@@ -14,7 +14,13 @@ import { FormValues, useFormContext } from "@/context/formValueContext";
 import { Switch } from "@headlessui/react";
 import { useStepContext } from "@/context/formContext";
 
-function Form6() {
+interface FormProps {
+  
+  form6Pending: boolean;
+  setForm6Pending: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Form6({form6Pending, setForm6Pending }: FormProps) {
   const { formValues, setFormValues } = useFormContext();
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -78,6 +84,7 @@ function Form6() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
+    setForm6Pending(true)
     nextStep(); // Log form values
   };
 

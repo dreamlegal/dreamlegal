@@ -6,8 +6,14 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useStepContext } from "@/context/formContext";
+interface FormProps {
+  
+  form4Pending: boolean;
+  setForm4Pending: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-function Form4() {
+
+function Form4({form4Pending, setForm4Pending }: FormProps) {
   const { formValues, setFormValues } = useFormContext();
 
   const [loading, setLoading] = useState(false);
@@ -50,6 +56,7 @@ function Form4() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
+    setForm4Pending(true)
     nextStep(); // Log form values
   };
 

@@ -1,6 +1,6 @@
 "use client";
 import { FormValues, useFormContext } from "@/context/formValueContext";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Switch } from "@headlessui/react";
@@ -23,8 +23,83 @@ import {
 } from "../ui/multiselect";
 import { useStepContext } from "@/context/formContext";
 
-function Form1() {
+import { useState, useEffect } from 'react';
+// import * as z from 'zod';
+
+// // Define your Zod schema here
+// const formSchema = z.object({
+//   prname: z.string().min(1, "Product Name is required"),
+//   logo: z.any().optional(),
+//   category: z.array(z.string()).nonempty("At least one category must be selected"),
+//   deployment: z.array(z.string()).nonempty("At least one deployment option must be selected"),
+//   mobileAccessibility: z.enum(["yes", "no"]),
+//   adoptionPeriod: z.string().min(1, "Adoption period is required"),
+//   adoptionPeriodUnit: z.enum(["days", "months", "years"]),
+//   languages: z.array(z.string()).nonempty("At least one language must be selected"),
+//   securityCertificate: z.string().min(1, "Security Certificate is required"),
+//   integrations: z.array(z.string()).nonempty("At least one integration must be selected"),
+//   focusCountries: z.array(z.string()).max(5, "You can select a maximum of 5 countries"),
+// });
+interface FormProps {
+  
+  form1Pending: boolean;
+  setForm1Pending: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Form1({form1Pending, setForm1Pending }: FormProps) {
+  
   const { formValues, setFormValues } = useFormContext();
+  // const [formmValues, setFormmValues] = useState({
+  //   prname: "",
+  //   logo: null,
+  //   category: [],
+  //   deployment: [],
+  //   mobileAccessibility: "no",
+  //   adoptionPeriod: "",
+  //   adoptionPeriodUnit: "days",
+  //   languages: [],
+  //   securityCertificate: "",
+  //   integrations: [],
+  //   focusCountries: [],
+  // });
+  // const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  // const validateForm = () => {
+  //   const validationErrors: Record<string, string> = {};
+
+
+  
+  
+  //   const result = formSchema.safeParse(formmValues);
+  //   if (!result.success) {
+  //     result.error.errors.forEach((error) => {
+  //       if (error.path.length > 0) {
+  //         validationErrors[error.path[0].toString()] = error.message;
+  //       }
+  //     });
+  //     setErrors(validationErrors);
+  //     setForm1Pending(false); // Set to false if validation fails
+  //   } else {
+  //     setErrors({});
+  //   }
+
+  //   return result.success;
+  // };
+
+  // const validateField = (name: string, value: any) => {
+  //   const result = formSchema.safeParse({ [name]: value });
+  //   if (!result.success) {
+  //     setForm1Pending(false); // Set to false if validation fails
+  //     return result.error.errors[0]?.message || "Invalid value";
+  //   }
+  //   return "";
+  // };
+
+  // useEffect(() => {
+  //   validateForm();
+  // }, [formmValues]);
+
+
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const { step, prevStep, nextStep, setStep } = useStepContext();
@@ -592,7 +667,19 @@ function Form1() {
     }));
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    
     event.preventDefault(); // Prevent default form submission
+    
+   
+
+    // const isFormValid = validateForm();
+
+    // if (!isFormValid) {
+    //   return; // Stop form submission if there are validation errors
+    // }
+
+    // Perform form submission logic here
+    setForm1Pending(true);
     nextStep(); // Log form values
   };
 

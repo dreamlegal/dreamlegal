@@ -1,5 +1,5 @@
 "use client";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState ,useEffect } from "react";
 
 import { Input } from "../ui/input";
 import { FormValues, useFormContext } from "@/context/formValueContext";
@@ -22,8 +22,77 @@ import {
 import { Label } from "../ui/label";
 import { useStepContext } from "@/context/formContext";
 
-function Form3() {
+interface FormProps {
+  
+  form3Pending: boolean;
+  setForm3Pending: React.Dispatch<React.SetStateAction<boolean>>;
+}
+// import { z } from "zod";
+
+// const formSchema = z.object({
+//   userCategory: z.array(z.string()).nonempty("User Category is required"),
+//   userCategoryPercentage: z.array(z.number()).nonempty("User Category Percentage is required"),
+//   industry: z.array(z.string()).nonempty("Industry is required"),
+//   industryPercentage: z.array(z.number()).nonempty("Industry Percentage is required"),
+//   practiceAreas: z.array(z.string()).nonempty("Practice Areas are required"),
+//   practiceAreasPercentage: z.array(z.number()).nonempty("Practice Areas Percentage is required"),
+//   teamSize: z.array(z.string()).nonempty("Team Size is required"),
+//   teamSizePercentage: z.array(z.number()).nonempty("Team Size Percentage is required"),
+// });
+
+function Form3({form3Pending, setForm3Pending }: FormProps) {
+
   const { formValues, setFormValues } = useFormContext();
+
+  // const [formmValues, setFormmValues] = useState({
+  //   userCategory: [],
+  //   userCategoryPercentage: [],
+  //   industry: [],
+  //   industryPercentage: [],
+  //   practiceAreas: [],
+  //   practiceAreasPercentage: [],
+  //   teamSize: [],
+  //   teamSizePercentage: [],
+  // });
+
+  // const [errors, setErrors] = useState<Record<string, string>>({});
+
+
+
+  // const validateForm = () => {
+  //   const validationErrors: Record<string, string> = {};
+
+  //   const result = formSchema.safeParse(formValues);
+  //   if (!result.success) {
+  //     result.error.errors.forEach((error) => {
+  //       if (error.path.length > 0) {
+  //         validationErrors[error.path[0].toString()] = error.message;
+  //       }
+  //     });
+  //     setErrors(validationErrors);
+  //     setForm3Pending(false); // Set to false if validation fails
+  //   } else {
+  //     setErrors({});
+  //   }
+
+  //   return result.success;
+  // };
+
+  // const validateField = (name: string, value: any) => {
+  //   const result = formSchema.safeParse({ [name]: value });
+  //   if (!result.success) {
+  //     setForm3Pending(false); // Set to false if validation fails
+  //     return result.error.errors[0]?.message || "Invalid value";
+  //   }
+  //   return "";
+  // };
+
+  // useEffect(() => {
+  //   validateForm();
+  // }, [formValues]);
+
+
+
 
   const [loading, setLoading] = useState(false);
 
@@ -285,10 +354,24 @@ function Form3() {
     "Other",
   ];
 
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
-    nextStep(); // Log form values
+
+    // const isFormValid = validateForm();
+
+    // if (!isFormValid) {
+    //   return; // Stop form submission if there are validation errors
+    // }
+
+    // Perform form submission logic here
+    // setForm3Pending(true);
+
+
+  setForm3Pending(true)
+  nextStep(); // Log form values
   };
+  
   return (
     <div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 ">

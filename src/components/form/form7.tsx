@@ -13,8 +13,13 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import { useStepContext } from "@/context/formContext";
+interface FormProps {
+  
+  form7Pending: boolean;
+  setForm7Pending: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-function Form7() {
+function Form7({form7Pending, setForm7Pending }: FormProps) {
   const { formValues, setFormValues } = useFormContext();
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -57,6 +62,8 @@ function Form7() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
+
+    setForm7Pending(true)
     nextStep(); // Log form values
   };
 

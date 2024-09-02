@@ -5,8 +5,13 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { FormValues, useFormContext } from "@/context/formValueContext";
 import { useStepContext } from "@/context/formContext";
+interface FormProps {
+  
+  form5Pending: boolean;
+  setForm5Pending: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-function Form5() {
+function Form5({form5Pending, setForm5Pending }: FormProps) {
   const { formValues, setFormValues } = useFormContext();
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -50,6 +55,7 @@ function Form5() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
+    setForm5Pending(true)
     nextStep(); // Log form values
   };
 

@@ -11,15 +11,14 @@ import {
   } from "@react-email/components";
   
   interface WelcomeEmailProps {
-    email: string;
-    password: string;
+    name: string;
   }
   
-  export default function VendorWelcome({ email, password }: WelcomeEmailProps) {
+  export default function VendorWelcome({ name }: WelcomeEmailProps) {
     return (
       <Html lang="en" dir="ltr">
       <Head>
-        <title>Welcome to DreamLegal!</title>
+        <title>Welcome to DreamLegal {name}!</title>
         <Font
           fontFamily="Roboto"
           fallbackFontFamily="Verdana"
@@ -43,7 +42,7 @@ import {
         </Row>
         <Row>
           <Text>
-            Now that you have logged in and created a profile, list your legal tech product through the <a href="#add-product-tab">"Add product" tab</a> on your dashboard. (Add product guide attached for your reference)
+            Now that you have logged in and created a profile, list your legal tech product through the "Add product" tab on your dashboard. (Add product guide attached for your reference)
           </Text>
         </Row>
         <Row>

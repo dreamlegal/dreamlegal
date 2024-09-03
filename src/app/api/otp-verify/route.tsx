@@ -33,11 +33,14 @@ export async function POST(request: Request) {
     );
   }
 
+
+
   const user = await prisma.user.findFirst({
     where: {
       email,
     },
   });
+
 
   // Delete the OTP from the Prisma Otp model
   await prisma.otp.deleteMany({
@@ -45,9 +48,27 @@ export async function POST(request: Request) {
       email,
     },
   });
- if(user?.name){
+
+
+ if(user?.name && user.type==="user"){
   const namew = user?.name
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/senwelcome`, {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({  email , name: namew }),
+  });
+
+  if (!response.ok) {
+    console.error('Failed to send welcome email');
+  }
+}
+
+
+if(user?.name && user.type==="vendor"){
+  const namew = user?.name
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/vendorwelcome`, {
     method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/json',

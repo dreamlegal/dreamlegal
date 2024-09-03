@@ -15,12 +15,11 @@ import { Switch } from "@headlessui/react";
 import { useStepContext } from "@/context/formContext";
 
 interface FormProps {
-  
   form6Pending: boolean;
   setForm6Pending: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Form6({form6Pending, setForm6Pending }: FormProps) {
+function Form6({ form6Pending, setForm6Pending }: FormProps) {
   const { formValues, setFormValues } = useFormContext();
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -84,7 +83,7 @@ function Form6({form6Pending, setForm6Pending }: FormProps) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
-    setForm6Pending(true)
+    setForm6Pending(true);
     nextStep(); // Log form values
   };
 
@@ -144,17 +143,14 @@ function Form6({form6Pending, setForm6Pending }: FormProps) {
               </div>
             </div>
             <div>
-             
               <div className="flex gap-2">
                 <Input
                   name="timePeriod"
-                  
                   placeholder="Time period"
                   value={formValues.timePeriod}
                   onChange={handleChange}
-                  required
                 />
-                
+
                 <Select
                   value={formValues.timePeriodUnit}
                   onValueChange={(value) =>
@@ -262,7 +258,6 @@ function Form6({form6Pending, setForm6Pending }: FormProps) {
                 placeholder="Time period"
                 value={formValues.contractPeriod}
                 onChange={handleChange}
-                required
               />
 
               <Select
@@ -342,13 +337,13 @@ function Form6({form6Pending, setForm6Pending }: FormProps) {
             <Label htmlFor="category" className="mr-2">
               Custom parameters
             </Label>
-          
+
             <textarea
               name="pricingParams"
               value={formValues.pricingParams}
               onChange={handleChange}
               className="flex-1 mt-0  w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              rows="5"
+              rows={5}
             />
           </div>
 

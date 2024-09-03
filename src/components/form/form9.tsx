@@ -91,8 +91,7 @@ function Form9({ editing }: { editing: boolean }) {
 
         if (prevValues.DocumnetManagement.length > 0) {
           const DocumnetManagementIndex = newProcessLifecycle.findIndex(
-            (item) =>
-              item.category === "Document Management System Software"
+            (item) => item.category === "Document Management System Software"
           );
 
           if (DocumnetManagementIndex === -1) {
@@ -1050,8 +1049,7 @@ function Form9({ editing }: { editing: boolean }) {
 
       if (prevValues.DocumnetManagement.length > 0) {
         const DocumnetManagementIndex = newProcessLifecycle.findIndex(
-          (item) =>
-            item.category === "Document Management System Software"
+          (item) => item.category === "Document Management System Software"
         );
 
         if (DocumnetManagementIndex === -1) {

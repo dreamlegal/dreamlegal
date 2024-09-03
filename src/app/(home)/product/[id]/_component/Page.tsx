@@ -170,7 +170,7 @@ const countryNames: { [key: string]: string } = {
 import ReactToPrint from "react-to-print";
 function PageComponent({ data }: any) {
   const location = useGeoLocation();
-  const countryName = countryNames[location.country] ;
+  const countryName = countryNames[location.country];
   console.log(countryName);
   const componentRef = useRef(null);
   const userId =
@@ -233,11 +233,11 @@ function PageComponent({ data }: any) {
         });
         if (!response.ok) {
           console.error("Failed to add interest");
-        } 
+        }
 
         const result = await response.json();
         console.log("Interest added:", result);
-      } catch (error) { 
+      } catch (error) {
         console.error("Error adding interest:", error);
       }
     };
@@ -247,6 +247,7 @@ function PageComponent({ data }: any) {
   }, [data, countryName, userId]);
   const [product, setProduct] = useState(data.product);
   const [company, setCompany] = useState(data.company);
+  const [user, _setUser] = useState(data.user);
   const [error, setError] = useState(null);
   const usps = product.usp ? product.usp.split(",") : [];
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -317,7 +318,7 @@ function PageComponent({ data }: any) {
   if (!product) {
     return <Loading />;
   }
-  
+
   console.log(product);
   console.log(company);
 
@@ -561,14 +562,16 @@ function PageComponent({ data }: any) {
                   </div>
                   <div>
                     <p className="text-sm text-gray-900 font-bold">
-                      Founded Date
+                      Year Founded
                     </p>
                     <p className="text-sm text-slate-500">
                       {company.yearFounded}
                     </p>
                   </div>
-
-                  
+                  <div>
+                    <p className="text-sm text-gray-900 font-bold">Awards</p>
+                    <p className="text-sm text-slate-500">{company.Awards}</p>
+                  </div>
                 </div>
 
                 <div className=" flex flex-col gap-3">
@@ -598,9 +601,7 @@ function PageComponent({ data }: any) {
                 <div className=" flex flex-col gap-3">
                   <div>
                     <p className="text-sm text-gray-900 font-bold">Email</p>
-                    <p className="text-sm text-slate-500">
-                      contact@manupatra.com
-                    </p>
+                    <p className="text-sm text-slate-500">{user.email}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-900 font-bold">Phone</p>
@@ -792,8 +793,7 @@ function PageComponent({ data }: any) {
                     </div>
                   </div>
                 </div>
-              
-                
+
                 <div className="w-full h-px bg-slate-200 my-4"></div>
                 <div className="flex flex-col md:flex-row  w-full gap-4">
                   <div className="flex-1">
@@ -809,7 +809,9 @@ function PageComponent({ data }: any) {
                           </TooltipTrigger>
 
                           <TooltipContent>
-                            <p>Sectors this product is making an impacting in</p>
+                            <p>
+                              Sectors this product is making an impacting in
+                            </p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -878,10 +880,6 @@ function PageComponent({ data }: any) {
                   </div>
                 </div>
 
-
-
-
-
                 <div className="w-full h-px bg-slate-200 my-4"></div>
                 <div className="flex flex-col md:flex-row w-full gap-4">
                   <div className="flex-1">
@@ -897,7 +895,9 @@ function PageComponent({ data }: any) {
                           </TooltipTrigger>
 
                           <TooltipContent>
-                            <p>Legal practice areas supported by this product</p>
+                            <p>
+                              Legal practice areas supported by this product
+                            </p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -1124,7 +1124,10 @@ function PageComponent({ data }: any) {
                 </div>
 
                 <div>
-                  <p className="text-lg text-gray-900 font-bold">Time period <span className="text-slate-500 text-sm">(Free Trial)</span></p>
+                  <p className="text-lg text-gray-900 font-bold">
+                    Time period{" "}
+                    <span className="text-slate-500 text-sm">(Free Trial)</span>
+                  </p>
                   <p className="text-sm text-slate-500">{product.timePeriod}</p>
                 </div>
 
@@ -1208,7 +1211,10 @@ function PageComponent({ data }: any) {
                       <MdOutlineInfo className="text-slate-500 text-sm" />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Assistance for this product after the purchase/installation </p>
+                      <p>
+                        Assistance for this product after the
+                        purchase/installation{" "}
+                      </p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>

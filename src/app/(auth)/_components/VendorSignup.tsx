@@ -44,7 +44,7 @@ function VendorSignup() {
 
     try {
       setPending(true);
-      setMsg("Creating your account... Please wait."); // Set a loading message
+     
       const response = await fetch("/api/sign-up", {
         method: "POST",
         headers: {
@@ -54,6 +54,7 @@ function VendorSignup() {
       });
 
       if (response.ok) {
+        setMsg("Creating your account... Please wait."); // Set a loading message
         setMsg(
           "Account created successfully. Please check your email for a verification cocde."
         );

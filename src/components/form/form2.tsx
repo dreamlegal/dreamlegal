@@ -13,9 +13,13 @@ interface FormProps {
 }
 
 // Custom word count validator
-const wordCount = (value: string, maxWords: number) => {
-  const wordCount = value.trim().split(/\s+/).length;
-  return wordCount <= maxWords;
+// const wordCount = (value: string, maxWords: number) => {
+//   const wordCount = value.trim().split(/\s+/).length;
+//   return wordCount <= maxWords;
+// };
+
+const wordCount = (value: string, maxWords: number): boolean => {
+  return value.split(/\s+/).length <= maxWords;
 };
 
 // Schema with word count validation
@@ -25,11 +29,9 @@ const formSchema = z.object({
   }),
   usp: z.string().refine(value => wordCount(value, 50), {
     message: "max word limit 50",
-  }),
-  upcomingUpdates: z.string().refine(value => wordCount(value, 50), {
-    message: "max word limit 50",
-  }),
+  })
 });
+
 
 function Form2({form2Pending, setForm2Pending }: FormProps) {
   const { formValues, setFormValues } = useFormContext();
@@ -82,22 +84,7 @@ function Form2({form2Pending, setForm2Pending }: FormProps) {
       return; // Stop form submission if there are validation errors
     }
 
-    const fieldsToCheck = ['description', 'usp', 'upcomingUpdates'];
-
-    for (const field of fieldsToCheck) {
-      const value = formValues[field as keyof FormValues] as string;
-      const wordCount = value.trim().split(/\s+/).length;
-
-      if (wordCount < 10) {
-        alert(`The content in ${field} should contain at least 10 words.`);
-        return; 
-      }
-
-      if (wordCount > 50) {
-        alert(`The content in ${field} should not exceed 50 words.`);
-        return; // Stop form submission if any field exceeds 50 words
-      }
-    }
+    
 
     nextStep(); // Log form values
   };
@@ -135,9 +122,9 @@ function Form2({form2Pending, setForm2Pending }: FormProps) {
               name="upcomingUpdates"
               value={formValues.upcomingUpdates}
               onChange={handleChange}
-              required
+             
             />
-            {errors.upcomingUpdates && <p className="text-red-500">{errors.upcomingUpdates}</p>}
+            
           </div>
         </div>
         <div className="mt-4 flex flex-col md:flex-row items-center gap-4">

@@ -18,59 +18,59 @@ import {
   export default function VendorWelcome({ email, password }: WelcomeEmailProps) {
     return (
       <Html lang="en" dir="ltr">
-        <Head>
-          <title>Welcome to Our Service!</title>
-          <Font
-            fontFamily="Roboto"
-            fallbackFontFamily="Verdana"
-            webFont={{
-              url: "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2",
-              format: "woff2",
-            }}
-            fontWeight={400}
-            fontStyle="normal"
-          />
-        </Head>
-        <Preview>Welcome to our Dreamlegal, {email}!</Preview>
-        <Section>
-          <Row>
-            <Heading as="h2">Hello {email},</Heading>
-          </Row>
-          <Row>
-            <Text>
-              Welcome to our service! We’re excited to have you on board. 
-              Here at Dreamlegal, we strive to provide the best experience for our users.
-            </Text>
-          </Row>
-          <Row>
-            <Text>
-              Here are your credentials to get started:
-              <ul>
-                <li><strong>Email:</strong> {email}</li>
-                <li><strong>Password:</strong> {password}</li>
-              </ul>
-            </Text>
-          </Row>
-          <Row>
-            <Text>
-              To get started, you might want to check out the following:
-              <ul>
-                <li><a href="https://dreamlegal.in">Our Website</a></li>
-              </ul>
-            </Text>
-          </Row>
-          <Row>
-            <Text>
-              If you have any questions or need assistance, feel free to reply to this email or contact our support team.
-            </Text>
-          </Row>
-          <Row>
-            <Text>
-              Best regards,<br />
-              The Dreamlegal Team
-            </Text>
-          </Row>
-        </Section>
-      </Html>
+      <Head>
+        <title>Welcome to DreamLegal!</title>
+        <Font
+          fontFamily="Roboto"
+          fallbackFontFamily="Verdana"
+          webFont={{
+            url: "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2",
+            format: "woff2",
+          }}
+          fontWeight={400}
+          fontStyle="normal"
+        />
+      </Head>
+      <Preview>Welcome to DreamLegal!</Preview>
+      <Section>
+        <Row>
+          <Heading as="h2">Hello,</Heading>
+        </Row>
+        <Row>
+          <Text>
+            Excited for you to be listed on our platform.
+          </Text>
+        </Row>
+        <Row>
+          <Text>
+            Now that you have logged in and created a profile, list your legal tech product through the <a href="#add-product-tab">"Add product" tab</a> on your dashboard. (Add product guide attached for your reference)
+          </Text>
+        </Row>
+        <Row>
+          <Text>
+            Check on the analytics and know user behavior for your product.
+          </Text>
+        </Row>
+        <Row>
+          <Text>
+            Keep calm, we are coming up with more analytics soon!
+          </Text>
+        </Row>
+        <Row>
+          <Text>
+            P.S. We love hearing from legal tech companies, hit me (or support) up with feedback or questions anytime.
+          </Text>
+        </Row>
+        <Row>
+          <Text>
+            Best regards,<br />
+            Ranjan Singhania<br />
+            Co-Founder, DreamLegal<br />
+            <a href="mailto:ranjan@dreamlegal.in">ranjan@dreamlegal.in</a>
+          </Text>
+        </Row>
+      </Section>
+    </Html>
+    
     );
   }

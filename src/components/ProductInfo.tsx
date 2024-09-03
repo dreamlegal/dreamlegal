@@ -63,7 +63,19 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Overview
         </h2>
 
-        {step === 2  &&  form1Pending==true && <Form2  form2Pending={form2Pending} setForm2Pending={setForm2Pending}  />}
+        {/* {step === 2  &&  form1Pending==true && <Form2  form2Pending={form2Pending} setForm2Pending={setForm2Pending}  />} */}
+        {step === 2 && (
+            !form1Pending ? (
+              <div>
+                <p style={{ color: 'red', fontWeight: 'bold' }}>
+                  Please fill out Form 1 first before proceeding to Form 2.
+                </p>
+              </div>
+            ) : (
+              <Form2 form2Pending={form2Pending} setForm2Pending={setForm2Pending} />
+            )
+          )}
+
 
         <h2
           onClick={() => {
@@ -77,7 +89,20 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Customer Segment
         </h2>
 
-        {step === 3  && form2Pending==true && <Form3 form3Pending={form3Pending} setForm3Pending={setForm3Pending}   />}
+        {/* {step === 3  && form2Pending==true && <Form3 form3Pending={form3Pending} setForm3Pending={setForm3Pending}   />} */}
+        {step === 3 && (
+          !form2Pending ? (
+            <div>
+              <p style={{ color: 'red', fontWeight: 'bold' }}>
+                Please fill out Form 2 and Other Previous Forms first before proceeding to Form 3.
+              </p>
+            </div>
+          ) : (
+            <Form3 form3Pending={form3Pending} setForm3Pending={setForm3Pending} />
+          )
+        )}
+
+
 
         <h2
           onClick={() => {
@@ -91,7 +116,19 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Process Lifecycle
         </h2>
 
-        {step === 4  && form3Pending==true && <Form4 form4Pending={form4Pending} setForm4Pending={setForm4Pending}/>}
+        {/* {step === 4  && form3Pending==true && <Form4 form4Pending={form4Pending} setForm4Pending={setForm4Pending}/>} */}
+
+        {step === 4 && (
+  !form3Pending ? (
+    <div>
+      <p style={{ color: 'red', fontWeight: 'bold' }}>
+        Please fill out Form 3 and Other Previous Forms  first before proceeding to Form 4.
+      </p>
+    </div>
+  ) : (
+    <Form4 form4Pending={form4Pending} setForm4Pending={setForm4Pending} />
+  )
+)}
 
         <h2
           onClick={() => {
@@ -105,7 +142,19 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Features
         </h2>
 
-        {step === 5  && form4Pending==true && <Form5 form5Pending={form5Pending} setForm5Pending={setForm5Pending} />}
+        {/* {step === 5  && form4Pending==true && <Form5 form5Pending={form5Pending} setForm5Pending={setForm5Pending} />} */}
+        {step === 5 && (
+  !form4Pending ? (
+    <div>
+      <p style={{ color: 'red', fontWeight: 'bold' }}>
+        Please fill out Form 4 and Other Previous Forms  first before proceeding to Form 5.
+      </p>
+    </div>
+  ) : (
+    <Form5 form5Pending={form5Pending} setForm5Pending={setForm5Pending} />
+  )
+)}
+
 
         <h2
           onClick={() => {
@@ -119,7 +168,18 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Pricing
         </h2>
 
-        {step === 6   && form5Pending==true && <Form6 form6Pending={form6Pending} setForm6Pending={setForm6Pending} />}
+        {/* {step === 6   && form5Pending==true && <Form6 form6Pending={form6Pending} setForm6Pending={setForm6Pending} />} */}
+        {step === 6 && (
+  !form5Pending ? (
+    <div>
+      <p style={{ color: 'red', fontWeight: 'bold' }}>
+        Please fill out Form 5 and Other Previous Forms  first before proceeding to Form 6.
+      </p>
+    </div>
+  ) : (
+    <Form6 form6Pending={form6Pending} setForm6Pending={setForm6Pending} />
+  )
+)}
 
         <h2
           onClick={() => {
@@ -133,7 +193,19 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Service and Support
         </h2>
 
-        {step === 7 && form6Pending==true && <Form7 form7Pending={form7Pending} setForm7Pending={setForm7Pending} />}
+        {/* {step === 7 && form6Pending==true && <Form7 form7Pending={form7Pending} setForm7Pending={setForm7Pending} />} */}
+        {step === 7 && (
+  !form6Pending ? (
+    <div>
+      <p style={{ color: 'red', fontWeight: 'bold' }}>
+        Please fill out Form 6 and Other Previous Forms  first before proceeding to Form 7.
+      </p>
+    </div>
+  ) : (
+    <Form7 form7Pending={form7Pending} setForm7Pending={setForm7Pending} />
+  )
+)}
+
 
         <h2
           onClick={() => {
@@ -147,7 +219,19 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           Post implementation service
         </h2>
 
-        {step === 8   && form7Pending==true && <Form8  form8Pending={form8Pending} setForm8Pending={setForm8Pending}/>}
+        {/* {step === 8   && form7Pending==true && <Form8  form8Pending={form8Pending} setForm8Pending={setForm8Pending}/>} */}
+        {step === 8 && (
+  !form7Pending ? (
+    <div>
+      <p style={{ color: 'red', fontWeight: 'bold' }}>
+        Please fill out Form 7 and Other Previous Forms  first before proceeding to Form 8.
+      </p>
+    </div>
+  ) : (
+    <Form8 form8Pending={form8Pending} setForm8Pending={setForm8Pending} />
+  )
+)}
+
 
         <h2
           onClick={() => {
@@ -161,7 +245,19 @@ function ProductInfo({ editing = false }: { editing: boolean }) {
           References
         </h2>
 
-        {step === 9  && form8Pending==true && <Form9 editing={editing}  />}
+        {/* {step === 9  && form8Pending==true && <Form9 editing={editing}  />} */}
+        {step === 9 && (
+  !form8Pending ? (
+    <div>
+      <p style={{ color: 'red', fontWeight: 'bold' }}>
+        Please fill out Form 8 and Other Previous Forms  first before proceeding to Form 9.
+      </p>
+    </div>
+  ) : (
+    <Form9 editing={editing} />
+
+  )
+)}
       </div>
       {step === 10 && (
         <>

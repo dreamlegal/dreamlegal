@@ -99,27 +99,20 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
           <IoIosArrowDown />
         </div>
       </div>
+
+
       <div className="font-clarity border rounded-md shadow hidden md:block  ">
-        <div className=" py-6 px-6 ">
-          <div className="flex flex-col justify-center items-center">
-            <Avatar>
-              <AvatarImage src={Image} />
-              <AvatarFallback>DI</AvatarFallback>
-            </Avatar>
-
-            <h3 className=" text-lg font-bold text-gray-900">
-              {AccountDetails?.name || "Default Name"}
-            </h3>
-          </div>
-
-          <div className="py-5">
-            <div className=" flex justify-between items-center">
+      
+         
+          
+            <div className="p-4 pl-4">
+            <div className=" flex justify-between pb-3 items-center">
               <h3
-                onClick={() => setCompDetails(!CompDetails)}
+               
                 className=" text-sm font-bold text-gray-900 flex gap-1 pr-5 items-center hover:cursor-pointer"
               >
-                <MdOutlineKeyboardArrowDown />
-                Organisation Details
+                
+                 Details
               </h3>
               <button
                 onClick={onEditClick}
@@ -128,15 +121,118 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
                 <HiOutlinePencil />
               </button>
             </div>
-            <div className="pt-4 pl-4">
+
               <ul
-                className={`mt-2 space-y-2 transition-all duration-200 ${
+                className={`mt-2 pb-2 space-y-2 transition-all duration-200 ${
+                  !CompDetails ? "hidden" : ""
+                }`}
+              >
+                
+                <li className="grid grid-cols-1 pr-5">
+                  {/* <MdAlternateEmail className="text-primary1" /> */}
+                  <p className=" text-sm text-slate-500">Email</p>
+                  <p className=" text-sm text-gray-900">
+                    {AccountDetails?.email}
+                  </p>
+                </li>
+
+                <li className="grid grid-cols-1 pr-5">
+                  {/* <MdAlternateEmail className="text-primary1" /> */}
+                  <p className=" text-sm text-slate-500">Designation</p>
+                  <p className=" text-sm text-gray-900">
+                    {profile?.Designation}
+                  </p>
+                </li>
+
+                <li className="grid grid-cols-1 pr-5">
+                  {/* <GoOrganization className="text-primary1" /> */}
+                  <p className=" text-sm text-slate-500">Organisation Name</p>
+                  <p className=" text-sm text-gray-900">
+                    {profile?.CompanyAddress}
+                  </p>
+                </li>
+                <li className="grid grid-cols-1 pr-5 ">
+                  {/* <TiWorldOutline className="text-primary1" /> */}
+                  <p className=" text-sm text-slate-500">Organisation Type</p>
+                  <p className=" text-sm text-gray-900">
+                    {profile?.CompanyType}
+                  </p>
+                </li>
+                <li className="grid grid-cols-1 pr-5">
+                  {/* <TiWorldOutline className="text-primary1" /> */}
+                  <p className=" text-sm text-slate-500">Team Size </p>
+                  <p className=" text-sm text-gray-900">{profile?.TeamSize}</p>
+                </li>
+                <li className="grid grid-cols-1 pr-5">
+                  {/* <TiWorldOutline className="text-primary1" /> */}
+                  <p className=" text-sm text-slate-500">Country</p>
+                  <p className=" text-sm text-gray-900">{profile?.Location}</p>
+                </li>
+
+               
+               
+
+                {skipped === "skipped" && (
+                  <li className="bg-red-100 px-4 py-2 rounded-md ">
+                    <span className="text-red-500 text-sm">
+                      Your Profile is not completed
+                    </span>
+                  </li>
+                )}
+
+                <li className="pt-4">
+                  <Link href={"/directory"}>
+                    <button className=" flex w-full gap-2 rounded-lg  px-4 py-2 bg-primary2 text-sm font-medium text-primary1 items-center">
+                      <FaStar />
+                      Add Review
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className=" flex w-full gap-2 rounded-lg  px-4 py-2 bg-primary1 text-sm font-medium text-white items-center"
+                  >
+                    <CiLogout />
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </div>
+  
+       
+      </div>
+
+      <div
+        className={`font-clarity border rounded-md shadow md:hidden ${
+          Account ? "block" : "hidden"
+        }`}
+      >
+         <div className="p-4 pl-4">
+            <div className=" flex justify-between pb-3 items-center">
+              <h3
+               
+                className=" text-sm font-bold text-gray-900 flex gap-1 pr-5 items-center hover:cursor-pointer"
+              >
+                
+                 Details
+              </h3>
+              <button
+                onClick={onEditClick}
+                className="text-primary1 text-sm grid grid-cols-2 pr-5"
+              >
+                <HiOutlinePencil />
+              </button>
+            </div>
+
+              <ul
+                className={`mt-2 pb-2 space-y-2 transition-all duration-200 ${
                   !CompDetails ? "hidden" : ""
                 }`}
               >
                 <li className="grid grid-cols-1 pr-5">
                   {/* <GoOrganization className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Company Name</p>
+                  <p className=" text-sm text-slate-500">Organisation Name</p>
                   <p className=" text-sm text-gray-900">
                     {profile?.CompanyAddress}
                   </p>
@@ -202,113 +298,6 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
                 </li>
               </ul>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        className={`font-clarity border rounded-md shadow md:hidden ${
-          Account ? "block" : "hidden"
-        }`}
-      >
-        <div className=" py-6 px-6 ">
-          <div className="flex flex-col justify-center items-center">
-            <Avatar>
-              <AvatarImage src={AccountDetails?.image} />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <h3 className=" text-lg font-bold text-gray-900">
-              {AccountDetails?.name}
-            </h3>
-            <p className=" text-sm text-slate-500">{AccountDetails?.email}</p>
-          </div>
-
-          <div className="py-5">
-            <div className=" flex justify-between items-center">
-              <h3
-                onClick={() => setCompDetails(!CompDetails)}
-                className=" text-sm font-bold text-gray-900 flex gap-2 pr-5 items-center hover:cursor-pointer"
-              >
-                <MdOutlineKeyboardArrowDown />
-                Organisation Details
-              </h3>
-              <button
-                onClick={onEditClick}
-                className="text-primary1 text-sm grid grid-cols-1 pr-5"
-              >
-                <HiOutlinePencil />
-              </button>
-            </div>
-            <div>
-              <ul
-                className={`mt-2 space-y-2 transition-all duration-200 ${
-                  !CompDetails ? "hidden" : ""
-                }`}
-              >
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <GoOrganization className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Company Name</p>
-                  <p className=" text-sm text-gray-900">
-                    {profile?.CompanyAddress}
-                  </p>
-                </li>
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <MdAlternateEmail className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Email</p>
-                  <p className=" text-sm text-gray-900">
-                    {AccountDetails?.email}
-                  </p>
-                </li>
-
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <MdAlternateEmail className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Designation</p>
-                  <p className=" text-sm text-gray-900">
-                    {profile?.Designation}
-                  </p>
-                </li>
-
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <TiWorldOutline className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Country</p>
-                  <p className=" text-sm text-gray-900">{profile?.Location}</p>
-                </li>
-
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <TiWorldOutline className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">Type</p>
-                  <p className=" text-sm text-gray-900">
-                    {profile?.CompanyType}
-                  </p>
-                </li>
-                <li className="grid grid-cols-1 pr-5">
-                  {/* <TiWorldOutline className="text-primary1" /> */}
-                  <p className=" text-sm text-slate-500">ComPany Size </p>
-                  <p className=" text-sm text-gray-900">{profile?.TeamSize}</p>
-                </li>
-
-                <li>
-                  <Link href={"/directory"}>
-                    {" "}
-                    <button className=" flex w-full gap-2 rounded-lg  px-4 py-2 bg-primary2 text-sm font-medium text-primary1 items-center">
-                      <FaStar />
-                      Add Review
-                    </button>
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    onClick={handleLogout}
-                    className=" flex w-full gap-2 rounded-lg  px-4 py-2 bg-primary1 text-sm font-medium text-white items-center"
-                  >
-                    <CiLogout />
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
       </div>
     </>
   );

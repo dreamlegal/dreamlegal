@@ -665,7 +665,7 @@ function PageComponent({ data }: any) {
                   <div className="bg-primary2/40 px-5 py-3 rounded-2xl">
                     <div className="flex  gap-2 items-center">
                       <h2 className=" text-lg font-bold text-gray-900 mb-2">
-                        Company Overview
+                        Product Brief 
                       </h2>
                       <TooltipProvider>
                         <Tooltip>
@@ -679,7 +679,7 @@ function PageComponent({ data }: any) {
                       </TooltipProvider>
                     </div>
                     <p className=" text-sm text-slate-500">
-                      {company.overview}
+                      {product.description}
                     </p>
                   </div>
 
@@ -1285,7 +1285,7 @@ function PageComponent({ data }: any) {
               Similar products
             </h2>
             <div className="flex flex-col  gap-3 md:px-2 my-5">
-              <ProductCompareCard />
+              <ProductCompareCard  />
               <ProductCompareCard />
               <ProductCompareCard />
             </div>

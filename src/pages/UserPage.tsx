@@ -39,26 +39,71 @@ function UserPage({ data }: any) {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 px-4">
-      <div className="col-span-1">
-        <div style={{ maxWidth: "100%" }}>
-          <UserProfile
-            data={data}
-            onEditClick={handleEditClick}
-            onChangePassword={handlePasswordClick}
-          />
-        </div>
-      </div>
-      <div className="col-span-4">
-        <ScrollArea className="h-screen px-5">
-          {view === "dashboard" && <UserDashboard />}
-          {view === "edit" && (
-            <EditUser data={data} onCloseEdit={handleCloseEdit} />
-          )}
-          {view === "change-password" && <ChangePass />}
-        </ScrollArea>
+    // <div className="grid grid-cols-1 md:grid-cols-5 px-4">
+    //   <div className="col-span-1">
+    //     <div style={{ maxWidth: "100%" }}>
+    //       <UserProfile
+    //         data={data}
+    //         onEditClick={handleEditClick}
+    //         onChangePassword={handlePasswordClick}
+    //       />
+    //     </div>
+    //   </div>
+    //   <div className="col-span-4">
+    //     <ScrollArea className="h-screen px-5">
+    //       {view === "dashboard" && <UserDashboard />}
+    //       {view === "edit" && (
+    //         <EditUser data={data} onCloseEdit={handleCloseEdit} />
+    //       )}
+    //       {view === "change-password" && <ChangePass />}
+    //     </ScrollArea>
+    //   </div>
+    // </div>
+//     <div className="flex flex-row justify-center w-full h-screen">
+//     <div className="flex w-[90%] h-full">
+//       <div className="w-[25%] h-full">
+//         <div className="h-full p-5">
+//           <UserProfile
+//             data={data}
+//             onEditClick={handleEditClick}
+//             onChangePassword={handlePasswordClick}
+//           />
+//         </div>
+//       </div>
+//       <div className="w-[75%] h-full">
+//         <ScrollArea className="h-full px-5">
+//           {view === "dashboard" && <UserDashboard />}
+//           {view === "edit" && (
+//             <EditUser data={data} onCloseEdit={handleCloseEdit} />
+//           )}
+//           {view === "change-password" && <ChangePass />}
+//         </ScrollArea>
+//       </div>
+//     </div>
+// </div>
+
+<div className="flex flex-col md:flex-row justify-center w-full min-h-screen">
+  <div className="flex flex-col md:flex-row w-full md:w-[90%] h-full">
+    <div className="w-full md:w-[25%] h-full">
+      <div className="h-full p-5">
+        <UserProfile
+          data={data}
+          onEditClick={handleEditClick}
+          onChangePassword={handlePasswordClick}
+        />
       </div>
     </div>
+    <div className="w-full md:w-[75%] h-full">
+      <ScrollArea className="h-full px-5">
+        {view === "dashboard" && <UserDashboard />}
+        {view === "edit" && (
+          <EditUser data={data} onCloseEdit={handleCloseEdit} />
+        )}
+        {view === "change-password" && <ChangePass />}
+      </ScrollArea>
+    </div>
+  </div>
+</div>
   );
 }
 

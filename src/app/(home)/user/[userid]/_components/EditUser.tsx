@@ -144,61 +144,8 @@ function EditUser({ data, onCloseEdit }: any) {
         </div>
 
         <form onSubmit={handleSubmit} className="mt-8 grid grid-cols-6 gap-6">
-          <div className="col-span-6 ">
-            <label
-              htmlFor="Location"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Profile Image <span className="text-slate-400">optional</span>
-            </label>
+         
 
-            <Input
-              type="file"
-              id="ProfileImage"
-              name="ProfileImage"
-              accept="image/*"
-              onChange={handleChange}
-              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            />
-          </div>
-
-          <div className="col-span-6 sm:col-span-3">
-            <label
-              htmlFor="CompanyAddress"
-              className="block text-sm font-medium text-gray-700"
-            >
-              {" "}
-              Company Name{" "}
-            </label>
-
-            <input
-              type="text"
-              id="CompanyAddress"
-              name="CompanyAddress"
-              required
-              value={formData.CompanyAddress}
-              onChange={handleChange}
-              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            />
-          </div>
-          <div className="col-span-6 sm:col-span-3">
-            <label
-              htmlFor="Location"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Country
-            </label>
-
-            <input
-              type="text"
-              id="Location"
-              required
-              name="Location"
-              value={formData.Location}
-              onChange={handleChange}
-              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            />
-          </div>
 
           <div className="col-span-6 sm:col-span-3">
             <label
@@ -219,13 +166,35 @@ function EditUser({ data, onCloseEdit }: any) {
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
             />
           </div>
+          <div className="col-span-6 sm:col-span-3">
+            <label
+              htmlFor="CompanyAddress"
+              className="block text-sm font-medium text-gray-700"
+            >
+              {" "}
+              Organisation Name{" "}
+            </label>
+
+            <input
+              type="text"
+              id="CompanyAddress"
+              name="CompanyAddress"
+              required
+              value={formData.CompanyAddress}
+              onChange={handleChange}
+              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+            />
+          </div>
+        
+
+         
 
           <div className="col-span-6 sm:col-span-3">
             <label
               htmlFor="CompanyType"
               className="block text-sm font-medium text-gray-700"
             >
-              Company Type
+              Organisation Type
             </label>
 
             <select
@@ -269,6 +238,24 @@ function EditUser({ data, onCloseEdit }: any) {
                 </option>
               ))}
             </select>
+          </div>
+          <div className="col-span-6 sm:col-span-3">
+            <label
+              htmlFor="Location"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Country
+            </label>
+
+            <input
+              type="text"
+              id="Location"
+              required
+              name="Location"
+              value={formData.Location}
+              onChange={handleChange}
+              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+            />
           </div>
 
           <div className="col-span-6 sm:flex sm:items-center sm:gap-4">

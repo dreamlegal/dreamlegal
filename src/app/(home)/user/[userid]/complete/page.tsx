@@ -247,7 +247,26 @@ function Complete() {
                   onSubmit={handleSubmit}
                   className="mt-8 grid grid-cols-6 gap-6"
                 >
-                
+                 <div className="col-span-6 sm:col-span-3">
+                    <label
+                      htmlFor="Designation"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      {" "}
+                      Designation{" "}
+                    </label>
+
+                    <input
+                      type="text"
+                      id="Designation"
+                      required
+                      name="Designation"
+                      value={formData.Designation}
+                      onChange={handleChange}
+                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                    />
+                  </div>
+
                    <div className="col-span-6 sm:col-span-3">
                     <label
                       htmlFor="CompanyAddress"
@@ -268,50 +287,11 @@ function Complete() {
                     />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="Location"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Country
-                    </label>
-
-                    <select
-                      name="Location"
-                      value={formData.Location}
-                      onChange={handleChange}
-                      className="w-full p-2 border border-gray-300 rounded text-gray-600"
-                    >
-                      <option value="" className="text-gray-400">Select Country</option>
-                      {countries.map((type) => (
-                        <option key={type} value={type}>
-                          {type}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                 
 
               
 
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="Designation"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      {" "}
-                      Designation{" "}
-                    </label>
-
-                    <input
-                      type="text"
-                      id="Designation"
-                      required
-                      name="Designation"
-                      value={formData.Designation}
-                      onChange={handleChange}
-                      className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                    />
-                  </div>
+                 
 
                   <div className="col-span-6 sm:col-span-3">
                     <label
@@ -363,6 +343,28 @@ function Complete() {
                     </select>
 
                    
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label
+                      htmlFor="Location"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Country
+                    </label>
+
+                    <select
+                      name="Location"
+                      value={formData.Location}
+                      onChange={handleChange}
+                      className="w-full p-2 border border-gray-300 rounded text-gray-600"
+                    >
+                      <option value="" className="text-gray-400">Select Country</option>
+                      {countries.map((type) => (
+                        <option key={type} value={type}>
+                          {type}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                 

@@ -94,10 +94,11 @@ function UserSignup() {
           ? localStorage.setItem("userEmail", data.user.email)
           : null;
         alert("OTP verified successfully");
-        const emailSent = await fetch("/api/send-email", {
+        const emailSent = await fetch("/api/senwelcome", {
           method: "POST",
+          body: JSON.stringify({ email: formData.email, name: formData.name }),
         });
-        alert("Email sent successfully");
+        // alert("Email sent successfully");
         router.push(`/user/${data.user.id}/complete`);
       } else {
         setError("Failed to verify OTP");

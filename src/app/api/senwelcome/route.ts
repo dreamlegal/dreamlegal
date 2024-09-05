@@ -7,6 +7,7 @@ import WelcomeEmail from "../../../../email/WelcomeEmail";
 
 export async function POST(request: Request) {
   const { name, email } = await request.json();
+  console.log(name, email);
 
   const transporter = nodemailer.createTransport({
     service: "gmail", // You can use other services

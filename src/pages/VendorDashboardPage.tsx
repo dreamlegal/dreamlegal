@@ -9,6 +9,8 @@ import VendorReview from "@/components/VendorReview";
 import VendorProfile from "@/components/VendorProfile";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { RiMenu2Line } from "react-icons/ri";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 function VendorDashboardPage({ verified }: { verified: boolean }) {
   const [selectedMenu, setSelectedMenu] = useState("allProducts");
@@ -147,7 +149,10 @@ function VendorDashboardPage({ verified }: { verified: boolean }) {
                   </div>
                 </div>
 
-                <div className="relative ml-auto">
+                <div className="relative ml-auto flex items-center gap-4">
+                  <Link href={"/directory"}>
+                    <Button variant={"outline"}>Directory</Button>
+                  </Link>
                   <IoIosNotificationsOutline
                     className="text-2xl cursor-pointer"
                     onClick={handleBellClick}

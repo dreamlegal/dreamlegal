@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FaEye } from "react-icons/fa";
 
 function VendorSignup() {
   const router = useRouter();
@@ -44,7 +45,7 @@ function VendorSignup() {
 
     try {
       setPending(true);
-     
+
       const response = await fetch("/api/sign-up", {
         method: "POST",
         headers: {
@@ -127,6 +128,11 @@ function VendorSignup() {
     }
   };
 
+  const [show, setShow] = useState(false);
+  const handleEye = () => {
+    setShow(!show);
+  };
+
   return (
     <>
       {pending ? (
@@ -180,25 +186,37 @@ function VendorSignup() {
                       placeholder="Enter your email"
                     />
                   </div>
-                  <div>
+                  <div className="relative">
                     <Label htmlFor="password">Password</Label>
                     <Input
-                      type="password"
+                      type={show ? "text" : "password"}
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
                       placeholder="Enter your Password"
                     />
+                    <div
+                      className="absolute right-[5%] top-[52%] cursor-pointer"
+                      onClick={handleEye}
+                    >
+                      <FaEye className="size-5" />
+                    </div>
                   </div>
-                  <div>
+                  <div className="relative">
                     <Label htmlFor="confirmPassword">Confirm Password</Label>
                     <Input
-                      type="password"
+                      type={show ? "text" : "password"}
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       placeholder="Enter your Password Again"
                     />
+                    <div
+                      className="absolute right-[5%] top-[52%] cursor-pointer"
+                      onClick={handleEye}
+                    >
+                      <FaEye className="size-5" />
+                    </div>
                   </div>
                   <div className="flex gap-3 items-center my-3">
                     <Input

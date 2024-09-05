@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FaEye } from "react-icons/fa";
 
 function UserSignin() {
   const router = useRouter();
@@ -41,7 +42,9 @@ function UserSignin() {
 
         // Save the user ID in localStorage if available in the response
         if (data.user && data.user.id) {
-          typeof window !== "undefined" ? localStorage.setItem("userId", data.user.id) : null;
+          typeof window !== "undefined"
+            ? localStorage.setItem("userId", data.user.id)
+            : null;
           typeof window !== "undefined" ? localStorage.getItem("userId") : null;
         }
 
@@ -56,6 +59,11 @@ function UserSignin() {
     }
   };
 
+  const [show, setShow] = useState(false);
+  const handleEye = () => {
+    setShow(!show);
+  };
+
   return (
     <div className="font-clarity">
       <form onSubmit={handleSubmit}>
@@ -68,7 +76,7 @@ function UserSignin() {
           <FcGoogle />
           Continue with Google
         </Button>
-          <p className="text-center text-gray-800">or</p>
+        <p className="text-center text-gray-800">or</p>
         <hr />
 
         <div>
@@ -82,15 +90,21 @@ function UserSignin() {
           />
         </div>
 
-        <div>
+        <div className="relative">
           <Label htmlFor="password">Password</Label>
           <Input
-            type="password"
+            type={show ? "text" : "password"}
             name="password"
             value={formData.password}
             onChange={handleChange}
             placeholder="Enter your Password"
           />
+          <div
+            className="absolute right-[5%] top-[52%] cursor-pointer"
+            onClick={handleEye}
+          >
+            <FaEye className="size-5" />
+          </div>
         </div>
 
         <Button className="w-full bg-primary1 my-4" type="submit">
@@ -98,8 +112,6 @@ function UserSignin() {
         </Button>
 
         <hr />
-
-   
       </form>
 
       <p className="text-center">

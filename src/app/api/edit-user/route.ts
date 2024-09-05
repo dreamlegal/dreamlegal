@@ -15,6 +15,7 @@ export async function POST(request: Request) {
       editing,
       name,
       email,
+      TeamSize,
     } = await request.json();
 
     const existingProfile = await prisma.user.findFirst({
@@ -54,8 +55,6 @@ export async function POST(request: Request) {
             CompanyAddress,
             CompanyEmail,
           },
-          
-
         });
         return new Response(
           JSON.stringify({
@@ -81,6 +80,23 @@ export async function POST(request: Request) {
             CompanyEmail,
           },
         });
+
+        // Update TeamSize in the CompanyInfo table
+        const companyInfo = await prisma.companyInfo.findFirst({
+          where: {
+            userId: userId,
+          },
+        });
+        if (companyInfo) {
+          await prisma.companyInfo.update({
+            where: {
+              id: companyInfo.id,
+            },
+            data: {
+              TeamSize,
+            },
+          });
+        }
       }
 
       // Update name and email in the user table if provided
@@ -99,7 +115,9 @@ export async function POST(request: Request) {
       return new Response(
         JSON.stringify({
           success: true,
-          msg: getUser ? "Profile updated successfully" : "Profile created successfully",
+          msg: getUser
+            ? "Profile updated successfully"
+            : "Profile created successfully",
           profile: getUser,
         }),
         { status: 200 }

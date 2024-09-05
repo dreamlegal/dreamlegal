@@ -27,6 +27,12 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    const company = await prisma.companyInfo.findFirst({
+      where: {
+        userId: userProfile?.userId,
+      },
+    });
+
     if (profile && (profile.skip === true || profile.skip !== null)) {
       if (!userProfile) {
         return new Response(
@@ -43,6 +49,7 @@ export async function GET(request: NextRequest) {
             success: true,
             profile: userProfile,
             account: profile,
+            company: company,
           }),
           { status: 200 }
         );

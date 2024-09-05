@@ -39,6 +39,7 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
   const [CompDetails, setCompDetails] = useState(true);
   const [Account, setAccount] = useState(false);
   const [profile, setProfile] = useState<profile | null>(data.profile);
+  const [company, setCompany] = useState<any | null>(data.company);
   const [skipped, setSkipped] = useState(data.profile);
   const [AccountDetails, setAccountDetails] = useState<Account | null>(
     data.account
@@ -148,7 +149,7 @@ function UserProfile({ data, onEditClick, onChangePassword }: any) {
             <li className="grid grid-cols-1 pr-5">
               {/* <TiWorldOutline className="text-primary1" /> */}
               <p className=" text-sm text-slate-500">Team Size </p>
-              <p className=" text-sm text-gray-900">{profile?.TeamSize}</p>
+              <p className=" text-sm text-gray-900">{company?.TeamSize}</p>
             </li>
             <li className="grid grid-cols-1 pr-5">
               {/* <TiWorldOutline className="text-primary1" /> */}

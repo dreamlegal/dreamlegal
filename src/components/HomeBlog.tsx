@@ -2,7 +2,6 @@ import React from "react";
 import BlogCarosel from "./BlogCarosel";
 
 function HomeBlog() {
-
   return (
     <div className=" bg-[#f8f8fb] w-full py-10">
       <div className="px-4 py-10 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-10 font-clarity">
@@ -11,7 +10,8 @@ function HomeBlog() {
             <div className=" ">
               <h2 className=" text-3xl font-bold ">Article & resources</h2>
               <p className=" text-sm text-slate-500 ">
-                Explore legal tech articles, surveys, reports, events and case studies.
+                Explore legal tech articles, surveys, reports, events and case
+                studies.
               </p>
               <div className=" w-full  mt-5 ">
                 <a href="https://blog.dreamlegal.in">
@@ -22,7 +22,7 @@ function HomeBlog() {
               </div>
             </div>
           </div>
-          <div className=" col-span-2">
+          <div className="col-span-2">
             <BlogCarosel />
           </div>
         </div>

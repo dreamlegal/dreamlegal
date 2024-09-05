@@ -41,18 +41,22 @@ function BlogCarosel() {
   useEffect(() => {
     async function fetchBlogs() {
       try {
-        const response = await fetch("https://blog.dreamlegal.in/wp-json/wp/v2/posts");
+        const response = await fetch(
+          "https://blog.dreamlegal.in/wp-json/wp/v2/posts"
+        );
         const blogData: BlogPost[] = await response.json();
         setBlogs(blogData);
 
         // Fetch media for each blog post
         const mediaPromises = blogData.map(async (blog) => {
           if (blog.featured_media) {
-            const mediaResponse = await fetch(`https://blog.dreamlegal.in/wp-json/wp/v2/media/${blog.featured_media}`);
+            const mediaResponse = await fetch(
+              `https://blog.dreamlegal.in/wp-json/wp/v2/media/${blog.featured_media}`
+            );
             const mediaData: MediaItem = await mediaResponse.json();
             return { id: blog.featured_media, url: mediaData.source_url };
           }
-          return { id: null, url: '' };
+          return { id: null, url: "" };
         });
 
         // Wait for all media requests to complete
@@ -64,21 +68,24 @@ function BlogCarosel() {
         setMedia(mediaMap);
 
         // Fetch categories
-        const categoryIds = Array.from(new Set(blogData.flatMap(blog => blog.categories)));
-        const categoryPromises = categoryIds.map(id => 
+        const categoryIds = Array.from(
+          new Set(blogData.flatMap((blog) => blog.categories))
+        );
+        const categoryPromises = categoryIds.map((id) =>
           fetch(`https://blog.dreamlegal.in/wp-json/wp/v2/tags/${id}`)
         );
-        
+
         const categoryResponses = await Promise.all(categoryPromises);
-        const categoryData = await Promise.all(categoryResponses.map(res => res.json()));
+        const categoryData = await Promise.all(
+          categoryResponses.map((res) => res.json())
+        );
 
         const categoryMap = categoryData.reduce((acc, category: Category) => {
           acc[category.id] = category.name;
           return acc;
         }, {} as Record<number, string>);
-        
-        setCategories(categoryMap);
 
+        setCategories(categoryMap);
       } catch (error) {
         console.error("Failed to fetch blogs:", error);
       }
@@ -93,28 +100,33 @@ function BlogCarosel() {
         <div className="embla__container">
           {blogs.map((blog) => {
             const firstCategoryId = blog.categories[0];
-            const firstCategory = firstCategoryId ? categories[firstCategoryId] : 'Unknown';
+            const firstCategory = firstCategoryId
+              ? categories[firstCategoryId]
+              : "Unknown";
             return (
               <div key={blog.id} className="embla__slide">
                 <BlogCard
                   blog={blog}
-                  mediaUrl={media[blog.featured_media] || 'https://via.placeholder.com/600x400'}
-                  category={firstCategory}
+                  mediaUrl={
+                    media[blog.featured_media] ||
+                    "https://via.placeholder.com/600x400"
+                  }
+                  category={"DreamLegal"}
                 />
               </div>
             );
           })}
         </div>
       </div>
-      <div className="absolute inset-0 flex items-center justify-between px-4 z-50">
+      <div className=" inset-0 flex items-center justify-between px-4">
         <button
-          className="embla__prev bg-gray-900/45 h-10 w-10 md:h-16 md:w-16 rounded-full flex justify-center items-center z-10" // Ensure z-index is high
+          className="absolute left-0 top-[50%] embla__prev bg-gray-900/45 h-10 w-10 md:h-16 md:w-16 rounded-full flex justify-center items-center z-10" // Ensure z-index is high
           onClick={scrollPrev}
         >
           <IoArrowBack className="text-[22px] text-white" />
         </button>
         <button
-          className="embla__next bg-gray-900/45 h-10 w-10 md:h-16 md:w-16 rounded-full flex justify-center items-center z-10" // Ensure z-index is high
+          className="absolute right-0 top-[50%] embla__next bg-gray-900/45 h-10 w-10 md:h-16 md:w-16 rounded-full flex justify-center items-center z-10" // Ensure z-index is high
           onClick={scrollNext}
         >
           <IoArrowForward className="text-[22px] text-white" />

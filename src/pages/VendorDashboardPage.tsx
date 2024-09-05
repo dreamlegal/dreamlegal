@@ -174,7 +174,10 @@ function VendorDashboardPage({ verified }: { verified: boolean }) {
             </div>
             <div className=" px-5">
               {selectedMenu === "Dashboard" && (
-                <VendorDashborad productId={productId!} />
+                <VendorDashborad
+                  productId={productId!}
+                  allProducts={products}
+                />
               )}
               {selectedMenu === "AddProduct" && <AddProduct />}
               {selectedMenu === "allProducts" && (

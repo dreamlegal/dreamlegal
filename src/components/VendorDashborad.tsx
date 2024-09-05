@@ -26,8 +26,10 @@ interface DashboardData {
   country: Record<string, number>;
 }
 
-function VendorDashboard({ productId }: any) {
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+function VendorDashboard({ productId, allProducts }: any) {
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [features, setFeatures] = useState([]);
@@ -38,7 +40,7 @@ function VendorDashboard({ productId }: any) {
   const [productId2, setProductId] = useState<string | null>(null);
 
   // @ts-ignore
-  const verify = searchParams.get('verified') ? true : false;
+  const verify = searchParams.get("verified") ? true : false;
 
   useEffect(() => {
     async function fetchDashboardData(productId: any) {
@@ -69,10 +71,10 @@ function VendorDashboard({ productId }: any) {
 
     async function fetchMoreDetails() {
       try {
-        const response = await fetch('/api/more-details-productid', {
-          method: 'POST',
+        const response = await fetch("/api/more-details-productid", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ productId }),
         });
@@ -84,10 +86,10 @@ function VendorDashboard({ productId }: any) {
           setAnalytics(data.analytics);
           settotalClick(data.totalClicks);
         } else {
-          console.error('Failed to fetch data:', data.msg);
+          console.error("Failed to fetch data:", data.msg);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
         setLoading(false);
       } finally {
         setLoading(false);
@@ -100,16 +102,21 @@ function VendorDashboard({ productId }: any) {
     }
   }, [productId]);
 
-
   if (verify) {
     return (
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 text-center">Please complete your profile</h1>
-        <center> <span className="text-sm text-slate-500 text-center">You need to complete your profile, By clicking on profile</span></center>
+        <h1 className="text-3xl font-bold text-gray-900 text-center">
+          Please complete your profile
+        </h1>
+        <center>
+          {" "}
+          <span className="text-sm text-slate-500 text-center">
+            You need to complete your profile, By clicking on profile
+          </span>
+        </center>
       </div>
-    )
+    );
   }
-
 
   if (loading) {
     return <div>Loading...</div>;
@@ -123,10 +130,11 @@ function VendorDashboard({ productId }: any) {
     series: [
       {
         name: `Product ${dashboardData?.analytics.productId}`,
-        data: dashboardData?.analytics.data.map((item) => ({
-          x: item.x,
-          y: item.y,
-        })) || [],
+        data:
+          dashboardData?.analytics.data.map((item) => ({
+            x: item.x,
+            y: item.y,
+          })) || [],
       },
     ],
   };
@@ -148,7 +156,7 @@ function VendorDashboard({ productId }: any) {
             onChange={handleProductChange}
             className="border border-gray-300 rounded-md p-2 w-[200px]"
           >
-            {products.map((product) => (
+            {allProducts.map((product: any) => (
               <option key={product.id} value={product.id}>
                 {product.name}
               </option>
@@ -162,7 +170,6 @@ function VendorDashboard({ productId }: any) {
           total={`${dashboardData?.totalViews || 0}`}
           rate="0.43%"
           levelUp
-
         >
           <FaRegEye className="fill-primary1 h-6 w-6" />
         </CardDataStats>
@@ -209,18 +216,25 @@ function VendorDashboard({ productId }: any) {
                 const featureName = Object.keys(feature)[0];
                 const featureValue = feature[featureName];
                 return (
-                  <div key={index} className="w-full flex gap-2 items-center mt-4">
+                  <div
+                    key={index}
+                    className="w-full flex gap-2 items-center mt-4"
+                  >
                     <span className="text-sm text-gray-600">{featureName}</span>
-                    <Progress value={calculatePercentage(featureValue, total)} className="w-[60%] h-1" />
+                    <Progress
+                      value={calculatePercentage(featureValue, total)}
+                      className="w-[60%] h-1"
+                    />
                     <span className="text-sm text-gray-400">
-
                       {calculatePercentage(featureValue, total).toFixed(2)}%
                     </span>
                   </div>
                 );
               })}
             </div>
-            {totalClick === 0 && <p className="text-sm text-gray-500 italic">No data available</p>}
+            {totalClick === 0 && (
+              <p className="text-sm text-gray-500 italic">No data available</p>
+            )}
           </div>
         </div>
         <div className="col-span-12 lg:col-span-6 font-clarity">
@@ -229,11 +243,22 @@ function VendorDashboard({ productId }: any) {
             {/* <span className="text-sm text-gray-500 italic">Your traffic user distributions</span> */}
             <div>
               {analytics.map((analytic: any, index) => {
-                const total = analytics.reduce((sum: any, a: any) => sum + a.count, 0);
+                const total = analytics.reduce(
+                  (sum: any, a: any) => sum + a.count,
+                  0
+                );
                 return (
-                  <div key={index} className="w-full flex gap-2 items-center mt-4">
-                    <span className="text-sm text-gray-600">{analytic.companyType}</span>
-                    <Progress value={calculatePercentage(analytic.count, total)} className="w-[60%] h-1" />
+                  <div
+                    key={index}
+                    className="w-full flex gap-2 items-center mt-4"
+                  >
+                    <span className="text-sm text-gray-600">
+                      {analytic.companyType}
+                    </span>
+                    <Progress
+                      value={calculatePercentage(analytic.count, total)}
+                      className="w-[60%] h-1"
+                    />
                     <span className="text-sm text-gray-400">
                       {calculatePercentage(analytic.count, total).toFixed(2)}%
                     </span>
@@ -241,7 +266,11 @@ function VendorDashboard({ productId }: any) {
                 );
               })}
 
-              {analytics.length === 0 && <p className="text-sm text-gray-500 italic">No data available</p>}
+              {analytics.length === 0 && (
+                <p className="text-sm text-gray-500 italic">
+                  No data available
+                </p>
+              )}
             </div>
           </div>
         </div>

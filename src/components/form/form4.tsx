@@ -221,7 +221,7 @@ function Form4({form4Pending, setForm4Pending }: FormProps) {
                     "Review",
                     "Organize",
                     "Access management",
-                    "Retrival",
+                    "Retrieval",
                   ].map((crm) => (
                     <div key={crm} className="items-top flex space-x-2 mt-2">
                       <Input

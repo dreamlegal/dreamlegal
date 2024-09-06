@@ -16,6 +16,7 @@ export function Testomonial() {
         items={testimonials}
         direction="right"
         speed="normal"
+        
       />
       <InfiniteMovingCards
         items={testimonials}
@@ -28,28 +29,40 @@ export function Testomonial() {
 
 const testimonials = [
   {
-    location: "London, UK",
-    name: "Charles Dickens",
-    title: "A Tale of Two Cities",
+    location: "India",
+    name: "Sohini Shrivastava ",
+    title: "Lexo Consultancy Private Limited",
+    image:"/t1.jpg",
   },
   {
-    location: "London, UK",
-    name: "William Shakespeare",
-    title: "Hamlet",
+    location: "Nigeria",
+    name: "Ibrahim Sule",
+    title: "Elaws Consulting Nigeria Ltd.",
+    image:"/t2.jpg",
   },
   {
-    location: "Mumbai, India",
-    name: "Edgar Allan Poe",
-    title: "A Dream Within a Dream",
+    location: "India",
+    name: "Avdhesh Varshney",
+    title: "Justicewings Lexedge Solutions LLP",
+    image:"/t3.jpg",
   },
   {
-    location: "Benguluru, India",
-    name: "Jane Austen",
-    title: "Pride and Prejudice",
+    location: "Nigeria",
+    name: "Ibrahim Sule",
+    title: "Elaws Consulting Nigeria Ltd.",
+    image:"/t2.jpg",
   },
   {
-    location: "Chennai, India",
-    name: "Herman Melville",
-    title: "Moby-Dick",
+    location: "India",
+    name: "Sohini Shrivastava ",
+    title: "Lexo Consultancy Private Limited",
+    image:"/t1.jpg",
+  },
+  
+  {
+    location: "India",
+    name: "Avdhesh Varshney",
+    title: "Justicewings Lexedge Solutions LLP",
+    image:"/t3.jpg",
   },
 ];

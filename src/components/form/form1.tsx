@@ -24,22 +24,7 @@ import {
 import { useStepContext } from "@/context/formContext";
 
 import { useState, useEffect } from 'react';
-// import * as z from 'zod';
 
-// // Define your Zod schema here
-// const formSchema = z.object({
-//   prname: z.string().min(1, "Product Name is required"),
-//   logo: z.any().optional(),
-//   category: z.array(z.string()).nonempty("At least one category must be selected"),
-//   deployment: z.array(z.string()).nonempty("At least one deployment option must be selected"),
-//   mobileAccessibility: z.enum(["yes", "no"]),
-//   adoptionPeriod: z.string().min(1, "Adoption period is required"),
-//   adoptionPeriodUnit: z.enum(["days", "months", "years"]),
-//   languages: z.array(z.string()).nonempty("At least one language must be selected"),
-//   securityCertificate: z.string().min(1, "Security Certificate is required"),
-//   integrations: z.array(z.string()).nonempty("At least one integration must be selected"),
-//   focusCountries: z.array(z.string()).max(5, "You can select a maximum of 5 countries"),
-// });
 interface FormProps {
   
   form1Pending: boolean;
@@ -49,55 +34,7 @@ interface FormProps {
 function Form1({form1Pending, setForm1Pending }: FormProps) {
   
   const { formValues, setFormValues } = useFormContext();
-  // const [formmValues, setFormmValues] = useState({
-  //   prname: "",
-  //   logo: null,
-  //   category: [],
-  //   deployment: [],
-  //   mobileAccessibility: "no",
-  //   adoptionPeriod: "",
-  //   adoptionPeriodUnit: "days",
-  //   languages: [],
-  //   securityCertificate: "",
-  //   integrations: [],
-  //   focusCountries: [],
-  // });
-  // const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  // const validateForm = () => {
-  //   const validationErrors: Record<string, string> = {};
-
-
-  
-  
-  //   const result = formSchema.safeParse(formmValues);
-  //   if (!result.success) {
-  //     result.error.errors.forEach((error) => {
-  //       if (error.path.length > 0) {
-  //         validationErrors[error.path[0].toString()] = error.message;
-  //       }
-  //     });
-  //     setErrors(validationErrors);
-  //     setForm1Pending(false); // Set to false if validation fails
-  //   } else {
-  //     setErrors({});
-  //   }
-
-  //   return result.success;
-  // };
-
-  // const validateField = (name: string, value: any) => {
-  //   const result = formSchema.safeParse({ [name]: value });
-  //   if (!result.success) {
-  //     setForm1Pending(false); // Set to false if validation fails
-  //     return result.error.errors[0]?.message || "Invalid value";
-  //   }
-  //   return "";
-  // };
-
-  // useEffect(() => {
-  //   validateForm();
-  // }, [formmValues]);
 
 
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
@@ -700,15 +637,79 @@ function Form1({form1Pending, setForm1Pending }: FormProps) {
             />
           </div>
           {/* Product Logo */}
+          {/* {formValues.logo && typeof formValues.logo === 'object' && (
+            <div className="mt-2">
+              <img
+                src={URL.createObjectURL(formValues.logo)} // Create a URL for the uploaded image
+                alt="Selected Logo"
+                className="h-20 w-20 object-cover"
+              />
+            </div>
+          )}
+
           <div className="mt-2">
             <Label htmlFor="logo">Product Logo</Label>
+           
             <Input
               name="logo"
               type="file"
               placeholder="Logo"
+              
+              
               onChange={handleChange}
             />
+          </div> */}
+ 
+ <div className="mt-2">
+            <Label className="prname">Product Name</Label>
+  
+  <div>
+      {formValues.logo && typeof formValues.logo === 'object' ? (
+        <>
+          {/* Image preview if logo is uploaded */}
+          
+          <div className="mt-2">
+            <img
+              src={URL.createObjectURL(formValues.logo)} // Create a URL for the uploaded image
+              alt="Selected Logo"
+              className="h-20 w-20 object-cover"
+            />
           </div>
+          <label
+            htmlFor="logoInput"
+            className="block mt-4 py-2 px-4 bg-blue-500 text-white rounded-lg cursor-pointer text-center hover:bg-blue-600"
+          >
+            Reselect file
+          </label>
+          <input
+            id="logoInput"
+            name="logo"
+            type="file"
+            style={{ display: 'none' }} // Hide the default file input
+            onChange={handleChange}
+          />
+        </>
+      ) : (
+        <>
+          {/* Regular input when no logo is selected */}
+          <label
+            htmlFor="logoInput"
+            style={{ cursor: 'pointer', display: 'block', marginTop: '10px' }}
+            className="block mt-4 py-2 px-4 bg-blue-500 text-white rounded-lg cursor-pointer text-center hover:bg-blue-600"
+          >
+            Choose A Logo
+          </label>
+          <input
+            id="logoInput"
+            name="logo"
+            type="file"
+            style={{ display: 'none' }} // Hide the default file input
+            onChange={handleChange}
+          />
+        </>
+      )}
+    </div>
+</div>
           {/* Category checkboxes */}
           <div className="mt-2">
             <Label htmlFor="category">Select Category</Label>

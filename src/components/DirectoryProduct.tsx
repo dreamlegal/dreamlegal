@@ -10,6 +10,10 @@ import Image from "next/image";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Component } from "lucide-react";
 import Modal from './Modal'; // Import the Modal component
+import { FaCircleCheck } from "react-icons/fa6";
+import ProcessLifecycle from "@/components/ProcessLifecycle";
+import ProductFeature from "@/components/ProductFeature";
+import CompareProductFeatures from "@/components/CompareProductFeatures";
 
 const placeholders = [
   "Contract Management",
@@ -99,6 +103,152 @@ const categoryKeywords: { [key: string]: string[] } = {
   ],
 };
 
+
+
+interface ProcessLifecycleProps {
+  product: {
+    processLifecycle: {
+      category: string;
+      subcategories: string[];
+    }[];
+  };
+}
+
+const lifecycleStages = [
+  {
+    category: "Client Relationship Management ",
+    stages: [
+      "Intake",
+      "Assessment",
+      "Strategize",
+      "Represent",
+      "Communication",
+      "Review",
+    ],
+  },
+  {
+    category: "Governance, Risk and Compliance",
+    stages: [
+      "Coverage",
+      "Assessment",
+      "Validation",
+      "Implementation",
+      "Monitoring",
+      "Analysis",
+    ],
+  },
+  {
+    category: "Contract Lifecycle Management",
+    stages: [
+      "Create",
+      "Negotiation",
+      "Authentication",
+      "Execute",
+      "Store",
+      "Tracking",
+    ],
+  },
+  {
+    category: "E-Signature",
+    stages: [
+      "Document Preparation",
+      "Authentication",
+      "Signing",
+      "Encryption",
+      "Verification",
+      "Distribution",
+    ],
+  },
+  {
+    category: "Document Management System",
+    stages: [
+      "Capture",
+      "Change management",
+      "Review",
+      "Organize",
+      "Access management",
+      "Retrieval",
+    ],
+  },
+  {
+    category: "Document Management System Software",
+    stages: [
+      "Capture",
+      "Change management",
+      "Review",
+      "Organize",
+      "Access management",
+      "Retrieval",
+    ],
+  },
+  {
+    category: "E-billing and Invoicing",
+    stages: [
+      "Invoice generation",
+      "Authorization",
+      "Distribution and Accessibility",
+      "Payment Facilitation",
+      "Tracking",
+      "Analysis",
+    ],
+  },
+  {
+    category: "E-discovery",
+    stages: [
+      "Discover",
+      "Preserve",
+      "Acquire",
+      "Examine",
+      "Evaluate",
+      "Present",
+    ],
+  },
+  {
+    category: "Intellectual Property Management",
+    stages: [
+      "Cataloging",
+      "Analysis",
+      "Protection",
+      "Monitoring",
+      "Enforcement",
+      "Reporting",
+    ],
+  },
+  {
+    category: "Litigation Management and Analytics",
+    stages: [
+      "Intake",
+      "Strategize",
+      "Preparation",
+      "Litigation Support",
+      "Analytics",
+      "Outcome evaluation",
+    ],
+  },
+  {
+    category: "Legal Workflow Automation",
+    stages: [
+      "Process Identification",
+      "Workflow configuration",
+      "Validation",
+      "Implementation",
+      "Tracking",
+      "Optimization",
+    ],
+  },
+  {
+    category: "Legal Research",
+    stages: [
+      "Query Identification",
+     " Source and Type Selection",
+     " Filtration and sorting",
+     " Data extraction",
+      "Data Analysis and Organization",
+      "Storage or retrieval"
+    ],
+  },
+];
+
 function DirectoryProduct() {
   const [featureProduct, setFeatureProduct] = useState([]);
   const [latestProduct, setLatestProduct] = useState([]);
@@ -116,8 +266,8 @@ function DirectoryProduct() {
     // Add more filter parameters here
   });
 
-  // const [compareProducts, setCompareProducts] = useState<any[]>([]);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [compareProducts, setCompareProducts] = useState<any[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   const fetchProducts = async (search = "") => {
@@ -229,12 +379,43 @@ function DirectoryProduct() {
   //     return [...prev, product];
   //   });
   // };
-
-  // const handleCompareClick = () => {
-  //   setIsModalOpen(true);
-  // };
-
+  const toggleCompareProduct = (product: any) => {
+    setCompareProducts((prev) => {
+      const isAlreadySelected = prev.some((p) => p.id === product.id);
+      const maxProducts = 2;
   
+      // If the product is already selected, remove it from the list
+      if (isAlreadySelected) {
+        return prev.filter((p) => p.id !== product.id);
+      }
+  
+      // Check if the new product's category matches the existing ones
+      const allProducts = [...prev, product];
+      const categories = new Set(allProducts.map((p) => p.category));
+      
+      // If more than one category is present, show an error message
+      if (categories.size > 1) {
+        alert('Category not matching. Choose products from the same category.');
+        return prev;
+      }
+  
+      // Ensure only up to two products are selected for comparison
+      if (allProducts.length > maxProducts) {
+        alert('You can only compare up to two products.');
+        return prev;
+      }
+  
+      return allProducts;
+    });
+  };
+  
+
+  const handleCompareClick = () => {
+    setIsModalOpen(true);
+  };
+
+
+
 
   return (
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 font-clarity">
@@ -281,36 +462,244 @@ function DirectoryProduct() {
           </div>
         </div>
         {/* Displaying Comparison Button */}
-        {/* {compareProducts.length === 2 && (
-          // <button
-          //   onClick={handleCompareClick}
-          //   className="mb-4 bg-green-500 text-white px-4 py-2 rounded"
-          // >
-          //   Compare Products
-          // </button>
-        )} */}
+        {compareProducts.length === 2 && (
+          <button
+            onClick={handleCompareClick}
+            className="mb-4 mt-4 bg-green-500 text-white px-4 py-2 rounded"
+          >
+            Compare Products
+          </button>
+        )}
         {/* Displaying Comparison Modal */}
-        {/* <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Product Comparison">
-        <div className="flex gap-4">
-  {compareProducts.length === 2 && (
-    <>
-      <div className="flex-1 border p-2 bg-white rounded-md flex">
-        <CompareProduct
-          data={{ product: compareProducts[0], company: {} }}
-          className="w-full h-full"
-        />
-      </div>
-      <div className="flex-1 border p-2 bg-white rounded-md flex">
-        <CompareProduct
-          data={{ product: compareProducts[1], company: {} }}
-          className="w-full h-full"
-        />
-      </div>
-    </>
-  )}
-</div>
+        <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Product Comparison">
+          <div className="bg-white rounded-md max-w-screen-md mx-auto overflow-x-auto font-clarity">
+          {compareProducts.length === 2 && (
+          <div className="w-full border border-gray-200">
+        {/* Header Section */}
+        <div className="flex bg-gray-100 border-b border-gray-200">
+          <div className="flex-1 border-r border-gray-200 px-4 py-2 text-center">Product 1</div>
+          <div className="flex-1 px-4 py-2 text-center">Product 2</div>
+        </div>
+      
+        {/* Content Section */}
+ 
 
-          </Modal> */}
+        <div className="flex flex-col">
+          {/* Logos */}
+          <div className="flex border-b border-gray-200">
+            <div className="flex-1 border-r border-gray-200 px-4 py-2 flex items-center justify-center">
+              <img src={compareProducts[0].logoUrl} alt="Product 1 Logo" className="h-24 w-24" />
+            </div>
+            <div className="flex-1 px-4 py-2 flex items-center justify-center">
+              <img src={compareProducts[1].logoUrl} alt="Product 2 Logo" className="h-24 w-24" />
+            </div>
+          </div>
+      
+         {/* Product Names */}
+{/* Product Names */}
+          <div className="flex border-b border-gray-200">
+            <div className="w-[50%] border-r border-gray-200 px-4 py-2 break-words">
+              {compareProducts[0].name}
+            </div>
+            <div className="w-[50%] px-4 py-2 break-words">
+              {compareProducts[1].name}
+            </div>
+          </div>
+
+      
+          {/* Categories */}
+          <div className="flex border-b border-gray-200">
+            <div className="w-[50%] border-r border-gray-200 px-4 py-2 break-words">
+            <h1 className="text-lg font-bold mb-2">Category </h1>
+              {compareProducts[0].category}
+            </div>
+            <div className="w-[50%] px-4 py-2 break-words">
+            <h1 className="text-lg font-bold mb-2">Category </h1>
+              {compareProducts[1].category}
+            </div>
+          </div>
+
+
+      
+          {/* Deployment */}
+          <div className="flex border-b border-gray-200">
+            <div className="w-[50%] break-words flex-1 border-r border-gray-200 px-4 py-2">
+            <h1 className="text-lg font-bold mb-2 ">Deployment </h1>
+              <ul className="mb-4 ml-1 space-y-2">
+                {compareProducts[0].deployement.map((option: string, index: number) => (
+                  <li key={index} className="flex items-start">
+                    <span className="mr-1">
+                      <FaCircleCheck className="w-5 h-5 mt-px text-teal-500" />
+                    </span>
+                    {option}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="w-[50%] break-words flex-1 px-4 py-2">
+            <h1 className="text-lg font-bold mb-2">Deployment </h1>
+              <ul className="mb-4 ml-1 space-y-2">
+                {compareProducts[1].deployement.map((option: string, index: number) => (
+                  <li key={index} className="flex items-start">
+                    <span className="mr-1">
+                      <FaCircleCheck className="w-5 h-5 mt-px text-teal-500" />
+                    </span>
+                    {option}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+      
+          {/* Mobile Availability */}
+          <div className="flex border-b border-gray-200">
+            <div className="w-[50%]  break-words flex-1 border-r border-gray-200 px-4 py-2">
+              <h1 className="text-lg font-bold mb-2">Mobile Availibility</h1>
+              {compareProducts[0].mobileAvailable}
+              </div>
+            <div className="w-[50%] break-words flex-1 px-4 py-2">
+             
+            <h1 className="text-lg font-bold   mb-2">Mobile Availibility</h1>
+              {compareProducts[1].mobileAvailable}
+              
+              </div>
+          </div>
+      
+          {/* Average Time Adoption */}
+          <div className="flex border-b border-gray-200">
+            <div className="flex-1 border-r border-gray-200 px-4 py-2">
+            <h1 className="text-lg font-bold mb-2">Average Adoption Time</h1>
+              {compareProducts[0].avgTimeAdoption}</div>
+            <div className="flex-1 px-4 py-2">
+            <h1 className="text-lg font-bold mb-2">Average Adoption Time</h1>
+              {compareProducts[1].avgTimeAdoption}</div>
+          </div>
+      
+          {/* Team Size */}
+          <div className="flex border-b border-gray-200">
+            <div className="flex-1 border-r border-gray-200 px-4 py-2">
+            <h1 className="text-lg font-bold mb-2">Target client's team size
+            </h1>
+              {compareProducts[0].company.TeamSize}</div>
+            <div className="flex-1 px-4 py-2">
+            <h1 className="text-lg font-bold mb-2">Target client's team size
+            </h1>{compareProducts[1].company.TeamSize}</div>
+          </div>
+      
+          {/* Features */}
+          <div className="flex border-b border-gray-200">
+            <div className="flex-1 w-[50%] break-words border-r border-gray-200 px-4 py-2">
+            <h6 className="text-xl font-bold mb-4">Features</h6>
+              <CompareProductFeatures features={compareProducts[0].features} productId={compareProducts[0].slug} />
+            </div>
+            <div className="flex-1 w-[50%] break-words px-4 py-2">
+            <h6 className="text-xl font-bold mb-4">Features</h6>
+              <CompareProductFeatures features={compareProducts[1].features} productId={compareProducts[1].slug} />
+            </div>
+          </div>
+      
+          {/* Process Lifecycle */}
+          <div className="flex border-b border-gray-200">
+            <div className="flex-1 border-r border-gray-200 px-4 py-2">
+            <h1 className="text-lg font-bold mb-2">Process lifecycle </h1>
+              <ProcessLifecycle product={compareProducts[0]} />
+            </div>
+            <div className="flex-1 px-4 py-2">
+            <h1 className="text-lg font-bold mb-2">Process lifecycle </h1>
+              <ProcessLifecycle product={compareProducts[1]} />
+            </div>
+          </div>
+      
+          {/* Practice Areas */}
+          <div className="flex flex-wrap border-b border-gray-200">
+            <div className="flex-1 border-r border-gray-200 px-4 py-2">
+              <h1 className=" py-4  text-lg font-bold "> Practice Areas</h1>
+              {compareProducts[0].practiceAreas.map((segment: string) => (
+
+                <div
+                  key={segment}
+                  className="py-1 mb-4  px-2.5 border transition-all duration-200 hover:cursor-pointer rounded-full text-xs bg-primary2 border-primary1 text-primary1"
+                >
+
+                  {segment}
+                </div>
+              ))}
+            </div>
+            <div className="flex-1 px-4 py-2">
+            <h1 className=" py-4  text-lg font-bold "> Practice Areas</h1>
+              {compareProducts[1].practiceAreas.map((segment: string) => (
+                <div
+                  key={segment}
+                  className="py-1 mb-4  px-2.5 border transition-all duration-200 hover:cursor-pointer rounded-full text-xs bg-primary2 border-primary1 text-primary1"
+                >
+                  {segment}
+                </div>
+              ))}
+            </div>
+          </div>
+      
+          {/* User Categories */}
+          <div className="flex flex-wrap border-b border-gray-200">
+            <div className="flex-1 border-r border-gray-200 px-4 py-2">
+            <h1 className=" py-4  text-lg font-bold "> Target Customer  Segments</h1>
+              {compareProducts[0].userCategory.map((segment: string) => (
+                <div
+                  key={segment}
+                  className="py-1 mb-4  px-2.5 border transition-all duration-200 hover:cursor-pointer rounded-full text-xs bg-primary2 border-primary1 text-primary1"
+                >
+                  {segment}
+                </div>
+              ))}
+            </div>
+            <div className="flex-1   px-4 py-2">
+            <h1 className=" py-4  text-lg font-bold"> Target Customer  Segments</h1>
+              {compareProducts[1].userCategory.map((segment: string) => (
+                <div
+                  key={segment}
+                  className="py-1 mb-4  px-2.5 border transition-all duration-200 hover:cursor-pointer rounded-full text-xs bg-primary2 border-primary1 text-primary1"
+                >
+                  {segment}
+                </div>
+              ))}
+            </div>
+          </div>
+      
+          {/* Industry */}
+          <div className="flex flex-wrap border-b border-gray-200">
+            <div className="flex-1 border-r border-gray-200 px-4 py-2">
+            <h1 className=" py-4  text-lg font-bold "> Target industries 
+            </h1>
+              {compareProducts[0].industry.map((segment: string) => (
+                <div
+                  key={segment}
+                  className="py-1 mb-4 px-2.5 border transition-all duration-200 hover:cursor-pointer rounded-full text-xs bg-primary2 border-primary1 text-primary1"
+                >
+                  {segment}
+                </div>
+              ))}
+            </div>
+            <div className="flex-1 px-4 py-2">
+            <h1 className=" py-4  text-lg font-bold "> Target industries 
+            </h1>
+              {compareProducts[1].industry.map((segment: string) => (
+                <div
+                  key={segment}
+                  className="py-1  mb-4 px-2.5 border transition-all duration-200 hover:cursor-pointer rounded-full text-xs bg-primary2 border-primary1 text-primary1"
+                >
+                  {segment}
+                </div>
+              ))}
+            </div>
+          </div>
+      
+          {/* Add other properties similarly */}
+        </div>
+      </div>
+    )}
+  </div>
+</Modal>
+
+
 
         <div className="flex flex-col gap-4 mt-4 mb-4">
           {filteredProducts.length > 0 ? (
@@ -324,14 +713,14 @@ function DirectoryProduct() {
                   category={product.category}
                   product={product}
                 />
-                {/* <button
+                <button
                   onClick={() => toggleCompareProduct(product)}
                   className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-xs"
                 >
                   {compareProducts.some((p) => p.id === product.id)
                     ? 'Remove from Compare'
                     : 'Compare'}
-                </button> */}
+                </button>
               </div>
             ))
           ) : (

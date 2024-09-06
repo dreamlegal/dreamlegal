@@ -13,6 +13,7 @@ export const InfiniteMovingCards = ({
 }: {
   items: {
     location: string;
+    image: string;
     name: string;
     title: string;
   }[];
@@ -97,7 +98,7 @@ export const InfiniteMovingCards = ({
               <div className="relative z-20  flex flex-row items-center gap-4">
                 <div>
                   <img
-                    src="https://assets-global.website-files.com/631f580e90ab7ce4222467bf/635137059c111142f75f2c45_small-img-07.png"
+                    src={item.image}
                     className="w-16 h-16 rounded-full"
                     alt=""
                   />

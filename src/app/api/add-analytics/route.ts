@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { startOfMonth, endOfMonth } from 'date-fns';
+import { startOfMonth, endOfMonth } from "date-fns";
 
 export async function POST(request: Request) {
   try {
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
       desktopViews,
       mobileViews,
       tabletViews,
-      country: incomingCountry
+      country: incomingCountry,
     } = await request.json();
 
     // Get the start and end of the current month
@@ -34,16 +34,33 @@ export async function POST(request: Request) {
     });
 
     // Define updated values conditionally
-    const updatedShares = shares > 0 ? (existingAnalytics?.shares ?? 0) + shares : existingAnalytics?.shares ?? 0;
-    const updatedFollowers = followers > 0 ? (existingAnalytics?.followers ?? 0) + followers : existingAnalytics?.followers ?? 0;
-    const updatedViews = views > 0 ? (existingAnalytics?.views ?? 0) + views : existingAnalytics?.views ?? 0;
-    const updatedLoginsViews = loginsViews > 0 ? (existingAnalytics?.loginsViews ?? 0) + loginsViews : existingAnalytics?.loginsViews ?? 0;
-    const updatedLeads = leads > 0 ? (existingAnalytics?.leads ?? 0) + leads : existingAnalytics?.leads ?? 0;
+    const updatedShares =
+      shares > 0
+        ? (existingAnalytics?.shares ?? 0) + shares
+        : existingAnalytics?.shares ?? 0;
+    const updatedFollowers =
+      followers > 0
+        ? (existingAnalytics?.followers ?? 0) + followers
+        : existingAnalytics?.followers ?? 0;
+    const updatedViews =
+      views > 0
+        ? (existingAnalytics?.views ?? 0) + views
+        : existingAnalytics?.views ?? 0;
+    const updatedLoginsViews =
+      loginsViews > 0
+        ? (existingAnalytics?.loginsViews ?? 0) + loginsViews
+        : existingAnalytics?.loginsViews ?? 0;
+    const updatedLeads =
+      leads > 0
+        ? (existingAnalytics?.leads ?? 0) + leads
+        : existingAnalytics?.leads ?? 0;
 
     // Handle country updates
-    let updatedCountry: Record<string, number> = existingAnalytics?.country as Record<string, number> || {};
+    let updatedCountry: Record<string, number> =
+      (existingAnalytics?.country as Record<string, number>) || {};
     if (incomingCountry) {
-      updatedCountry[incomingCountry] = (updatedCountry[incomingCountry] || 0) + 1;
+      updatedCountry[incomingCountry] =
+        (updatedCountry[incomingCountry] || 0) + 1;
     }
 
     const analytics = await prisma.analytics.upsert({
@@ -84,6 +101,8 @@ export async function POST(request: Request) {
     return new Response(JSON.stringify(analytics), { status: 201 });
   } catch (error) {
     console.error(error);
-    return new Response(JSON.stringify({ error: "Failed to add analytics" }), { status: 500 });
+    return new Response(JSON.stringify({ error: "Failed to add analytics" }), {
+      status: 500,
+    });
   }
 }

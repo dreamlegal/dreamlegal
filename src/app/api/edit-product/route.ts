@@ -189,6 +189,7 @@ export async function POST(request: Request) {
         twitterUrl,
         instagramUrl,
         attachments,
+        active: "draft",
       },
     });
 

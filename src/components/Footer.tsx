@@ -29,19 +29,27 @@ export const Footer = () => {
                   href="/"
                   className="flex items-center bg-[#dc2f75] text-[#fff]  px-3 py-2 rounded-[30px] transition-all duration-300 hover:text-deep-purple-accent-400 hover:scale-110"
                 >
-                  <div className="flex gap-1 items-center">
+                  <Link
+                    href={"https://www.instagram.com/dreamlegal_/"}
+                    className="flex gap-1 items-center"
+                    target="_blank"
+                  >
                     <FaInstagram size={18} color="#fff" />
                     <p>Instagram</p>
-                  </div>
+                  </Link>
                 </a>
                 <a
                   href="/"
                   className=" flex items-center hover:scale-110 bg-[#2e64bc] text-white px-3 py-2  rounded-[30px] transition-all duration-300 hover:text-deep-purple-accent-400"
                 >
-                  <div className="flex gap-1 items-center">
+                  <Link
+                    href={"https://in.linkedin.com/company/dreamlegal"}
+                    className="flex gap-1 items-center"
+                    target="_blank"
+                  >
                     <FaLinkedinIn size={18} color="#fff" />
                     <p>LinkedIn</p>
-                  </div>
+                  </Link>
                 </a>
               </div>
               <p className="mt-4 text-sm text-gray-800"></p>
@@ -82,7 +90,9 @@ export const Footer = () => {
               <ul className="text-gray-800 space-y-2 text-base">
                 <li className="hover:text-primary1 transition-all cursor-pointer">
                   <Link
-                    href={"/directory?category=Client%20Relationship%20Management"}
+                    href={
+                      "/directory?category=Client%20Relationship%20Management"
+                    }
                   >
                     Client Relationship Management
                   </Link>
@@ -98,9 +108,7 @@ export const Footer = () => {
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
                   <Link
-                    href={
-                      "/directory?category=Document%20Management%20System"
-                    }
+                    href={"/directory?category=Document%20Management%20System"}
                   >
                     Document Management System
                   </Link>
@@ -193,9 +201,7 @@ export const Footer = () => {
                   </Link>
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
-                  <Link href={"/directory?customer=Judiciary"}>
-                    Judiciary
-                  </Link>
+                  <Link href={"/directory?customer=Judiciary"}>Judiciary</Link>
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
                   <Link href={"/directory?customer=Law%20firms"}>Law Firm</Link>
@@ -204,7 +210,9 @@ export const Footer = () => {
                   <Link href={"/directory?customer=Startups"}>Startups</Link>
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
-                  <Link href={"/directory?customer=In-House%20Counsels"}>In-House Counsels</Link>
+                  <Link href={"/directory?customer=In-House%20Counsels"}>
+                    In-House Counsels
+                  </Link>
                 </li>
               </ul>
 

@@ -1880,6 +1880,7 @@ function Form9({ editing }: { editing: boolean }) {
           // Handle success
           console.log("Form submitted successfully", data);
           if (data?.success === false) {
+            console.log("dataaa => ", data);
             toast({
               title: "Fail to create product",
               description: "Fail to create product",
@@ -2060,7 +2061,6 @@ function Form9({ editing }: { editing: boolean }) {
           />
         </div>
 
-        
         <div className=" mt-2">
           <Label>
             Attachments{" "}

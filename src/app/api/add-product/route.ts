@@ -173,19 +173,19 @@ export async function POST(request: Request) {
     );
 
     // Generate initial slug
-    let slug = name.toLowerCase().replace(/ /g, '-');
-    
+    let slug = name.toLowerCase().replace(/ /g, "-");
+
     // Check if the slug already exists
     let existingProduct = await prisma.product.findUnique({
-      where: { slug }
+      where: { slug },
     });
 
     // If the slug exists, append a number to make it unique
     let counter = 1;
     while (existingProduct) {
-      slug = `${name.toLowerCase().replace(/ /g, '-')}-${counter}`;
+      slug = `${name.toLowerCase().replace(/ /g, "-")}-${counter}`;
       existingProduct = await prisma.product.findUnique({
-        where: { slug }
+        where: { slug },
       });
       counter++;
     }
@@ -222,7 +222,7 @@ export async function POST(request: Request) {
         features,
         freeTrial,
         timePeriod: timePeriodServer,
-        pricingModel,
+        pricingModel: pricingModel || ["dummy"],
         contractPeriod: MinContarct,
         nameofPlan,
         validity,

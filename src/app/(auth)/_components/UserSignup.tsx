@@ -153,7 +153,7 @@ function UserSignup() {
                 onChange={handleOtpChange}
               />
             </div>
-            {error && <p className="text-red-500">{error}</p>}{" "}
+            {/* {error && <p className="text-red-500">{error}</p>}{" "} */}
             {/* Display error */}
             <Button className="w-full bg-primary1 my-4" type="submit">
               Submit

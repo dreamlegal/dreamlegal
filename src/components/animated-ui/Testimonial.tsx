@@ -14,12 +14,12 @@ export function Testomonial() {
         optimization and growth.
       </p>
       <InfiniteMovingCards
-        items={testimonials}
+        items={testimonials1}
         direction="right"
         speed="normal"
       />
       <InfiniteMovingCards
-        items={testimonials}
+        items={testimonials2}
         direction="left"
         speed="normal"
       />
@@ -27,7 +27,7 @@ export function Testomonial() {
   );
 }
 
-const testimonials = [
+const testimonials1 = [
   {
     location: "India",
     name: "Sohini Shrivastava ",
@@ -46,23 +46,25 @@ const testimonials = [
     title: "Justicewings Lexedge Solutions LLP",
     image: "/t1.jpg",
   },
-  {
-    location: "Nigeria",
-    name: "Ibrahim Sule",
-    title: "Elaws Consulting Nigeria Ltd.",
-    image: "/t2.jpg",
-  },
-  {
-    location: "India",
-    name: "Sohini Shrivastava ",
-    title: "Lexo Consultancy Private Limited",
-    image: "/t3.jpg",
-  },
+];
 
+const testimonials2 = [
+  {
+    location: "Nigeria",
+    name: "Ibrahim Sule",
+    title: "Elaws Consulting Nigeria Ltd.",
+    image: "/t2.jpg",
+  },
   {
     location: "India",
     name: "Avdhesh Varshney",
     title: "Justicewings Lexedge Solutions LLP",
     image: "/t1.jpg",
+  },
+  {
+    location: "India",
+    name: "Muskan Khandelwal",
+    title: "Lakshmikumaran & Sridharan",
+    image: "/t4.png",
   },
 ];

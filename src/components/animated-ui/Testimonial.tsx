@@ -10,13 +10,13 @@ export function Testomonial() {
         The DreamLegal Network
       </h2>
       <p className=" text-sm text-[#46526a] text-center md:w-[400px] font-semibold  mb-10 mt-4 ">
-      The most engaging community of legal innovators who drive efficiency, optimization and growth.
+        The most engaging community of legal innovators who drive efficiency,
+        optimization and growth.
       </p>
       <InfiniteMovingCards
         items={testimonials}
         direction="right"
         speed="normal"
-        
       />
       <InfiniteMovingCards
         items={testimonials}
@@ -32,37 +32,37 @@ const testimonials = [
     location: "India",
     name: "Sohini Shrivastava ",
     title: "Lexo Consultancy Private Limited",
-    image:"/t1.jpg",
+    image: "/t3.jpg",
   },
   {
     location: "Nigeria",
     name: "Ibrahim Sule",
     title: "Elaws Consulting Nigeria Ltd.",
-    image:"/t2.jpg",
+    image: "/t2.jpg",
   },
   {
     location: "India",
     name: "Avdhesh Varshney",
     title: "Justicewings Lexedge Solutions LLP",
-    image:"/t3.jpg",
+    image: "/t1.jpg",
   },
   {
     location: "Nigeria",
     name: "Ibrahim Sule",
     title: "Elaws Consulting Nigeria Ltd.",
-    image:"/t2.jpg",
+    image: "/t2.jpg",
   },
   {
     location: "India",
     name: "Sohini Shrivastava ",
     title: "Lexo Consultancy Private Limited",
-    image:"/t1.jpg",
+    image: "/t3.jpg",
   },
-  
+
   {
     location: "India",
     name: "Avdhesh Varshney",
     title: "Justicewings Lexedge Solutions LLP",
-    image:"/t3.jpg",
+    image: "/t1.jpg",
   },
 ];

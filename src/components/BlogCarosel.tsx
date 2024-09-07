@@ -94,22 +94,38 @@ function BlogCarosel() {
     fetchBlogs();
   }, []);
 
+  const customBlog = [
+    {
+      id: 1,
+      title: { rendered: "DreamLegal for Legal Technology Vendors" },
+      date: "2021-10-10",
+      featured_media: 1,
+      link: "https://blog.dreamlegal.in/dreamlegal-for-legal-technology-vendors/",
+      category: "DreamLegal",
+    },
+    {
+      id: 2,
+      title: { rendered: "DreamLegal for Legal Professionals" },
+      date: "2021-10-10",
+      featured_media: 2,
+      link: "https://blog.dreamlegal.in/dreamlegal-for-legal-professionals/",
+      category: "DreamLegal",
+    },
+  ];
+
   return (
     <div className="embla relative">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {blogs.map((blog) => {
-            const firstCategoryId = blog.categories[0];
-            const firstCategory = firstCategoryId
-              ? categories[firstCategoryId]
-              : "Unknown";
+          {customBlog.map((blog) => {
             return (
               <div key={blog.id} className="embla__slide">
                 <BlogCard
                   blog={blog}
                   mediaUrl={
-                    media[blog.featured_media] ||
-                    "https://via.placeholder.com/600x400"
+                    media[blog.featured_media] || blog.id == 1
+                      ? "./blog1.png"
+                      : "./blog2.png"
                   }
                   category={"DreamLegal"}
                 />

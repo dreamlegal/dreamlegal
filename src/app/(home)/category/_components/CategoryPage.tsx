@@ -132,7 +132,9 @@ const CategoryPage = () => {
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
         {categoryData &&
-          categoryData?.labels.map((label: string) => <div>{label}</div>)}
+          categoryData?.labels.map((label: string) => (
+            <div key={label}>{label}</div>
+          ))}
       </div>
       <div>
         {loading && (

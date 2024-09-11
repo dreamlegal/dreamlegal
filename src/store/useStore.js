@@ -26,15 +26,61 @@ export const ProductInfo = create((set) => ({
   processLifecycle: null,
 
   features: null,
+// ...................... 
 
-  price: [],
+
+  freeTrial: null,
+  timePeriod: null,
+  freeVersion: null,
   pricingModel: [],
   contractPeriod: null,
+  nameofPlan: [],
+  validity: [],
+  price: [],
+  pricingParams: "",
+
+  setFreeTrial: (value) => set({ freeTrial: value }),
+  setTimePeriod: (value) => set({ timePeriod: value }),
+  setFreeVersion: (value) => set({ freeVersion: value }),
+  setPricingModel: (value) => set({ pricingModel: value }),
+  setContractPeriod: (value) => set({ contractPeriod: value }),
+  setNameofPlan: (value) => set({ nameofPlan: value }),
+  setValidity: (value) => set({ validity: value }),
+  setPrice: (value) => set({ price: value }),
+  setPricingParams: (value) => set({ pricingParams: value }),
+
+
+  // .................. 
+
   demo: [],
   support: [],
   training: [],
-  storage: [],
-  fileSize: null,
+
+  storage: "",
+  fileSize: "",
+  // demo: {
+  //   selections: [],
+  //   note: ""
+  // },
+  // support: {
+  //   selections: [],
+  //   note: ""
+  // },
+  // training: {
+  //   selections: [],
+  //   note: ""
+  // },
+  // storage: {
+  //   value: 0,
+  //   unit: "",
+  //   note: ""
+  // },
+  // fileSize: {
+  //   value: 0,
+  //   unit: "",
+  //   note: ""
+  // }
+  
 
   maintenance: null,
   reqForChange: null,
@@ -68,9 +114,7 @@ export const ProductInfo = create((set) => ({
   setTeamSize: (sizes) => set({ teamSize: sizes }),
   setProcessLifecycle: (lifecycle) => set({ processLifecycle: lifecycle }),
   setFeatures: (features) => set({ features: features }),
-  setPrice: (prices) => set({ price: prices }),
-  setPricingModel: (models) => set({ pricingModel: models }),
-  setContractPeriod: (period) => set({ contractPeriod: period }),
+ 
   setDemo: (demos) => set({ demo: demos }),
   setSupport: (supports) => set({ support: supports }),
   setTraining: (trainings) => set({ training: trainings }),

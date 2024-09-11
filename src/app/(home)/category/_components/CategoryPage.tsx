@@ -2,7 +2,10 @@
 
 import FeaturedProduct from "@/components/FeaturedProduct";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { data } from "./data";
+import Link from "next/link";
 
 interface Product {
   id: string;
@@ -24,6 +27,19 @@ const CategoryPage = () => {
   const [featureProduct, setFeatureProduct] = useState<Product[]>([]);
   const [latestProduct, setLatestProduct] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [categoryData, setCategoryData] = useState<any | null>(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setLoading(true);
+    if (pathname) {
+      const category = pathname.split("/category/")[1];
+      const foundCategory = data.find((item) => item.slug === category);
+      setCategoryData(foundCategory || null);
+    }
+    setLoading(false);
+  }, [pathname]);
+
   useEffect(() => {
     async function getData() {
       const response = await fetch("/api/get-all-products", {
@@ -74,29 +90,49 @@ const CategoryPage = () => {
 
     fetchProducts();
   }, [dataState]);
+
+  if (loading) {
+    return (
+      <div className="text-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
   return (
     <main className="px-4 py-8 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 font-clarity space-y-12">
       <div className="space-y-6">
-        <h2 className=" text-2xl md:text-3xl font-bold">Category Heading</h2>
+        <h2 className=" text-2xl md:text-3xl font-bold">
+          {categoryData && categoryData?.name}
+        </h2>
         <div>
-          <img src="/background.png" alt="" />
+          <img
+            src={categoryData && categoryData?.image}
+            alt=""
+            className="w-96"
+          />
         </div>
         <div>
           <p className="text-base text-slate-500 text-justify">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum ut,
-            deleniti accusantium iure dolor architecto reprehenderit incidunt
-            harum. Pariatur nam repellat eveniet. Dignissimos et, explicabo
-            asperiores error ipsa iure corrupti ea eveniet, neque porro nisi
-            pariatur rerum dolore mollitia temporibus enim. Id assumenda nulla
-            recusandae deserunt tempora ipsam inventore repellendus.
+            {categoryData && categoryData?.description} -
+            <strong>{categoryData && categoryData.desciptionClosure}</strong>
+          </p>
+        </div>
+        <div>
+          <p className="text-base text-slate-500 text-justify">
+            {categoryData && categoryData?.blogLabel} -{" "}
+            <a
+              className="text-primary"
+              target="_blank"
+              href={categoryData?.blogHref}
+            >
+              Click Here
+            </a>
           </p>
         </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
-        <div>Labels</div>
-        <div>Labels</div>
-        <div>Labels</div>
-        <div>Labels</div>
+        {categoryData &&
+          categoryData?.labels.map((label: string) => <div>{label}</div>)}
       </div>
       <div>
         {loading && (

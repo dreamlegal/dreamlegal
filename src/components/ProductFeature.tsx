@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FiAward } from "react-icons/fi";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoChevronDown } from "react-icons/io5";
+import Link from "next/link";
 
 function ProductFeature({ features, productId }: any) {
   const [expanded, setExpanded] = useState<number[]>([]);
@@ -18,22 +19,27 @@ function ProductFeature({ features, productId }: any) {
     );
   };
 
-  const sendClickDataToBackend = async (productId: string, category: string) => {
-    console.log(`Sending click data for productId: ${productId}, category: ${category}`);
+  const sendClickDataToBackend = async (
+    productId: string,
+    category: string
+  ) => {
+    console.log(
+      `Sending click data for productId: ${productId}, category: ${category}`
+    );
     try {
-      const response = await fetch('/api/track-click', {
-        method: 'POST',
+      const response = await fetch("/api/track-click", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ productId, category }),
       });
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
-      console.log('Click data sent successfully');
+      console.log("Click data sent successfully");
     } catch (error) {
-      console.error('Error sending click data:', error);
+      console.error("Error sending click data:", error);
     }
   };
 
@@ -41,7 +47,7 @@ function ProductFeature({ features, productId }: any) {
     <div>
       <div className="grid max-w-md gap-5 row-gap-10 sm:mx-auto lg:max-w-full lg:grid-cols-3 font-clarity">
         {features.map((feature: any, index: any) => (
-          <div key={index} className="flex flex-col sm:flex-row w-full" >
+          <div key={index} className="flex flex-col sm:flex-row w-full">
             <div className="sm:mr-4">
               <div className="flex items-center justify-center w-10 h-10 mb-4 rounded-full bg-primary2">
                 <FiAward className="text-primary1 w-4 h-4" />
@@ -56,14 +62,25 @@ function ProductFeature({ features, productId }: any) {
                 >
                   {feature.category}
                 </h6>
-                <div className="col-span-1 ml-3"><IoChevronDown className=" text-gray-400 "  onClick={() => toggleExpand(index, feature.category)} /></div>
+                <div className="col-span-1 ml-3">
+                  <IoChevronDown
+                    className=" text-gray-400 "
+                    onClick={() => toggleExpand(index, feature.category)}
+                  />
+                </div>
               </div>
 
               {expanded.includes(index) && (
                 <ul className="mb-4 -ml-1 space-y-2">
+                  <li className="hover:text-blue-500 text-xs ml-1 text-gray-700">
+                    <Link href={""}>No More Details to show</Link>
+                  </li>
                   {feature.subcategories.map(
                     (subcategory: any, subIndex: any) => (
-                      <li key={subIndex} className="flex items-start text-sm text-gray-700">
+                      <li
+                        key={subIndex}
+                        className="flex items-start text-sm text-gray-700"
+                      >
                         <span className="mr-1">
                           <FaCircleCheck className="w-5 h-5 mt-px text-teal-500" />
                         </span>

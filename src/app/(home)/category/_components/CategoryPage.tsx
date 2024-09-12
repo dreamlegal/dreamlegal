@@ -1,11 +1,9 @@
 "use client";
 
 import FeaturedProduct from "@/components/FeaturedProduct";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { data } from "./data";
-import Link from "next/link";
 
 interface Product {
   id: string;
@@ -29,13 +27,18 @@ const CategoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [categoryData, setCategoryData] = useState<any | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     setLoading(true);
     if (pathname) {
       const category = pathname.split("/category/")[1];
       const foundCategory = data.find((item) => item.slug === category);
-      setCategoryData(foundCategory || null);
+      if (foundCategory) {
+        setCategoryData(foundCategory || null);
+      } else {
+        router.replace("/");
+      }
     }
     setLoading(false);
   }, [pathname]);
@@ -64,31 +67,21 @@ const CategoryPage = () => {
   }, []);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      if (dataState) {
-        const products = dataState.products.filter(
-          (product: { active: string }) => product.active === "publish"
-        );
-        const featured = products.filter(
-          (product: { featured: any }) => product.featured
-        );
-
-        console.log("latest", featured);
-
-        const latest = products.filter(
-          (product: { featured: any }) => !product.featured
-        );
-        console.log("latest", latest);
-        if (featured.length === 0 && latest.length > 0) {
-          featured.push(latest[0]);
-        }
-
-        setFeatureProduct(featured);
-        setLatestProduct(latest);
+    if (dataState) {
+      const products = dataState.products;
+      const matchedProducts = products.filter(
+        (product) =>
+          // console.log(product)
+          product.category[0].toLowerCase() ===
+          categoryData?.slug.replace(/-/g, " ")
+      );
+      if (matchedProducts) {
+        setFeatureProduct(matchedProducts);
+        setLoading(false);
+      } else {
+        setFeatureProduct([]);
       }
-    };
-
-    fetchProducts();
+    }
   }, [dataState]);
 
   if (loading) {
@@ -142,9 +135,15 @@ const CategoryPage = () => {
             <p>Loading...</p>
           </div>
         )}
+        {featureProduct.length === 0 && (
+          <div className="text-center">
+            <p>No products found in this category.</p>
+          </div>
+        )}
         {!loading &&
+          featureProduct.length > 0 &&
           featureProduct
-            .slice(0, 4)
+            .slice(0, 8)
             .map((product: any) => (
               <FeaturedProduct
                 key={product.id}

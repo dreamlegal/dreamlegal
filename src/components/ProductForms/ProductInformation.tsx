@@ -34,8 +34,7 @@ interface Integrations {
 const productSchema = z.object({
   productName: z
     .string()
-    .max(5, "Product name must be 5 characters or less")
-    .min(2, "Product name must be at least 2 characters"),
+    .min(3, "Product name must be at least 2 characters"),
   category: z.array(z.string()).min(1, "Please select at least one category"),
   deployment: z
     .array(z.string())
@@ -59,6 +58,9 @@ const productSchema = z.object({
     invalid_type_error: "Please select a valid period unit",
   }),
   logo: z.string().optional(),
+  mobileAvailable: z.enum(["Yes", "No"], {
+    required_error: "Choose this please",
+  }),
   
 });
 const wordCount = (value: string, maxWords: number): boolean => {
@@ -71,7 +73,8 @@ const ProductInformation = () => {
     setProductName,
     logoUrl,
     setLogoUrl,
-   
+    mobileAvailable,
+    setMobileAvailable,
     category,
     setCategory,
     deployment,
@@ -423,6 +426,7 @@ const ProductInformation = () => {
       adoptionPeriodUnit,
       focusCountries,
       languages,
+      mobileAvailable,
       securityCertificate: securityValue,
       websiteUrl: websiteUrl || undefined,
     });
@@ -537,74 +541,54 @@ const ProductInformation = () => {
   // Handle form submission
  
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
   
-    // if (!validateAllFields()) {
-    //   console.log("Validation failed");
-    //   return; // Stop form submission if there are validation errors
-    // }
-  
-    // Update Zustand store
-    
+        
+  //   fileSubmit()
 
-    let hasErrors = false;
+  //   let hasErrors = false;
 
-  if (!validateAllFields()) {
-    console.log("Validation failed");
-    hasErrors = true;
-  }
-  setProductName(inputValue);
-  setSecurityCertificate(securityValue);
+  // if (!validateAllFields()) {
+  //   console.log("Validation failed");
+  //   hasErrors = true;
+  // }
+  // setProductName(inputValue);
+  // setSecurityCertificate(securityValue);
 
-  // Validate integrations
-  try {
-    integrationsSchema.parse({ integrations: selectedIntegrations });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      setErrors(prevErrors => ({
-        ...prevErrors,
-        integrations: error.errors[0].message
-      }));
-      hasErrors = true;
-    }
-  }
+  // // Validate integrations
+  // try {
+  //   integrationsSchema.parse({ integrations: selectedIntegrations });
+  // } catch (error) {
+  //   if (error instanceof z.ZodError) {
+  //     setErrors(prevErrors => ({
+  //       ...prevErrors,
+  //       integrations: error.errors[0].message
+  //     }));
+  //     hasErrors = true;
+  //   }
+  // }
 
-  if (hasErrors) {
-    console.log("Form has errors. Please correct them before submitting.");
-    return; // Stop form submission if there are validation errors
-  }
+  // if (hasErrors) {
+  //   console.log("Form has errors. Please correct them before submitting.");
+  //   return; // Stop form submission if there are validation errors
+  // }
 
 
     
     
    
-    console.log("Form submitted with:", {
-      productName: inputValue,
-      category,
-      deployment,
-      adoptionPeriod,
-      adoptionPeriodUnit,
-      focusCountries,
-      languages,
-      securityCertificate: securityValue, // Ensure the correct value is logged
-    });
-  };
-  const { logo, setLogo } = ProductInfo();
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setLogo(reader.result); // Save logo data in Zustand store
-      };
-      reader.readAsDataURL(file);
-    } else {
-      // Handle case where file is not selected
-      setErrors(prev => ({ ...prev, logo: "Logo is required" }));
-    }
-  };
+  //   console.log("Form submitted with:", {
+  //     productName: inputValue,
+  //     category,
+  //     deployment,
+  //     adoptionPeriod,
+  //     adoptionPeriodUnit,
+  //     focusCountries,
+  //     languages,
+  //     securityCertificate: securityValue, // Ensure the correct value is logged
+  //   });
+  // };
 
 
 
@@ -629,6 +613,9 @@ const ProductInformation = () => {
 
 // Define the integrations object with type
 const integrations: Integrations = {
+  "NOT AVAILABLE":[
+    "NOT AVAILABLE",
+  ],
   "Accounting and Finance": [
     "Financial Disclosures",
     "FreshBooks",
@@ -648,31 +635,7 @@ const integrations: Integrations = {
   // ... other categories and their options
 };
 
-// const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-// const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({});
-// const [selectedIntegrations, setSelectedIntegrations] = useState<string[]>([]);
 
-// // Toggle the entire integrations dropdown
-// const toggleDropdown = () => {
-//   setIsDropdownOpen(prev => !prev);
-// };
-
-// // Toggle individual category dropdown
-// const toggleCategory = (category: string) => {
-//   setExpandedCategories(prev => ({
-//     ...prev,
-//     [category]: !prev[category]
-//   }));
-// };
-
-// // Handle integration selection
-// const toggleIntegration = (integration: string) => {
-//   setSelectedIntegrations(prev =>
-//     prev.includes(integration)
-//       ? prev.filter(i => i !== integration)
-//       : [...prev, integration]
-//   );
-// };
 
 const integrationsSchema = z.object({
   integrations: z.array(z.string()).min(1, "At least one category must be selected"),
@@ -723,6 +686,139 @@ const handleIntegrationChange = (updatedIntegrations: string[]) => {
 
 
 
+ const uploadFile = async (file: File, folderName: string) => {
+    // Create the form data
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folderName", folderName);
+
+    try {
+      // Send the POST request
+      const response = await fetch("/api/upload-file", {
+        method: "POST",
+        body: formData,
+      });
+
+      // Handle the response
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          const url = data.location;
+          console.log("Uploaded file location:", url);
+          return url;
+        } else {
+          console.error("Upload failed:", data.error);
+        }
+      } else {
+        console.error("Failed to upload file:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+    return null;
+  };
+
+
+    
+  
+const { 
+  logo, 
+  setLogo, 
+  setLogoFile, 
+  setLogoPreview, 
+  logoFile, 
+  logoPreview 
+} = ProductInfo();
+
+
+
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    setLogoFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setLogoPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    setErrors(prev => ({ ...prev, logo: "Logo is required" }));
+    setLogoFile(null);
+    setLogoPreview(null);
+  }
+};
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  
+    let hasErrors = false;
+  
+    if (!validateAllFields()) {
+      console.log("Validation failed");
+      hasErrors = true;
+    }
+  
+    // Validate integrations
+    try {
+      integrationsSchema.parse({ integrations: selectedIntegrations });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors(prevErrors => ({
+          ...prevErrors,
+          integrations: error.errors[0].message
+        }));
+        hasErrors = true;
+      }
+    }
+  
+    if (hasErrors) {
+      console.log("Form has errors. Please correct them before submitting.");
+      return; // Stop form submission if there are validation errors
+    }
+  
+
+let logoUrl = "";
+if (logoFile) {
+  try {
+    logoUrl = await uploadFile(logoFile, "logos");
+    console.log("Logo uploaded:", logoUrl);
+  } catch (error) {
+    console.error("Error uploading logo:", error);
+    setErrors(prevErrors => ({ ...prevErrors, logo: "Failed to upload logo" }));
+    return;
+  }
+} else {
+  // Handle case when no logo is uploaded
+  console.log("No logo file selected");
+ 
+}
+setProductName(inputValue);
+setSecurityCertificate(securityValue);
+
+// Prepare form data for submission
+const formData = {
+  productName: inputValue,
+  category,
+  deployment,
+  adoptionPeriod,
+  adoptionPeriodUnit,
+  focusCountries,
+  languages,
+  securityCertificate: securityValue,
+  logoUrl,
+  integrations: selectedIntegrations,
+  mobileAccessibility: mobileAvailable,
+};
+
+console.log("Form submitted with:", formData);
+    
+  };
+
+  const [selectedMobileAvailability, setSelectedMobileAvailability] = useState(mobileAvailable || null);
+  const handleMobile = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSelectedMobileAvailability(value);
+    setMobileAvailable(value);
+  };
   return (
     <form onSubmit={handleSubmit} className="w-full font-calarity">
       <div className="flex w-100 flex-col">
@@ -757,22 +853,16 @@ const handleIntegrationChange = (updatedIntegrations: string[]) => {
             className="mt-1"
           />
         </div> */}
-        <div className="w-full mt-2">
+     <div className="w-full mt-2">
   <label htmlFor="logo">Logo</label>
-  <Input
-    type="file"
-    id="logo"
-    name="logo"
-    className="mt-1"
-    onChange={handleFileChange}
-  />
+  <Input type="file" id="logo" name="logo" className="mt-1" onChange={handleFileChange} />
   {errors.logo && <p className="text-red-500">{errors.logo}</p>}
-  {logo && (
+  {logoPreview && (
     <div className="mt-2">
-      <img src={logo} alt="Logo Preview" style={{ maxWidth: '100%' }} />
+      <img src={logoPreview} alt="Logo Preview" style={{ maxWidth: '100%' }} />
     </div>
   )}
-       </div>
+</div>
 
         {/* Category Checkboxes */}
         <div className="mt-2">
@@ -841,14 +931,38 @@ const handleIntegrationChange = (updatedIntegrations: string[]) => {
           )}
         </div>
         {/* Select Mobile Accessibility */}
-        <div className="mt-4">
-          <div className=" flex gap-4 items-center">
-            <Label htmlFor="mobileAccessibility">
-              Select Mobile Accessibility
-            </Label>
-            <Switch />
+       
+
+
+        <div className="w-full mt-2">
+          <Label>Select Mobile Accessibilityree Trial</Label>
+          <div className="flex items-center">
+            <label className="mr-4">
+              <input
+                type="radio"
+                name="freeTrial"
+                value="Yes"
+                checked={selectedMobileAvailability === "Yes"}
+                onChange={handleMobile}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="freeTrial"
+                value="No"
+                checked={selectedMobileAvailability === "No"}
+                onChange={handleMobile}
+              />
+              No
+            </label>
           </div>
+          {errors.freeTrial && (
+            <p className="text-red-500">{errors.freeTrial}</p>
+          )}
         </div>
+
 
         {/* Adoption Period */}
         <div>
@@ -951,7 +1065,8 @@ const handleIntegrationChange = (updatedIntegrations: string[]) => {
 
           {/* integrations  */}
       <div className="w-full mt-2">
-      <div className="w-full  bg-white  rounded-lg overflow-hidden">
+      <Label htmlFor="focusCountries">Select Integrations</Label>
+      <div className="w-full  bg-white  rounded-lg overflow-hidden mt-4">
         <button
           onClick={() => toggleCategory('root')}
           className="w-full text-left p-2 bg-transparent text-gray
@@ -991,6 +1106,8 @@ const handleIntegrationChange = (updatedIntegrations: string[]) => {
               </div>
             )}
           </div>
+
+
         ))}
 
         <div className="p-4 bg-gray-100 rounded-[8px]">
@@ -1003,10 +1120,9 @@ const handleIntegrationChange = (updatedIntegrations: string[]) => {
         </div>
       </div>
     )}
-{/* 
-    {errors.integrations && (
-      <p className="text-red-500 text-sm mt-2">{errors.integrations}</p>
-    )} */}
+
+    
+
       </div>
         {errors.integrations && (
             <p className="text-red-500 text-sm mt-2">{errors.integrations}</p>

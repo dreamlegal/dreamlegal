@@ -8,11 +8,20 @@ export const ProductInfo = create((set) => ({
   // setLogoFile: (file) => set({ logoFile: file }),
   // setLogoUrl: (url) => set({ logoUrl: url }),
   // clearLogo: () => set({ logoFile: null, logoUrl: '' }),
-  logo: null,
-  setLogo: (logo) => set({ logo }),
+  // logoPreview: null,
+  // setLogo: (logo) => set({ logo }),
+  // logo: null,
+  // setLogoPreview: (preview) => set({ logoPreview: preview }),
+
+//   logo: { file: null, preview: null },
+// setLogo: (logo) => set({ logo }),
+logoFile: null,
+logoPreview: null,
+setLogoFile: (file) => set({ logoFile: file }),
+setLogoPreview: (preview) => set({ logoPreview: preview }),
 
   productName: '',
-  // logoUrl: '',
+  logoUrl: '',
   category: [],
   deployment: [],
   mobileAvailable: null,
@@ -147,7 +156,7 @@ export const ProductInfo = create((set) => ({
 
   // Global state update functions
   setProductName: (name) => set({ productName: name }),
-  // setLogoUrl: (url) => set({ logoUrl: url }),
+  setLogoUrl: (url) => set({ logoUrl: url }),
   setCategory: (categories) => set({ category: categories }),
   setDeployment: (deployments) => set({ deployment: deployments }),
   setMobileAvailable: (availability) => set({ mobileAvailable: availability }),

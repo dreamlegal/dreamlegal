@@ -167,6 +167,7 @@ model Product {
   teamsizePercentage      String[]
   processLifecycle        Json?
   features                Json?
+
   freeTrial               String?
   timePeriod              String?
   freeVersion             String?
@@ -176,6 +177,8 @@ model Product {
   validity                String[]
   price                   String[]
   pricingParams           String[]
+
+  
   Demo                    String[]
   DemoNote                String?
   support                 String[]
@@ -186,6 +189,7 @@ model Product {
   storageNote             String?
   fileSize                String[]
   fileSizeNote            String?
+  
   maintenance             String?
   maintenanceNote         String?
   reqForChange            String?
@@ -194,6 +198,7 @@ model Product {
   trainingReqNote         String?
   dataMigration           String?
   dataMigrationNote       String?
+
   Images                  String[]
   videoUrl                String?
   attachments             String[]
@@ -201,6 +206,7 @@ model Product {
   linkedinUrl             String?
   twitterUrl              String?
   instagramUrl            String?
+
   createdAt               DateTime    @default(now())
   updatedAt               DateTime    @updatedAt
   user                    User        @relation(fields: [userId], references: [id], onDelete: Cascade)

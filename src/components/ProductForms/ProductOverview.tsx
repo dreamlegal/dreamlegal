@@ -2,6 +2,7 @@
 import { ChangeEvent, useState } from 'react';
 import { Textarea } from "../ui/textarea";
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { XCircle } from "lucide-react";
 import { z } from 'zod';
 import { ProductInfo } from '@/store/useStore';
@@ -31,6 +32,8 @@ const ProductOverview = () => {
   const [inputUSP, setInputUSP] = useState(usp);
   const [inputUpdates, setInputUpdates] = useState(upcomingUpdates);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const [successMessage, setSuccessMessage] = useState("");
 
   // Function to validate all fields
   const validateAllFields = () => {
@@ -100,12 +103,14 @@ const ProductOverview = () => {
 
     if (!validateAllFields()) {
       return; // Stop form submission if there are validation errors
+      setSuccessMessage("");
     }
 
     // Set the validated values to state
     setDescription(inputDescription);
     setUSP(inputUSP);
     setUpcomingUpdates(inputUpdates);
+    setSuccessMessage("All fields are valid. You can move ahead.");
 
     // Proceed with the form submission logic
     console.log('Form submitted with:', {
@@ -164,7 +169,13 @@ const ProductOverview = () => {
             }
           </div>
         </div>
-        <button type='submit'>Submit</button>
+        {successMessage &&  
+              <div className="w-full bg-[#90ee90 ] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#50a092] pl-2">{successMessage}</p>
+              </div>
+            }
+        <Button type='submit' className='mt-2 bg-primary1'>Submit</Button>
       </form>
     </>
   );

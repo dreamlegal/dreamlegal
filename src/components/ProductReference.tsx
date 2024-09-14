@@ -13,7 +13,10 @@ function ProductReference({ product }: any) {
   return (
     <div>
       {videoInfo ? (
+        <div className="w-[200px] h-[200px]  md:w-[400px] md:h-[400px]">
         <VideoEmbed embedId={videoInfo.id} platform={videoInfo.platform} />
+      </div>
+        
       ) : (
         <div>No reference video provided</div>
       )}

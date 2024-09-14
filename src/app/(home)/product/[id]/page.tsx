@@ -18,6 +18,7 @@ async function getData(id: string) {
   }
 
   return response.json();
+
 }
 
 export default async function Page({ params }: { params: { id: string } }) {

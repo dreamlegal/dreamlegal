@@ -1,472 +1,108 @@
-"use client";
-import { FormValues, useFormContext } from "@/context/formValueContext";
+import React, { useState, useEffect } from 'react';
+import { ProductInfo } from '@/store/useStore';
+import { Button } from '@/components/ui/button';
 
-import { ChangeEvent, useState } from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { useStepContext } from "@/context/formContext";
-import { ProductInfo } from "@/store/useStore";
+const categoryOptions = {
+  'Client Relationship Management': ['Intake', 'Assessment', 'Strategize', 'Represent', 'Communication', 'Review'],
+  'Governance, Risk and Compliance': ['Coverage', 'Assessment', 'Validation', 'Implementation', 'Monitoring', 'Analysis'],
+  'Contract Lifecycle Management': ['Create', 'Negotiation', 'Authentication', 'Execute', 'Store', 'Tracking'],
+  'E-Signature': ['Document Preparation', 'Authentication', 'Signing', 'Encryption', 'Verification', 'Distribution']
+};
 
+const OptionSelector = () => {
+  const { category, setProcessLifecycle, processLifecycle } = ProductInfo();
+  const [localProcessLifecycle, setLocalProcessLifecycle] = useState({});
+  const [errors, setErrors] = useState({});
 
-const ProductLifeCycle = () => {
-   const { category, setCategory } = ProductInfo();
+  useEffect(() => {
+    console.log("Initial processLifecycle:", processLifecycle);
+    const initialState = category.reduce((acc, cat) => {
+      acc[cat] = Array.isArray(processLifecycle[cat]) ? processLifecycle[cat] : [];
+      return acc;
+    }, {});
+    setLocalProcessLifecycle(initialState);
+    console.log("Initial localProcessLifecycle:", initialState);
+  }, [processLifecycle, category]);
 
-   // Handle checkbox change
-   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-     const { name, value, checked } = e.target;
-     setCategory((prevCategory) => {
-       const updatedCategory = { ...prevCategory };
-       
-       if (checked) {
-         if (!updatedCategory[name]) {
-           updatedCategory[name] = [];
-         }
-         updatedCategory[name].push(value);
-       } else {
-         updatedCategory[name] = updatedCategory[name].filter((item: string) => item !== value);
-       }
- 
-       return updatedCategory;
-     });
-   };
- 
-   // Handle form submission
-   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-     e.preventDefault();
-     
-     // Add your validation logic here
-     const isValid = validateForm();
-     if (isValid) {
-       console.log("Form submitted:", category);
-       // Handle form submission, e.g., send data to the server
-     } else {
-       console.error("Form validation failed.");
-     }
-   };
- 
-   // Validation function to ensure at least one checkbox is selected in each category
-   const validateForm = () => {
-     // List of categories that must have at least one checkbox selected
-     const requiredCategories = [
-       "clientManagementSoftware",
-       "ComplianceandRiskSoftware",
-       "contractManageSoftware",
-       "DigitalSignature",
-       "DocumnetManagement",
-       "Ebilling",
-       "Ediscovery",
-       "IPManagement",
-       "LitigationManagement",
-       "legalWorkflow",
-       "legalResearch"
-     ];
- 
-     // Check if at least one checkbox is selected for each required category
-     for (const categoryName of requiredCategories) {
-       if (!category[categoryName] || category[categoryName].length === 0) {
-         return false; // Validation failed
-       }
-     }
- 
-     return true; // Validation passed
-   };
+  const handleChange = (cat, option, checked) => {
+    setLocalProcessLifecycle(prevState => {
+      const updatedCategory = checked
+        ? [...(prevState[cat] || []), option]
+        : (prevState[cat] || []).filter(item => item !== option);
+      const newState = { ...prevState, [cat]: updatedCategory };
+      console.log("Updated localProcessLifecycle:", newState);
+      return newState;
+    });
+    if (errors[cat]) {
+      setErrors(prevErrors => {
+        const { [cat]: _, ...rest } = prevErrors;
+        return rest;
+      });
+    }
+  };
 
+  const validateSelection = () => {
+    const newErrors = {};
+    let isValid = true;
+    category.forEach(cat => {
+      if (!localProcessLifecycle[cat] || localProcessLifecycle[cat].length === 0) {
+        newErrors[cat] = `At least one option must be selected for ${cat}`;
+        isValid = false;
+      }
+    });
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSubmit = () => {
+    console.log("Submit button clicked");
+    console.log("Current localProcessLifecycle:", localProcessLifecycle);
+    if (validateSelection()) {
+      console.log("Validation passed, updating processLifecycle");
+      Object.entries(localProcessLifecycle).forEach(([cat, options]) => {
+        console.log(`Updating category: ${cat} with options:`, options);
+        setProcessLifecycle(cat, options);
+      });
+      // Add a small delay before logging to allow state to update
+      setTimeout(() => {
+        console.log("Updated processLifecycle (after delay):", processLifecycle);
+      }, 0);
+    } else {
+      console.log("Validation failed");
+    }
+  };
 
   return (
-    <div>
-      <div className="mt-4 ">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 ">
-          <div>
-            {category.includes("Client Relationship Management ") && (
-              <div className="mt-2">
-                <div className="mt-2">
-                  <Label htmlFor="deployment">
-                    Customer Relation Management
-                  </Label>
-                  {[
-                    "Intake",
-                    "Assessment",
-                    "Strategize",
-                    "Represent",
-                    "Communication",
-                    "Review",
-                  ].map((crm) => (
-                    <div key={crm} className="items-top flex space-x-2 mt-2">
-                      <Input
-                        name="clientManagementSoftware"
-                        type="checkbox"
-                        value={crm}
-                        checked={category.clientManagementSoftware.includes(
-                          crm
-                        )}
-                        onChange={handleChange}
-                        className="w-5 h-5"
-                      />
-                      <div className="grid gap-1.5 leading-none">
-                        <label className="text-sm font-medium leading-none">
-                          {crm}
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+    <div className="space-y-4">
+      {category.map((cat) => (
+        <div key={cat} className="border p-4 rounded-lg shadow">
+          <h2 className="text-xl font-bold mb-2">{cat}</h2>
+          <div className="grid grid-cols-2 gap-2">
+            {categoryOptions[cat]?.map((option) => (
+              <div key={option} className="flex items-center">
+                <input
+                  type="checkbox"
+                  id={`${cat}-${option}`}
+                  checked={localProcessLifecycle[cat]?.includes(option) || false}
+                  onChange={(e) => handleChange(cat, option, e.target.checked)}
+                  className="w-5 h-5 mr-2"
+                />
+                <label htmlFor={`${cat}-${option}`} className="cursor-pointer">
+                  {option}
+                </label>
               </div>
-            )}
-
-            {category.includes(
-              "Governance, Risk and Compliance"
-            ) && (
-              <div className="mt-2">
-                <div className="mt-2">
-                  <Label htmlFor="deployment">
-                    Governance, Risk and Compliance
-                  </Label>
-                  {[
-                    "Coverage",
-                    "Assessment",
-                    "Validation",
-                    "Implementation",
-                    "Monitoring",
-                    "Analysis",
-                  ].map((crm) => (
-                    <div key={crm} className="items-top flex space-x-2 mt-2">
-                      <Input
-                        name="ComplianceandRiskSoftware"
-                        type="checkbox"
-                        value={crm}
-                        checked={category.ComplianceandRiskSoftware.includes(
-                          crm
-                        )}
-                        onChange={handleChange}
-                        className="w-5 h-5"
-                      />
-                      <div className="grid gap-1.5 leading-none">
-                        <label className="text-sm font-medium leading-none">
-                          {crm}
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {category.includes("Contract Lifecycle Management") && (
-              <div className="mt-2">
-                <div className="mt-2">
-                  <Label htmlFor="deployment">
-                    Contract Lifecycle Management
-                  </Label>
-                  {[
-                    "Create",
-                    "Negotiation",
-                    "Authentication",
-                    "Execute",
-                    "Store",
-                    "Tracking",
-                  ].map((crm) => (
-                    <div key={crm} className="items-top flex space-x-2 mt-2">
-                      <Input
-                        name="contractManageSoftware"
-                        type="checkbox"
-                        value={crm}
-                        checked={category.contractManageSoftware.includes(
-                          crm
-                        )}
-                        onChange={handleChange}
-                        className="w-5 h-5"
-                      />
-                      <div className="grid gap-1.5 leading-none">
-                        <label className="text-sm font-medium leading-none">
-                          {crm}
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {category.includes("E-Signature") && (
-              <div className="mt-2">
-                <div className="mt-2">
-                  <Label htmlFor="deployment">E-Signature</Label>
-                  {[
-                    "Document Preparation",
-                    "Authentication",
-                    "Signing",
-                    "Encryption",
-                    "Verification",
-                    "Distribution",
-                  ].map((crm) => (
-                    <div key={crm} className="items-top flex space-x-2 mt-2">
-                      <Input
-                        name="DigitalSignature"
-                        type="checkbox"
-                        value={crm}
-                        checked={category.DigitalSignature.includes(crm)}
-                        onChange={handleChange}
-                        className="w-5 h-5"
-                      />
-                      <div className="grid gap-1.5 leading-none">
-                        <label className="text-sm font-medium leading-none">
-                          {crm}
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {category.includes(
-              "Document Management System"
-            ) && (
-              <div className="mt-2">
-                <div className="mt-2">
-                  <Label htmlFor="deployment">
-                    Document Management System Software
-                  </Label>
-                  {[
-                    "Capture",
-                    "Change management",
-                    "Review",
-                    "Organize",
-                    "Access management",
-                    "Retrieval",
-                  ].map((crm) => (
-                    <div key={crm} className="items-top flex space-x-2 mt-2">
-                      <Input
-                        name="DocumnetManagement"
-                        type="checkbox"
-                        value={crm}
-                        checked={category.DocumnetManagement.includes(crm)}
-                        onChange={handleChange}
-                        className="w-5 h-5"
-                      />
-                      <div className="grid gap-1.5 leading-none">
-                        <label className="text-sm font-medium leading-none">
-                          {crm}
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {category.includes("E-billing and Invoicing") && (
-              <div className="mt-2">
-                <div className="mt-2">
-                  <Label htmlFor="deployment">E-billing and Invoicing</Label>
-                  {[
-                    "Invoice generation",
-                    "Authorization",
-                    "Distribution and Accessibility",
-                    "Payment Faciliation",
-                    "Tracking",
-                    "Analysis",
-                  ].map((crm) => (
-                    <div key={crm} className="items-top flex space-x-2 mt-2">
-                      <Input
-                        name="Ebilling"
-                        type="checkbox"
-                        value={crm}
-                        checked={category.Ebilling.includes(crm)}
-                        onChange={handleChange}
-                        className="w-5 h-5"
-                      />
-                      <div className="grid gap-1.5 leading-none">
-                        <label className="text-sm font-medium leading-none">
-                          {crm}
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {category.includes("E-discovery") && (
-              <div className="mt-2">
-                <div className="mt-2">
-                  <Label htmlFor="deployment">E-discovery</Label>
-                  {[
-                    "Discover",
-                    "Preserve",
-                    "Acquire",
-                    "Examine",
-                    "Evaluate",
-                    "Present",
-                  ].map((crm) => (
-                    <div key={crm} className="items-top flex space-x-2 mt-2">
-                      <Input
-                        name="Ediscovery"
-                        type="checkbox"
-                        value={crm}
-                        checked={category.Ediscovery.includes(crm)}
-                        onChange={handleChange}
-                        className="w-5 h-5"
-                      />
-                      <div className="grid gap-1.5 leading-none">
-                        <label className="text-sm font-medium leading-none">
-                          {crm}
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {category.includes(
-              "Intellectual Property Management"
-            ) && (
-              <div className="mt-2">
-                <div className="mt-2">
-                  <Label htmlFor="deployment">IP Management Software</Label>
-                  {[
-                    "Cataloging",
-                    "Analysis",
-                    "Protection",
-                    "Monitoring",
-                    "Enforcement",
-                    "Reporting",
-                  ].map((crm) => (
-                    <div key={crm} className="items-top flex space-x-2 mt-2">
-                      <Input
-                        name="IPManagement"
-                        type="checkbox"
-                        value={crm}
-                        checked={category.IPManagement.includes(crm)}
-                        onChange={handleChange}
-                        className="w-5 h-5"
-                      />
-                      <div className="grid gap-1.5 leading-none">
-                        <label className="text-sm font-medium leading-none">
-                          {crm}
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {category.includes(
-              "Litigation Management and Analytics"
-            ) && (
-              <div className="mt-2">
-                <div className="mt-2">
-                  <Label htmlFor="deployment">
-                    Litigation Management and analytics
-                  </Label>
-                  {[
-                    "Intake",
-                    "Strategize",
-                    "Preparation",
-                    "Litigation Support",
-                    "Analytics",
-                    "Outcome evaluation",
-                  ].map((crm) => (
-                    <div key={crm} className="items-top flex space-x-2 mt-2">
-                      <Input
-                        name="LitigationManagement"
-                        type="checkbox"
-                        value={crm}
-                        checked={category.LitigationManagement.includes(crm)}
-                        onChange={handleChange}
-                        className="w-5 h-5"
-                      />
-                      <div className="grid gap-1.5 leading-none">
-                        <label className="text-sm font-medium leading-none">
-                          {crm}
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {category.includes("Legal Workflow Automation") && (
-              <div className="mt-2">
-                <div className="mt-2">
-                  <Label htmlFor="deployment">Legal Workflow Automation</Label>
-                  {[
-                    "Process Identification",
-                    "Workflow configuration",
-                    "Validation",
-                    "Implementation",
-                    "Tracking",
-                    "Optimization",
-                  ].map((crm) => (
-                    <div key={crm} className="items-top flex space-x-2 mt-2">
-                      <Input
-                        name="legalWorkflow"
-                        type="checkbox"
-                        value={crm}
-                        checked={category.legalWorkflow.includes(crm)}
-                        onChange={handleChange}
-                        className="w-5 h-5"
-                      />
-                      <div className="grid gap-1.5 leading-none">
-                        <label className="text-sm font-medium leading-none">
-                          {crm}
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-             {category.includes(
-             "Legal Research"
-            ) && (
-              <div className="mt-2">
-                <div className="mt-2">
-                  <Label htmlFor="deployment">
-                   Legal Research
-                  </Label>
-                  {[
-                     "Query Identification",
-                     " Source and Type Selection",
-                     " Filtration and sorting",
-                     " Data extraction",
-                      "Data Analysis and Organization",
-                      "Storage or retrieval"
-                  ].map((crm) => (
-                    <div key={crm} className="items-top flex space-x-2 mt-2">
-                      <Input
-                        name="LitigationManagement"
-                        type="checkbox"
-                        value={crm}
-                        checked={category.legalResearch.includes(crm)}
-                        onChange={handleChange}
-                        className="w-5 h-5"
-                      />
-                      <div className="grid gap-1.5 leading-none">
-                        <label className="text-sm font-medium leading-none">
-                          {crm}
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            ))}
           </div>
-          <div className="mt-4 flex flex-col md:flex-row items-center gap-4">
-            <Button type="submit" className="bg-primary1">
-             submit
-            </Button>
-          </div>
-        </form>
-      </div>
+          {errors[cat] && (
+            <p className="text-[#DC3545] pl-2 mt-2">
+              {errors[cat]}
+            </p>
+          )}
+        </div>
+      ))}
+      <Button onClick={handleSubmit} className="mt-4">Submit</Button>
     </div>
   );
-}
+};
 
-export default  ProductLifeCycle;
+export default OptionSelector;

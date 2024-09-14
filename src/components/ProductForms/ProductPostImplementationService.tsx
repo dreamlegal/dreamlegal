@@ -6,20 +6,20 @@ const useProductInfo = () => {
   const { 
     maintenance, setMaintenance, 
     reqForChange, setReqForChange, 
-    training, setTraining, 
+    trainingReq, setTrainingReq, 
     dataMigration, setDataMigration 
   } = ProductInfo();
   
-  return { maintenance, setMaintenance, reqForChange, setReqForChange, training, setTraining, dataMigration, setDataMigration };
+  return { maintenance, setMaintenance, reqForChange, setReqForChange, trainingReq, setTrainingReq, dataMigration, setDataMigration };
 };
 
-const ProductOptions = () => {
-  const { maintenance, setMaintenance, reqForChange, setReqForChange, training, setTraining, dataMigration, setDataMigration } = useProductInfo();
+const  ProductPostImplementationService = () => {
+  const { maintenance, setMaintenance, reqForChange, setReqForChange, trainingReq, setTrainingReq, dataMigration, setDataMigration } = useProductInfo();
   
   const [errors, setErrors] = useState({
     maintenance: false,
     reqForChange: false,
-    training: false,
+    trainingReq: false,
     dataMigration: false,
   });
 
@@ -31,7 +31,7 @@ const ProductOptions = () => {
     const newErrors = {
       maintenance: !maintenance,
       reqForChange: !reqForChange,
-      training: !training,
+      trainingReq: !trainingReq,
       dataMigration: !dataMigration,
     };
 
@@ -49,7 +49,7 @@ const ProductOptions = () => {
   };
 
   return (
-    <form className="w-full font-calarity" onSubmit={handleSubmit}>
+    <form className="w-full  font-calarity max-w-4xl mx-auto mt-4" onSubmit={handleSubmit}>
       {/* Maintenance */}
       <div className="w-full mb-4">
         <label className="block mb-2">Maintenance</label>
@@ -96,14 +96,14 @@ const ProductOptions = () => {
         type="radio"
         name="training"
         value={option}
-        checked={training === option}
-        onChange={() => setTraining(option)} // Ensure this properly updates the state
+        checked={trainingReq === option}
+        onChange={() => setTrainingReq(option)} // Ensure this properly updates the state
       />
       <label className="ml-2">{option}</label>
     </div>
   ))}
   {/* Check for error */}
-  {errors.training && <p className="text-red-500 text-sm">Please select a training option.</p>}
+  {errors.trainingReq && <p className="text-red-500 text-sm">Please select a training option.</p>}
 </div>
 
 
@@ -136,4 +136,4 @@ const ProductOptions = () => {
   );
 };
 
-export default ProductOptions;
+export default ProductPostImplementationService;

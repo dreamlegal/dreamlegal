@@ -1,27 +1,30 @@
-"use client"; 
+"use client";
 import { ChangeEvent, useState } from "react";
 import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { Label } from "@/components/ui/label";
 import { XCircle } from "lucide-react";
 import { z } from "zod";
 import { ProductInfo } from "@/store/useStore";
-import {
-    MultiSelector,
-    MultiSelectorContent,
-    MultiSelectorInput,
-    MultiSelectorItem,
-    MultiSelectorList,
-    MultiSelectorTrigger,
-  } from "../ui/multiselect";
 
-  import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "../ui/select";
+import {
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
+} from "../ui/multiselect";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Switch } from "../ui/switch";
 
 // Define schema for both fields
 const productSchema = z.object({
@@ -30,23 +33,66 @@ const productSchema = z.object({
     .max(5, "Product name must be 5 characters or less")
     .min(2, "Product name must be at least 2 characters"),
   category: z.array(z.string()).min(1, "Please select at least one category"),
-  deployment: z.array(z.string()).min(1, "Please select at least one deployment option"),
-  adoptionPeriod: z.number().positive("Adoption period must be a positive number").optional(),
-  adoptionPeriodUnit: z.enum(["days", "months", "years"]).optional(),
-  focusCountries: z.array(z.string()).max(5, "You can select up to 5 countries").min(1, "Please select at least one language"),
+  deployment: z
+    .array(z.string())
+    .min(1, "Please select at least one deployment option"),
+  
+  
+  focusCountries: z
+    .array(z.string())
+    .max(5, "You can select up to 5 countries")
+    .min(1, "Please select at least one language"),
   languages: z.array(z.string()).min(1, "Please select at least one language"),
+  securityCertificate: z.string().optional().refine(value => {
+    if (value === undefined || value.trim() === '') return true; // Skip validation for undefined or empty values
+    return wordCount(value, 50); // Ensure this function is correctly defined
+  }, {
+    message: "Max word limit of 50 words exceeded",
+  }),
+  websiteUrl: z.string().url("Invalid Website URL").optional().nullable(),
+  adoptionPeriod: z.number().min(1, "Adoption period must be at least 1"),
+  adoptionPeriodUnit: z.enum(["days", "months", "years"], {
+    invalid_type_error: "Please select a valid period unit",
+  }),
+  logo: z.string().optional()
+
 });
+const wordCount = (value: string, maxWords: number): boolean => {
+  return value.trim().split(/\s+/).length <= maxWords;
+};
 
 const ProductInformation = () => {
   const {
-    productName, setProductName, category, setCategory, deployment, setDeployment,
-    adoptionPeriod, setAdoptionPeriod, adoptionPeriodUnit, setAdoptionPeriodUnit,
-    focusCountries, setFocusCountries, languages, setLanguages
+    productName,
+    setProductName,
+    logoUrl,
+    setLogoUrl,
+   
+    category,
+    setCategory,
+    deployment,
+    setDeployment,
+    adoptionPeriod,
+    setAdoptionPeriod,
+    adoptionPeriodUnit,
+    setAdoptionPeriodUnit,
+    focusCountries,
+    setFocusCountries,
+    languages,
+    setLanguages,
+    securityCertificate,
+    setSecurityCertificate,
+    setWebsiteUrl,
+    websiteUrl
   } = ProductInfo();
-  
+
   const [inputValue, setInputValue] = useState(productName);
+  const [securityValue, setSecurityValue] = useState(securityCertificate || "");
+
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const [localAdoptionPeriod, setLocalAdoptionPeriod] = useState(adoptionPeriod);
+  const [localAdoptionPeriodUnit, setLocalAdoptionPeriodUnit] = useState(adoptionPeriodUnit);
 
   const languagess = [
     "Arabic",
@@ -288,7 +334,6 @@ const ProductInformation = () => {
     "Zimbabwe",
   ];
 
-
   // Validate a single field
   const validateField = (name: string, value: any) => {
     const tempValues = {
@@ -296,9 +341,12 @@ const ProductInformation = () => {
       category: name === "category" ? value : category,
       deployment: name === "deployment" ? value : deployment,
       adoptionPeriod: name === "adoptionPeriod" ? value : adoptionPeriod,
-      adoptionPeriodUnit: name === "adoptionPeriodUnit" ? value : adoptionPeriodUnit,
+      adoptionPeriodUnit:
+        name === "adoptionPeriodUnit" ? value : adoptionPeriodUnit,
       focusCountries: name === "focusCountries" ? value : focusCountries,
       languages: name === "languages" ? value : languages,
+      securityCertificate: name === "securityCertificate"? value : securityValue,
+      websiteUrl: websiteUrl || undefined,
     };
 
     const result = productSchema.safeParse(tempValues);
@@ -309,6 +357,57 @@ const ProductInformation = () => {
     }
     return "";
   };
+  const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const sanitizedValue = value.trim() === "" ? null : value.trim();
+    
+    if (name === "websiteUrl") {
+      setWebsiteUrl(sanitizedValue);
+    }
+  };
+  
+  const validateFieldAdopt = (name: string, value: any) => {
+    const tempValues = {
+     adoptionPeriod: name === 'adoptionPeriod' ? Number(value) : adoptionPeriod,
+      adoptionPeriodUnit: name === 'adoptionPeriodUnit' ? value : adoptionPeriodUnit,
+    };
+
+    const result = productSchema.safeParse(tempValues);
+
+    if (!result.success) {
+      const error = result.error.errors.find((err) => err.path[0] === name);
+      return error ? error.message : "";
+    }
+    return "";
+  }; 
+
+  const handleAdoptionPeriodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const errorMessage = validateFieldAdopt(name, value);
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      [name]: errorMessage
+    }));
+
+    if (!errorMessage) {
+      setAdoptionPeriod(Number(value));
+    }
+  };
+
+  const handleAdoptionPeriodUnitChange = (value: string) => {
+    const name = 'adoptionPeriodUnit';
+    const errorMessage = validateFieldAdopt(name, value);
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      [name]: errorMessage
+    }));
+
+    if (!errorMessage) {
+      setAdoptionPeriodUnit(value);
+    }
+  };
+
+  
 
   // Function to validate all fields
   const validateAllFields = () => {
@@ -320,6 +419,8 @@ const ProductInformation = () => {
       adoptionPeriodUnit,
       focusCountries,
       languages,
+      securityCertificate: securityValue,
+      websiteUrl: websiteUrl || undefined,
     });
 
     if (!result.success) {
@@ -335,6 +436,19 @@ const ProductInformation = () => {
     return true;
   };
 
+  const handleAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+   
+    if (name === "securityCertificate") {
+      setSecurityValue(value);
+      const errorMessage = validateField(name, value);
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: errorMessage,
+      }));
+    } 
+  };
+
   // Handle change events and update state
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = e.target;
@@ -348,13 +462,14 @@ const ProductInformation = () => {
         ...prevErrors,
         [name]: errorMessage,
       }));
-    } else if (name === "category") {
+
+    }else if (name === "category") {
       let updatedCategories = category;
 
       if (checked) {
         updatedCategories = [...category, value];
       } else {
-        updatedCategories = category.filter((cat) => cat !== value);
+        updatedCategories = category.filter((cat: any) => cat !== value);
       }
 
       setCategory(updatedCategories);
@@ -370,7 +485,7 @@ const ProductInformation = () => {
       if (checked) {
         updatedDeployment = [...deployment, value];
       } else {
-        updatedDeployment = deployment.filter((dep) => dep !== value);
+        updatedDeployment = deployment.filter((dep: any) => dep !== value);
       }
 
       setDeployment(updatedDeployment);
@@ -384,26 +499,16 @@ const ProductInformation = () => {
   };
 
   // Handle adoption period and unit change
-  const handleAdoptionPeriodChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    const numericValue = Number(value);
 
-    setAdoptionPeriod(numericValue);
-    const errorMessage = validateField("adoptionPeriod", numericValue);
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      ["adoptionPeriod"]: errorMessage,
-    }));
-  };
 
-//   const handleAdoptionPeriodUnitChange = (value: string) => {
-//     setAdoptionPeriodUnit(value);
-//     const errorMessage = validateField("adoptionPeriodUnit", value);
-//     setErrors((prevErrors) => ({
-//       ...prevErrors,
-//       ["adoptionPeriodUnit"]: errorMessage,
-//     }));
-//   };
+  //   const handleAdoptionPeriodUnitChange = (value: string) => {
+  //     setAdoptionPeriodUnit(value);
+  //     const errorMessage = validateField("adoptionPeriodUnit", value);
+  //     setErrors((prevErrors) => ({
+  //       ...prevErrors,
+  //       ["adoptionPeriodUnit"]: errorMessage,
+  //     }));
+  //   };
 
   // Handle countries change
   const handleCountriesChange = (selectedCountries: string[]) => {
@@ -426,16 +531,21 @@ const ProductInformation = () => {
   };
 
   // Handle form submission
+ 
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     if (!validateAllFields()) {
+      console.log("Validation failed");
       return; // Stop form submission if there are validation errors
     }
-
-    // Set the validated values to Zustand state
+  
+    // Update Zustand store
     setProductName(inputValue);
-
+    setSecurityCertificate(securityValue);
+    
+   
     console.log("Form submitted with:", {
       productName: inputValue,
       category,
@@ -444,7 +554,38 @@ const ProductInformation = () => {
       adoptionPeriodUnit,
       focusCountries,
       languages,
+      securityCertificate: securityValue, // Ensure the correct value is logged
     });
+  };
+  const { logo, setLogo } = ProductInfo();
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogo(reader.result); // Save logo data in Zustand store
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // Handle case where file is not selected
+      setErrors(prev => ({ ...prev, logo: "Logo is required" }));
+    }
+  };
+
+
+
+  
+
+  const validateForm = () => {
+    const result = productSchema.safeParse({ logo });
+    if (!result.success) {
+      const errors = result.error.errors.reduce((acc, error) => {
+        acc[error.path[0]] = error.message;
+        return acc;
+      }, {});
+      setErrors(errors);
+    }
   };
 
   return (
@@ -468,6 +609,32 @@ const ProductInformation = () => {
             </div>
           )}
         </div>
+        {/* logo */}
+        {/* <div className="w-full mt-2">
+          <Label htmlFor="logo">Logo</Label>
+          <Input
+            type="file"
+            id="logo"
+            name="logo"
+            className="mt-1"
+          />
+        </div> */}
+        <div className="w-full mt-2">
+  <label htmlFor="logo">Logo</label>
+  <Input
+    type="file"
+    id="logo"
+    name="logo"
+    className="mt-1"
+    onChange={handleFileChange}
+  />
+  {errors.logo && <p className="text-red-500">{errors.logo}</p>}
+  {logo && (
+    <div className="mt-2">
+      <img src={logo} alt="Logo Preview" style={{ maxWidth: '100%' }} />
+    </div>
+  )}
+</div>
 
         {/* Category Checkboxes */}
         <div className="mt-2">
@@ -508,7 +675,6 @@ const ProductInformation = () => {
             </div>
           )}
         </div>
-
         {/* Deployment Checkboxes */}
         <div className="mt-2">
           <Label htmlFor="deployment">Select Deployment</Label>
@@ -536,40 +702,47 @@ const ProductInformation = () => {
             </div>
           )}
         </div>
+        {/* Select Mobile Accessibility */}
+        <div className="mt-4">
+          <div className=" flex gap-4 items-center">
+            <Label htmlFor="mobileAccessibility">
+              Select Mobile Accessibility
+            </Label>
+            <Switch />
+          </div>
+        </div>
 
         {/* Adoption Period */}
-        {/* <div>
-          <Label htmlFor="adoptionPeriod">Adoption Period</Label>
-          <div className="flex gap-4">
-            <Input
-              name="adoptionPeriod"
-              type="number"
-              placeholder="Adoption period"
-              value={adoptionPeriod || ""}
-              onChange={handleAdoptionPeriodChange}
-            />
-            <Select
-              value={adoptionPeriodUnit}
-              onValueChange={handleAdoptionPeriodUnitChange}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Period" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="days">Days</SelectItem>
-                <SelectItem value="months">Months</SelectItem>
-                <SelectItem value="years">Years</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          {errors.adoptionPeriod && (
-            <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
-              <XCircle className="w-6 h-6 text-red-500" />
-              <p className="text-[#DC3545] pl-2">{errors.adoptionPeriod}</p>
-            </div>
-          )}
-        </div> */}
-
+        <div>
+      <Label htmlFor="adoptionPeriod">Adoption Period</Label>
+      <div className="flex gap-4">
+        <Input
+          name="adoptionPeriod"
+          type="number"
+          placeholder="Adoption period"
+          value={adoptionPeriod}
+          onChange={handleAdoptionPeriodChange}
+        />
+        <Select value={adoptionPeriodUnit} onValueChange={handleAdoptionPeriodUnitChange}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Period" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="days">Days</SelectItem>
+            <SelectItem value="months">Months</SelectItem>
+            <SelectItem value="years">Years</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      {(errors.adoptionPeriod || errors.adoptionPeriodUnit) && (
+        <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+          <XCircle className="w-6 h-6 text-red-500" />
+          <p className="text-[#DC3545] pl-2">
+            {errors.adoptionPeriod || errors.adoptionPeriodUnit}
+          </p>
+        </div>
+      )}
+    </div>
         {/* Language Checkboxes */}
         <div className="mt-2">
           <Label htmlFor="languages">Select Languages</Label>
@@ -598,8 +771,48 @@ const ProductInformation = () => {
           )}
         </div>
 
+
+        {/* lang  */}
+
+        <div className="w-full mb-4">
+          <label htmlFor="websiteUrl">Website</label>
+          <div className="flex items-center">
+            <Input
+              type="url"
+              id="websiteUrl"
+              name="websiteUrl"
+              value={websiteUrl || ""}
+              onChange={handleUrlChange}
+              placeholder="Website URL"
+            />
+          </div>
+          {errors.websiteUrl && (
+            <p className="text-red-500">{errors.websiteUrl}</p>
+          )}
+        </div>
+
+
+        {/* Security Certificates */}
+        <div className="mt-2">
+          <Label className="securityCertificate">Security Certificates</Label>
+          <Textarea
+        name="securityCertificate"
+        placeholder="Mention name of certifications"
+        id="securityCertificate"
+        value={securityValue}
+        onChange={handleAreaChange}
+      />
+      {errors.securityCertificate && (
+            <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+              <XCircle className="w-6 h-6 text-red-500" />
+              <p className="text-[#DC3545] pl-2">{errors.securityCertificate}</p>
+            </div>
+          )}
+        </div>
+
         {/* Focus Countries */}
         <div className="mt-2">
+        
           <Label htmlFor="focusCountries">Select Countries (Max 5)</Label>
           <MultiSelector
             values={focusCountries}
@@ -615,7 +828,8 @@ const ProductInformation = () => {
                     key={country}
                     value={country}
                     disabled={
-                      focusCountries.length >= 5 && !focusCountries.includes(country)
+                      focusCountries.length >= 5 &&
+                      !focusCountries.includes(country)
                     }
                   >
                     {country}
@@ -631,10 +845,9 @@ const ProductInformation = () => {
             </div>
           )}
         </div>
-
-     
-
-        <button type="submit">Submit</button>
+        
+        <Button type="submit"  >Submit</Button>
+       
       </div>
     </form>
   );

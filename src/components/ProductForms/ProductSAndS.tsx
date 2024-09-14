@@ -30,6 +30,7 @@ const options = {
 };
 
 const units = ['MB', 'GB', 'TB'];
+const units2 = ['KB','MB', 'GB'];
 
 // Zod Schema for validation
 const ProductSAndSSchema = z.object({
@@ -194,7 +195,7 @@ const ProductSAndS = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full  mx-auto p-4 bg-white shadow-lg rounded-lg">
+    <form onSubmit={handleSubmit} className="w-full  mx-auto p-4 font-calarity max-w-4xl mx-auto mt-4 ">
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Demo</h2>
         {options.demo.map((option) => (
@@ -272,6 +273,7 @@ const ProductSAndS = () => {
           >
             Add
           </button>
+          {storage}
         </div>
         {errors.storage && <p className="text-red-500">{errors.storage}</p>
     }
@@ -292,7 +294,7 @@ const ProductSAndS = () => {
             onChange={handleFileSizeUnitChange}
             className="border border-gray-300 rounded-r-lg px-3 py-2"
           >
-            {units.map(unit => (
+            {units2.map(unit => (
               <option key={unit} value={unit}>{unit}</option>
             ))}
           </select>
@@ -303,6 +305,8 @@ const ProductSAndS = () => {
           >
             Add
           </button>
+          {fileSize},
+
         </div>
         {errors.fileSize && <p className="text-red-500">{errors.fileSize}</p>}
       </div>

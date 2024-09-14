@@ -1,20 +1,4 @@
 
-import React, { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { X } from "lucide-react";
-import { useCustomerSegmentStore } from "./UserCustomerSegmentStore";
-
 const predefinedCategories = {
   userCategories: [
     "Individual Practitioner",
@@ -123,10 +107,30 @@ const predefinedCategories = {
   ],
 };
 
+
+
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { X, Lock, Unlock } from "lucide-react";
+import { useCustomerSegmentStore } from "./UserCustomerSegmentStore";
+
+
+
 type CategoryType = "userCategories" | "industries" | "practiceAreas" | "teamSizes";
 
 export default function ProductCustomerSegment() {
-  const { customerSegment, addCategory, removeCategory, updatePercentage, validateAndSave } = useCustomerSegmentStore();
+  const { customerSegment, addCategory, removeCategory, updatePercentage, toggleLock, validateAndSave } = useCustomerSegmentStore();
   const [customCategory, setCustomCategory] = useState<{
     [key in CategoryType]: string;
   }>({
@@ -194,13 +198,22 @@ export default function ProductCustomerSegment() {
         <div key={category.name} className="">
           <div className="flex justify-between items-center">
             <Label>{category.name}</Label>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => removeCategory(type, category.name)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
+            <div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => toggleLock(type, category.name)}
+              >
+                {category.locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => removeCategory(type, category.name)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           <div className="flex items-center">
             <Slider
@@ -211,6 +224,7 @@ export default function ProductCustomerSegment() {
                 updatePercentage(type, category.name, value[0])
               }
               className="flex-grow"
+              disabled={category.locked}
             />
             <Input
               type="number"
@@ -221,6 +235,7 @@ export default function ProductCustomerSegment() {
                 updatePercentage(type, category.name, parseInt(e.target.value) || 0)
               }
               className="w-16"
+              disabled={category.locked}
             />
             <span>%</span>
           </div>

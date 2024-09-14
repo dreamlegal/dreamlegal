@@ -3,7 +3,8 @@ import { z } from 'zod';
 
 const CategorySchema = z.object({
   name: z.string(),
-  percentage: z.number().min(0).max(100)
+  percentage: z.number().min(0).max(100),
+  locked: z.boolean().optional()
 });
 
 const CustomerSegmentSchema = z.object({
@@ -20,6 +21,7 @@ interface CustomerSegmentStore {
   addCategory: (type: keyof CustomerSegment, name: string) => void;
   removeCategory: (type: keyof CustomerSegment, name: string) => void;
   updatePercentage: (type: keyof CustomerSegment, name: string, percentage: number) => void;
+  toggleLock: (type: keyof CustomerSegment, name: string) => void;
   validateAndSave: () => boolean;
 }
 
@@ -32,14 +34,14 @@ export const useCustomerSegmentStore = create<CustomerSegmentStore>((set, get) =
   },
 
   addCategory: (type, name) => set((state) => {
-    const newCategories = [...state.customerSegment[type], { name, percentage: 0 }];
+    const newCategories = [...state.customerSegment[type], { name, percentage: 0, locked: false }];
     const totalCategories = newCategories.length;
     const equalPercentage = Math.floor(100 / totalCategories);
     const remainder = 100 % totalCategories;
 
     const updatedCategories = newCategories.map((category, index) => ({
       ...category,
-      percentage: equalPercentage + (index < remainder ? 1 : 0)
+      percentage: category.locked ? category.percentage : equalPercentage + (index < remainder ? 1 : 0)
     }));
 
     return {
@@ -52,13 +54,15 @@ export const useCustomerSegmentStore = create<CustomerSegmentStore>((set, get) =
 
   removeCategory: (type, name) => set((state) => {
     const updatedCategories = state.customerSegment[type].filter(category => category.name !== name);
-    const totalCategories = updatedCategories.length;
+    const unlockedCategories = updatedCategories.filter(category => !category.locked);
+    const totalUnlocked = unlockedCategories.length;
     
-    if (totalCategories > 0) {
-      const equalPercentage = Math.floor(100 / totalCategories);
-      const remainder = 100 % totalCategories;
+    if (totalUnlocked > 0) {
+      const remainingPercentage = 100 - updatedCategories.reduce((sum, category) => sum + (category.locked ? category.percentage : 0), 0);
+      const equalPercentage = Math.floor(remainingPercentage / totalUnlocked);
+      const remainder = remainingPercentage % totalUnlocked;
 
-      updatedCategories.forEach((category, index) => {
+      unlockedCategories.forEach((category, index) => {
         category.percentage = equalPercentage + (index < remainder ? 1 : 0);
       });
     }
@@ -85,9 +89,9 @@ export const useCustomerSegmentStore = create<CustomerSegmentStore>((set, get) =
         return { ...category, percentage: newPercentage };
       }
 
-      const otherCategoriesCount = categories.length - 1;
-      if (otherCategoriesCount > 0) {
-        const adjustment = diff / otherCategoriesCount;
+      if (!category.locked) {
+        const unlockedCategories = categories.filter(c => !c.locked && c.name !== name);
+        const adjustment = diff / unlockedCategories.length;
         return { ...category, percentage: Math.max(0, category.percentage - adjustment) };
       }
 
@@ -102,10 +106,23 @@ export const useCustomerSegmentStore = create<CustomerSegmentStore>((set, get) =
     };
   }),
 
+  toggleLock: (type, name) => set((state) => {
+    const categories = state.customerSegment[type];
+    const updatedCategories = categories.map(category => 
+      category.name === name ? { ...category, locked: !category.locked } : category
+    );
+
+    return {
+      customerSegment: {
+        ...state.customerSegment,
+        [type]: updatedCategories
+      }
+    };
+  }),
+
   validateAndSave: () => {
     const result = CustomerSegmentSchema.safeParse(get().customerSegment);
     if (result.success) {
-      // Here you would typically save the data to your backend
       console.log('Data is valid. Saving:', result.data);
       return true;
     } else {

@@ -355,6 +355,13 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
     fileSize: z.string().nonempty("File size value is required")
   });
 
+
+  console.log('check', {
+    userCategory: userCategory,
+    industry:industry,
+    practiceAreas:practiceAreas,
+    teamSize:teamSize
+  });
   useEffect(() => {
     const productInformationComplete = productSchema.safeParse({
       productName, category, deployment, adoptionPeriod, adoptionPeriodUnit, focusCountries, languages, websiteUrl, securityCertificate

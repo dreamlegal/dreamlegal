@@ -20,7 +20,10 @@ export const ProductInfo = create((set) => ({
   avgTimeAdoption: null,
   languages: [],
   securityCertificate: null,
-  integration: [],
+  // integrations: [],
+  // setIntegrations: (integrations) => set({ integration: integrations }),
+  integrations: [],
+  setIntegrations: (integrations) => set({ integrations }),
   
   adoptionPeriod: null, // initial value can be null or empty string
   setAdoptionPeriod: (period) => set({ adoptionPeriod: period }),
@@ -152,7 +155,7 @@ export const ProductInfo = create((set) => ({
   setAvgTimeAdoption: (adoptionTime) => set({ avgTimeAdoption: adoptionTime }),
   setLanguages: (langs) => set({ languages: langs }),
   setSecurityCertificate: (certificate) => set({ securityCertificate: certificate }),
-  setIntegration: (integrations) => set({ integration: integrations }),
+  
   setDescription: (desc) => set({ description: desc }),
   setUSP: (usp) => set({ usp: usp }),
   setUpcomingUpdates: (updates) => set({ upcomingUpdates: updates }),

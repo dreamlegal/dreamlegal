@@ -1,5 +1,5 @@
 "use client";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { XCircle } from "lucide-react";
 import { z } from "zod";
 import { ProductInfo } from "@/store/useStore";
-
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import {
   MultiSelector,
   MultiSelectorContent,
@@ -25,6 +25,10 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Switch } from "../ui/switch";
+
+interface Integrations {
+  [category: string]: string[];
+}
 
 // Define schema for both fields
 const productSchema = z.object({
@@ -54,8 +58,8 @@ const productSchema = z.object({
   adoptionPeriodUnit: z.enum(["days", "months", "years"], {
     invalid_type_error: "Please select a valid period unit",
   }),
-  logo: z.string().optional()
-
+  logo: z.string().optional(),
+  
 });
 const wordCount = (value: string, maxWords: number): boolean => {
   return value.trim().split(/\s+/).length <= maxWords;
@@ -536,14 +540,43 @@ const ProductInformation = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   
-    if (!validateAllFields()) {
-      console.log("Validation failed");
-      return; // Stop form submission if there are validation errors
-    }
+    // if (!validateAllFields()) {
+    //   console.log("Validation failed");
+    //   return; // Stop form submission if there are validation errors
+    // }
   
     // Update Zustand store
-    setProductName(inputValue);
-    setSecurityCertificate(securityValue);
+    
+
+    let hasErrors = false;
+
+  if (!validateAllFields()) {
+    console.log("Validation failed");
+    hasErrors = true;
+  }
+  setProductName(inputValue);
+  setSecurityCertificate(securityValue);
+
+  // Validate integrations
+  try {
+    integrationsSchema.parse({ integrations: selectedIntegrations });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        integrations: error.errors[0].message
+      }));
+      hasErrors = true;
+    }
+  }
+
+  if (hasErrors) {
+    console.log("Form has errors. Please correct them before submitting.");
+    return; // Stop form submission if there are validation errors
+  }
+
+
+    
     
    
     console.log("Form submitted with:", {
@@ -588,9 +621,114 @@ const ProductInformation = () => {
     }
   };
 
+
+ 
+  // integrations   
+  // Define the type for integrations object
+
+
+// Define the integrations object with type
+const integrations: Integrations = {
+  "Accounting and Finance": [
+    "Financial Disclosures",
+    "FreshBooks",
+    "Jubilee",
+    "QuickBooks",
+    "TrustBooks",
+    "Xero"
+  ],
+  "Case and Matter Management": [
+    "Clio",
+    "LawRuler",
+    "Litify",
+    "MyCase",
+    "PracticePanther",
+    "Zola Suite"
+  ],
+  // ... other categories and their options
+};
+
+// const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+// const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({});
+// const [selectedIntegrations, setSelectedIntegrations] = useState<string[]>([]);
+
+// // Toggle the entire integrations dropdown
+// const toggleDropdown = () => {
+//   setIsDropdownOpen(prev => !prev);
+// };
+
+// // Toggle individual category dropdown
+// const toggleCategory = (category: string) => {
+//   setExpandedCategories(prev => ({
+//     ...prev,
+//     [category]: !prev[category]
+//   }));
+// };
+
+// // Handle integration selection
+// const toggleIntegration = (integration: string) => {
+//   setSelectedIntegrations(prev =>
+//     prev.includes(integration)
+//       ? prev.filter(i => i !== integration)
+//       : [...prev, integration]
+//   );
+// };
+
+const integrationsSchema = z.object({
+  integrations: z.array(z.string()).min(1, "At least one category must be selected"),
+});
+
+const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
+const [selectedIntegrations, setSelectedIntegrations] = useState<string[]>([]);
+
+// Retrieve global state and updater function from Zustand store
+const { integrations: globalIntegrations, setIntegrations } = ProductInfo();
+
+useEffect(() => {
+  // Initialize local state with global state integrations on load
+  setSelectedIntegrations(globalIntegrations);
+}, [globalIntegrations]);
+
+const toggleCategory = (category: string) => {
+  setExpandedCategories((prev) => ({
+    ...prev,
+    [category]: !prev[category],
+  }));
+};
+
+const toggleIntegration = (integration: string) => {
+  const updatedIntegrations = selectedIntegrations.includes(integration)
+    ? selectedIntegrations.filter((i) => i !== integration)
+    : [...selectedIntegrations, integration];
+
+  console.log('Updated Integrations:', updatedIntegrations); // Log updated integrations
+  setSelectedIntegrations(updatedIntegrations);
+
+  // Validate and update global state when selection changes
+  handleIntegrationChange(updatedIntegrations);
+};
+
+const handleIntegrationChange = (updatedIntegrations: string[]) => {
+  try {
+    integrationsSchema.parse({ integrations: updatedIntegrations });
+    setErrors({});
+    setIntegrations(updatedIntegrations);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      setErrors({ integrations: error.errors[0].message });
+    }
+  }
+};
+  
+
+
+
   return (
     <form onSubmit={handleSubmit} className="w-full font-calarity">
       <div className="flex w-100 flex-col">
+
+    
+
         {/* Product Name */}
         <div className="w-full mt-2">
           <Label htmlFor="productName">Product Name</Label>
@@ -634,7 +772,7 @@ const ProductInformation = () => {
       <img src={logo} alt="Logo Preview" style={{ maxWidth: '100%' }} />
     </div>
   )}
-</div>
+       </div>
 
         {/* Category Checkboxes */}
         <div className="mt-2">
@@ -742,7 +880,7 @@ const ProductInformation = () => {
           </p>
         </div>
       )}
-    </div>
+        </div>
         {/* Language Checkboxes */}
         <div className="mt-2">
           <Label htmlFor="languages">Select Languages</Label>
@@ -809,6 +947,71 @@ const ProductInformation = () => {
             </div>
           )}
         </div>
+
+
+          {/* integrations  */}
+      <div className="w-full mt-2">
+      <div className="w-full  bg-white  rounded-lg overflow-hidden">
+        <button
+          onClick={() => toggleCategory('root')}
+          className="w-full text-left p-2 bg-transparent text-gray
+
+           border border-gray-300  rounded-lg outline-none placeholder:text-muted-foreground flex-1
+          
+          "
+        >
+      {expandedCategories['root'] ? 'Hide Integrations' : 'Select Integrations'}
+    </button>
+
+    {expandedCategories['root'] && (
+      <div className="p-4">
+        {Object.entries(integrations).map(([category, options]) => (
+          <div key={category} className="border-b last:border-b-0 rounded">
+            <button
+              onClick={() => toggleCategory(category)}
+              className="flex justify-between items-center w-full p-4 text-left hover:bg-gray-100 rounded-[8px] transition-colors duration-150"
+            >
+              <span className="font-semibold">{category}</span>
+              {expandedCategories[category] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            </button>
+
+            {expandedCategories[category] && (
+              <div className="pl-8 pr-4 pb-4">
+                {options.map((option) => (
+                  <label key={option} className="flex items-center space-x-2 mb-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={selectedIntegrations.includes(option)}
+                      onChange={() => toggleIntegration(option)}
+                      className="form-checkbox h-5 w-5 text-blue-600"
+                    />
+                    <span>{option}</span>
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+
+        <div className="p-4 bg-gray-100 rounded-[8px]">
+          <h3 className="font-semibold mb-2">Selected Integrations:</h3>
+          <ul className="list-disc pl-5">
+            {selectedIntegrations.map((integration) => (
+              <li key={integration}>{integration}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    )}
+{/* 
+    {errors.integrations && (
+      <p className="text-red-500 text-sm mt-2">{errors.integrations}</p>
+    )} */}
+      </div>
+        {errors.integrations && (
+            <p className="text-red-500 text-sm mt-2">{errors.integrations}</p>
+          )}
+</div>
 
         {/* Focus Countries */}
         <div className="mt-2">

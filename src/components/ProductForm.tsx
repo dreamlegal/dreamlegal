@@ -303,7 +303,7 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
     adoptionPeriodUnit,
     focusCountries,
     languages,
-    websiteUrl,
+    websiteUrl,integrations,
     securityCertificate,
     description, usp, upcomingUpdates,
     freeTrial, timePeriod, freeVersion, pricingModel, contractPeriod, nameofPlan, validity, price, pricingParams,
@@ -362,6 +362,8 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
     practiceAreas:practiceAreas,
     teamSize:teamSize
   });
+
+  console.log("prodyct oage " , integrations)
   useEffect(() => {
     const productInformationComplete = productSchema.safeParse({
       productName, category, deployment, adoptionPeriod, adoptionPeriodUnit, focusCountries, languages, websiteUrl, securityCertificate

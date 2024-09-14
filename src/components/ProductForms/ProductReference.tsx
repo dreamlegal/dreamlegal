@@ -692,7 +692,7 @@ const ProductReference = () => {
   }, [images]);
 
   return (
-    <form onSubmit={handleSubmit} className="w-full font-calarity max-w-4xl mx-auto mt-4">
+    <form onSubmit={handleSubmit} className="w-full font-calarity max-w-4xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-md">
       <div className="flex w-100 flex-col">
         {/* Image upload */}
         <div className="w-full mb-4 mt-4">

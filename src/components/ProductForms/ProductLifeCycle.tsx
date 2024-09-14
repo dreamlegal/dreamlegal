@@ -73,11 +73,43 @@ const OptionSelector = () => {
   };
 
   return (
-    <div className="space-y-4">
+    // <div className="space-y-4">
+    //   {category.map((cat) => (
+    //     <div key={cat} className="border p-4 rounded-lg shadow">
+    //       <h2 className="text-xl font-bold mb-2">{cat}</h2>
+    //       <div className="grid grid-cols-2 gap-2">
+    //         {categoryOptions[cat]?.map((option) => (
+    //           <div key={option} className="flex items-center">
+    //             <input
+    //               type="checkbox"
+    //               id={`${cat}-${option}`}
+    //               checked={localProcessLifecycle[cat]?.includes(option) || false}
+    //               onChange={(e) => handleChange(cat, option, e.target.checked)}
+    //               className="w-5 h-5 mr-2"
+    //             />
+    //             <label htmlFor={`${cat}-${option}`} className="cursor-pointer">
+    //               {option}
+    //             </label>
+    //           </div>
+    //         ))}
+    //       </div>
+    //       {errors[cat] && (
+    //         <p className="text-[#DC3545] pl-2 mt-2">
+    //           {errors[cat]}
+    //         </p>
+    //       )}
+    //     </div>
+    //   ))}
+    //   <Button onClick={handleSubmit} className="mt-4">Submit</Button>
+    // </div>
+ 
+
+
+<div className="space-y-4">
       {category.map((cat) => (
-        <div key={cat} className="border p-4 rounded-lg shadow">
-          <h2 className="text-xl font-bold mb-2">{cat}</h2>
-          <div className="grid grid-cols-2 gap-2">
+        <div key={cat} className="border border-gray-200 p-4 rounded-lg shadow-sm bg-white">
+          <h2 className="text-xl font-bold mb-2 text-gray-800">{cat}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {categoryOptions[cat]?.map((option) => (
               <div key={option} className="flex items-center">
                 <input
@@ -85,22 +117,22 @@ const OptionSelector = () => {
                   id={`${cat}-${option}`}
                   checked={localProcessLifecycle[cat]?.includes(option) || false}
                   onChange={(e) => handleChange(cat, option, e.target.checked)}
-                  className="w-5 h-5 mr-2"
+                  className="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 focus:ring-offset-0 transition duration-150 ease-in-out"
                 />
-                <label htmlFor={`${cat}-${option}`} className="cursor-pointer">
+                <label htmlFor={`${cat}-${option}`} className="ml-2 cursor-pointer text-gray-700">
                   {option}
                 </label>
               </div>
             ))}
           </div>
           {errors[cat] && (
-            <p className="text-[#DC3545] pl-2 mt-2">
+            <p className="text-[#DC3545] pl-2 mt-2 text-sm">
               {errors[cat]}
             </p>
           )}
         </div>
       ))}
-      <Button onClick={handleSubmit} className="mt-4">Submit</Button>
+     
     </div>
   );
 };

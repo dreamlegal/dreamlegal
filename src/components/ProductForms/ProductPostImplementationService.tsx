@@ -49,7 +49,7 @@ const  ProductPostImplementationService = () => {
   };
 
   return (
-    <form className="w-full  font-calarity max-w-4xl mx-auto mt-4" onSubmit={handleSubmit}>
+    <form className="w-full  font-calarity max-w-4xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-md" onSubmit={handleSubmit}>
       {/* Maintenance */}
       <div className="w-full mb-4">
         <label className="block mb-2">Maintenance</label>

@@ -3,11 +3,17 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogTrigger,
+} from '../ui/alert-dialog';
+
 import { Label } from "@/components/ui/label";
 import { XCircle } from "lucide-react";
 import { z } from "zod";
 import { ProductInfo } from "@/store/useStore";
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, X  } from 'lucide-react';
 import {
   MultiSelector,
   MultiSelectorContent,
@@ -34,7 +40,7 @@ interface Integrations {
 const productSchema = z.object({
   productName: z
     .string()
-    .min(3, "Product name must be at least 2 characters"),
+    .min(3, "Product name must be at least 3 characters"),
   category: z.array(z.string()).min(1, "Please select at least one category"),
   deployment: z
     .array(z.string())
@@ -635,6 +641,8 @@ const integrations: Integrations = {
   // ... other categories and their options
 };
 
+const [open, setOpen] = useState(false);
+  
 
 
 const integrationsSchema = z.object({
@@ -977,7 +985,7 @@ console.log("Form submitted with:", formData);
         />
         <Select value={adoptionPeriodUnit} onValueChange={handleAdoptionPeriodUnitChange}>
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Period" />
+            <SelectValue placeholder="Period"/> 
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="days">Days</SelectItem>
@@ -1066,68 +1074,123 @@ console.log("Form submitted with:", formData);
           {/* integrations  */}
       <div className="w-full mt-2">
       <Label htmlFor="focusCountries">Select Integrations</Label>
-      <div className="w-full  bg-white  rounded-lg overflow-hidden mt-4">
-        <button
-          onClick={() => toggleCategory('root')}
-          className="w-full text-left p-2 bg-transparent text-gray
+      {/* <div className="w-full bg-gray-50 rounded-lg overflow-hidden mt-4 shadow-md">
+      <button
+        onClick={() => toggleCategory('root')}
+        className="w-full text-left p-3 bg-white text-gray-800 border border-gray-200 rounded-t-lg outline-none hover:bg-gray-100 transition-colors duration-150 flex items-center justify-between"
+      >
+        <span className="font-semibold">
+          {expandedCategories['root'] ? 'Hide Integrations' : 'Select Integrations'}
+        </span>
+        {expandedCategories['root'] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+      </button>
 
-           border border-gray-300  rounded-lg outline-none placeholder:text-muted-foreground flex-1
+      {expandedCategories['root'] && (
+        <div className="p-4 border border-gray-200 bg-white">
+          {Object.entries(integrations).map(([category, options]) => (
+            <div key={category} className="mb-4 last:mb-0 bg-gray-50 rounded-lg overflow-hidden">
+              <button
+                onClick={() => toggleCategory(category)}
+                className="flex justify-between items-center w-full p-3 text-left bg-gray-100 hover:bg-gray-200 transition-colors duration-150"
+              >
+                <span className="font-semibold text-gray-800">{category}</span>
+                {expandedCategories[category] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              </button>
+
+              {expandedCategories[category] && (
+                <div className="p-3 bg-white">
+                  {options.map((option) => (
+                    <label key={option} className="flex items-center space-x-2 mb-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedIntegrations.includes(option)}
+                        onChange={() => toggleIntegration(option)}
+                        className="form-checkbox h-5 w-5 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
+                      />
+                      <span className="text-gray-700">{option}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+
+          <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+            <h3 className="font-semibold mb-2 text-gray-800">Selected Integrations:</h3>
+            <ul className="list-disc pl-5 text-gray-700">
+              {selectedIntegrations.map((integration) => (
+                <li key={integration}>{integration}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+    </div> */}
+     <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>
+        <button className="w-full text-left p-3 bg-white text-gray-800 border border-gray-200 rounded-lg outline-none hover:bg-gray-100 transition-colors duration-150 flex items-center justify-between">
+          <span className="font-semibold">
+            Select Integrations
+          </span>
+          <ChevronDown size={20} />
+         
           
-          "
-        >
-      {expandedCategories['root'] ? 'Hide Integrations' : 'Select Integrations'}
-    </button>
-
-    {expandedCategories['root'] && (
-      <div className="p-4">
-        {Object.entries(integrations).map(([category, options]) => (
-          <div key={category} className="border-b last:border-b-0 rounded">
-            <button
-              onClick={() => toggleCategory(category)}
-              className="flex justify-between items-center w-full p-4 text-left hover:bg-gray-100 rounded-[8px] transition-colors duration-150"
-            >
-              <span className="font-semibold">{category}</span>
-              {expandedCategories[category] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-            </button>
-
-            {expandedCategories[category] && (
-              <div className="pl-8 pr-4 pb-4">
-                {options.map((option) => (
-                  <label key={option} className="flex items-center space-x-2 mb-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={selectedIntegrations.includes(option)}
-                      onChange={() => toggleIntegration(option)}
-                      className="form-checkbox h-5 w-5 text-blue-600"
-                    />
-                    <span>{option}</span>
-                  </label>
-                ))}
-              </div>
-            )}
+        </button>
+      </AlertDialogTrigger>
+      <AlertDialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+        <div className="p-4">
+        <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
+              <X size={20} />
+            </Button>
+          <div className="mb-4 p-4 bg-gray-100 rounded-lg">
+            <h3 className="font-semibold mb-2 text-gray-800">Selected Integrations:</h3>
+            <ul className="list-disc pl-5 text-gray-700">
+              {selectedIntegrations.map((integration) => (
+                <li key={integration}>{integration}</li>
+              ))}
+            </ul>
           </div>
 
+          {Object.entries(integrations).map(([category, options]) => (
+            <div key={category} className="mb-4 last:mb-0 bg-gray-50 rounded-lg overflow-hidden">
+              <button
+                onClick={() => toggleCategory(category)}
+                className="flex justify-between items-center w-full p-3 text-left bg-gray-100 hover:bg-gray-200 transition-colors duration-150"
+              >
+                <span className="font-semibold text-gray-800">{category}</span>
+                {expandedCategories[category] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              </button>
 
-        ))}
-
-        <div className="p-4 bg-gray-100 rounded-[8px]">
-          <h3 className="font-semibold mb-2">Selected Integrations:</h3>
-          <ul className="list-disc pl-5">
-            {selectedIntegrations.map((integration) => (
-              <li key={integration}>{integration}</li>
-            ))}
-          </ul>
+              {expandedCategories[category] && (
+                <div className="p-3 bg-white">
+                  {options.map((option) => (
+                    <label key={option} className="flex items-center space-x-2 mb-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedIntegrations.includes(option)}
+                        onChange={() => toggleIntegration(option)}
+                        className="form-checkbox h-5 w-5 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
+                      />
+                      <span className="text-gray-700">{option}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-      </div>
-    )}
+      </AlertDialogContent>
+    </AlertDialog>
 
     
-
-      </div>
-        {errors.integrations && (
-            <p className="text-red-500 text-sm mt-2">{errors.integrations}</p>
+      
+          {errors.integrations && (
+            <div className="w-full bg-[#F8D7DA] mt-3 mb-3 p-2 rounded-lg flex">
+              <XCircle className="w-6 h-6 text-red-500" />
+              <p className="text-[#DC3545] pl-2">{errors.integrations}</p>
+            </div>
           )}
-</div>
+      </div>
 
         {/* Focus Countries */}
         <div className="mt-2">
@@ -1158,14 +1221,14 @@ console.log("Form submitted with:", formData);
             </MultiSelectorContent>
           </MultiSelector>
           {errors.focusCountries && (
-            <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+            <div className="w-full bg-[#F8D7DA] mt-3 mb-3 p-2 rounded-lg flex">
               <XCircle className="w-6 h-6 text-red-500" />
               <p className="text-[#DC3545] pl-2">{errors.focusCountries}</p>
             </div>
           )}
         </div>
         
-        <Button type="submit"  >Submit</Button>
+        <Button type="submit"   >Submit</Button>
        
       </div>
     </form>

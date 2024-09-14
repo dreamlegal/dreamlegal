@@ -72,14 +72,69 @@ const ProductFeatures = () => {
   };
 
   return (
-    <div className="space-y-4">
+    // <div className="space-y-4">
+    //   {/* Render Common Features */}
+    //   <div className="border p-4 rounded-lg shadow">
+    //     <h2 className="text-xl font-bold mb-2">Common Features</h2>
+    //     {Object.keys(commonFeaturesOptions).map(subCat => (
+    //       <div key={subCat}>
+    //         <h3 className="text-lg font-semibold mt-4">{subCat}</h3>
+    //         <div className="grid grid-cols-2 gap-2">
+    //           {commonFeaturesOptions[subCat].map(option => (
+    //             <div key={option} className="flex items-center">
+    //               <input
+    //                 type="checkbox"
+    //                 id={`Common-${subCat}-${option}`}
+    //                 checked={localFeatures['Common Features']?.[subCat]?.includes(option) || false}
+    //                 onChange={(e) => handleChange('Common Features', subCat, option, e.target.checked)}
+    //                 className="w-5 h-5 mr-2"
+    //               />
+    //               <label htmlFor={`Common-${subCat}-${option}`} className="cursor-pointer">
+    //                 {option}
+    //               </label>
+    //             </div>
+    //           ))}
+    //         </div>
+    //       </div>
+    //     ))}
+    //   </div>
+
+    //   {/* Render Category-Specific Features */}
+    //   {category.map(cat => (
+    //     <div key={cat} className="border p-4 rounded-lg shadow">
+    //       <h2 className="text-xl font-bold mb-2">{cat}</h2>
+    //       {Object.keys(categoryOptions[cat] || {}).map(subCat => (
+    //         <div key={subCat}>
+    //           <h3 className="text-lg font-semibold mt-4">{subCat}</h3>
+    //           <div className="grid grid-cols-2 gap-2">
+    //             {categoryOptions[cat][subCat].map(option => (
+    //               <div key={option} className="flex items-center">
+    //                 <input
+    //                   type="checkbox"
+    //                   id={`${cat}-${subCat}-${option}`}
+    //                   checked={localFeatures[cat]?.[subCat]?.includes(option) || false}
+    //                   onChange={(e) => handleChange(cat, subCat, option, e.target.checked)}
+    //                   className="w-5 h-5 mr-2"
+    //                 />
+    //                 <label htmlFor={`${cat}-${subCat}-${option}`} className="cursor-pointer">
+    //                   {option}
+    //                 </label>
+    //               </div>
+    //             ))}
+    //           </div>
+    //         </div>
+    //       ))}
+    //     </div>
+    //   ))}
+    // </div>
+    <div className="space-y-6">
       {/* Render Common Features */}
-      <div className="border p-4 rounded-lg shadow">
-        <h2 className="text-xl font-bold mb-2">Common Features</h2>
+      <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">Common Features</h2>
         {Object.keys(commonFeaturesOptions).map(subCat => (
-          <div key={subCat}>
-            <h3 className="text-lg font-semibold mt-4">{subCat}</h3>
-            <div className="grid grid-cols-2 gap-2">
+          <div key={subCat} className="mt-6 first:mt-0">
+            <h3 className="text-lg font-semibold mb-3 text-gray-700">{subCat}</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {commonFeaturesOptions[subCat].map(option => (
                 <div key={option} className="flex items-center">
                   <input
@@ -87,9 +142,9 @@ const ProductFeatures = () => {
                     id={`Common-${subCat}-${option}`}
                     checked={localFeatures['Common Features']?.[subCat]?.includes(option) || false}
                     onChange={(e) => handleChange('Common Features', subCat, option, e.target.checked)}
-                    className="w-5 h-5 mr-2"
+                    className="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 focus:ring-offset-0 transition duration-150 ease-in-out"
                   />
-                  <label htmlFor={`Common-${subCat}-${option}`} className="cursor-pointer">
+                  <label htmlFor={`Common-${subCat}-${option}`} className="ml-2 cursor-pointer text-gray-600">
                     {option}
                   </label>
                 </div>
@@ -101,12 +156,12 @@ const ProductFeatures = () => {
 
       {/* Render Category-Specific Features */}
       {category.map(cat => (
-        <div key={cat} className="border p-4 rounded-lg shadow">
-          <h2 className="text-xl font-bold mb-2">{cat}</h2>
+        <div key={cat} className="bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+          <h2 className="text-2xl font-bold mb-4 text-gray-800">{cat}</h2>
           {Object.keys(categoryOptions[cat] || {}).map(subCat => (
-            <div key={subCat}>
-              <h3 className="text-lg font-semibold mt-4">{subCat}</h3>
-              <div className="grid grid-cols-2 gap-2">
+            <div key={subCat} className="mt-6 first:mt-0">
+              <h3 className="text-lg font-semibold mb-3 text-gray-700">{subCat}</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {categoryOptions[cat][subCat].map(option => (
                   <div key={option} className="flex items-center">
                     <input
@@ -114,9 +169,9 @@ const ProductFeatures = () => {
                       id={`${cat}-${subCat}-${option}`}
                       checked={localFeatures[cat]?.[subCat]?.includes(option) || false}
                       onChange={(e) => handleChange(cat, subCat, option, e.target.checked)}
-                      className="w-5 h-5 mr-2"
+                      className="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 focus:ring-offset-0 transition duration-150 ease-in-out"
                     />
-                    <label htmlFor={`${cat}-${subCat}-${option}`} className="cursor-pointer">
+                    <label htmlFor={`${cat}-${subCat}-${option}`} className="ml-2 cursor-pointer text-gray-600">
                       {option}
                     </label>
                   </div>

@@ -173,24 +173,35 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
 
         const FormValues = {
           userId: userId,  // From global state
-          name: productName,  // Mapped to productName
+          prname: productName,  // Mapped to productName
           logoUrl : logo || undefined,
           category: category,  // Mapped from global state
-          deployement: deployment,  // Mapped from global state
-          mobileAvailable:mobileAvailable,
-        
+          deployment: deployment,  // Mapped from global state
+          mobileAccessibility:mobileAvailable,
+          adoptionPeriod:adoptionPeriod,
+          adoptionPeriodUnit:adoptionPeriodUnit,
+          securityCertificate: securityCertificate,
           focusCountries: focusCountries,  // Mapped from global state
-          avgTimeAdoption: `${adoptionPeriod} ${adoptionPeriodUnit}`,  // Combine adoptionPeriod and adoptionPeriodUnit
+          
           languages: languages,  // Mapped from global state
-          websiteUrl: websiteUrl,  // Mapped from global state
-          securityCertificate: securityCertificate,  // Mapped from global state
-          description: description, 
+          // websiteUrl: websiteUrl,  // Mapped from global state
+           
+
+          description: description,
+          usp: usp,  // Mapped from global state
+          upcomingUpdates: upcomingUpdates,  // Mapped from global state
+
+          userCategory: userCategory,  // Mapped from global state
+          industry: industry,  // Mapped from global state
+          practiceAreas: practiceAreas,  // Mapped from global state
+          teamSize: teamSize,  // Mapped from global state
+
+
           processLifecycle:processLifecycle, 
           features:features,
           integrations:integrations,
 
-          usp: usp,  // Mapped from global state
-          upcomingUpdates: upcomingUpdates,  // Mapped from global state
+        
           freeTrial: freeTrial,  // Mapped from global state
 
           timePeriod: timePeriod,  // Mapped from global state
@@ -213,19 +224,15 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
           trainingReq: trainingReq,  // Mapped from global state
           dataMigration: dataMigration,  // Mapped from global state
 
-          images: images || undefined,  // Mapped from global state
-          attachments: attachments || undefined,  // Mapped from global state
+          ImagesUrl: images || undefined,  // Mapped from global state
+          attachmentUrl: attachments || undefined,  // Mapped from global state
           instagramUrl: instagramUrl,  // Mapped from global state
           videoUrl: videoUrl,  // Mapped from global state
           linkedinUrl: linkedinUrl,  // Mapped from global state
           twitterUrl: twitterUrl,  // Mapped from global state
           youtubeUrl: youtubeUrl,  // Mapped from global state
 
-          userCategory: userCategory,  // Mapped from global state
-          industry: industry,  // Mapped from global state
-          practiceAreas: practiceAreas,  // Mapped from global state
-          teamSize: teamSize,  // Mapped from global state
-
+        
           active: "draft",  // Default value
           featured: false  // Default value
           
@@ -279,9 +286,9 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
     
     <div className="relative">
      
-      {logo}
      
-      <div className="absolute left-0 top-0 bottom-0 w-16 flex flex-col items-center">
+     
+      <div className="hidden md:flex absolute left-0 top-0 bottom-0 w-16 flex-col items-center">
         {steps.map((step, index) => (
           <React.Fragment key={index}>
             <div 
@@ -301,7 +308,7 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
           </React.Fragment>
         ))}
       </div>
-      <div className="pl-20">
+      <div className="md:pl-20">
         {steps.map((step, index) => (
           <div key={index} className="mb-4">
             <button
@@ -320,7 +327,6 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
                   <Button 
                     className="mt-4 flex items-center"
                     onClick={handleNextStep}
-
                   >
                     Next <ArrowRight className="ml-2" size={16} />
                   </Button>
@@ -330,7 +336,7 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
           </div>
         ))}
 
-        <Button    className="mt-4 flex items-center" onClick={handleSubmit}>Submit here </Button>
+        <Button className="mt-4 flex items-center" onClick={handleSubmit}>Submit here </Button>
       </div>
 
        

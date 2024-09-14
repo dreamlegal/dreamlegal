@@ -29,8 +29,8 @@ const options = {
   ]
 };
 
-const units = ['MB', 'GB', 'TB'];
-const units2 = ['KB','MB', 'GB'];
+const units = ['MB  ', 'GB  ', 'TB  '];
+const units2 = ['KB  ','MB  ', 'GB  '];
 
 // Zod Schema for validation
 const ProductSAndSSchema = z.object({
@@ -195,72 +195,208 @@ const ProductSAndS = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full  mx-auto p-4 font-calarity max-w-4xl mx-auto mt-4 ">
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Demo</h2>
-        {options.demo.map((option) => (
-          <label key={option} className="block mb-2">
-            <input
-              type="checkbox"
-              value={option}
-              checked={inputDemo.includes(option)}
-              onChange={() => handleCheckboxChange('demo', option)}
-              className="mr-2"
-            />
-            {option}
-          </label>
-        ))}
-        {errors.demo && <p className="text-red-500">{errors.demo}</p>}
+    // <form onSubmit={handleSubmit} className="w-full  mx-auto p-4 font-calarity max-w-4xl mx-auto mt-4 ">
+    //   <div className="mb-4">
+    //     <h2 className="text-lg font-semibold mb-2">Demo</h2>
+    //     {options.demo.map((option) => (
+    //       <label key={option} className="block mb-2">
+    //         <input
+    //           type="checkbox"
+    //           value={option}
+    //           checked={inputDemo.includes(option)}
+    //           onChange={() => handleCheckboxChange('demo', option)}
+    //           className="mr-2"
+    //         />
+    //         {option}
+    //       </label>
+    //     ))}
+    //     {errors.demo && <p className="text-red-500">{errors.demo}</p>}
+    //   </div>
+
+    //   <div className="mb-4">
+    //     <h2 className="text-lg font-semibold mb-2">Support</h2>
+    //     {options.support.map((option) => (
+    //       <label key={option} className="block mb-2">
+    //         <input
+    //           type="checkbox"
+    //           value={option}
+    //           checked={inputSupport.includes(option)}
+    //           onChange={() => handleCheckboxChange('support', option)}
+    //           className="mr-2"
+    //         />
+    //         {option}
+    //       </label>
+    //     ))}
+    //     {errors.support && <p className="text-red-500">{errors.support}</p>}
+    //   </div>
+
+    //   <div className="mb-4">
+    //     <h2 className="text-lg font-semibold mb-2">Training</h2>
+    //     {options.training.map((option) => (
+    //       <label key={option} className="block mb-2">
+    //         <input
+    //           type="checkbox"
+    //           value={option}
+    //           checked={inputTraining.includes(option)}
+    //           onChange={() => handleCheckboxChange('training', option)}
+    //           className="mr-2"
+    //         />
+    //         {option}
+    //       </label>
+    //     ))}
+    //     {errors.training && <p className="text-red-500">{errors.training}</p>}
+    //   </div>
+
+    //   <div className="mb-4">
+    //     <h2 className="text-lg font-semibold mb-2">Storage</h2>
+    //     <div className="flex items-center mb-2">
+    //       <input
+    //         type="number"
+    //         value={inputValue}
+    //         onChange={handleValueChange}
+    //         className="border border-gray-300 rounded-l-lg px-3 py-2 w-24"
+    //         placeholder="Enter value"
+    //       />
+    //       <select
+    //         value={selectedUnit}
+    //         onChange={handleUnitChange}
+    //         className="border border-gray-300 rounded-r-lg px-3 py-2"
+    //       >
+    //         {units.map(unit => (
+    //           <option key={unit} value={unit}>{unit}</option>
+    //         ))}
+    //       </select>
+    //       <button
+    //         type="button"
+    //         onClick={handleAddStorage}
+    //         className="ml-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
+    //       >
+    //         Add
+    //       </button>
+    //       {storage}
+    //     </div>
+    //     {errors.storage && <p className="text-red-500">{errors.storage}</p>
+    // }
+    //   </div>
+
+    //   <div className="mb-4">
+    //     <h2 className="text-lg font-semibold mb-2">File Size</h2>
+    //     <div className="flex items-center mb-2">
+    //       <input
+    //         type="number"
+    //         value={inputFileSize}
+    //         onChange={handleFileSizeChange}
+    //         className="border border-gray-300 rounded-l-lg px-3 py-2 w-24"
+    //         placeholder="Enter value"
+    //       />
+    //       <select
+    //         value={selectedFileSizeUnit}
+    //         onChange={handleFileSizeUnitChange}
+    //         className="border border-gray-300 rounded-r-lg px-3 py-2"
+    //       >
+    //         {units2.map(unit => (
+    //           <option key={unit} value={unit}>{unit}</option>
+    //         ))}
+    //       </select>
+    //       <button
+    //         type="button"
+    //         onClick={handleAddFileSize}
+    //         className="ml-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
+    //       >
+    //         Add
+    //       </button>
+    //       {fileSize},
+
+    //     </div>
+    //     {errors.fileSize && <p className="text-red-500">{errors.fileSize}</p>}
+    //   </div>
+
+    //   <button
+    //     type="submit"
+    //     className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
+    //   >
+    //     Submit
+    //   </button>
+    // </form>
+
+    <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md font-calarity">
+      {/* Demo Section */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-3 text-gray-800">Demo</h2>
+        <div className="space-y-2">
+          {options.demo.map((option) => (
+            <label key={option} className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="checkbox"
+                value={option}
+                checked={inputDemo.includes(option)}
+                onChange={() => handleCheckboxChange('demo', option)}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <span className="text-gray-700">{option}</span>
+            </label>
+          ))}
+        </div>
+
+        
+        {errors.demo && <p className="text-red-500 text-sm mt-1">{errors.demo}</p>}
       </div>
 
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Support</h2>
-        {options.support.map((option) => (
-          <label key={option} className="block mb-2">
-            <input
-              type="checkbox"
-              value={option}
-              checked={inputSupport.includes(option)}
-              onChange={() => handleCheckboxChange('support', option)}
-              className="mr-2"
-            />
-            {option}
-          </label>
-        ))}
-        {errors.support && <p className="text-red-500">{errors.support}</p>}
+      {/* Support Section */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-3 text-gray-800">Support</h2>
+        <div className="space-y-2">
+          {options.support.map((option) => (
+            <label key={option} className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="checkbox"
+                value={option}
+                checked={inputSupport.includes(option)}
+                onChange={() => handleCheckboxChange('support', option)}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <span className="text-gray-700">{option}</span>
+            </label>
+          ))}
+        </div>
+        {errors.support && <p className="text-red-500 text-sm mt-1">{errors.support}</p>}
       </div>
 
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Training</h2>
-        {options.training.map((option) => (
-          <label key={option} className="block mb-2">
-            <input
-              type="checkbox"
-              value={option}
-              checked={inputTraining.includes(option)}
-              onChange={() => handleCheckboxChange('training', option)}
-              className="mr-2"
-            />
-            {option}
-          </label>
-        ))}
-        {errors.training && <p className="text-red-500">{errors.training}</p>}
+      {/* Training Section */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-3 text-gray-800">Training</h2>
+        <div className="space-y-2">
+          {options.training.map((option) => (
+            <label key={option} className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="checkbox"
+                value={option}
+                checked={inputTraining.includes(option)}
+                onChange={() => handleCheckboxChange('training', option)}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <span className="text-gray-700">{option}</span>
+            </label>
+          ))}
+        </div>
+        {errors.training && <p className="text-red-500 text-sm mt-1">{errors.training}</p>}
       </div>
 
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Storage</h2>
-        <div className="flex items-center mb-2">
+      {/* Storage Section */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-3 text-gray-800">Storage</h2>
+        <div className="flex flex-wrap items-center space-x-2 mb-2">
           <input
             type="number"
             value={inputValue}
             onChange={handleValueChange}
-            className="border border-gray-300 rounded-l-lg px-3 py-2 w-24"
+            className="border border-gray-300 rounded-lg px-3 py-2 w-24"
             placeholder="Enter value"
           />
           <select
             value={selectedUnit}
             onChange={handleUnitChange}
-            className="border border-gray-300 rounded-r-lg px-3 py-2"
+            className="border border-gray-300 rounded-lg px-3 py-2"
           >
             {units.map(unit => (
               <option key={unit} value={unit}>{unit}</option>
@@ -269,30 +405,30 @@ const ProductSAndS = () => {
           <button
             type="button"
             onClick={handleAddStorage}
-            className="ml-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
+            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300"
           >
             Add
           </button>
-          {storage}
         </div>
-        {errors.storage && <p className="text-red-500">{errors.storage}</p>
-    }
+        <div className="text-gray-700 mt-2">{storage}</div>
+        {errors.storage && <p className="text-red-500 text-sm mt-1">{errors.storage}</p>}
       </div>
 
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">File Size</h2>
-        <div className="flex items-center mb-2">
+      {/* File Size Section */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-3 text-gray-800">File Size</h2>
+        <div className="flex flex-wrap items-center space-x-2 mb-2">
           <input
             type="number"
             value={inputFileSize}
             onChange={handleFileSizeChange}
-            className="border border-gray-300 rounded-l-lg px-3 py-2 w-24"
+            className="border border-gray-300 rounded-lg px-3 py-2 w-24"
             placeholder="Enter value"
           />
           <select
             value={selectedFileSizeUnit}
             onChange={handleFileSizeUnitChange}
-            className="border border-gray-300 rounded-r-lg px-3 py-2"
+            className="border border-gray-300 rounded-lg px-3 py-2"
           >
             {units2.map(unit => (
               <option key={unit} value={unit}>{unit}</option>
@@ -301,19 +437,18 @@ const ProductSAndS = () => {
           <button
             type="button"
             onClick={handleAddFileSize}
-            className="ml-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
+            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300"
           >
             Add
           </button>
-          {fileSize},
-
         </div>
-        {errors.fileSize && <p className="text-red-500">{errors.fileSize}</p>}
+        <div className="text-gray-700 mt-2">{fileSize}</div>
+        {errors.fileSize && <p className="text-red-500 text-sm mt-1">{errors.fileSize}</p>}
       </div>
 
       <button
         type="submit"
-        className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
+        className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300"
       >
         Submit
       </button>

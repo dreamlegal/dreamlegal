@@ -102,8 +102,9 @@ const ProductOverview = () => {
     e.preventDefault();
 
     if (!validateAllFields()) {
+      // setSuccessMessage("");/
       return; // Stop form submission if there are validation errors
-      setSuccessMessage("");
+    
     }
 
     // Set the validated values to state

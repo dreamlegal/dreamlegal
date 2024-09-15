@@ -88,7 +88,15 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
     setLinkedinUrl,
     setTwitterUrl,
     setInstagramUrl,
-    setAttachments
+    setAttachments,
+    imagesUrl,
+  attachmentsUrl,
+  
+  setImagesUrl,
+
+  // Function to set attachment URLs
+  setAttachmentsUrl,
+  
   } = ProductInfo();
 
 
@@ -148,11 +156,35 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
       setTeamSize(product.teamSize);
 
       console.log("Process Lifecycle:", product.processLifecycle);
-      setProcessLifecycle(product.processLifecycle);
+      // setProcessLifecycle(product.processLifecycle);
+     
+      Object.entries(product.processLifecycle).forEach(([category, values]) => {
+        // Ensure values is always an array
+        const valueArray = Array.isArray(values) ? values : [values];
+        setProcessLifecycle(category, valueArray);
+      });
+      console.log("Process Lifecycle on main page",processLifecycle);
+
 
       console.log("Features:", product.features);
-      setFeatures(product.features);
-      console.log("check me:",features)
+      // setFeatures(product.features);
+      // Object.entries(product.features).forEach(([category, values]) => {
+      //   // Ensure values is always an array
+      //   const valueArray = Array.isArray(values) ? values : [values];
+      //   setFeatures(category, valueArray);
+      // });
+
+      Object.entries(product.features).forEach(([category, subCategories]) => {
+        if (typeof subCategories === 'object' && subCategories !== null) {
+          const updatedCategory = Object.entries(subCategories).reduce((acc, [subCategory, values]) => {
+            acc[subCategory] = Array.isArray(values) ? values : [];
+            return acc;
+          }, {});
+          
+          setFeatures(category, updatedCategory);
+        }
+      });
+      console.log("check me: yes",features)
 
      
 
@@ -169,8 +201,12 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
       console.log("Contract Period:", product.contractPeriod);
       setContractPeriod(product.contractPeriod);
 
-      console.log("Pricing Params:", [product.pricingParams]);
-      setPricingParams([product.pricingParams]);
+      // console.log("Pricing Params:", [product.pricingParams]);
+      // setPricingParams([product.pricingParams]);
+      const pricingParams = Array.isArray(product.pricingParams) ? product.pricingParams.join(', ') : product.pricingParams;
+
+console.log("Pricing Params:", pricingParams);
+setPricingParams(pricingParams);
 
       console.log("Free Version:", product.freeVersion);
       setFreeVersion(product.freeVersion);
@@ -184,11 +220,21 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
       console.log("Training:", product.training);
       setTraining(product.training);
 
-      console.log("File Size:", [product.fileSize]);
-      setFileSize([product.fileSize]);
+      // console.log("File Size:", [product.fileSize]);
+      // setFileSize([product.fileSize]);
 
-      console.log("Storage:", [product.storage]);
-      setStorage([product.storage]);
+      // console.log("Storage:", [product.storage]);
+      // setStorage([product.storage]);
+ 
+
+      const fileSize = Array.isArray(product.fileSize) ? product.fileSize[0] || '' : product.fileSize || '';
+      const storage = Array.isArray(product.storage) ? product.storage[0] || '' : product.storage || '';
+      
+console.log("File Size:", fileSize);
+setFileSize(fileSize);
+
+console.log("Storage:", storage);
+setStorage(storage);
 
       console.log("Maintenance:", product.maintenance);
       setMaintenance(product.maintenance);
@@ -203,7 +249,7 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
       setTrainingReq(product.trainingReq);
 
       console.log("Images:", product.Images);
-      setImages(product.Images);
+      setImagesUrl(product.Images);
 
       console.log("Video URL:", product.videoUrl);
       setVideoUrl(product.videoUrl);
@@ -221,7 +267,7 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
       setInstagramUrl(product.instagramUrl);
 
       console.log("Attachments:", product.attachments);
-      setAttachments(product.attachments);
+      setAttachmentsUrl(product.attachments);
     }
   }, [editing]);
   
@@ -267,7 +313,13 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
     storage: z.string().nonempty("Storage value is required"),
     fileSize: z.string().nonempty("File size value is required")
   });
-
+  useEffect(() => {
+    console.log("Updated processLifecycle:", processLifecycle);
+  }, [processLifecycle]);
+  useEffect(() => {
+    console.log("Updated features:", features);
+  }, [features]);
+  
 
   console.log('check', {
     userCategory: userCategory,
@@ -275,6 +327,8 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
     practiceAreas:practiceAreas,
     teamSize:teamSize
   });
+
+  console.log(images)
   
 
   console.log("prodyct oage " , integrations)
@@ -291,15 +345,17 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
       demo, support, training, storage, fileSize,
     }).success;
 
-    const processLifecycleComplete = processLifecycle ;
+    const processLifecycleComplete = Object.keys(processLifecycle).length > 0;
 
     const productPricingComplete = freeTrial && timePeriod && freeVersion && pricingModel && contractPeriod   && pricingParams 
 
     const PIServices = maintenance && reqForChange && trainingReq && dataMigration;
-    const productReferenceFields = instagramUrl && videoUrl && linkedinUrl && twitterUrl && youtubeUrl;
+     const productReferenceFields = imagesUrl && imagesUrl.length > 0
 
     console.log(userCategory, industry, practiceAreas, teamSize);
     const productCustomerSegmentsCompletion = userCategory.length > 0 && industry.length > 0 && practiceAreas.length > 0 && teamSize.length > 0;
+
+    const productFeaturesComplete=productInformationComplete && productOverviewComplete && productCustomerSegmentsCompletion && processLifecycleComplete && productPricingComplete && SAndSresult && productReferenceFields || Object.keys(features).length > 0;
    
     
     
@@ -312,7 +368,7 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
       productReference: productReferenceFields,
        productPricing: productPricingComplete,
        productLifeCycle: processLifecycleComplete,
-       productFeatures: true,
+       productFeatures: productFeaturesComplete,
        productCustomerSegments:productCustomerSegmentsCompletion,
 
     });
@@ -380,13 +436,13 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
           });
       return;
       }
-
+     
       try {
 
         const FormValues = {
           userId: userId,  // From global state
           prname: productName,  // Mapped to productName
-          logoUrl : logo || undefined || "logo.url",
+          logoUrl : logoUrl ,
           category: category,  // Mapped from global state
           deployment: deployment,  // Mapped from global state
           mobileAccessibility:mobileAvailable,
@@ -426,7 +482,7 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
           
           pricingParams: [pricingParams],  // Mapped from global state
         
-          demo: demo,  // Mapped from global state
+          Demo: demo,  // Mapped from global state
           support: support,  // Mapped from global state
           training: training,  // Mapped from global state
           fileSize: [fileSize],  // Mapped from global state
@@ -437,8 +493,8 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
           trainingReq: trainingReq,  // Mapped from global state
           dataMigration: dataMigration,  // Mapped from global state
 
-          ImagesUrl: images || undefined,  // Mapped from global state
-          attachmentUrl: attachments || undefined,  // Mapped from global state
+          ImagesUrl: imagesUrl || "image.png",  // Mapped from global state
+          attachmentUrl: attachmentsUrl || "undefined",  // Mapped from global state
           instagramUrl: instagramUrl,  // Mapped from global state
           videoUrl: videoUrl,  // Mapped from global state
           linkedinUrl: linkedinUrl,  // Mapped from global state
@@ -502,7 +558,7 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
           id: productId,
           userId: userId,  // From global state
           prname: productName,  // Mapped to productName
-          logoUrl : logo || undefined || "logo.url",
+          logoUrl :logoUrl,
           category: category,  // Mapped from global state
           deployment: deployment,  // Mapped from global state
           mobileAccessibility:mobileAvailable,
@@ -542,7 +598,7 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
           
           pricingParams: normalizeToArray(pricingParams),  // Mapped from global state
         
-          demo: demo,  // Mapped from global state
+          Demo: demo,  // Mapped from global state
           support: support,  // Mapped from global state
           training: training,  // Mapped from global state
           fileSize:normalizeToArray(fileSize),  // Mapped from global state
@@ -705,7 +761,7 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
         <Button className="mt-4 flex items-center" onClick={handleSubmit}>Submit here </Button>
       </div>
 
-      <CheckUpload />
+     
     </div>
   );
 };

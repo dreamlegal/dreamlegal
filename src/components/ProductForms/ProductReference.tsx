@@ -455,10 +455,14 @@ const ProductReferenceSchema = z.object({
 });
 
 const ProductReference = () => {
-  const { images, setImages, attachments, setAttachments, instagramUrl, setInstagramUrl, videoUrl, setVideoUrl, linkedinUrl, setLinkedinUrl, twitterUrl, setTwitterUrl, youtubeUrl, setYoutubeUrl } = ProductInfo();
+  const { images, setImages, attachments, setAttachments, instagramUrl, setInstagramUrl, videoUrl, setVideoUrl, linkedinUrl, setLinkedinUrl, twitterUrl, setTwitterUrl, youtubeUrl, setYoutubeUrl ,setAttachmentsUrl,setImagesUrl,imagesUrl,attachmentsUrl} = ProductInfo();
   
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+
+  const [attachmentInfos, setAttachmentInfos] = useState<AttachmentInfo[]>([]);
+
+
 
   // Use refs to reset input field programmatically
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -488,39 +492,64 @@ const ProductReference = () => {
     return true;
   };
 
- const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
-  const files = e.target.files ? Array.from(e.target.files) : [];
-  let limit = 0;
+//  const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
+//   const files = e.target.files ? Array.from(e.target.files) : [];
+//   let limit = 0;
 
-  if (type === "images") {
-    limit = 5;
-    if (files.length > limit) {
-      setErrors((prev) => ({
-        ...prev,
-        images: `You can only upload up to ${limit} images.`,
-      }));
-      // Reset file input if over limit
-      if (imageInputRef.current) {
-        imageInputRef.current.value = ""; // Clear input field
-      }
-    } else {
-      setErrors((prev) => ({ ...prev, images: "" }));
-      setImages(files.slice(0, limit)); // Set selected images up to the limit
+//   if (type === "images") {
+//     limit = 5;
+//     if (files.length > limit) {
+//       setErrors((prev) => ({
+//         ...prev,
+//         images: `You can only upload up to ${limit} images.`,
+//       }));
+//       // Reset file input if over limit
+//       if (imageInputRef.current) {
+//         imageInputRef.current.value = ""; // Clear input field
+//       }
+//     } else {
+//       setErrors((prev) => ({ ...prev, images: "" }));
+//       setImages(files.slice(0, limit)); // Set selected images up to the limit
+//     }
+//   } else if (type === "attachments") {
+//     limit = 2;
+//     if (files.length > limit) {
+//       setErrors((prev) => ({
+//         ...prev,
+//         attachments: `You can only upload up to ${limit} attachments.`,
+//       }));
+//       // Reset file input if over limit
+//       if (attachmentInputRef.current) {
+//         attachmentInputRef.current.value = ""; // Clear input field
+//       }
+//     } else {
+//       setErrors((prev) => ({ ...prev, attachments: "" }));
+//       setAttachments(files.slice(0, limit)); // Set selected attachments up to the limit
+//     }
+//   }
+// };
+
+
+const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
+  const files = e.target.files ? Array.from(e.target.files) : [];
+  let limit = type === "images" ? 5 : 2;
+
+  if (files.length > limit) {
+    setErrors((prev) => ({
+      ...prev,
+      [type]: `You can only upload up to ${limit} ${type}.`,
+    }));
+    if (type === "images" ? imageInputRef.current : attachmentInputRef.current) {
+      (type === "images" ? imageInputRef : attachmentInputRef).current!.value = "";
     }
-  } else if (type === "attachments") {
-    limit = 2;
-    if (files.length > limit) {
-      setErrors((prev) => ({
-        ...prev,
-        attachments: `You can only upload up to ${limit} attachments.`,
-      }));
-      // Reset file input if over limit
-      if (attachmentInputRef.current) {
-        attachmentInputRef.current.value = ""; // Clear input field
-      }
+  } else {
+    setErrors((prev) => ({ ...prev, [type]: "" }));
+    if (type === "images") {
+      setImages(files.slice(0, limit));
     } else {
-      setErrors((prev) => ({ ...prev, attachments: "" }));
-      setAttachments(files.slice(0, limit)); // Set selected attachments up to the limit
+      setAttachments(files.slice(0, limit));
+      updateAttachmentInfos(files);
+      setAttachmentsUrl([]); // Clear any existing attachment URLs
     }
   }
 };
@@ -550,20 +579,23 @@ const ProductReference = () => {
 
   // Clears images and resets file input field
   const clearImages = () => {
+    setImagesUrl([]);
     setImages([]);
     setImagePreviews([]);
     if (imageInputRef.current) {
       imageInputRef.current.value = ""; // Reset file input field
+
+    }
+
+    setAttachments([]);
+    setAttachmentInfos([]);
+    setAttachmentsUrl([]);
+    if (attachmentInputRef.current) {
+      attachmentInputRef.current.value = "";
     }
   };
 
-  // Clears attachments and resets file input field
-  const clearAttachments = () => {
-    setAttachments([]);
-    if (attachmentInputRef.current) {
-      attachmentInputRef.current.value = ""; // Reset file input field
-    }
-  };
+
 
 
   const uploadFile = async (file: File, folderName: string) => {
@@ -597,40 +629,7 @@ const ProductReference = () => {
     }
     return null;
   };
-  // const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    
-  //   let updatedImages: string[] = [];
-  //   if (images.length > 0) {
-  //      updatedImages = await Promise.all(
-  //       images.map((image) =>
-  //         uploadFile(image as File, "images")
-  //       )
-  //     );
-  //     console.log(`first` + `${updatedImages}`);
-  //   }
-    
-  // }
-
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   if (!validateAllFields()) {
-  //     return;
-  //   }
-  //   handleImageUpload();
-
-    
-
-
-  //   console.log("Form submitted with:", {
-  //     images,
-  //     attachments,
-  //     instagramUrl,
-  //     videoUrl,
-  //     linkedinUrl,
-  //     twitterUrl,
-  //     youtubeUrl,
-  //   });
-  // };
+  
   const handleImageUpload = async () => {
     let updatedImages: string[] = [];
     if (images.length > 0) {
@@ -642,6 +641,26 @@ const ProductReference = () => {
     return updatedImages.filter(url => url !== null);
   }
   
+ 
+  const updateAttachmentInfos = (files: File[]) => {
+    const infos = files.map(file => ({
+      name: file.name,
+      size: file.size,
+      type: file.type
+    }));
+    setAttachmentInfos(infos);
+  };
+
+
+  const clearAttachments = () => {
+    setAttachments([]);
+    setAttachmentInfos([]);
+    setAttachmentsUrl([]);
+    if (attachmentInputRef.current) {
+      attachmentInputRef.current.value = "";
+    }
+  };
+
   const handleAttachmentUpload = async () => {
     let updatedAttachments: string[] = [];
     if (attachments && attachments.length > 0) {
@@ -653,6 +672,10 @@ const ProductReference = () => {
     return updatedAttachments.filter(url => url !== null);
   }
   
+ 
+
+  
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateAllFields()) {
@@ -667,30 +690,57 @@ const ProductReference = () => {
       setErrors(prev => ({ ...prev, images: "Failed to upload images" }));
       return;
     }
-  
+    setImagesUrl(uploadedImages);
+    setAttachmentsUrl(uploadedAttachments);
+
     console.log("Form submitted with:", {
-      images: uploadedImages,
-      attachments: uploadedAttachments,
+      Images: uploadedImages,
+      Attachments: uploadedAttachments,
       instagramUrl,
       videoUrl,
       linkedinUrl,
       twitterUrl,
       youtubeUrl,
     });
-  
-    // Here you would typically send this data to your backend
   };
-  
+
+
+
 
   useEffect(() => {
-    const newPreviews = images.map(file => URL.createObjectURL(file));
-    setImagePreviews(newPreviews);
+    console.log('Fetching images...');
 
-    return () => {
-      newPreviews.forEach(url => URL.revokeObjectURL(url));
-    };
-  }, [images]);
+    if (imagesUrl.length > 0) {
+     
+      setImagePreviews(imagesUrl);
 
+      console.log('Images loaded:', imagesUrl);
+
+      // setLoading(false); // Set loading to false once images are set
+    } else {
+      console.log('No images available.');
+      // setLoading(false);
+    }
+  }, [imagesUrl]);
+
+
+  useEffect(() => {
+    if (attachments && attachments.length > 0) {
+      updateAttachmentInfos(attachments);
+    } else if (attachmentsUrl && attachmentsUrl.length > 0) {
+      const infos = attachmentsUrl.map(url => ({
+        name: url.split('/').pop() || 'Unknown',
+        size: 0, // Size is unknown for URL attachments
+        type: 'Unknown',
+        url: url
+      }));
+      setAttachmentInfos(infos);
+    } else {
+      setAttachmentInfos([]);
+    }
+  }, [attachments, attachmentsUrl]);
+
+ 
   return (
     <form onSubmit={handleSubmit} className="w-full font-calarity max-w-4xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-md">
       <div className="flex w-100 flex-col">
@@ -741,6 +791,22 @@ const ProductReference = () => {
             </div>
           </div>
         )}
+        <div>
+
+        {/* <div>
+      {loading ? (
+        <p>Loading images...</p> // Show this while loading
+      ) : imagePreviews.length > 0 ? (
+        <div>
+          {imagePreviews.map((url, index) => (
+            <img key={index} src={url} alt={`Preview ${index}`} style={{ width: '200px', height: 'auto', margin: '10px' }} />
+          ))}
+        </div>
+      ) : (
+        <p>No images available.</p> // Message when there are no images
+      )}
+    </div> */}
+    </div>
 
         {/* Video URL */}
         <div className="w-full mb-4">
@@ -753,27 +819,57 @@ const ProductReference = () => {
 
         {/* Attachments upload */}
         <div className="w-full mb-4">
-          <label htmlFor="attachments" className="block mb-2 font-bold">Attachments <span className="text-yellow-500 italic text-xs">(up to 2)</span></label>
-          <Input 
-            type="file" 
-            id="attachments" 
-            name="attachments" 
-            multiple 
-            onChange={(e) => handleFileChange(e, "attachments")} 
-            ref={attachmentInputRef} // Reference for resetting
-          />
-          {errors.attachments && <p className="text-red-500">{errors.attachments}</p>}
-          <Button 
-            onClick={(e) => {
-              e.preventDefault();
-              clearAttachments();
-            }} 
-            className="mt-2 bg-red-500 text-white"
-          >
-            Reset Attachments
-          </Button>
-        </div>
+        <label htmlFor="attachments" className="block mb-2 font-bold">Attachments <span className="text-yellow-500 italic text-xs">(up to 2)</span></label>
+        <Input 
+          type="file" 
+          id="attachments" 
+          name="attachments" 
+          multiple 
+          onChange={(e) => handleFileChange(e, "attachments")} 
+          ref={attachmentInputRef}
+        />
+        {errors.attachments && <p className="text-red-500">{errors.attachments}</p>}
+        <Button 
+          onClick={(e) => {
+            e.preventDefault();
+            clearAttachments();
+          }} 
+          className="mt-2 bg-red-500 text-white"
+        >
+          Reset Attachments
+        </Button>
+      </div>
 
+      {/* Attachment previews */}
+      {attachmentInfos.length > 0 && (
+        <div className="w-full mb-4">
+          <label className="block mb-2 font-bold">Attachment Previews</label>
+          <div className="flex flex-col gap-2">
+            {attachmentInfos.map((info, index) => (
+              <div key={index} className="p-4 border rounded-lg flex justify-between items-center">
+                <div>
+                  <p className="font-bold">{info.name}</p>
+                  <p className="text-sm text-gray-600">
+                    {info.size ? `${(info.size / 1024).toFixed(2)} KB` : 'Size unknown'} | {info.type}
+                  </p>
+                </div>
+                <Button 
+                  onClick={() => {
+                    const newAttachments = attachments?.filter((_, i) => i !== index) || [];
+                    const newAttachmentUrls = attachmentsUrl?.filter((_, i) => i !== index) || [];
+                    setAttachments(newAttachments);
+                    setAttachmentsUrl(newAttachmentUrls);
+                    updateAttachmentInfos(newAttachments);
+                  }} 
+                  className="bg-red-500 text-white text-xs"
+                >
+                  Remove
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
         {/* Social media URLs */}
        
          {/* Social media URLs */}
@@ -818,3 +914,13 @@ const ProductReference = () => {
 };
 
 export default ProductReference;
+
+// ... (keep the existing schema and interfaces)
+
+
+
+  // ... (keep existing functions like validateAllFields, handleUrlChange, etc.)
+
+
+
+

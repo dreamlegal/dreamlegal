@@ -63,9 +63,14 @@ const productSchema = z.object({
   adoptionPeriodUnit: z.enum(["days", "months", "years"], {
     invalid_type_error: "Please select a valid period unit",
   }),
-  logo: z.string().optional(),
-  mobileAvailable: z.enum(["Yes", "No"], {
-    required_error: "Choose this please",
+  
+    mobileAvailable: z.enum(["Yes", "No"], {
+      required_error: "Choose this please", // Error when the field is not provided
+      invalid_type_error: "Choose this please", // Error when the value is null or any other type
+    }),
+
+    logoPreview: z.any().refine(value => value !== null, {
+      message: "Logo preview is required",
   }),
   
 });
@@ -728,15 +733,7 @@ const handleIntegrationChange = (updatedIntegrations: string[]) => {
 
 
     
-  
-const { 
-  logo, 
-  setLogo, 
-  setLogoFile, 
-  setLogoPreview, 
-  logoFile, 
-  logoPreview 
-} = ProductInfo();
+  const { logoFile, setLogoFile, logoPreview, setLogoPreview,  } = ProductInfo();
 
 
 
@@ -784,23 +781,21 @@ const handleFileChange = (event) => {
     }
   
 
-let logoUrl = "";
-if (logoFile) {
-  try {
-    logoUrl = await uploadFile(logoFile, "logos");
-    console.log("Logo uploaded:", logoUrl);
-  } catch (error) {
-    console.error("Error uploading logo:", error);
-    setErrors(prevErrors => ({ ...prevErrors, logo: "Failed to upload logo" }));
-    return;
-  }
-} else {
-  // Handle case when no logo is uploaded
-  console.log("No logo file selected");
- 
-}
+    if (logoFile) {
+      try {
+        const uploadedLogoUrl = await uploadFile(logoFile, "logos");
+        console.log("Logo uploaded:", uploadedLogoUrl);
+        setLogoUrl(uploadedLogoUrl); // Update global state with the new URL
+      } catch (error) {
+        console.error("Error uploading logo:", error);
+        setErrors(prevErrors => ({ ...prevErrors, logo: "Failed to upload logo" }));
+      }
+    } else {
+      console.log("No logo file selected");
+    }
 setProductName(inputValue);
 setSecurityCertificate(securityValue);
+
 
 // Prepare form data for submission
 const formData = {
@@ -827,6 +822,13 @@ console.log("Form submitted with:", formData);
     setSelectedMobileAvailability(value);
     setMobileAvailable(value);
   };
+
+  useEffect(() => {
+    setLogoPreview(logoUrl || null);
+  }, [logoUrl, setLogoPreview]);
+
+
+
   return (
     <form onSubmit={handleSubmit} className="w-full font-calarity">
       <div className="flex w-100 flex-col">
@@ -861,16 +863,28 @@ console.log("Form submitted with:", formData);
             className="mt-1"
           />
         </div> */}
-     <div className="w-full mt-2">
-  <label htmlFor="logo">Logo</label>
-  <Input type="file" id="logo" name="logo" className="mt-1" onChange={handleFileChange} />
-  {errors.logo && <p className="text-red-500">{errors.logo}</p>}
-  {logoPreview && (
-    <div className="mt-2">
-      <img src={logoPreview} alt="Logo Preview" style={{ maxWidth: '100%' }} />
+   <div className="w-full mt-2">
+      <label htmlFor="logo">Logo</label>
+      <Input
+        type="file"
+        id="logo"
+        name="logo"
+        className="mt-1"
+        onChange={handleFileChange}
+      />
+      {/* {errors.logo && <p className="text-red-500">{errors.logo}</p>} */}
+      {errors.logoPreview && (
+            <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+              <XCircle className="w-6 h-6 text-red-500" />
+              <p className="text-[#DC3545] pl-2">{errors.logoPreview}</p>
+            </div>
+          )}
+      {logoPreview && (
+        <div className="mt-2 ">
+          <img src={logoPreview} alt="Logo Preview" style={{ maxWidth: '30%' }} />
+        </div>
+      )}
     </div>
-  )}
-</div>
 
         {/* Category Checkboxes */}
         <div className="mt-2">
@@ -943,7 +957,7 @@ console.log("Form submitted with:", formData);
 
 
         <div className="w-full mt-2">
-          <Label>Select Mobile Accessibilityree Trial</Label>
+          <Label>Select Mobile Accessibility</Label>
           <div className="flex items-center">
             <label className="mr-4">
               <input
@@ -966,8 +980,12 @@ console.log("Form submitted with:", formData);
               No
             </label>
           </div>
-          {errors.freeTrial && (
-            <p className="text-red-500">{errors.freeTrial}</p>
+         
+           {errors.mobileAvailable && (
+            <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+              <XCircle className="w-6 h-6 text-red-500" />
+              <p className="text-[#DC3545] pl-2">{errors.mobileAvailable}</p>
+            </div>
           )}
         </div>
 

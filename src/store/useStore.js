@@ -4,9 +4,9 @@ import { create } from 'zustand';
 export const ProductInfo = create((set) => ({
   // Global state properties
   // logoFile: null,
-  // logoUrl: '',
+  logoUrl: '',
   // setLogoFile: (file) => set({ logoFile: file }),
-  // setLogoUrl: (url) => set({ logoUrl: url }),
+  setLogoUrl: (url) => set({ logoUrl: url }),
   // clearLogo: () => set({ logoFile: null, logoUrl: '' }),
   // logoPreview: null,
   // setLogo: (logo) => set({ logo }),
@@ -140,6 +140,13 @@ setPricingParams: (value) => set({ pricingParams: value }),
   trainingReq:null,
   
   images: [],
+  imagesUrl:[],
+  attachmentsUrl:[],
+  
+  setImagesUrl: (urls) => set(() => ({ imagesUrl: urls })),
+
+  // Function to set attachment URLs
+  setAttachmentsUrl: (urls) => set(() => ({ attachmentsUrl: urls })),
   
   attachments: [],
 
@@ -197,6 +204,6 @@ setPricingParams: (value) => set({ pricingParams: value }),
   setInstagramUrl: (url) => set({ instagramUrl: url }),
   
 
-  websiteUrl: null,
+  websiteUrl: "",
   setWebsiteUrl: (url) => set({ websiteUrl: url }),
 }));

@@ -120,7 +120,7 @@ const ProductSAndS = () => {
     }
 
     // Ensure only one storage value is stored
-    setStorage(`${numericValue}${selectedUnit}`);
+    setStorage(`${numericValue}${selectedUnit.toString()}`);
     setInputValue('');
     setSelectedUnit(units[0]);
     setErrors((prevErrors) => ({
@@ -142,7 +142,7 @@ const ProductSAndS = () => {
     }
 
     // Ensure only one file size value is stored
-    setFileSize(`${numericValue}${selectedFileSizeUnit}`);
+    setFileSize(`${numericValue}${selectedFileSizeUnit.toString()}`);
     setInputFileSize('');
     setSelectedFileSizeUnit(units[0]);
     setErrors((prevErrors) => ({

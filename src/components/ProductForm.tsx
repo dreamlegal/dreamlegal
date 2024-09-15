@@ -12,11 +12,20 @@ import ProductReference from './ProductForms/ProductReference';
 import ProductPostImplementationService from './ProductForms/ProductPostImplementationService';
 import { Button } from "./ui/button";
 import { ChevronDown, ChevronUp, ArrowRight ,Check} from 'lucide-react';
+import CheckUpload from './ProductForms/CheckUpload';
 import { z } from 'zod';
+interface ProductFormWithProgressProps {
+  editing: boolean;
+  product?: any; // Adjust the type based on the actual product shape or interface
+}
 
-const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
+// const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
+// const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing }) => {
+const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing, product }) => {
+    // Component logic here
   const {
     logo,
+    logoUrl,
     mobileAvailable,
     productName,
     category,
@@ -35,6 +44,188 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
     images, attachments, instagramUrl, videoUrl, linkedinUrl, twitterUrl, youtubeUrl,
     userCategory ,industry, practiceAreas, teamSize,features
   } = ProductInfo();
+
+  const {
+    setProductName,
+    // setLogo,
+    
+    setLogoUrl,
+    setCategory,
+    setDeployment,
+    setMobileAvailable,
+    setFocusCountries,
+    setAdoptionPeriod,
+    setLanguages,
+    setSecurityCertificate,
+    setIntegrations,
+    setDescription,
+    setUSP,
+    setUpcomingUpdates,
+    setUserCategory,
+    setIndustry,
+    setPracticeAreas,
+    setTeamSize,
+    setProcessLifecycle,
+    setFeatures,
+    setFreeTrial,
+    setTimePeriod,
+    setPricingModel,
+    setContractPeriod,
+    setPricingParams,
+    setFreeVersion,
+    setDemo,
+    setSupport,
+    setTraining,
+    setFileSize,
+    setStorage,
+    setMaintenance,
+    setReqForChange,
+    setDataMigration,
+    setTrainingReq,
+    setImages,
+    setVideoUrl,
+    setYoutubeUrl,
+    setLinkedinUrl,
+    setTwitterUrl,
+    setInstagramUrl,
+    setAttachments
+  } = ProductInfo();
+
+
+  useEffect(() => {
+    if (editing === true) {
+      console.log("Setting product info because editing is true");
+
+      console.log("Product Name:", product.prname);
+      setProductName(product.prname);
+
+      console.log("Logo URL:", product.logoUrl);
+      setLogoUrl(product.logoUrl);
+
+      console.log("Category:", product.category);
+      setCategory(product.category);
+
+      console.log("Deployment:", product.deployment);
+      setDeployment(product.deployment);
+
+      console.log("Mobile Available:", product.mobileAccessibility);
+      setMobileAvailable(product.mobileAccessibility);
+
+      console.log("Focus Countries:", product.focusCountries);
+      setFocusCountries(product.focusCountries);
+
+      console.log("Adoption Period:", product.adoptionPeriod);
+      setAdoptionPeriod(product.adoptionPeriod);
+
+      console.log("Languages:", product.languages);
+      setLanguages(product.languages);
+
+      console.log("Security Certificate:", product.securityCertificate);
+      setSecurityCertificate(product.securityCertificate);
+
+      console.log("Integrations:", Array.isArray(product.integrations) ? product.integrations : [product.integrations]);
+      setIntegrations(Array.isArray(product.integrations) ? product.integrations : [product.integrations]);
+
+      console.log("Description:", product.description);
+      setDescription(product.description);
+
+      console.log("USP:", product.usp);
+      setUSP(product.usp);
+
+      console.log("Upcoming Updates:", product.upcomingUpdates);
+      setUpcomingUpdates(product.upcomingUpdates);
+
+      console.log("User Category:", product.userCategory);
+      setUserCategory(product.userCategory);
+
+      console.log("Industry:", product.industry);
+      setIndustry(product.industry);
+
+      console.log("Practice Areas:", product.practiceAreas);
+      setPracticeAreas(product.practiceAreas);
+
+      console.log("Team Size:", product.teamSize);
+      setTeamSize(product.teamSize);
+
+      console.log("Process Lifecycle:", product.processLifecycle);
+      setProcessLifecycle(product.processLifecycle);
+
+      console.log("Features:", product.features);
+      setFeatures(product.features);
+      console.log("check me:",features)
+
+     
+
+      console.log("Free Trial:", product.freeTrial);
+      setFreeTrial(product.freeTrial);
+      
+
+      console.log("Time Period:", product.timePeriod);
+      setTimePeriod(product.timePeriod);
+
+      console.log("Pricing Model:", product.pricingModel);
+      setPricingModel(product.pricingModel);
+
+      console.log("Contract Period:", product.contractPeriod);
+      setContractPeriod(product.contractPeriod);
+
+      console.log("Pricing Params:", [product.pricingParams]);
+      setPricingParams([product.pricingParams]);
+
+      console.log("Free Version:", product.freeVersion);
+      setFreeVersion(product.freeVersion);
+
+      console.log("Demo:", product.Demo);
+      setDemo(product.Demo);
+
+      console.log("Support:", product.support);
+      setSupport(product.support);
+
+      console.log("Training:", product.training);
+      setTraining(product.training);
+
+      console.log("File Size:", [product.fileSize]);
+      setFileSize([product.fileSize]);
+
+      console.log("Storage:", [product.storage]);
+      setStorage([product.storage]);
+
+      console.log("Maintenance:", product.maintenance);
+      setMaintenance(product.maintenance);
+
+      console.log("Req For Change:", product.reqForChange);
+      setReqForChange(product.reqForChange);
+
+      console.log("Data Migration:", product.dataMigration);
+      setDataMigration(product.dataMigration);
+
+      console.log("Training Req:", product.trainingReq);
+      setTrainingReq(product.trainingReq);
+
+      console.log("Images:", product.Images);
+      setImages(product.Images);
+
+      console.log("Video URL:", product.videoUrl);
+      setVideoUrl(product.videoUrl);
+
+      console.log("Youtube URL:", product.youtubeUrl);
+      setYoutubeUrl(product.youtubeUrl);
+
+      console.log("LinkedIn URL:", product.linkedinUrl);
+      setLinkedinUrl(product.linkedinUrl);
+
+      console.log("Twitter URL:", product.twitterUrl);
+      setTwitterUrl(product.twitterUrl);
+
+      console.log("Instagram URL:", product.instagramUrl);
+      setInstagramUrl(product.instagramUrl);
+
+      console.log("Attachments:", product.attachments);
+      setAttachments(product.attachments);
+    }
+  }, [editing]);
+  
+  console.log("check me:",features)
 
   const [completedSteps, setCompletedSteps] = useState({
     productInformation: false,
@@ -158,23 +349,44 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
 
 
   const handleSubmit = async () => {
-    const userId = localStorage.getItem("vendorId");
-    if (!userId) {
-        console.log({
-          title: "Error",
-          description: "Something went wrong. Please login again.",
-          variant: "destructive",
-        });
-    return;
+    // const userId = localStorage.getItem("vendorId");
+    // if (!userId) {
+    //     console.log({
+    //       title: "Error",
+    //       description: "Something went wrong. Please login again.",
+    //       variant: "destructive",
+    //     });
+    // return;
+    // }
+    function normalizeToArray(value:any) {
+      if (typeof value === 'string') {
+        // Convert a string to an array with the string as the only element
+        return [value];
+      } else if (Array.isArray(value)) {
+        // Flatten a nested array to a single-level array
+        return value.flat();
+      }
+      // Return an empty array if the value is neither a string nor an array
+      return [];
     }
     if (editing === false) {
+      // const wordsArray = pricingParams.split(/\s+/)
+      const userId = localStorage.getItem("vendorId");
+      if (!userId) {
+          console.log({
+            title: "Error",
+            description: "Something went wrong. Please login again.",
+            variant: "destructive",
+          });
+      return;
+      }
 
       try {
 
         const FormValues = {
           userId: userId,  // From global state
           prname: productName,  // Mapped to productName
-          logoUrl : logo || undefined,
+          logoUrl : logo || undefined || "logo.url",
           category: category,  // Mapped from global state
           deployment: deployment,  // Mapped from global state
           mobileAccessibility:mobileAvailable,
@@ -211,13 +423,14 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
           // nameofPlan: nameofPlan,  // Mapped from global state
           // validity: validity,  // Mapped from global state
           // price: price,  // Mapped from global state
-          pricingParams: pricingParams,  // Mapped from global state
+          
+          pricingParams: [pricingParams],  // Mapped from global state
         
           demo: demo,  // Mapped from global state
           support: support,  // Mapped from global state
           training: training,  // Mapped from global state
-          fileSize: fileSize,  // Mapped from global state
-          storage: storage,  // Mapped from global state
+          fileSize: [fileSize],  // Mapped from global state
+          storage: [storage],  // Mapped from global state
 
           maintenance: maintenance,  // Mapped from global state
           reqForChange: reqForChange,  // Mapped from global state
@@ -277,6 +490,159 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
         });
       }
     }
+    if (editing === true) {
+      // const wordsArray = pricingParams.split(/\s+/
+      const userId = product.userId;
+      const productId = product.id;
+     
+     
+      try {
+
+        const FormValues = {
+          id: productId,
+          userId: userId,  // From global state
+          prname: productName,  // Mapped to productName
+          logoUrl : logo || undefined || "logo.url",
+          category: category,  // Mapped from global state
+          deployment: deployment,  // Mapped from global state
+          mobileAccessibility:mobileAvailable,
+          adoptionPeriod:adoptionPeriod,
+          adoptionPeriodUnit:adoptionPeriodUnit,
+          securityCertificate: securityCertificate,
+          focusCountries: focusCountries,  // Mapped from global state
+          
+          languages: languages,  // Mapped from global state
+          // websiteUrl: websiteUrl,  // Mapped from global state
+           
+
+          description: description,
+          usp: usp,  // Mapped from global state
+          upcomingUpdates: upcomingUpdates,  // Mapped from global state
+
+          userCategory: userCategory,  // Mapped from global state
+          industry: industry,  // Mapped from global state
+          practiceAreas: practiceAreas,  // Mapped from global state
+          teamSize: teamSize,  // Mapped from global state
+
+
+          processLifecycle:processLifecycle, 
+          features:features,
+          integrations:integrations,
+
+        
+          freeTrial: freeTrial,  // Mapped from global state
+
+          timePeriod: timePeriod,  // Mapped from global state
+          freeVersion: freeVersion,  // Mapped from global state
+          pricingModel: pricingModel,  // Mapped from global state
+          contractPeriod: contractPeriod,  // Mapped from global state
+          // nameofPlan: nameofPlan,  // Mapped from global state
+          // validity: validity,  // Mapped from global state
+          // price: price,  // Mapped from global state
+          
+          pricingParams: normalizeToArray(pricingParams),  // Mapped from global state
+        
+          demo: demo,  // Mapped from global state
+          support: support,  // Mapped from global state
+          training: training,  // Mapped from global state
+          fileSize:normalizeToArray(fileSize),  // Mapped from global state
+          storage:normalizeToArray(storage),  // Mapped from global state
+
+          maintenance: maintenance,  // Mapped from global state
+          reqForChange: reqForChange,  // Mapped from global state
+          trainingReq: trainingReq,  // Mapped from global state
+          dataMigration: dataMigration,  // Mapped from global state
+
+          ImagesUrl: images || undefined,  // Mapped from global state
+          attachmentUrl: attachments || undefined,  // Mapped from global state
+          instagramUrl: instagramUrl,  // Mapped from global state
+          videoUrl: videoUrl,  // Mapped from global state
+          linkedinUrl: linkedinUrl,  // Mapped from global state
+          twitterUrl: twitterUrl,  // Mapped from global state
+          youtubeUrl: youtubeUrl,  // Mapped from global state
+
+        
+          active: "draft",  // Default value
+          featured: false  // Default value
+          
+        };
+
+
+        console.log("my form ", FormValues);
+
+      //   const response = await fetch("/api/edit-product", {
+      //     method: "POST",
+      //     body: JSON.stringify(FormValues),
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   });
+
+      //     const data = await response.json();
+
+      //     // Handle success
+      //     console.log("Form edited successfully", data);
+      //     if (data?.success === false) {
+      //       console.log("dataaa => ", data);
+      //       console.log({
+      //         title: "Fail to edit product",
+      //         description: "Fail to edit product",
+      //         variant: "destructive",
+      //       });
+      //       return;
+      //     } else {
+      //       console.log({
+      //         title: "Form edited",
+      //         description: "Thank you for your updation!",
+      //         variant: "success",
+      //       });
+      //     }
+      // } catch (error) {
+      //   console.error("Error editing form", error);
+      //   console.log({
+      //     title: "Fail to edit",
+      //     description: "Got some internal error",
+      //     variant: "destructive",
+      //   });
+      // }
+
+      const response = await fetch("/api/edit-product", {
+        method: "POST",
+        body: JSON.stringify(FormValues),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      // Handle success
+      console.log("Form submitted successfully", data);
+      if (data?.success === false) {
+        console.log({
+          title: "Fail to create product",
+          description: "Fail to create product",
+          variant: "destructive",
+        });
+        return;
+      } else {
+        console.log({
+          title: "Form Submitted",
+          description: "Thank you for your submission!",
+          variant: "success",
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting form", error);
+      console.log({
+        title: "Fail to submit",
+        description: "Got some internal error",
+        variant: "destructive",
+      });
+    }
+    }
+
+  
 
   }
   
@@ -339,7 +705,7 @@ const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
         <Button className="mt-4 flex items-center" onClick={handleSubmit}>Submit here </Button>
       </div>
 
-       
+      <CheckUpload />
     </div>
   );
 };

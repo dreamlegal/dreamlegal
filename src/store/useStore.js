@@ -89,7 +89,9 @@ setLogoPreview: (preview) => set({ logoPreview: preview }),
   price: [],
 
   pricingParams: "",
-
+setPricingParams: (value) => set({ pricingParams: value }),
+//  pricingParams: [], // Initialize as an empty array instead of an empty string
+//   setPricingParams: (value) => set({ pricingParams: Array.isArray(value) ? value : [] }), // Ensure it's always an array
   setFreeTrial: (value) => set({ freeTrial: value }),
   setTimePeriod: (value) => set({ timePeriod: value }),
   setFreeVersion: (value) => set({ freeVersion: value }),
@@ -98,8 +100,7 @@ setLogoPreview: (preview) => set({ logoPreview: preview }),
   setNameofPlan: (value) => set({ nameofPlan: value }),
   setValidity: (value) => set({ validity: value }),
   setPrice: (value) => set({ price: value }),
-  setPricingParams: (value) => set({ pricingParams: value }),
-
+ 
 
   // .................. 
 

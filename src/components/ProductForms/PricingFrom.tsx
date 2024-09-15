@@ -239,7 +239,7 @@ const PricingForm = () => {
       return;
     }
     setPricingModel(selectedPricingModel)
-    setPricingParams(inputPricingParams)
+    setPricingParams(inputPricingParams.toString());
 
     setErrors({});
     console.log("Form submitted with:", result.data);
@@ -536,6 +536,7 @@ const PricingForm = () => {
               Add
             </Button>
           </div>
+          <div className="text-gray-700 mt-2">{timePeriod}</div>
           {errors.timePeriod && <p className="text-red-500 text-sm">{errors.timePeriod}</p>}
         </div>
 
@@ -666,6 +667,7 @@ const PricingForm = () => {
               Add
             </Button>
           </div>
+          <div className="text-gray-700 mt-2">{contractPeriod}</div>
           {errors.contractPeriod && <p className="text-red-500 text-sm">{errors.contractPeriod}</p>}
         </div>
 

@@ -634,7 +634,7 @@ const PricingForm = () => {
         {/* Fixed Pricing */}
         <div className="container mx-auto p-6">
   <h2 className="text-2xl font-bold mb-4">Pricing Plans</h2>
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {[...Array(Math.max(nameofPlan.length, validity.length, price.length))].map((_, index) => (
       <div key={index} className="bg-white rounded-lg shadow-md p-6">
         <h3 className="text-xl font-semibold mb-2">
@@ -649,7 +649,23 @@ const PricingForm = () => {
         
       </div>
     ))}
-  </div>
+  </div> */}
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {[...Array(Math.max(
+    (nameofPlan || []).length, 
+    (validity || []).length, 
+    (price || []).length
+  ))].map((_, index) => (
+    <div key={index} className="bg-white rounded-lg shadow-md p-6">
+      <h3 className="text-xl font-semibold mb-2">
+        {(nameofPlan || [])[index] || 'Plan ' + (index + 1)}
+      </h3>
+      <p>{(validity || [])[index] || 'Validity Info'}</p>
+      <p>{(price || [])[index] || 'Price Info'}</p>
+    </div>
+  ))}
+</div>
+
 </div>
 
         <div className="space-y-4  mt-4">

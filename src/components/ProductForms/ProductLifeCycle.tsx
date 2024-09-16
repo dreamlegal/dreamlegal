@@ -1,12 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { ProductInfo } from '@/store/useStore';
 import { Button } from '@/components/ui/button';
-
 const categoryOptions = {
-  'Client Relationship Management': ['Intake', 'Assessment', 'Strategize', 'Represent', 'Communication', 'Review'],
-  'Governance, Risk and Compliance': ['Coverage', 'Assessment', 'Validation', 'Implementation', 'Monitoring', 'Analysis'],
-  'Contract Lifecycle Management': ['Create', 'Negotiation', 'Authentication', 'Execute', 'Store', 'Tracking'],
-  'E-Signature': ['Document Preparation', 'Authentication', 'Signing', 'Encryption', 'Verification', 'Distribution']
+  'Client Relationship Management': [
+    'Intake', 'Assessment', 'Strategize', 'Represent', 'Communication', 'Review'
+  ],
+  'Governance, Risk and Compliance': [
+    'Coverage', 'Assessment', 'Validation', 'Implementation', 'Monitoring', 'Analysis'
+  ],
+  'Contract Lifecycle Management': [
+    'Create', 'Negotiation', 'Authentication', 'Execute', 'Store', 'Tracking'
+  ],
+  'E-Signature': [
+    'Document Preparation', 'Authentication', 'Signing', 'Encryption', 'Verification', 'Distribution'
+  ],
+  'Document Management System': [
+    'Capture', 'Change management', 'Review', 'Organize', 'Access management', 'Retrieval'
+  ],
+  'E-billing and Invoicing': [
+    'Invoice generation', 'Authorization', 'Distribution and Accessibility', 'Payment Faciliation', 'Tracking', 'Analysis'
+  ],
+  'E-discovery': [
+    'Discover', 'Preserve', 'Acquire', 'Examine', 'Evaluate', 'Present'
+  ],
+  'Intellectual Property Management': [
+    'Cataloging', 'Analysis', 'Protection', 'Monitoring', 'Enforcement', 'Reporting'
+  ],
+  'Litigation Management and Analytics': [
+    'Intake', 'Strategize', 'Preparation', 'Litigation Support', 'Analytics', 'Outcome evaluation'
+  ],
+  'Legal Workflow Automation': [
+    'Process Identification', 'Workflow configuration', 'Validation', 'Implementation', 'Tracking', 'Optimization'
+  ],
+  'Legal Research': [
+    'Query Identification', 'Source and Type Selection', 'Filtration and sorting', 'Data extraction', 'Data Analysis and Organization', 'Storage or retrieval'
+  ]
 };
 
 const OptionSelector = () => {
@@ -76,8 +104,8 @@ const OptionSelector = () => {
   const handleSubmit = () => {
     console.log("Submit button clicked");
     console.log("Current localProcessLifecycle:", localProcessLifecycle);
-    if (validateSelection()) {
-      console.log("Validation passed, updating processLifecycle");
+   
+      
       Object.entries(localProcessLifecycle).forEach(([cat, options]) => {
         console.log(`Updating category: ${cat} with options:`, options);
         setProcessLifecycle(cat, options);
@@ -86,13 +114,20 @@ const OptionSelector = () => {
       setTimeout(() => {
         console.log("Updated processLifecycle (after delay):", processLifecycle);
       }, 0);
+
+      if (validateSelection()) {
+        console.log("Validation passed, updating processLifecycle");
     } else {
       console.log("Validation failed");
     }
   };
 
   return (
+
+    <><span className="text-red-500 italic font-bold text-xs">All Fields Are Required </span>
 <div className="space-y-4">
+
+
       {category.map((cat) => (
         <div key={cat} className="border border-gray-200 p-4 rounded-lg shadow-sm bg-white">
           <h2 className="text-xl font-bold mb-2 text-gray-800">{cat}</h2>
@@ -119,8 +154,9 @@ const OptionSelector = () => {
           )}
         </div>
       ))}
-      <Button onClick={handleSubmit} className="mt-4">Submit</Button>
+      <Button onClick={handleSubmit} className=" bg-blue-500 text-white font-semibold ">Save Product Lifecycle</Button>
     </div>
+    </>
   );
 };
 

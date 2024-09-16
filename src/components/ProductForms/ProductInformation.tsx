@@ -59,8 +59,11 @@ const productSchema = z.object({
     message: "Max word limit of 50 words exceeded",
   }),
   websiteUrl: z.string().url("Invalid Website URL").optional().nullable(),
-  adoptionPeriod: z.number().min(1, "Adoption period must be at least 1"),
-  adoptionPeriodUnit: z.enum(["days", "months", "years"], {
+  adoptionPeriod: z
+  .number({
+    required_error: "Adoption period is required",
+    invalid_type_error: "Adoption period must be a number",
+  }),  adoptionPeriodUnit: z.enum(["days", "months", "years"], {
     invalid_type_error: "Please select a valid period unit",
   }),
   
@@ -996,7 +999,7 @@ console.log("Form submitted with:", formData);
       <div className="flex gap-4">
         <Input
           name="adoptionPeriod"
-          type="number"
+          type="text"
           placeholder="Adoption period"
           value={adoptionPeriod}
           onChange={handleAdoptionPeriodChange}
@@ -1246,7 +1249,7 @@ console.log("Form submitted with:", formData);
           )}
         </div>
         
-        <Button type="submit"   >Submit</Button>
+        <Button type="submit" className=" bg-blue-500 text-white font-semibold "   >Save Product Information</Button>
        
       </div>
     </form>

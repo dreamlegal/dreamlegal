@@ -42,13 +42,13 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
     demo, support, training, fileSize, storage,
     maintenance, reqForChange, trainingReq, dataMigration,
     images, attachments, instagramUrl, videoUrl, linkedinUrl, twitterUrl, youtubeUrl,
-    userCategory ,industry, practiceAreas, teamSize,features
+    userCategory ,industry, practiceAreas, teamSize,features,
   } = ProductInfo();
 
   const {
     setProductName,
     // setLogo,
-    
+    setAdoptionPeriodUnit,
     setLogoUrl,
     setCategory,
     setDeployment,
@@ -123,7 +123,10 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
       setFocusCountries(product.focusCountries);
 
       console.log("Adoption Period:", product.adoptionPeriod);
-      setAdoptionPeriod(product.adoptionPeriod);
+      // setAdoptionPeriod(product.adoptionPeriod);
+      setAdoptionPeriod(Number(product.adoptionPeriod) || 0);
+
+      setAdoptionPeriodUnit(product.adoptionPeriodUnit)
 
       console.log("Languages:", product.languages);
       setLanguages(product.languages);

@@ -50,6 +50,8 @@ const  ProductPostImplementationService = () => {
 
   return (
     <form className="w-full  font-calarity max-w-4xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-md" onSubmit={handleSubmit}>
+         <span className="text-red-500 italic font-bold text-xs">All Fields Are Required </span>
+
       {/* Maintenance */}
       <div className="w-full mb-4">
         <label className="block mb-2">Maintenance</label>
@@ -126,12 +128,7 @@ const  ProductPostImplementationService = () => {
       </div>
 
       {/* Next Button */}
-      <button
-        type="submit"
-        className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
-      >
-        Next
-      </button>
+    
     </form>
   );
 };

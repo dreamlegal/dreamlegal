@@ -254,12 +254,14 @@ export default function ProductCustomerSegment() {
 
   return (
     <Card className="w-full max-w-4xl mx-auto mt-4">
+      <span className="text-red-500 italic font-bold text-xs">All Fields Are Required </span>
+
       <CardContent className="space-y-8 mt-4">
         {renderCategorySection("userCategories", "Target User Categories")}
         {renderCategorySection("industries", "Target Industries")}
         {renderCategorySection("practiceAreas", "Target Practice Areas")}
         {renderCategorySection("teamSizes", "Target Client Team Sizes")}
-        <Button className="w-full" onClick={handleSubmit}>Submit</Button>
+        <Button className="w-full bg-blue-500 text-white font-semibold " onClick={handleSubmit}>Save Customer Segments </Button>
       </CardContent>
     </Card>
   );

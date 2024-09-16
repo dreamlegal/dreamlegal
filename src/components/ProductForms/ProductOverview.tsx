@@ -170,13 +170,13 @@ const ProductOverview = () => {
             }
           </div>
         </div>
-        {successMessage &&  
+        {/* {successMessage &&  
               <div className="w-full bg-[#90ee90 ] mt-3 p-2 rounded-lg flex"> 
                 <XCircle className="w-6 h-6 text-red-500" />
                 <p className="text-[#50a092] pl-2">{successMessage}</p>
               </div>
-            }
-        <Button type='submit' className='mt-2 bg-primary1'>Submit</Button>
+            } */}
+        <Button type='submit' className=" bg-blue-500 text-white font-semibold mt-3 ">Save Overview Details</Button>
       </form>
     </>
   );

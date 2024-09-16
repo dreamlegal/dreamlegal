@@ -17,17 +17,27 @@ interface PricingField {
 }
 
 const PricingSchema = z.object({
-  freeTrial: z.enum(["Yes", "No"], {
-    required_error: "Choose this please",
+  freeTrial:z.enum(["Yes", "No"], {
+    required_error: "Choose this please", // Error when the field is not provided
+    invalid_type_error: "Choose this please", // Error when the value is null or any other type
   }),
   freeVersion: z.enum(["Yes", "No"], {
-    required_error: "Choose this please",
+    required_error: "Choose this please", // Error when the field is not provided
+    invalid_type_error: "Choose this please", // Error when the value is null or any other type
   }),
-  timePeriod: z.string().optional(),
+  timePeriod:z
+  .union([z.string(), z.null()])
+  .refine(value => value !== null && value.trim() !== "", {
+    message: "Time Period Period value is required",
+  }),
   pricingModel: z
     .array(z.enum(["Annual Fee", "Monthly subscription", "Volume based"]))
     .min(1, "At least one pricing model is required"),
-  contractPeriod: z.string().nonempty("Minimum Contract Period is required"),
+  contractPeriod:z
+  .union([z.string(), z.null()])
+  .refine(value => value !== null && value.trim() !== "", {
+    message: "Min Contract Period value is required",
+  }),
   fixedPricing: z.boolean(),
   pricingParams: z.string().optional(),
   pricingFields: z.array(
@@ -505,7 +515,13 @@ const PricingForm = () => {
               </label>
             ))}
           </div>
-          {errors.freeTrial && <p className="text-red-500 text-sm">{errors.freeTrial}</p>}
+          {errors.freeTrial &&  
+              <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#DC3545] pl-2">{errors.freeTrial}</p>
+              </div>
+            }
+         
         </div>
 
         {/* Time Period */}
@@ -537,7 +553,14 @@ const PricingForm = () => {
             </Button>
           </div>
           <div className="text-gray-700 mt-2">{timePeriod}</div>
-          {errors.timePeriod && <p className="text-red-500 text-sm">{errors.timePeriod}</p>}
+         
+          {errors.timePeriod &&  
+              <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#DC3545] pl-2">{errors.timePeriod}</p>
+              </div>
+            }
+         
         </div>
 
         {/* Free Version */}
@@ -558,7 +581,14 @@ const PricingForm = () => {
               </label>
             ))}
           </div>
-          {errors.freeVersion && <p className="text-red-500 text-sm">{errors.freeVersion}</p>}
+         
+          {errors.freeVersion &&  
+              <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#DC3545] pl-2">{errors.freeVersion}</p>
+              </div>
+            }
+         
         </div>
 
         {/* Pricing Model */}
@@ -578,7 +608,13 @@ const PricingForm = () => {
               </label>
             ))}
           </div>
-          {errors.pricingModel && <p className="text-red-500 text-sm">{errors.pricingModel}</p>}
+        
+          {errors.pricingModel &&  
+              <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#DC3545] pl-2">{errors.pricingModel}</p>
+              </div>
+            }
         </div>
 
         {/* Fixed Pricing */}
@@ -634,7 +670,13 @@ const PricingForm = () => {
                 onChange={handlePricingParamsChange}
                 className="w-full"
               />
-              {errors.pricingParams && <p className="text-red-500 text-sm">{errors.pricingParams}</p>}
+             
+              {errors.pricingParams &&  
+              <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#DC3545] pl-2">{errors.pricingParams}</p>
+              </div>
+            }
             </div>
           )}
         </div>
@@ -668,11 +710,16 @@ const PricingForm = () => {
             </Button>
           </div>
           <div className="text-gray-700 mt-2">{contractPeriod}</div>
-          {errors.contractPeriod && <p className="text-red-500 text-sm">{errors.contractPeriod}</p>}
+            {errors.contractPeriod &&  
+              <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#DC3545] pl-2">{errors.contractPeriod}</p>
+              </div>
+            }
         </div>
 
-        <Button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white mt-4">
-          Submit
+        <Button type="submit" className="w-full  bg-blue-500 text-white font-semibold  mt-4">
+          Save Pricing Details
         </Button>
       
     </div>

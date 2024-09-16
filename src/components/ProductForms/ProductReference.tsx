@@ -744,6 +744,7 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
   return (
     <form onSubmit={handleSubmit} className="w-full font-calarity max-w-4xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-md">
       <div className="flex w-100 flex-col">
+      {/* <span className="text-red-500  text-xs">Image Field Necassary</span> */}
         {/* Image upload */}
         <div className="w-full mb-4 mt-4">
           <label htmlFor="images" className="block mb-2 font-bold">Images <span className="text-yellow-500 italic text-xs">(1-5 images required)</span></label>
@@ -907,7 +908,7 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
            {errors.youtubeUrl && <p className="text-red-500">{errors.youtubeUrl}</p>}
          </div>
 
-        <button type="submit" className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
+        <Button type="submit" className="mt-4 bg-blue-500 text-white font-semibold ">Save References</Button>
       </div>
     </form>
   );

@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import { ProductInfo } from '@/store/useStore';
 import { z } from 'zod';
+import { XCircle } from "lucide-react";
+import { Button } from "../ui/button";
 
 const options = {
   demo: [
@@ -338,8 +340,13 @@ const ProductSAndS = () => {
           ))}
         </div>
 
-        
-        {errors.demo && <p className="text-red-500 text-sm mt-1">{errors.demo}</p>}
+        {errors.demo &&  
+              <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#DC3545] pl-2">{errors.demo}</p>
+              </div>
+            }
+      
       </div>
 
       {/* Support Section */}
@@ -359,7 +366,13 @@ const ProductSAndS = () => {
             </label>
           ))}
         </div>
-        {errors.support && <p className="text-red-500 text-sm mt-1">{errors.support}</p>}
+        {errors.support &&  
+              <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#DC3545] pl-2">{errors.support}</p>
+              </div>
+            }
+      
       </div>
 
       {/* Training Section */}
@@ -379,7 +392,13 @@ const ProductSAndS = () => {
             </label>
           ))}
         </div>
-        {errors.training && <p className="text-red-500 text-sm mt-1">{errors.training}</p>}
+        {errors.training &&  
+              <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#DC3545] pl-2">{errors.training}</p>
+              </div>
+            }
+        
       </div>
 
       {/* Storage Section */}
@@ -411,7 +430,13 @@ const ProductSAndS = () => {
           </button>
         </div>
         <div className="text-gray-700 mt-2">{storage}</div>
-        {errors.storage && <p className="text-red-500 text-sm mt-1">{errors.storage}</p>}
+         {errors.storage &&  
+              <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#DC3545] pl-2">{errors.storage}</p>
+              </div>
+            }
+       
       </div>
 
       {/* File Size Section */}
@@ -443,15 +468,21 @@ const ProductSAndS = () => {
           </button>
         </div>
         <div className="text-gray-700 mt-2">{fileSize}</div>
-        {errors.fileSize && <p className="text-red-500 text-sm mt-1">{errors.fileSize}</p>}
+        {errors.fileSize &&  
+              <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#DC3545] pl-2">{errors.fileSize}</p>
+              </div>
+            }
+      
       </div>
 
-      <button
+      <Button
         type="submit"
-        className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300"
+        className="w-full  bg-blue-500 text-white font-semibold "
       >
-        Submit
-      </button>
+        Save Support And Service Details
+      </Button>
     </form>
   );
 };

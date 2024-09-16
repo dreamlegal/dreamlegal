@@ -61,6 +61,7 @@ const icons: Record<string, Record<string, JSX.Element>> = {
 function PostImplementation({ product }: { product: Product }) {
   return (
     <div className="font-clarity grid grid-cols-1 md:grid-cols-2 gap-6">
+       <span className="text-red-500 italic text-xs">All Fields Are Required </span>
       <div className="mb-3">
         <div>
           <h5 className="text-lg font-bold leading-none text-gray-800">

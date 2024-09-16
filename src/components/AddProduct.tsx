@@ -13,6 +13,7 @@ import FeaturesInfo from "./FeaturesInfo";
 import PricingInfo from "./PricingInfo";
 import SupportService from "./SupportService";
 import { useSearchParams } from "next/navigation";
+import ProductForm  from "./ProductForm";
 
 function AddProduct( ) {
   const { step, nextStep, prevStep } = useStepContext();
@@ -37,7 +38,9 @@ function AddProduct( ) {
         <div className="grid grid-cols-1 md:grid-cols-4 mt-6">
           <div className="w-full col-span-3 shadow border px-5 py-6 rounded-lg">
             <div>
-              <ProductInfo editing={false} />
+              {/* <ProductInfo editing={false} /> */}
+              <ProductForm editing= {false}/>
+
 
               {/* Add more steps here */}
             </div>

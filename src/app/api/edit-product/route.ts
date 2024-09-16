@@ -19,54 +19,54 @@ export async function POST(request: Request) {
     usp,
     upcomingUpdates,
     userCategory,
-    userCategoryPercentage,
+    // userCategoryPercentage,
     industry,
-    industryPercentage,
+    // industryPercentage,
     practiceAreas,
-    practiceAreasPercentage,
+    // practiceAreasPercentage,
     teamSize,
-    teamSizePercentage,
+    // teamSizePercentage,
     processLifecycle,
     features,
     freeTrial,
     timePeriod,
-    timePeriodUnit,
+    // timePeriodUnit,
     freeVersion,
     pricingModel,
     contractPeriod,
-    contractUnit,
-    nameofPlan1,
-    nameofPlan2,
-    nameofPlan3,
-    validity1,
-    validity2,
-    validity3,
-    price1,
-    price2,
-    price3,
+    // contractUnit,
+    // nameofPlan1,
+    // nameofPlan2,
+    // nameofPlan3,
+    // validity1,
+    // validity2,
+    // validity3,
+    // price1,
+    // price2,
+    // price3,
     pricingParams,
     Images,
     attachments,
     Demo,
-    DemoNote,
+    // DemoNote,
     support,
-    supportNote,
+    // supportNote,
     training,
-    trainingNote,
+    // trainingNote,
     storage,
-    storageNote,
+    // storageNote,
     storageUnit,
-    fileSizeUnit,
+    // fileSizeUnit,
     fileSize,
-    fileSizeNote,
+    // fileSizeNote,
     maintenance,
-    maintenanceNote,
+    // maintenanceNote,
     reqForChange,
-    reqForChangeNote,
+    // reqForChangeNote,
     trainingReq,
-    trainingReqNote,
+    // trainingReqNote,
     dataMigration,
-    dataMigrationNote,
+    // dataMigrationNote,
     videoUrl,
     ImageUrl,
     youtubeUrl,
@@ -107,25 +107,25 @@ export async function POST(request: Request) {
 
     const name = prname;
     const avgTimeAdoption = adoptionPeriod + " " + adoptionPeriodUnit;
-    const timePeriodServer = timePeriod + " " + timePeriodUnit;
-    const nameofPlan = [nameofPlan1, nameofPlan2, nameofPlan3];
-    const validity = [validity1, validity2, validity3];
-    const price = [price1, price2, price3];
-    const MinContarct = contractPeriod + " " + contractUnit;
-    const storageServer = storage + " " + storageUnit;
-    const fileSizeServer = fileSize + " " + fileSizeUnit;
-    const userCategoryPercentageString = userCategoryPercentage.map(
-      (number: number) => String(number)
-    );
-    const industryPercentageString = industryPercentage.map((number: number) =>
-      String(number)
-    );
-    const practiceAreasPercentageString = practiceAreasPercentage.map(
-      (number: number) => String(number)
-    );
-    const teamSizePercentageString = teamSizePercentage.map((number: number) =>
-      String(number)
-    );
+    // const timePeriodServer = timePeriod + " " + timePeriodUnit;
+    // const nameofPlan = [nameofPlan1, nameofPlan2, nameofPlan3];
+    // const validity = [validity1, validity2, validity3];
+    // const price = [price1, price2, price3];
+    // const MinContarct = contractPeriod + " " + contractUnit;
+    // const storageServer = storage + " " + storageUnit;
+    // const fileSizeServer = fileSize + " " + fileSizeUnit;
+    // const userCategoryPercentageString = userCategoryPercentage.map(
+    //   (number: number) => String(number)
+    // );
+    // const industryPercentageString = industryPercentage.map((number: number) =>
+    //   String(number)
+    // );
+    // const practiceAreasPercentageString = practiceAreasPercentage.map(
+    //   (number: number) => String(number)
+    // );
+    // const teamSizePercentageString = teamSizePercentage.map((number: number) =>
+    //   String(number)
+    // );
 
     const updatedProduct = await prisma.product.update({
       where: { id },
@@ -146,49 +146,49 @@ export async function POST(request: Request) {
         usp,
         upcomingUpdates,
         userCategory,
-        userCategoryPercentage: userCategoryPercentageString,
+        // userCategoryPercentage: userCategoryPercentageString,
         industry,
-        industryPercentage: industryPercentageString,
+        // industryPercentage: industryPercentageString,
         practiceAreas,
-        practiceAreasPercentage: practiceAreasPercentageString,
+        // practiceAreasPercentage: practiceAreasPercentageString,
         teamSize,
-        teamsizePercentage: teamSizePercentageString,
+        // teamsizePercentage: teamSizePercentageString,
         processLifecycle,
         features,
         freeTrial,
-        timePeriod: timePeriodServer,
-        pricingModel,
-        contractPeriod: MinContarct,
-        nameofPlan,
-        validity,
-        price,
+        timePeriod: timePeriod,
+        pricingModel: pricingModel || ["dummy"],
+        contractPeriod:contractPeriod ,
+        // nameofPlan,
+        // validity,
+        // price,
         pricingParams,
         freeVersion,
         Demo,
-        DemoNote,
+        // DemoNote,
         support,
-        supportNote,
+        // supportNote,
         training,
-        trainingNote,
-        storage: [storageServer],
-        storageNote,
-        fileSize: [fileSizeServer],
-        fileSizeNote,
+        // trainingNote,
+        storage: storage,
+        // storageNote,
+        fileSize: fileSize,
+        // fileSizeNote,
         maintenance,
-        maintenanceNote,
+        // maintenanceNote,
         reqForChange,
-        reqForChangeNote,
+        // reqForChangeNote,
         trainingReq,
-        trainingReqNote,
+        // trainingReqNote,
         dataMigration,
-        dataMigrationNote,
-        Images,
+        // dataMigrationNote,
+        Images:ImageUrl,
         videoUrl,
         youtubeUrl,
         linkedinUrl,
         twitterUrl,
         instagramUrl,
-        attachments,
+        attachments: attachmentUrl,
         active: "draft",
       },
     });

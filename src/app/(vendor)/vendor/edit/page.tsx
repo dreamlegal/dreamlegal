@@ -1,12 +1,13 @@
 "use client";
 import AddProduct from "@/components/AddProduct";
-import ProductInfo from "@/components/ProductInfo";
+// import ProductInfo from "@/components/ProductInfo";
 import VendorDashborad from "@/components/VendorDashborad";
 import VendorProfile from "@/components/VendorProfile";
 import VendorReview from "@/components/VendorReview";
 import VendorSidebar from "@/components/VendorSidebar";
 import AllProducts from "@/components/ui/AllProducts";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import ProductForm from "@/components/ProductForm";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SheetTrigger, SheetContent, Sheet } from "@/components/ui/sheet";
 import { useFormContext } from "@/context/formValueContext";
@@ -14,6 +15,7 @@ import { useFormContext } from "@/context/formValueContext";
 import React, { useEffect, useState } from "react";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { RiMenu2Line } from "react-icons/ri";
+import { ProductInfo } from "@/store/useStore";
 
 function Page() {
   const { formValues, setFormValues } = useFormContext();
@@ -21,6 +23,7 @@ function Page() {
   const [selectedMenu, setSelectedMenu] = useState("ProductInfo");
   const [profile, setProfile] = useState<any>(null);
   const [vendorId, setVendorId] = useState<string | null>(null);
+  const [product, setProduct] = useState<string | null>(null);
 
   useEffect(() => {
     const storedVendorId = localStorage.getItem("vendorId");
@@ -57,10 +60,101 @@ function Page() {
 
         if (data.success) {
           const product = data.product;
-          setFormValues((prevValues: any) => ({
-            ...prevValues,
-            ...product,
-          }));
+          setProduct(product);
+          
+console.log("Product:", product);
+           // Update global state
+       
+        
+
+          const {
+            setProductName,
+            setLogo,
+            setCategory,
+            setDeployment,
+            setMobileAvailable,
+            setFocusCountries,
+            setAdoptionPeriod,
+            setLanguages,
+            setSecurityCertificate,
+            setIntegrations,
+            setDescription,
+            setUSP,
+            setUpcomingUpdates,
+            setUserCategory,
+            setIndustry,
+            setPracticeAreas,
+            setTeamSize,
+            setProcessLifecycle,
+            setFeatures,
+            setFreeTrial,
+            setTimePeriod,
+            setPricingModel,
+            setContractPeriod,
+            setPricingParams,
+            setFreeVersion,
+            setDemo,
+            setSupport,
+            setTraining,
+            setFileSize,
+            setStorage,
+            setMaintenance,
+            setReqForChange,
+            setDataMigration,
+            setTrainingReq,
+            setImages,
+            setVideoUrl,
+            setYoutubeUrl,
+            setLinkedinUrl,
+            setTwitterUrl,
+            setInstagramUrl,
+            setAttachments
+          } = ProductInfo();
+
+          setProductName(product.name);
+          setLogo(product.logoUrl);
+          setCategory(product.category);
+          setDeployment(product.deployement);
+          setMobileAvailable(product.mobileAvailable);
+          setFocusCountries(product.focusCountries);
+          setAdoptionPeriod(product.avgTimeAdoption);
+          setLanguages(product.languages);
+          setSecurityCertificate(product.securityCertificate);
+          setIntegrations(product.integration);
+          setDescription(product.description);
+          setUSP(product.usp);
+          setUpcomingUpdates(product.upcomingUpdates);
+          setUserCategory(product.userCategory);
+          setIndustry(product.industry);
+          setPracticeAreas(product.practiceAreas);
+          setTeamSize(product.teamSize);
+          setProcessLifecycle(product.processLifecycle);
+          setFeatures(product.features);
+          setFreeTrial(product.freeTrial);
+          setTimePeriod(product.timePeriod);
+          setPricingModel(product.pricingModel);
+          setContractPeriod(product.contractPeriod);
+          setPricingParams(product.pricingParams ? product.pricingParams.join(", ") : "");
+          setFreeVersion(product.freeVersion);
+          setDemo(product.Demo);
+          setSupport(product.support);
+          setTraining(product.training);
+          // setFileSize(product.fileSize ? product.fileSize.join(", ") : "");
+          // setStorage(product.storage ? product.storage.join(", ") : "");
+          setFileSize(Array.isArray(product.fileSize) ? product.fileSize.join(", ") : "");
+setStorage(Array.isArray(product.storage) ? product.storage.join(", ") : "");
+          setMaintenance(product.maintenance);
+          setReqForChange(product.reqForChange);
+          setDataMigration(product.dataMigration);
+          setTrainingReq(product.trainingReq);
+          setImages(product.Images);
+          setVideoUrl(product.videoUrl);
+          setYoutubeUrl(product.youtubeUrl);
+          setLinkedinUrl(product.linkedinUrl);
+          setTwitterUrl(product.twitterUrl);
+          setInstagramUrl(product.instagramUrl);
+          setAttachments(product.attachments);
+     
         } else {
           console.error(data.msg);
         }
@@ -74,8 +168,51 @@ function Page() {
     if (storedUserId) {
       fetchProduct();
     }
-  }, [id, setFormValues]);
-
+  }, [id]);
+  console.log("Global states:", {
+    productName: ProductInfo().productName,
+    logo: ProductInfo().logo,
+    category: ProductInfo().category,
+    deployment: ProductInfo().deployment,
+    mobileAvailable: ProductInfo().mobileAvailable,
+    focusCountries: ProductInfo().focusCountries,
+    adoptionPeriod: ProductInfo().adoptionPeriod,
+    adoptionPeriodUnit: ProductInfo().adoptionPeriodUnit,
+    languages: ProductInfo().languages,
+    securityCertificate: ProductInfo().securityCertificate,
+    integrations: ProductInfo().integrations,
+    description: ProductInfo().description,
+    usp: ProductInfo().usp,
+    upcomingUpdates: ProductInfo().upcomingUpdates,
+    userCategory: ProductInfo().userCategory,
+    industry: ProductInfo().industry,
+    practiceAreas: ProductInfo().practiceAreas,
+    teamSize: ProductInfo().teamSize,
+    processLifecycle: ProductInfo().processLifecycle,
+    features: ProductInfo().features,
+    freeTrial: ProductInfo().freeTrial,
+    timePeriod: ProductInfo().timePeriod,
+    pricingModel: ProductInfo().pricingModel,
+    contractPeriod: ProductInfo().contractPeriod,
+    pricingParams: ProductInfo().pricingParams,
+    freeVersion: ProductInfo().freeVersion,
+    demo: ProductInfo().demo,
+    support: ProductInfo().support,
+    training: ProductInfo().training,
+    fileSize: ProductInfo().fileSize,
+    storage: ProductInfo().storage,
+    maintenance: ProductInfo().maintenance,
+    reqForChange: ProductInfo().reqForChange,
+    dataMigration: ProductInfo().dataMigration,
+    trainingReq: ProductInfo().trainingReq,
+    images: ProductInfo().images,
+    videoUrl: ProductInfo().videoUrl,
+    youtubeUrl: ProductInfo().youtubeUrl,
+    linkedinUrl: ProductInfo().linkedinUrl,
+    twitterUrl: ProductInfo().twitterUrl,
+    instagramUrl: ProductInfo().instagramUrl,
+    attachments: ProductInfo().attachments,
+  });
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -132,7 +269,8 @@ function Page() {
                   <VendorProfile verified={false} getProfile={profile} />
                 )}
                 {selectedMenu === "ProductInfo" && (
-                  <ProductInfo editing={true} />
+                  // <ProductInfo editing={true} />
+                  <ProductForm  editing={true} product= {product}/>
                 )}
               </div>{" "}
             </ScrollArea>

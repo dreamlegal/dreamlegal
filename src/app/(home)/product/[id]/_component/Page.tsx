@@ -169,6 +169,7 @@ const countryNames: { [key: string]: string } = {
 };
 import ReactToPrint from "react-to-print";
 function PageComponent({ data }: any) {
+  console.log(data)
   const location = useGeoLocation();
   const countryName = countryNames[location.country];
   console.log(countryName);

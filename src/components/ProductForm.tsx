@@ -34,6 +34,8 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
     adoptionPeriodUnit,
     focusCountries,
     languages,
+    painPointAddressed,
+    
     websiteUrl,integrations,
     securityCertificate,
     description, usp, upcomingUpdates,
@@ -46,12 +48,17 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
   } = ProductInfo();
 
   const {
+    // painPointAddressed,
+    // setPainPointAddressed,
     setProductName,
     // setLogo,
+    setWebsiteUrl,
     setAdoptionPeriodUnit,
+    setPainPointAddressed,
     setLogoUrl,
     setCategory,
     setDeployment,
+    fixPricing,
     setMobileAvailable,
     setFocusCountries,
     setAdoptionPeriod,
@@ -91,6 +98,9 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
     setAttachments,
     imagesUrl,
   attachmentsUrl,
+  setValidity,
+  setFixPricing,
+  setPrice,setNameofPlan,
   
   setImagesUrl,
 
@@ -106,6 +116,9 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
 
       console.log("Product Name:", product.prname);
       setProductName(product.prname);
+      
+      setPainPointAddressed(product.painPointAddressed);
+      setWebsiteUrl(product.websiteUrl)
 
       console.log("Logo URL:", product.logoUrl);
       setLogoUrl(product.logoUrl);
@@ -241,6 +254,21 @@ setStorage(storage);
 
       console.log("Maintenance:", product.maintenance);
       setMaintenance(product.maintenance);
+      console.log("name of plans:", product.validity);
+      setValidity(product.validity);
+      console.log("duration:", product.nameofPlan);
+      setNameofPlan(product.nameofPlan);
+      console.log("price:", product.price);
+      setPrice(product.price);
+
+      // const fixedPricing = product.price !== undefined ? true : false;
+      
+      // setFixPricing(fixedPricing); 
+      
+      // const fixedPricing = product.price !== undefined ? true : false;
+      // console.log(fixedPricing)
+      // setFixPricing(fixedPricing);
+      // console.log("fixed pricing",fixPricing)
 
       console.log("Req For Change:", product.reqForChange);
       setReqForChange(product.reqForChange);
@@ -307,6 +335,8 @@ setStorage(storage);
     description: z.string().nonempty().refine(value => value.split(/\s+/).length <= 50),
     usp: z.string().nonempty().refine(value => value.split(/\s+/).length <= 50),
     upcomingUpdates: z.string().nonempty().refine(value => value.split(/\s+/).length <= 50),
+    painPointAddressed: z.string().nonempty().refine(value => value.split(/\s+/).length <= 50),
+    
   });
 
   const ProductSAndSSchema = z.object({
@@ -341,7 +371,7 @@ setStorage(storage);
     }).success;
 
     const productOverviewComplete = ProductOverviewSchema.safeParse({
-      description, usp, upcomingUpdates
+      description, usp, upcomingUpdates,painPointAddressed
     }).success;
 
     const SAndSresult = ProductSAndSSchema.safeParse({
@@ -460,7 +490,11 @@ setStorage(storage);
 
           description: description,
           usp: usp,  // Mapped from global state
-          upcomingUpdates: upcomingUpdates,  // Mapped from global state
+          upcomingUpdates: upcomingUpdates,
+          painPointAddressed: painPointAddressed,
+          websiteUrl:websiteUrl,
+    
+           // Mapped from global state
 
           userCategory: userCategory,  // Mapped from global state
           industry: industry,  // Mapped from global state
@@ -479,9 +513,9 @@ setStorage(storage);
           freeVersion: freeVersion,  // Mapped from global state
           pricingModel: pricingModel,  // Mapped from global state
           contractPeriod: contractPeriod,  // Mapped from global state
-          // nameofPlan: nameofPlan,  // Mapped from global state
-          // validity: validity,  // Mapped from global state
-          // price: price,  // Mapped from global state
+          nameofPlan: nameofPlan,  // Mapped from global state
+          validity: validity,  // Mapped from global state
+          price: price,  // Mapped from global state
           
           pricingParams: [pricingParams],  // Mapped from global state
         
@@ -558,6 +592,7 @@ setStorage(storage);
       try {
 
         const FormValues = {
+
           id: productId,
           userId: userId,  // From global state
           prname: productName,  // Mapped to productName
@@ -577,6 +612,8 @@ setStorage(storage);
           description: description,
           usp: usp,  // Mapped from global state
           upcomingUpdates: upcomingUpdates,  // Mapped from global state
+          painPointAddressed: painPointAddressed,
+          websiteUrl:websiteUrl,
 
           userCategory: userCategory,  // Mapped from global state
           industry: industry,  // Mapped from global state
@@ -595,9 +632,9 @@ setStorage(storage);
           freeVersion: freeVersion,  // Mapped from global state
           pricingModel: pricingModel,  // Mapped from global state
           contractPeriod: contractPeriod,  // Mapped from global state
-          // nameofPlan: nameofPlan,  // Mapped from global state
-          // validity: validity,  // Mapped from global state
-          // price: price,  // Mapped from global state
+          nameofPlan: nameofPlan,  // Mapped from global state
+          validity: validity,  // Mapped from global state
+          price: price,  // Mapped from global state
           
           pricingParams: normalizeToArray(pricingParams),  // Mapped from global state
         

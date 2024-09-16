@@ -8,6 +8,7 @@ import { ProductInfo } from "@/store/useStore";
 import { Switch } from "../ui/switch";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useCallback } from "react";
 
 interface PricingField {
   id: number;
@@ -162,82 +163,93 @@ const PricingForm = () => {
   // const [pricingFields, setPricingFields] = useState<PricingField[]>([]);
   const [localPricingFields, setLocalPricingFields] = useState<PricingField[]>([]);
 
-  useEffect(() => {
-    if (fixedPricing) {
-      setInputPricingParams('');
-      // Initialize localPricingFields with the global state values if they exist
-      if (nameofPlan.length > 0 || validity.length > 0 || price.length > 0) {
-        const maxLength = Math.max(nameofPlan.length, validity.length, price.length);
-        const fields: PricingField[] = [];
-        for (let i = 0; i < maxLength; i++) {
-          fields.push({
-            id: i,
-            name: nameofPlan[i] || "",
-            validity: validity[i] || "",
-            price: price[i] || "",
-          });
-        }
-        setLocalPricingFields(fields);
-      } else {
-        // Add an empty field if there are no fields
-        handleAddPricing();
-      }
-    } else {
-      // Clear the global state when switching back to custom pricing
-      setNameofPlan([]);
-      setValidity([]);
-      setPrice([]);
-    }
-  }, [fixedPricing]);
 
-  const handleAddPricing = () => {
-    const newField = { id: Date.now(), name: "", validity: "", price: "" };
-    const updatedFields = [...localPricingFields, newField];
-    setLocalPricingFields(updatedFields);
-    updateGlobalPricingFields(updatedFields);
-  };
+
+  useEffect(() => {
+    // Determine if pricing is fixed based on `price`
+    const isFixedPricing = price !== undefined && price.length > 0;
+
+    // Only update fixPricing if it has changed
+    if (isFixedPricing !== fixPricing) {
+      setFixPricing(isFixedPricing);
+    }
+
+    if (isFixedPricing) {
+      // If fixed pricing, prepare local pricing fields
+      setInputPricingParams('');
+      const maxLength = Math.max(nameofPlan.length, validity.length, price.length);
+      const fields = Array.from({ length: maxLength }, (_, i) => ({
+        id: i,
+        name: nameofPlan[i] || "",
+        validity: validity[i] || "",
+        price: price[i] || "",
+      }));
+      setLocalPricingFields(fields);
+    } else {
+      // If not fixed pricing, clear local pricing fields
+      setLocalPricingFields([]);
+    }
+  }, [nameofPlan, validity, price, fixPricing]);
 
   const handleRemovePricing = (id: number) => {
-    const updatedFields = localPricingFields.filter((field) => field.id !== id);
-    setLocalPricingFields(updatedFields);
-    updateGlobalPricingFields(updatedFields);
+    setLocalPricingFields(prevFields => {
+      const updatedFields = prevFields.filter(field => field.id !== id);
+      updateGlobalPricingFields(updatedFields);
+      return updatedFields;
+    });
+  };
+ 
+  const handleAddPricing = () => {
+    const newField = { id: Date.now(), name: "", validity: "", price: "" };
+    setLocalPricingFields(prevFields => {
+      const updatedFields = [...prevFields, newField];
+      updateGlobalPricingFields(updatedFields);
+      return updatedFields;
+    });
   };
 
-  const handlePricingChange = (
-    id: number,
-    field: keyof PricingField,
-    value: string
-  ) => {
-    const updatedFields = localPricingFields.map((pricing) =>
-      pricing.id === id ? { ...pricing, [field]: value } : pricing
-    );
-    setLocalPricingFields(updatedFields);
-    updateGlobalPricingFields(updatedFields);
+  const handlePricingChange = (id: number, field: keyof PricingField, value: string) => {
+    setLocalPricingFields(prevFields => {
+      const updatedFields = prevFields.map(pricing =>
+        pricing.id === id ? { ...pricing, [field]: value } : pricing
+      );
+      updateGlobalPricingFields(updatedFields);
+      return updatedFields;
+    });
   };
 
-  const updateGlobalPricingFields = (fields: PricingField[]) => {
-    setNameofPlan(fields.map(field => field.name));
-    setValidity(fields.map(field => field.validity));
-    setPrice(fields.map(field => field.price));
-  };
+  const updateGlobalPricingFields = useCallback((fields) => {
+    const updatedNameofPlan = fields.map(field => field.name);
+    const updatedValidity = fields.map(field => field.validity);
+    const updatedPrice = fields.map(field => field.price);
+    
+    // Only update if there are actual changes
+    if (
+      JSON.stringify(updatedNameofPlan) !== JSON.stringify(nameofPlan) ||
+      JSON.stringify(updatedValidity) !== JSON.stringify(validity) ||
+      JSON.stringify(updatedPrice) !== JSON.stringify(price)
+    ) {
+      setNameofPlan(updatedNameofPlan);
+      setValidity(updatedValidity);
+      setPrice(updatedPrice);
+    }
+  }, [nameofPlan, validity, price, setNameofPlan, setValidity, setPrice]);
+
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    
     const formData = {
       freeTrial: selectedFreeTrial,
       freeVersion: selectedFreeVersion,
       timePeriod: timePeriod,
       pricingModel: selectedPricingModel,
       contractPeriod: contractPeriod,
-      fixedPricing: fixedPricing,
-      pricingParams: fixedPricing ? undefined : inputPricingParams,
-      pricingFields: fixedPricing ? localPricingFields : undefined,
+      fixedPricing: fixPricing,
+      pricingParams: fixPricing ? undefined : inputPricingParams,
+      pricingFields: fixPricing ? localPricingFields : undefined,
     };
 
     const result = PricingSchema.safeParse(formData);
-    
 
     if (!result.success) {
       const validationErrors: Record<string, string> = {};
@@ -248,13 +260,15 @@ const PricingForm = () => {
       console.log("Validation errors:", validationErrors);
       return;
     }
-    setPricingModel(selectedPricingModel)
+    setPricingModel(selectedPricingModel);
     setPricingParams(inputPricingParams.toString());
+    setFixPricing(fixPricing);
 
     setErrors({});
     console.log("Form submitted with:", result.data);
   };
-
+  
+ 
 
   return (
     <form onSubmit={handleSubmit} className="w-full font-calarity max-w-4xl mx-auto mt-4">
@@ -618,6 +632,26 @@ const PricingForm = () => {
         </div>
 
         {/* Fixed Pricing */}
+        <div className="container mx-auto p-6">
+  <h2 className="text-2xl font-bold mb-4">Pricing Plans</h2>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {[...Array(Math.max(nameofPlan.length, validity.length, price.length))].map((_, index) => (
+      <div key={index} className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-xl font-semibold mb-2">
+          {nameofPlan[index] || 'Plan ' + (index + 1)}
+        </h3>
+        <p className="text-3xl font-bold mb-4">
+          ${price[index] || 'N/A'}
+        </p>
+        <p className="text-gray-600 mb-4">
+          Validity: {validity[index] || 'N/A'}
+        </p>
+        
+      </div>
+    ))}
+  </div>
+</div>
+
         <div className="space-y-4  mt-4">
           <div className="flex items-center space-x-2">
             <Label className="text-lg font-semibold">Fixed Pricing</Label>
@@ -634,7 +668,7 @@ const PricingForm = () => {
                       value={field.name}
                       onChange={(e) => handlePricingChange(field.id, "name", e.target.value)}
                     />
-                    <select
+                    {/* <select
                       value={field.validity}
                       onChange={(e) => handlePricingChange(field.id, "validity", e.target.value)}
                       className="border border-gray-300 rounded-lg px-3 py-2"
@@ -643,7 +677,13 @@ const PricingForm = () => {
                       {units.map((unit) => (
                         <option key={unit} value={unit}>{unit}</option>
                       ))}
-                    </select>
+                    </select> */}
+                    <Input   value={field.validity}
+                      onChange={(e) => handlePricingChange(field.id, "validity", e.target.value)}
+                      className="border border-gray-300 rounded-lg px-3 py-2"
+                      
+                      />
+                    
                     <Input
                       placeholder="Price"
                       value={field.price}

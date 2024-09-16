@@ -17,6 +17,7 @@ import {
 import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { MdOutlineInfo } from "react-icons/md";
+import Chart from  "@/components/Chart";
 
 function PdfDownload({ data }: any) {
   const [product, setProduct] = useState(data.product);
@@ -218,259 +219,7 @@ function PdfDownload({ data }: any) {
 
           {/* Segments */}
 
-          <div className="flex flex-col gap-4 w-full">
-            <div className="flex flex-col md:flex-row w-full gap-4">
-              <div className="flex-1">
-                <div className="flex gap-2 items-center">
-                  <h2
-                    id="customers"
-                    className="text-2xl font-bold text-gray-900 mb-3"
-                  >
-                    Customer segments
-                  </h2>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <MdOutlineInfo className="text-slate-500 text-sm" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Overview of company, products in short</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <div className="flex justify-between items-center">
-                  <div className="inline-flex gap-3 flex-wrap">
-                    {product.userCategory.map((segment: string) => (
-                      <div
-                        key={segment}
-                        className="py-1 px-2.5 border  transition-all duration-200 hover:cursor-pointer  rounded-full text-xs bg-primary2 border-primary1 text-primary1"
-                      >
-                        {segment}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="flex-1 mt-4 md:mt-0">
-                <div
-                  id="chart"
-                  style={{ maxWidth: "90%", margin: "0 auto" }}
-                  className="bg-primary2/40 rounded-2xl flex flex-col items-center justify-center"
-                >
-                  <ReactApexChart
-                    options={{
-                      chart: {
-                        type: "pie",
-                      },
-                      theme: {
-                        palette: "palette10",
-                      },
-                      labels: product.userCategory,
-                      legend: {
-                        position: "bottom",
-                      },
-                      responsive: [
-                        {
-                          breakpoint: 480,
-                          options: {
-                            chart: {
-                              width: 100, // Change width to 100px for mobile
-                            },
-                          },
-                        },
-                        {
-                          breakpoint: 1024,
-                          options: {
-                            chart: {
-                              width: 300, // Keep width as 400px for desktop
-                            },
-                          },
-                        },
-                      ],
-                    }}
-                    series={product.userCategoryPercentage.map(
-                      (percentage: string) => parseFloat(percentage)
-                    )}
-                    type="pie"
-                    width={300}
-                  />
-                  <h2 className="text-xs my-2 font-bold italic text-primary1 md:text-center">
-                    Distribution
-                  </h2>
-                </div>
-              </div>
-            </div>
-            <div className="w-full h-px bg-slate-200 my-4"></div>
-            <div className="flex flex-col md:flex-row  w-full gap-4 mt-20">
-              <div className="flex-1">
-                <div className="flex gap-2 items-center">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                    Industries
-                  </h2>
-
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <MdOutlineInfo className="text-slate-500 text-sm" />
-                      </TooltipTrigger>
-
-                      <TooltipContent>
-                        <p>Overview of company, products in short</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <div className="flex justify-between items-center">
-                  <div className="inline-flex gap-3 flex-wrap">
-                    {product.industry.map((segment: string) => (
-                      <div
-                        key={segment}
-                        className="py-1 px-2.5 border  transition-all duration-200 hover:cursor-pointer  rounded-full text-xs bg-primary2 border-primary1 text-primary1"
-                      >
-                        {segment}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex-1  mt-4 md:mt-0">
-                <div
-                  id="chart"
-                  style={{ maxWidth: "90%", margin: "0 auto" }}
-                  className="bg-primary2/40 rounded-2xl flex flex-col items-center justify-center"
-                >
-                  <ReactApexChart
-                    options={{
-                      chart: {
-                        type: "pie",
-                      },
-                      theme: {
-                        palette: "palette10",
-                      },
-                      labels: product.industry,
-                      legend: {
-                        position: "bottom",
-                      },
-                      responsive: [
-                        {
-                          breakpoint: 480,
-                          options: {
-                            chart: {
-                              width: 100, // Change width to 100px for mobile
-                            },
-                          },
-                        },
-                        {
-                          breakpoint: 1024,
-                          options: {
-                            chart: {
-                              width: 300, // Keep width as 400px for desktop
-                            },
-                          },
-                        },
-                      ],
-                    }}
-                    series={product.industryPercentage.map(
-                      (percentage: string) => parseFloat(percentage)
-                    )}
-                    type="pie"
-                    width={300}
-                  />
-                  <h2 className="text-xs my-2 font-bold italic text-primary1 md:text-center">
-                    Distribution
-                  </h2>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full h-px bg-slate-200 my-4"></div>
-            <div className="flex flex-col md:flex-row w-full gap-4 mt-20">
-              <div className="flex-1">
-                <div className="flex gap-2 items-center">
-                  <h2 className="text-2xl mb-3 font-bold text-gray-900">
-                    Practice Area
-                  </h2>
-
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <MdOutlineInfo className="text-slate-500 text-sm" />
-                      </TooltipTrigger>
-
-                      <TooltipContent>
-                        <p>Overview of company, products in short</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <div className="inline-flex gap-3 flex-wrap">
-                    {product.practiceAreas.map((segment: string) => (
-                      <div
-                        key={segment}
-                        className="py-1 px-2.5 border  transition-all duration-200 hover:cursor-pointer  rounded-full text-xs bg-primary2 border-primary1 text-primary1"
-                      >
-                        {segment}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex-1 mt-4 md:mt-0">
-                <div
-                  id="chart"
-                  style={{ maxWidth: "90%", margin: "0 auto" }}
-                  className="bg-primary2/40 rounded-2xl flex flex-col items-center justify-center"
-                >
-                  <ReactApexChart
-                    options={{
-                      chart: {
-                        type: "pie",
-                      },
-                      theme: {
-                        palette: "palette10",
-                      },
-                      labels: product.practiceAreas,
-                      legend: {
-                        position: "bottom",
-                      },
-                      responsive: [
-                        {
-                          breakpoint: 480,
-                          options: {
-                            chart: {
-                              width: 100, // Change width to 100px for mobile
-                            },
-                          },
-                        },
-                        {
-                          breakpoint: 1024,
-                          options: {
-                            chart: {
-                              width: 300, // Keep width as 400px for desktop
-                            },
-                          },
-                        },
-                      ],
-                    }}
-                    series={product.practiceAreasPercentage.map(
-                      (percentage: string) => parseFloat(percentage)
-                    )}
-                    type="pie"
-                    width={300}
-                  />
-                  <h2 className="text-xs my-2 font-bold italic text-primary1 md:text-center">
-                    Distribution
-                  </h2>
-                </div>
-              </div>
-            </div>
-          </div>
-
+          <Chart product={product} />
           <div className="w-full h-px bg-slate-200 my-4"></div>
 
 
@@ -497,7 +246,7 @@ function PdfDownload({ data }: any) {
             </TooltipProvider>
           </div>
 
-          <ProcessLifecycle product={product} />
+          {/* <ProcessLifecycle product={product} /> */}
 
           <div className="w-full h-px bg-slate-200 my-4"></div>
           {/* Features */}
@@ -518,7 +267,7 @@ function PdfDownload({ data }: any) {
             </TooltipProvider>
           </div>
 
-          <ProductFeature2
+          <ProductFeature
             features={product.features}
             productId={product.slug}
           />
@@ -672,6 +421,7 @@ function PdfDownload({ data }: any) {
         </div>
       </div>
     </div>
+    
   );
 }
 

@@ -32,6 +32,15 @@ import {
   TelegramShareButton,
   TelegramIcon,
 } from "next-share";
+const userCategories = [
+  { name: "Law firms", icon: "/lawfirmicon.svg" },
+  { name: "Individual Practitioner", icon: "/prac.svg" },
+  { name: "Government departments", icon: "/govdepticon.svg" },
+  { name: "Startups", icon: "/startupicon.svg" },
+  { name: "Enterprises", icon: "/enterpriceicon.svg" },
+  { name: "Judiciary", icon: "/judge1.svg" },
+  { name: "In-House Counsels", icon: "/lawyers.svg" },
+];
 
 
 function NormalProduct({
@@ -76,36 +85,36 @@ function NormalProduct({
 
     checkBookmark();
   }, [userId, id]);
-  const userCategories = [
-    {
-      name: "Law firms",
-      icon: "/lawfirmicon.svg",
-    },
-    {
-      name: "Individual Practitioner",
-      icon: "/prac.svg",
-    },
-    {
-      name: "Government departments",
-      icon: "/govdepticon.svg",
-    },
-    {
-      name: "Startups",
-      icon: "/startupicon.svg",
-    },
-    {
-      name: "Enterprises",
-      icon: "/enterpriceicon.svg",
-    },
-    {
-      name: "Judiciary",
-      icon: "/judge1.svg",
-    },
-    {
-      name: "In-House Counsels",
-      icon: "/lawyers.svg",
-    },
-  ];
+  // const userCategories = [
+  //   {
+  //     name: "Law firms",
+  //     icon: "/lawfirmicon.svg",
+  //   },
+  //   {
+  //     name: "Individual Practitioner",
+  //     icon: "/prac.svg",
+  //   },
+  //   {
+  //     name: "Government departments",
+  //     icon: "/govdepticon.svg",
+  //   },
+  //   {
+  //     name: "Startups",
+  //     icon: "/startupicon.svg",
+  //   },
+  //   {
+  //     name: "Enterprises",
+  //     icon: "/enterpriceicon.svg",
+  //   },
+  //   {
+  //     name: "Judiciary",
+  //     icon: "/judge1.svg",
+  //   },
+  //   {
+  //     name: "In-House Counsels",
+  //     icon: "/lawyers.svg",
+  //   },
+  // ];
 
   const handleBookmarkClick = async () => {
     if (!userId) {
@@ -147,18 +156,18 @@ function NormalProduct({
       });
   };
 
-  const userCategoryIcons = product.userCategory
-    .map((userCat: any) => {
-      const categoryObj = userCategories.find((cat) => cat.name === userCat);
-      return categoryObj ? categoryObj : null;
-    })
-    .filter(Boolean); // Filter out null values
+  // const userCategoryIcons = product.userCategory
+  //   .map((userCat: any) => {
+  //     const categoryObj = userCategories.find((cat) => cat.name === userCat);
+  //     return categoryObj ? categoryObj : null;
+  //   })
+  //   .filter(Boolean); // Filter out null values
 
   const industries = product.industry;
   const isOdd = industries.length % 2 !== 0;
 
 
- 
+ console.log(product)
   
 
  const [ratings, setRatings] = useState({
@@ -219,9 +228,17 @@ function NormalProduct({
 
   // Round the overall rating
   const roundedOverallRating = (overallRating ?? 0).toFixed(1);
-
-
+  const parseUserCategory = (category) => {
+    const [name, , ] = category.split('|'); // Extract only the first part which is the name
+    return name;
+  };
   
+  // Map the user categories to match the parsed name with the appropriate icon
+  const userCategoryIcons = product.userCategory.map((category) => {
+    const parsedCategory = parseUserCategory(category); // Get the name part
+    const categoryObj = userCategories.find((cat) => cat.name === parsedCategory); // Find matching category object from predefined list
+    return categoryObj || null; // Return matching object or null if not found
+  }).filter(Boolean); // Filter out any null values
 
   
 
@@ -240,12 +257,30 @@ function NormalProduct({
             <div>
               <h3 className="font-bold text-base">{title}</h3>
             </div>
-            <div className="px-2 py-1 bg-primary2 rounded-full">
+            {/* <div className="px-2 py-1 bg-primary2 rounded-full">
               {" "}
               <span className="text-xs text-primary1 font-bold">
                 {category}
               </span>
+            </div> */}
+           <div className="flex flex-col">
+      {category.reduce((rows, cat, index) => {
+        if (index % 2 === 0) rows.push([]);
+        rows[rows.length - 1].push(cat);
+        return rows;
+      }, []).map((row, rowIndex) => (
+        <div key={rowIndex} className="flex flex-row mb-2">
+          {row.map((cat, catIndex) => (
+            <div key={catIndex} className="px-2 py-1 bg-primary2 rounded-full inline-block mr-2">
+              <span className="text-xs text-primary1 font-bold">
+                {cat}
+              </span>
             </div>
+          ))}
+        </div>
+      ))}
+    </div>
+
           </div>
         </div>
         <div className=" hidden md:block md:ml-auto">
@@ -380,7 +415,7 @@ function NormalProduct({
         <div className="text-xs text-slate-400 mt-4 mb-1">Users</div>
         <div className="flex flex-col sm:flex-row sm:justify-between">
 
-          <div className="flex gap-2 overflow-x-auto sm:flex-row sm:overflow-visible">
+          {/* <div className="flex gap-2 overflow-x-auto sm:flex-row sm:overflow-visible">
             {userCategoryIcons.map((userCategory: any, index: number) => (
               <div
                 key={userCategory.name}
@@ -396,7 +431,26 @@ function NormalProduct({
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
+           <div className="flex gap-2 overflow-x-auto sm:flex-row sm:overflow-visible">
+           <div>
+    {userCategoryIcons.map((category, index) => (
+      <div
+        key={category.name}
+        className="relative group flex gap-2 items-center bg-primary2 rounded-md p-2"
+      >
+        <img
+          src={category.icon}
+          alt={category.name}
+          className="w-6 h-6"
+        />
+        <div className="hidden group-hover:block text-[10px] font-clarity font-bold transition-all duration-200 cursor-pointer">
+          {category.name}
+        </div>
+      </div>
+    ))}
+  </div>
+    </div>
 
           
           <div className="flex flex-col sm:flex-row sm:gap-5 mt-4 sm:mt-0">

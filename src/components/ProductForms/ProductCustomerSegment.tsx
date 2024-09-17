@@ -1,4 +1,3 @@
-
 // const predefinedCategories = {
 //   userCategories: [
 //     "Individual Practitioner",
@@ -107,8 +106,6 @@
 //   ],
 // };
 
-
-
 // import React, { useState } from "react";
 // import { Card, CardContent } from "@/components/ui/card";
 // import { Label } from "@/components/ui/label";
@@ -124,8 +121,6 @@
 // } from "@/components/ui/select";
 // import { X, Lock, Unlock } from "lucide-react";
 // import { useCustomerSegmentStore } from "./UserCustomerSegmentStore";
-
-
 
 // type CategoryType = "userCategories" | "industries" | "practiceAreas" | "teamSizes";
 
@@ -267,22 +262,12 @@
 //   );
 // }
 
-
-
-
-
-
-
-
 type PredefinedCategories = {
   userCategories: string[];
   industries: string[];
   practiceAreas: string[];
   teamSizes: string[];
 };
-
-
-
 
 const predefinedCategories = {
   userCategories: [
@@ -382,19 +367,10 @@ const predefinedCategories = {
     "Trust",
     "Other",
   ],
-  teamSizes: [
-    "1",
-    "2-20",
-    "21-50",
-    "51-200",
-    "201-500",
-    "500+",
-  ],
+  teamSizes: ["1", "2-20", "21-50", "51-200", "201-500", "500+"],
 };
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUndoAlt } from '@fortawesome/free-solid-svg-icons';
-
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUndoAlt } from "@fortawesome/free-solid-svg-icons";
 
 import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -415,29 +391,37 @@ import { ProductInfo } from "@/store/useStore";
 
 // ... keep the predefinedCategories object as is
 
-type CategoryType = "userCategories" | "industries" | "practiceAreas" | "teamSizes";
+type CategoryType =
+  | "userCategories"
+  | "industries"
+  | "practiceAreas"
+  | "teamSizes";
 
 export default function ProductCustomerSegment() {
-  const { 
-    customerSegment, 
-    addCategory, 
-    removeCategory, 
-    updatePercentage, 
-    toggleLock, 
+  const {
+    customerSegment,
+    addCategory,
+    removeCategory,
+    updatePercentage,
+    toggleLock,
     validateAndSave,
     reset, // Add this function in your store
-    initializeFromGlobalStore 
+    initializeFromGlobalStore,
   } = useCustomerSegmentStore();
 
+  const [yes, setYes] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<CategoryType | null>(
+    null
+  );
 
-const [yes,setYes] = useState(false)
   const handleSelectChange = (type: CategoryType, value: string) => {
     if (value === "Other") {
       setCustomCategory((prev) => ({ ...prev, [type]: "" }));
     } else {
       addCategory(type, value);
     }
-    setYes(true)
+    setYes(true);
+    setActiveCategory(type); // Set the active category
   };
 
   const handleCustomCategorySubmit = (
@@ -453,13 +437,11 @@ const [yes,setYes] = useState(false)
   const handleReset = () => {
     reset(); // This should reset the customer segment data in your store
   };
-  
 
   const renderCategorySection = (type: CategoryType, title: string) => (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">{title}</h3>
       <div className="flex space-x-2">
-       
         <Select onValueChange={(value) => handleSelectChange(type, value)}>
           <SelectTrigger className="">
             <SelectValue placeholder={`Select ${title}`} />
@@ -472,8 +454,7 @@ const [yes,setYes] = useState(false)
             ))}
           </SelectContent>
         </Select>
-      
-       
+
         {customCategory[type] !== "" && (
           <form
             onSubmit={(e) => handleCustomCategorySubmit(e, type)}
@@ -493,17 +474,14 @@ const [yes,setYes] = useState(false)
           </form>
         )}
       </div>
-    
-       
-      {yes &&(
-  <p className='italic text-sm font-gray-500'>(Mention the existing distribution)</p>
-  
-)}
+
+      {yes && activeCategory === type && (
+        <p className="italic text-sm font-gray-500">
+          (Mention the existing distribution)
+        </p>
+      )}
       {customerSegment[type].map((category) => (
-        
-        
         <div key={category.name} className="">
-          
           <div className="flex justify-between items-center">
             <Label>{category.name}</Label>
             <div>
@@ -512,7 +490,11 @@ const [yes,setYes] = useState(false)
                 size="icon"
                 onClick={() => toggleLock(type, category.name)}
               >
-                {category.locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+                {category.locked ? (
+                  <Lock className="h-4 w-4" />
+                ) : (
+                  <Unlock className="h-4 w-4" />
+                )}
               </Button>
               <Button
                 variant="ghost"
@@ -543,7 +525,11 @@ const [yes,setYes] = useState(false)
               max="100"
               value={category.percentage}
               onChange={(e) =>
-                updatePercentage(type, category.name, parseInt(e.target.value) || 0)
+                updatePercentage(
+                  type,
+                  category.name,
+                  parseInt(e.target.value) || 0
+                )
               }
               className="w-16"
               disabled={category.locked}
@@ -554,7 +540,7 @@ const [yes,setYes] = useState(false)
       ))}
     </div>
   );
-  
+
   const [customCategory, setCustomCategory] = useState<{
     [key in CategoryType]: string;
   }>({
@@ -565,33 +551,37 @@ const [yes,setYes] = useState(false)
   });
 
   useEffect(() => {
-    console.log('Component mounted, checking for existing data');
+    console.log("Component mounted, checking for existing data");
     const globalStore = ProductInfo.getState();
-    console.log('Global Store Data:', globalStore);
+    console.log("Global Store Data:", globalStore);
 
-    if (globalStore.userCategory?.length || globalStore.industry?.length || 
-        globalStore.practiceAreas?.length || globalStore.teamSize?.length) {
-      console.log('Existing data found, initializing from global store');
+    if (
+      globalStore.userCategory?.length ||
+      globalStore.industry?.length ||
+      globalStore.practiceAreas?.length ||
+      globalStore.teamSize?.length
+    ) {
+      console.log("Existing data found, initializing from global store");
       initializeFromGlobalStore();
     } else {
-      console.log('No existing data found');
+      console.log("No existing data found");
     }
   }, [initializeFromGlobalStore]);
 
   useEffect(() => {
-    console.log('Customer Segment updated:', customerSegment);
+    console.log("Customer Segment updated:", customerSegment);
   }, [customerSegment]);
 
   // ... keep the rest of your component logic (handleSelectChange, handleCustomCategorySubmit, etc.) as is
 
   const handleSubmit = () => {
-    console.log('Attempting to save data');
+    console.log("Attempting to save data");
     if (validateAndSave()) {
-      console.log('Data saved successfully');
-      alert('Data saved successfully!');
+      console.log("Data saved successfully");
+      alert("Data saved successfully!");
     } else {
-      console.log('Validation failed');
-      alert('Validation failed. Please check your inputs.');
+      console.log("Validation failed");
+      alert("Validation failed. Please check your inputs.");
     }
   };
 
@@ -599,17 +589,27 @@ const [yes,setYes] = useState(false)
 
   return (
     <Card className="w-full max-w-4xl mx-auto mt-4">
-      <span className="text-red-500 italic font-bold text-xs">All Fields Are Required </span>
+      <span className="text-red-500 italic font-bold text-xs">
+        All Fields Are Required{" "}
+      </span>
 
       <CardContent className="space-y-8 mt-4">
         {renderCategorySection("userCategories", "Target Users")}
         {renderCategorySection("industries", "Target Industries")}
         {renderCategorySection("practiceAreas", "Target Practice Areas")}
         {renderCategorySection("teamSizes", "Target Client Team Sizes")}
-        <Button className="w-full bg-blue-500 text-white font-semibold " onClick={handleSubmit}>Save Customer Segments</Button>
-        <Button className="w-full bg-gray-500 text-white font-semibold" onClick={handleReset}>
-            Reset
-          </Button>
+        <Button
+          className="w-full bg-blue-500 text-white font-semibold "
+          onClick={handleSubmit}
+        >
+          Save Customer Segments
+        </Button>
+        <Button
+          className="w-full bg-gray-500 text-white font-semibold"
+          onClick={handleReset}
+        >
+          Reset
+        </Button>
       </CardContent>
     </Card>
   );

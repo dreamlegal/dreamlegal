@@ -18,10 +18,14 @@ interface ProductFormWithProgressProps {
   editing: boolean;
   product?: any; // Adjust the type based on the actual product shape or interface
 }
+import 'react-toastify/dist/ReactToastify.css';
+
+import { useToast } from "./ui/use-toast";
 
 // const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
 // const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing }) => {
 const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing, product }) => {
+  
     // Component logic here
   const {
     logo,
@@ -304,6 +308,10 @@ setStorage(storage);
   
   console.log("check me:",features)
 
+
+  const [submissionStatus, setSubmissionStatus] = useState("");
+  const { toast } = useToast();
+
   const [completedSteps, setCompletedSteps] = useState({
     productInformation: false,
     productOverview: false,
@@ -394,7 +402,7 @@ setStorage(storage);
     
 
     setCompletedSteps({
-      productInformation: productInformationComplete,
+      productInformation: productInformationComplete && logoUrl, 
       productOverview: productOverviewComplete,
       productPostImplementationService: PIServices,
       productSAndS: SAndSresult,
@@ -438,6 +446,12 @@ setStorage(storage);
 
 
   const handleSubmit = async () => {
+
+    toast({
+      title: "saving...",
+      description: "Saving Your Information..Have Some Patience Please!",
+      variant: "saving",
+    });
     // const userId = localStorage.getItem("vendorId");
     // if (!userId) {
     //     console.log({
@@ -566,6 +580,12 @@ setStorage(storage);
               description: "Fail to create product",
               variant: "destructive",
             });
+            toast({
+              title: "Fail to create product",
+              description: "Fail to create product",
+              variant: "destructive",
+            });
+            setSubmissionStatus("error"); // Set status to "error" if submission fails
             return;
           } else {
             console.log({
@@ -573,6 +593,12 @@ setStorage(storage);
               description: "Thank you for your submission!",
               variant: "success",
             });
+            toast({
+              title: "Form Submitted",
+              description: "Thank you for your submission!",
+              variant: "success",
+            });
+            setSubmissionStatus("saved"); 
           }
       } catch (error) {
         console.error("Error submitting form", error);
@@ -581,6 +607,12 @@ setStorage(storage);
           description: "Got some internal error",
           variant: "destructive",
         });
+        toast({
+          title: "Fail to submit",
+          description: "Got some internal error",
+          variant: "destructive",
+        });
+        setSubmissionStatus("error");
       }
     }
     if (editing === true) {
@@ -720,6 +752,12 @@ setStorage(storage);
           description: "Fail to create product",
           variant: "destructive",
         });
+        toast({
+          title: "Fail to create product",
+          description: "Fail to create product",
+          variant: "destructive",
+        });
+        setSubmissionStatus("Failed");
         return;
       } else {
         console.log({
@@ -727,6 +765,12 @@ setStorage(storage);
           description: "Thank you for your submission!",
           variant: "success",
         });
+        toast({
+          title: "Form Submitted",
+          description: "Thank you for your submission!",
+          variant: "success",
+        });
+        setSubmissionStatus("saved");
       }
     } catch (error) {
       console.error("Error submitting form", error);
@@ -735,6 +779,12 @@ setStorage(storage);
         description: "Got some internal error",
         variant: "destructive",
       });
+      toast({
+        title: "Fail to submit",
+        description: "Got some internal error",
+        variant: "destructive",
+      });
+      setSubmissionStatus("error");
     }
     }
 

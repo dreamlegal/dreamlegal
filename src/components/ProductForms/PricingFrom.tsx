@@ -9,7 +9,7 @@ import { Switch } from "../ui/switch";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useCallback } from "react";
-
+import { useToast } from "../ui/use-toast";
 interface PricingField {
   id: number;
   name: string;
@@ -73,6 +73,7 @@ const PricingForm = () => {
   const {validity, setValidity } = ProductInfo();
   const { price , setPrice } = ProductInfo();
   const {fixPricing ,setFixPricing} = ProductInfo();
+  const { toast } = useToast();
 
   const [selectedFreeTrial, setSelectedFreeTrial] = useState(freeTrial || null);
   const [selectedFreeVersion, setSelectedFreeVersion] = useState(
@@ -257,6 +258,11 @@ const PricingForm = () => {
         validationErrors[error.path.join('.')] = error.message;
       });
       setErrors(validationErrors);
+      toast({
+        title: "Validation Failed",
+        description: "Please check the form for errors",
+        variant: "error",
+      });
       console.log("Validation errors:", validationErrors);
       return;
     }
@@ -265,6 +271,11 @@ const PricingForm = () => {
     setFixPricing(fixPricing);
 
     setErrors({});
+    toast({
+      title: "Saved",
+      description: "Pricing Details Saved...Move to the next form",
+      variant: "success",
+    });
     console.log("Form submitted with:", result.data);
   };
   
@@ -643,12 +654,25 @@ const PricingForm = () => {
     (validity || []).length, 
     (price || []).length
   ))].map((_, index) => (
-    <div key={index} className="bg-white rounded-lg shadow-md p-6">
+    <div key={index} className="bg-white rounded-lg shadow-md p-3">
+
       <h3 className="text-xl font-semibold mb-2">
-        {(nameofPlan || [])[index] || 'Plan ' + (index + 1)}
+        {(nameofPlan || [])[index] || "Plan Name"}
       </h3>
       <p>{(validity || [])[index] || 'Validity Info'}</p>
       <p>{(price || [])[index] || 'Price Info'}</p>
+{/* {(nameofPlan[index] || validity[index] || price[index]) ? (
+  <>
+    <h3 className="text-xl font-semibold mb-2">
+      {nameofPlan[index] || 'No Plan Chosen'}
+    </h3>
+    <p>{validity[index] || 'Validity Info'}</p>
+    <p>{price[index] || 'Price Info'}</p>
+  </>
+) : (
+  <h3 className="text-xl font-semibold mb-2">No Plan Chosen</h3>
+)} */}
+   
     </div>
   ))}
     </div> ) : ( 
@@ -687,6 +711,7 @@ const PricingForm = () => {
                       ))}
                     </select> */}
                     <Input   value={field.validity}
+                    placeholder="Validity"
                       onChange={(e) => handlePricingChange(field.id, "validity", e.target.value)}
                       className="border border-gray-300 rounded-lg px-3 py-2"
                       
@@ -697,7 +722,7 @@ const PricingForm = () => {
                       value={field.price}
                       onChange={(e) => handlePricingChange(field.id, "price", e.target.value)}
                     />
-                    {localPricingFields.length > 1 && (
+                    {localPricingFields.length > 0 && (
                       <Button
                         variant="destructive"
                         onClick={() => handleRemovePricing(field.id)}

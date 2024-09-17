@@ -4,7 +4,7 @@ import { ProductInfo } from '@/store/useStore';
 import { z } from 'zod';
 import { XCircle } from "lucide-react";
 import { Button } from "../ui/button";
-
+import { useToast } from "../ui/use-toast";
 const options = {
   demo: [
     'Self-demo',
@@ -50,6 +50,7 @@ const ProductSAndS = () => {
   const { training, setTraining } = ProductInfo();
   const { storage, setStorage } = ProductInfo();
   const { fileSize, setFileSize } = ProductInfo();
+  const { toast } = useToast();
 
   // Local state for checkboxes
   const [inputDemo, setInputDemo] = useState(demo || []);
@@ -180,7 +181,20 @@ const ProductSAndS = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!validateAllFields()) return;
+    if (!validateAllFields()){
+
+    toast({
+        title: "Validation Failed",
+        description: "Please check the form for errors",
+        variant: "error",
+      });
+      return;
+    }
+    toast({
+      title: "Saved",
+      description: "Service and Support Details Saved...Move to the next form",
+      variant: "success",
+    });
 
     // Save to global store
     setDemo(inputDemo);

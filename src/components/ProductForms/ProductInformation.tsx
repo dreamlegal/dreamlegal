@@ -30,7 +30,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Switch } from "../ui/switch";
+import { Switch } from "../ui/switch"
+import { useToast } from "../ui/use-toast";;
 
 interface Integrations {
   [category: string]: string[];
@@ -75,6 +76,7 @@ const productSchema = z.object({
     logoPreview: z.any().refine(value => value !== null, {
       message: "Logo preview is required",
   }),
+
   
 });
 const wordCount = (value: string, maxWords: number): boolean => {
@@ -355,6 +357,7 @@ const ProductInformation = () => {
     "Zimbabwe",
   ];
 
+  const { toast } = useToast();
   // Validate a single field
   const validateField = (name: string, value: any) => {
     const tempValues = {
@@ -368,6 +371,7 @@ const ProductInformation = () => {
       languages: name === "languages" ? value : languages,
       securityCertificate: name === "securityCertificate"? value : securityValue,
       websiteUrl: websiteUrl || undefined,
+      logoPreview:logoPreview,
     };
 
     const result = productSchema.safeParse(tempValues);
@@ -443,6 +447,7 @@ const ProductInformation = () => {
       mobileAvailable,
       securityCertificate: securityValue,
       websiteUrl: websiteUrl || undefined,
+      logoPreview: logoPreview || undefined,
     });
 
     if (!result.success) {
@@ -609,7 +614,7 @@ const ProductInformation = () => {
   
 
   const validateForm = () => {
-    const result = productSchema.safeParse({ logo });
+    const result = productSchema.safeParse({ logoUrl });
     if (!result.success) {
       const errors = result.error.errors.reduce((acc, error) => {
         acc[error.path[0]] = error.message;
@@ -835,6 +840,8 @@ const filterIntegrations = (integrations: Record<string, string[]>) => {
   }, {} as Record<string, string[]>);
 };
 
+
+
 // Assuming you have an 'integrations' object defined somewhere in your component or imported
 const filteredIntegrations = filterIntegrations(integrations);
 
@@ -857,25 +864,8 @@ useEffect(() => {
   setSelectedIntegrations(globalIntegrations);
 }, [globalIntegrations]);
 
-// const toggleCategory = (category: string) => {
-//   setExpandedCategories((prev) => ({
-//     ...prev,
-//     [category]: !prev[category],
-//   }));
-// };
 
 
-// const toggleIntegration = (integration: string) => {
-//   const updatedIntegrations = selectedIntegrations.includes(integration)
-//     ? selectedIntegrations.filter((i) => i !== integration)
-//     : [...selectedIntegrations, integration];
-
-//   console.log('Updated Integrations:', updatedIntegrations); // Log updated integrations
-//   setSelectedIntegrations(updatedIntegrations);
-
-//   // Validate and update global state when selection changes
-//   handleIntegrationChange(updatedIntegrations);
-// };
 
 const toggleCategory = (category: string) => {
     setExpandedCategories((prev) => ({
@@ -929,6 +919,11 @@ const handleIntegrationChange = (updatedIntegrations: string[]) => {
         if (data.success) {
           const url = data.location;
           console.log("Uploaded file location:", url);
+          toast({
+            title: "saving...",
+            description: "Saving Image Upload May Take Some Time  ",
+            variant: "saving",
+          });
           return url;
         } else {
           console.error("Upload failed:", data.error);
@@ -971,6 +966,11 @@ const handleFileChange = (event) => {
     if (!validateAllFields()) {
       console.log("Validation failed");
       hasErrors = true;
+      toast({
+        title: "Validation Failed",
+        description: "Please check the form for errors",
+        variant: "error",
+      });
     }
   
     // Validate integrations
@@ -1002,8 +1002,24 @@ const handleFileChange = (event) => {
         setErrors(prevErrors => ({ ...prevErrors, logo: "Failed to upload logo" }));
       }
     } else {
+      
       console.log("No logo file selected");
     }
+
+    if (logoPreview === "" || logoPreview === null || logoPreview === undefined) {
+      toast({
+        title: "Missing Fields",
+        description: "Fill All Details And Upload Logo Please",
+        variant: "error",
+      });
+    }else {
+      toast({
+        title: "Saved",
+        description: "Product Information  Saved ... Move to the next form",
+        variant: "success",
+      });
+    }
+    
 setProductName(inputValue);
 setSecurityCertificate(securityValue);
 

@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { XCircle } from "lucide-react";
 import { z } from 'zod';
+import { useToast } from "../ui/use-toast";
 import { ProductInfo } from '@/store/useStore';
 
 const wordCount = (value: string, maxWords: number): boolean => {
@@ -31,6 +32,7 @@ const ProductOverview = () => {
   const { usp, setUSP } = ProductInfo();
   const { upcomingUpdates, setUpcomingUpdates } = ProductInfo();
   const { painPointAddressed, setPainPointAddressed } = ProductInfo();
+  const { toast } = useToast();
 
   const [inputDescription, setInputDescription] = useState(description);
   const [inputUSP, setInputUSP] = useState(usp);
@@ -116,6 +118,11 @@ const ProductOverview = () => {
       return; // Stop form submission if there are validation errors
     
     }
+    toast({
+      title: "Saved",
+      description: "OverView Details Saved...Move to the next form",
+      variant: "success",
+    });
 
     // Set the validated values to state
     setDescription(inputDescription);

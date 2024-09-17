@@ -440,7 +440,8 @@ import { z } from "zod";
 import { ProductInfo } from "@/store/useStore";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-
+import { useToast } from "../ui/use-toast";
+import 'react-toastify/dist/ReactToastify.css';
 const ProductReferenceSchema = z.object({
   images: z
     .array(z.instanceof(File))
@@ -461,7 +462,9 @@ const ProductReference = () => {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const [attachmentInfos, setAttachmentInfos] = useState<AttachmentInfo[]>([]);
+  
 
+  const { toast } = useToast();
 
 
   // Use refs to reset input field programmatically
@@ -617,6 +620,11 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
         if (data.success) {
           const url = data.location;
           console.log("Uploaded file location:", url);
+          toast({
+            title: "Saved",
+            description: "Reference Details Saved ",
+            variant: "success",
+          });
           return url;
         } else {
           console.error("Upload failed:", data.error);
@@ -679,16 +687,28 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateAllFields()) {
+      toast({
+        title: "Validation Failed",
+        description: "Please check the form for errors",
+        variant: "error",
+      });
       return;
+      
     }
-    
+    toast({
+      title: "saving...",
+      description: "Saving Image Upload May Take Some Time  ",
+      variant: "saving",
+    });
     const uploadedImages = await handleImageUpload();
     const uploadedAttachments = await handleAttachmentUpload();
   
     if (uploadedImages.length === 0) {
       console.error("No images were successfully uploaded");
       setErrors(prev => ({ ...prev, images: "Failed to upload images" }));
+      
       return;
+      
     }
     setImagesUrl(uploadedImages);
     setAttachmentsUrl(uploadedAttachments);
@@ -778,7 +798,7 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
               {imagePreviews.map((preview, index) => (
                 <div key={index} className="relative w-32 h-32">
                   <img src={preview} alt={`Preview ${index}`} className="w-full h-full object-cover" />
-                  <Button 
+                  {/* <Button 
                     onClick={() => {
                       const newImages = images.filter((_, i) => i !== index);
                       setImages(newImages);
@@ -786,13 +806,14 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
                     className="absolute top-0 right-0 bg-red-500 text-white text-xs"
                   >
                     Remove
-                  </Button>
+                  </Button> */}
                 </div>
               ))}
             </div>
           </div>
         )}
         <div>
+
 
         {/* <div>
       {loading ? (
@@ -854,7 +875,7 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
                     {info.size ? `${(info.size / 1024).toFixed(2)} KB` : 'Size unknown'} | {info.type}
                   </p>
                 </div>
-                <Button 
+                {/* <Button 
                   onClick={() => {
                     const newAttachments = attachments?.filter((_, i) => i !== index) || [];
                     const newAttachmentUrls = attachmentsUrl?.filter((_, i) => i !== index) || [];
@@ -865,7 +886,7 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
                   className="bg-red-500 text-white text-xs"
                 >
                   Remove
-                </Button>
+                </Button> */}
               </div>
             ))}
           </div>

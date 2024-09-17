@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ProductInfo } from '@/store/useStore';
 import { Button } from '@/components/ui/button';
+import { useToast } from "../ui/use-toast";
 const categoryOptions = {
   'Client Relationship Management': [
     'Intake', 'Assessment', 'Strategize', 'Represent', 'Communication', 'Review'
@@ -47,6 +48,7 @@ const OptionSelector = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!processLifecycle || Object.keys(processLifecycle).length === 0) {
@@ -103,6 +105,11 @@ const OptionSelector = () => {
 
   const handleSubmit = () => {
     console.log("Submit button clicked");
+    toast({
+      title: "Saved",
+      description: "Process LifeCycle Details Saved...Move to the next form",
+      variant: "success",
+    });
     console.log("Current localProcessLifecycle:", localProcessLifecycle);
    
       

@@ -281,28 +281,7 @@ type PredefinedCategories = {
   teamSizes: string[];
 };
 
-const predefinedCategories: PredefinedCategories = {
-  userCategories: [
-    "Individual Practitioner",
-    "Law firms",
-    // ... rest of the categories
-  ],
-  industries: [
-    "Neutral",
-    "Accounting firms",
-    // ... rest of the industries
-  ],
-  practiceAreas: [
-    "Neutral",
-    "Appellate Law",
-    // ... rest of the practice areas
-  ],
-  teamSizes: [
-    "1",
-    "2-20",
-    // ... rest of the team sizes
-  ],
-};
+
 
 
 const predefinedCategories = {
@@ -412,6 +391,9 @@ const predefinedCategories = {
     "500+",
   ],
 };
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUndoAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 
 import React, { useState, useEffect } from "react";
@@ -443,6 +425,7 @@ export default function ProductCustomerSegment() {
     updatePercentage, 
     toggleLock, 
     validateAndSave,
+    reset, // Add this function in your store
     initializeFromGlobalStore 
   } = useCustomerSegmentStore();
 
@@ -466,6 +449,10 @@ export default function ProductCustomerSegment() {
       setCustomCategory((prev) => ({ ...prev, [type]: "" }));
     }
   };
+  const handleReset = () => {
+    reset(); // This should reset the customer segment data in your store
+  };
+  
 
   const renderCategorySection = (type: CategoryType, title: string) => (
     <div className="space-y-4">
@@ -521,6 +508,9 @@ export default function ProductCustomerSegment() {
               >
                 <X className="h-4 w-4" />
               </Button>
+              {/* <button onClick={() => reset('userCategories')}>
+              Reset
+            </button> */}
             </div>
           </div>
           <div className="flex items-center">
@@ -604,6 +594,9 @@ export default function ProductCustomerSegment() {
         {renderCategorySection("practiceAreas", "Target Practice Areas")}
         {renderCategorySection("teamSizes", "Target Client Team Sizes")}
         <Button className="w-full bg-blue-500 text-white font-semibold " onClick={handleSubmit}>Save Customer Segments</Button>
+        <Button className="w-full bg-gray-500 text-white font-semibold" onClick={handleReset}>
+            Reset
+          </Button>
       </CardContent>
     </Card>
   );

@@ -28,6 +28,7 @@ interface CustomerSegmentStore {
   toggleLock: (type: keyof CustomerSegment, name: string) => void;
   validateAndSave: () => boolean;
   saveToGlobalStore: () => void;
+  reset: (type?: keyof CustomerSegment) => void; // New reset function
 }
 
 const initializeCategories = (categories: string[]): CategorySchema[] => {
@@ -216,6 +217,39 @@ export const useCustomerSegmentStore = create<CustomerSegmentStore>((set, get) =
     } catch (error) {
       console.error('Error saving to global store:', error);
     }
+  },
+
+
+  reset: (type?: keyof CustomerSegment) => {
+    const initialCustomerSegment = {
+      userCategories: [],
+      industries: [],
+      practiceAreas: [],
+      teamSizes: []
+    };
+
+    set((state) => ({
+      customerSegment: type
+        ? { ...state.customerSegment, [type]: initialCustomerSegment[type] }
+        : initialCustomerSegment
+    }));
+
+    // Reset global store
+    const globalStore = ProductInfo.getState();
+    if (type) {
+      switch (type) {
+        case 'userCategories': globalStore.setUserCategory([]); break;
+        case 'industries': globalStore.setIndustry([]); break;
+        case 'practiceAreas': globalStore.setPracticeAreas([]); break;
+        case 'teamSizes': globalStore.setTeamSize([]); break;
+      }
+    } else {
+      globalStore.setUserCategory([]);
+      globalStore.setIndustry([]);
+      globalStore.setPracticeAreas([]);
+      globalStore.setTeamSize([]);
+    }
   }
+  
 }));
 

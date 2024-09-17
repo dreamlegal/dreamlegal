@@ -179,6 +179,9 @@ export const useCustomerSegmentStore = create<CustomerSegmentStore>((set, get) =
     }
   },
 
+
+  
+
   saveToGlobalStore: () => {
     const { customerSegment } = get();
     const productInfoStore = ProductInfo.getState();
@@ -215,5 +218,4 @@ export const useCustomerSegmentStore = create<CustomerSegmentStore>((set, get) =
     }
   }
 }));
-
 

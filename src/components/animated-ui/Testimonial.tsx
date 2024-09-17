@@ -46,25 +46,57 @@ const testimonials1 = [
     title: "Justicewings Lexedge Solutions LLP",
     image: "/t1.jpg",
   },
+  {
+    location: "Delhi",
+    name: "Roopali Grover",
+    title: "Roopali Grover & Associates",
+    image: "/t4.jpg",
+  },
+  {
+    location: "Bengaluru",
+    name: " Ashwin Dhawle",
+    title: "VisionComply Corporate Services LLP",
+    image: "/t8.png",
+  },
+ 
+
+
+  
 ];
 
 const testimonials2 = [
   {
-    location: "Nigeria",
-    name: "Ibrahim Sule",
-    title: "Elaws Consulting Nigeria Ltd.",
-    image: "/t2.jpg",
+    location: "Delhi",
+    name: " Adv. Tarun Solanki",
+    title: "Individual Practitioner",
+    image: "/t5.jpg",
+
   },
   {
-    location: "India",
-    name: "Avdhesh Varshney",
-    title: "Justicewings Lexedge Solutions LLP",
-    image: "/t1.jpg",
+    location: "Bangladesh",
+    name: "Osman Gani Tuhin",
+    title: "Tuhin & Partners",
+    image: "/t6.jpg",
+
   },
   {
-    location: "India",
-    name: "Muskan Khandelwal",
-    title: "Lakshmikumaran & Sridharan",
-    image: "/t4.png",
+    location: "Noida",
+    name: "Sandeep Sharma",
+    title: "Sargas Legal",
+    image: "/t7.jpg",
+    
+
+
+  },
+  {
+    location: "Pune",
+    name: "Ravi Bhardwaj ",
+    title: "Startup Legal",
+    image: "/t9.jpg",
+    
+    
+   
+    
+
   },
 ];

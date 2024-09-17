@@ -8,7 +8,7 @@ import {
   AlertDialogContent,
   AlertDialogTrigger,
 } from '../ui/alert-dialog';
-
+// import {Search} from "../ui/search";
 import { Label } from "@/components/ui/label";
 import { XCircle } from "lucide-react";
 import { z } from "zod";
@@ -626,9 +626,31 @@ const ProductInformation = () => {
 
 
 // Define the integrations object with type
+// const integrations: Integrations = {
+//   "NOT AVAILABLE":[
+//     "NOT AVAILABLE",
+//   ],
+//   "Accounting and Finance": [
+//     "Financial Disclosures",
+//     "FreshBooks",
+//     "Jubilee",
+//     "QuickBooks",
+//     "TrustBooks",
+//     "Xero"
+//   ],
+//   "Case and Matter Management": [
+//     "Clio",
+//     "LawRuler",
+//     "Litify",
+//     "MyCase",
+//     "PracticePanther",
+//     "Zola Suite"
+//   ],
+ 
+// };
 const integrations: Integrations = {
-  "NOT AVAILABLE":[
-    "NOT AVAILABLE",
+  "NOT AVAILABLE": [
+    "NOT AVAILABLE"
   ],
   "Accounting and Finance": [
     "Financial Disclosures",
@@ -646,8 +668,175 @@ const integrations: Integrations = {
     "PracticePanther",
     "Zola Suite"
   ],
-  // ... other categories and their options
+  "Client Communication & Collaboration": [
+    "Alpha Legal",
+    "Answering Legal",
+    "Back Office Betties",
+    "Broadly",
+    "CallRail",
+    "Microsoft Teams",
+    "RingCentral",
+    "Ruby Receptionists",
+    "Slack",
+    "Vonage",
+    "Zoom"
+  ],
+  "Court and Filing Solutions": [
+    "CourtDrive",
+    "CourtTrax",
+    "DirectLaw",
+    "Docketwise",
+    "eCourtReporters"
+  ],
+  "CRM and Client Intake Tools": [
+    "BirdEye",
+    "Captorra",
+    "Lawlytics",
+    "Lawmatics",
+    "LeadDocket",
+    "Legalboards"
+  ],
+  "Cybersecurity & Data Management": [
+    "Embroker",
+    "Expediate",
+    "InfoTrack",
+    "NetDocuments",
+    "Proof",
+    "Trustifi"
+  ],
+  "Document Management and Automation": [
+    "Docketalarm",
+    "Docketbird",
+    "DocMoto",
+    "Effortless Legal",
+    "Epona DMSforLegal",
+    "Gavel Document Automation",
+    "LexWorkplace",
+    "Litera",
+    "NetDocuments",
+    "Proclaim",
+    "Worldox",
+    "Xerox Connect"
+  ],
+  "E-Discovery and Litigation Support": [
+    "Discovery",
+    "Docketalarm",
+    "Effortless Legal",
+    "Logikcull",
+    "Nextchapter",
+    "Rainmaker"
+  ],
+  "E-signatures and Notary Services": [
+    "DocuSign",
+    "Notarize",
+    "OneNotary",
+    "Vaultie",
+    "Zorrosign"
+  ],
+  "Google": [
+    "Gmail",
+    "Google Apps",
+    "Google Calendar",
+    "Google Contacts",
+    "Google Docs",
+    "Google Drive"
+  ],
+  "Legal AI and Automation": [
+    "Foundation AI",
+    "Gideon",
+    "Levitate",
+    "Lexop"
+  ],
+  "Legal Billing, Payments, and Invoicing": [
+    "Accurate Legal Billing",
+    "Billzer",
+    "Cashroom",
+    "FreshBooks",
+    "QuickBooks",
+    "TrustBooks",
+    "Trustifi"
+  ],
+  "Legal Research": [
+    "CaseText",
+    "Casetext",
+    "Fastcase",
+    "Lexbox"
+  ],
+  "Marketing & Client Reviews": [
+    "BirdEye",
+    "Broadly",
+    "Repsight",
+    "ReviewSolicitors"
+  ],
+  "Microsoft": [
+    "Co-Pilot",
+    "Excel",
+    "Microsoft 365",
+    "Microsoft OneDrive",
+    "Microsoft Outlook",
+    "Microsoft Outlook 365 Add-in",
+    "Microsoft Teams",
+    "Office 365 Contracts",
+    "Word"
+  ],
+  "Practice Management Software": [
+    "Case Status",
+    "CaseAtlas",
+    "Clio Payments",
+    "Clio-goto",
+    "Cosmolex",
+    "Fastcase",
+    "Jubilee",
+    "MyCase",
+    "Practice Panther",
+    "Rocket Matter",
+    "Zola Suite"
+  ],
+  "Scheduling and Appointments": [
+    "Apptoto",
+    "Calendly",
+    "Clio Scheduler",
+    "LawTap"
+  ],
+  "Time Tracking and Billing": [
+    "Faster Time",
+    "TimeBro",
+    "Timeminer",
+    "Timetracker by ebillity"
+  ],
+  "Virtual Law Firms and Legal Support": [
+    "Alpha Legal",
+    "Hire an Esquire",
+    "Immediation",
+    "LawCloud",
+    "Veta Virtual Receptionists"
+  ],
+  "Virtual Receptionists and Legal Support": [
+    "24/7Live Virtual Legal Receptionists",
+    "Answering Legal",
+    "Back Office Betties",
+    "Ruby Receptionists",
+    "Veta Virtual Receptionists"
+  ]
 };
+
+
+const [searchTerm, setSearchTerm] = useState('');
+
+const filterIntegrations = (integrations: Record<string, string[]>) => {
+  return Object.entries(integrations).reduce((acc, [category, options]) => {
+    const filteredOptions = options.filter(option =>
+      option.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    if (filteredOptions.length > 0) {
+      acc[category] = filteredOptions;
+    }
+    return acc;
+  }, {} as Record<string, string[]>);
+};
+
+// Assuming you have an 'integrations' object defined somewhere in your component or imported
+const filteredIntegrations = filterIntegrations(integrations);
 
 const [open, setOpen] = useState(false);
   
@@ -668,13 +857,32 @@ useEffect(() => {
   setSelectedIntegrations(globalIntegrations);
 }, [globalIntegrations]);
 
-const toggleCategory = (category: string) => {
-  setExpandedCategories((prev) => ({
-    ...prev,
-    [category]: !prev[category],
-  }));
-};
+// const toggleCategory = (category: string) => {
+//   setExpandedCategories((prev) => ({
+//     ...prev,
+//     [category]: !prev[category],
+//   }));
+// };
 
+
+// const toggleIntegration = (integration: string) => {
+//   const updatedIntegrations = selectedIntegrations.includes(integration)
+//     ? selectedIntegrations.filter((i) => i !== integration)
+//     : [...selectedIntegrations, integration];
+
+//   console.log('Updated Integrations:', updatedIntegrations); // Log updated integrations
+//   setSelectedIntegrations(updatedIntegrations);
+
+//   // Validate and update global state when selection changes
+//   handleIntegrationChange(updatedIntegrations);
+// };
+
+const toggleCategory = (category: string) => {
+    setExpandedCategories((prev) => ({
+      ...prev,
+      [category]: !prev[category],
+    }));
+  };
 const toggleIntegration = (integration: string) => {
   const updatedIntegrations = selectedIntegrations.includes(integration)
     ? selectedIntegrations.filter((i) => i !== integration)
@@ -1147,7 +1355,7 @@ console.log("Form submitted with:", formData);
         </div>
       )}
     </div> */}
-     <AlertDialog open={open} onOpenChange={setOpen}>
+     {/* <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <button className="w-full text-left p-3 bg-white text-gray-800 border border-gray-200 rounded-lg outline-none hover:bg-gray-100 transition-colors duration-150 flex items-center justify-between">
           <span className="font-semibold">
@@ -1173,6 +1381,74 @@ console.log("Form submitted with:", formData);
           </div>
 
           {Object.entries(integrations).map(([category, options]) => (
+            <div key={category} className="mb-4 last:mb-0 bg-gray-50 rounded-lg overflow-hidden">
+              <button
+                onClick={() => toggleCategory(category)}
+                className="flex justify-between items-center w-full p-3 text-left bg-gray-100 hover:bg-gray-200 transition-colors duration-150"
+              >
+                <span className="font-semibold text-gray-800">{category}</span>
+                {expandedCategories[category] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              </button>
+
+              {expandedCategories[category] && (
+                <div className="p-3 bg-white">
+                  {options.map((option) => (
+                    <label key={option} className="flex items-center space-x-2 mb-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedIntegrations.includes(option)}
+                        onChange={() => toggleIntegration(option)}
+                        className="form-checkbox h-5 w-5 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
+                      />
+                      <span className="text-gray-700">{option}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </AlertDialogContent>
+    </AlertDialog> */}
+
+<AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>
+        <button className="w-full text-left p-3 bg-white text-gray-800 border border-gray-200 rounded-lg outline-none hover:bg-gray-100 transition-colors duration-150 flex items-center justify-between">
+          <span className="font-semibold">
+            Select Integrations
+          </span>
+          <ChevronDown size={20} />
+        </button>
+      </AlertDialogTrigger>
+      <AlertDialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+        <div className="p-4">
+          <div className="flex justify-between items-center mb-4">
+            <div className="relative flex-grow mr-4">
+              <input
+                type="text"
+                placeholder="Search integrations..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full p-2 pl-10 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+              />
+              {/* <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /> */}
+              
+            </div>
+            <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
+              <X size={20} />
+            </Button>
+          </div>
+          
+          <div className="mb-4 p-4 bg-gray-100 rounded-lg">
+            <h3 className="font-semibold mb-2 text-gray-800">Selected Integrations:</h3>
+            <ul className="list-disc pl-5 text-gray-700">
+              {selectedIntegrations.map((integration) => (
+                <li key={integration}>{integration}</li>
+              ))}
+            </ul>
+          </div>
+
+          {Object.entries(filteredIntegrations).map(([category, options]) => (
             <div key={category} className="mb-4 last:mb-0 bg-gray-50 rounded-lg overflow-hidden">
               <button
                 onClick={() => toggleCategory(category)}

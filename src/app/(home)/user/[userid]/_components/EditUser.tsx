@@ -116,16 +116,12 @@ function EditUser({ data, onCloseEdit }: any) {
     console.log("Form submitted:", formData);
   };
   const teamSize = [
-    "1-10",
-    "11-50",
-    "51-100",
-    "101-250",
-    "251-500",
-    "501-1000",
-    "1001-5000",
-    "5001-10000",
-    "10001-50000",
-    "50001-100000",
+    "1",
+    "2-20",
+    "21-50",
+    "51- 200",
+    "201-500",
+    "500+",
   ];
   return (
     <main className="">

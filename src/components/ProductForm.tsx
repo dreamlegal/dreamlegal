@@ -416,7 +416,7 @@ setStorage(storage);
     { key: 'productInformation', title: 'Product Information', component: ProductInformation },
     { key: 'productOverview', title: 'Product Overview', component: ProductOverview },
     { key: 'productCustomerSegments', title: 'Customer Segments', component: ProductCustomerSegment },
-    { key: 'productLifeCycle', title: 'Product LifeCycle', component: ProductLifeCycle },
+    { key: 'productLifeCycle', title: 'Process LifeCycle', component: ProductLifeCycle },
     { key: 'productFeatures', title: 'Features', component: ProductFeatures },
     { key: 'productPricing', title: 'Pricing', component: PricingForm },
     { key: 'productSAndS', title: 'Service and Support', component: ProductSAndS },

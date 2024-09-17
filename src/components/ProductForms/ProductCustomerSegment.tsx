@@ -430,13 +430,14 @@ export default function ProductCustomerSegment() {
   } = useCustomerSegmentStore();
 
 
-
+const [yes,setYes] = useState(false)
   const handleSelectChange = (type: CategoryType, value: string) => {
     if (value === "Other") {
       setCustomCategory((prev) => ({ ...prev, [type]: "" }));
     } else {
       addCategory(type, value);
     }
+    setYes(true)
   };
 
   const handleCustomCategorySubmit = (
@@ -458,6 +459,7 @@ export default function ProductCustomerSegment() {
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">{title}</h3>
       <div className="flex space-x-2">
+       
         <Select onValueChange={(value) => handleSelectChange(type, value)}>
           <SelectTrigger className="">
             <SelectValue placeholder={`Select ${title}`} />
@@ -470,6 +472,8 @@ export default function ProductCustomerSegment() {
             ))}
           </SelectContent>
         </Select>
+      
+       
         {customCategory[type] !== "" && (
           <form
             onSubmit={(e) => handleCustomCategorySubmit(e, type)}
@@ -489,8 +493,17 @@ export default function ProductCustomerSegment() {
           </form>
         )}
       </div>
+    
+       
+      {yes &&(
+  <p className='italic text-sm font-gray-500'>(Mention the existing distribution)</p>
+  
+)}
       {customerSegment[type].map((category) => (
+        
+        
         <div key={category.name} className="">
+          
           <div className="flex justify-between items-center">
             <Label>{category.name}</Label>
             <div>
@@ -589,7 +602,7 @@ export default function ProductCustomerSegment() {
       <span className="text-red-500 italic font-bold text-xs">All Fields Are Required </span>
 
       <CardContent className="space-y-8 mt-4">
-        {renderCategorySection("userCategories", "Target User Categories")}
+        {renderCategorySection("userCategories", "Target Users")}
         {renderCategorySection("industries", "Target Industries")}
         {renderCategorySection("practiceAreas", "Target Practice Areas")}
         {renderCategorySection("teamSizes", "Target Client Team Sizes")}

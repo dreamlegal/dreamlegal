@@ -154,7 +154,7 @@ const OptionSelector = () => {
           )}
         </div>
       ))}
-      <Button onClick={handleSubmit} className=" bg-blue-500 text-white font-semibold ">Save Product Lifecycle</Button>
+      <Button onClick={handleSubmit} className=" bg-blue-500 text-white font-semibold ">Save Process Lifecycle</Button>
     </div>
     </>
   );

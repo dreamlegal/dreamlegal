@@ -16,6 +16,8 @@ import {
 } from "react";
 
 function ProductInfoTab({ product }: any) {
+
+  
   return (
     <div>
       <div className=" flex flex-col gap-10 font-clarity">

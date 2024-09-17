@@ -20,6 +20,9 @@ const ProductOverviewSchema = z.object({
   }),
   upcomingUpdates: z.string().nonempty("Updates is required").refine(value => wordCount(value, 50), {
     message: "max word limit 50",
+  }),
+  painPointAddressed: z.string().nonempty("Pain point addressed is required").refine(value => wordCount(value, 50), {
+    message: "max word limit 50",
   })
 });
 
@@ -27,10 +30,12 @@ const ProductOverview = () => {
   const { description, setDescription } = ProductInfo();
   const { usp, setUSP } = ProductInfo();
   const { upcomingUpdates, setUpcomingUpdates } = ProductInfo();
+  const { painPointAddressed, setPainPointAddressed } = ProductInfo();
 
   const [inputDescription, setInputDescription] = useState(description);
   const [inputUSP, setInputUSP] = useState(usp);
   const [inputUpdates, setInputUpdates] = useState(upcomingUpdates);
+  const [inputPainPointAddressed, setInputPainPointAddressed] = useState(painPointAddressed);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [successMessage, setSuccessMessage] = useState("");
@@ -41,6 +46,7 @@ const ProductOverview = () => {
       description: inputDescription,
       usp: inputUSP,
       upcomingUpdates: inputUpdates,
+      painPointAddressed: inputPainPointAddressed,
     });
 
     if (!result.success) {
@@ -70,6 +76,9 @@ const ProductOverview = () => {
       case 'upcomingUpdates':
         setInputUpdates(value);
         break;
+      case 'painPointAddressed':
+        setInputPainPointAddressed(value);
+        break;
     }
 
     // Validate field individually on change
@@ -86,6 +95,7 @@ const ProductOverview = () => {
       description: name === 'description' ? value : inputDescription,
       usp: name === 'usp' ? value : inputUSP,
       upcomingUpdates: name === 'upcomingUpdates' ? value : inputUpdates,
+      painPointAddressed: name === 'painPointAddressed'? value : inputPainPointAddressed,
     };
 
     const result = ProductOverviewSchema.safeParse(tempValues);
@@ -111,6 +121,7 @@ const ProductOverview = () => {
     setDescription(inputDescription);
     setUSP(inputUSP);
     setUpcomingUpdates(inputUpdates);
+    setPainPointAddressed(inputPainPointAddressed);
     setSuccessMessage("All fields are valid. You can move ahead.");
 
     // Proceed with the form submission logic
@@ -118,6 +129,7 @@ const ProductOverview = () => {
       description: inputDescription,
       usp: inputUSP,
       upcomingUpdates: inputUpdates,
+      painPointAddressed: inputPainPointAddressed,
     });
   };
 
@@ -166,6 +178,20 @@ const ProductOverview = () => {
               <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
                 <XCircle className="w-6 h-6 text-red-500" />
                 <p className="text-[#DC3545] pl-2">{errors.upcomingUpdates}</p>
+              </div>
+            }
+          </div>
+          <div className="w-full mt-2">
+            <Label htmlFor="painPointAddressed">Pain point addressed</Label>
+            <Textarea
+              name="painPointAddressed"
+              value={inputPainPointAddressed}
+              onChange={handleChange}
+            />
+            {errors.painPointAddressed &&  
+              <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex"> 
+                <XCircle className="w-6 h-6 text-red-500" />
+                <p className="text-[#DC3545] pl-2">{errors.painPointAddressed}</p>
               </div>
             }
           </div>

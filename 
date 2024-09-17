@@ -1,0 +1,308 @@
+[1mdiff --git a/pnpm-lock.yaml b/pnpm-lock.yaml[m
+[1mindex 49c7f7b..06cea0e 100644[m
+[1m--- a/pnpm-lock.yaml[m
+[1m+++ b/pnpm-lock.yaml[m
+[36m@@ -300,10 +300,6 @@[m [mpackages:[m
+     resolution: {integrity: sha512-i1x/E/sgA+liUE1XJ7rj1dhyXpAKO1UKFUcTTHXok2ARjWTvszHnSXMOsB77aPbmn0fUp1JTx2kHUAZ1LVt5Bg==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@aws-sdk/core@3.651.1':[m
+[31m-    resolution: {integrity: sha512-eqOq3W39K+5QTP5GAXtmP2s9B7hhM2pVz8OPe5tqob8o1xQgkwdgHerf3FoshO9bs0LDxassU/fUSz1wlwqfqg==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@aws-sdk/credential-provider-env@3.620.1':[m
+     resolution: {integrity: sha512-ExuILJ2qLW5ZO+rgkNRj0xiAipKT16Rk77buvPP8csR7kkCflT/gXTyzRe/uzIiETTxM7tr8xuO9MP/DQXqkfg==}[m
+     engines: {node: '>=16.0.0'}[m
+[36m@@ -368,10 +364,6 @@[m [mpackages:[m
+     resolution: {integrity: sha512-RLdYJPEV4JL/7NBoFUs7VlP90X++5FlJdxHz0DzCjmiD3qCviKy+Cym3qg1gBgHwucs5XisuClxDrGokhAdTQw==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@aws-sdk/middleware-sdk-s3@3.651.1':[m
+[31m-    resolution: {integrity: sha512-4BameU35aBSzrm3L/Iphc6vFLRhz6sBwgQf09mqPA2ZlX/YFqVe8HbS8wM4DG02W8A2MRTnHXRIfFoOrErp2sw==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@aws-sdk/middleware-ssec@3.609.0':[m
+     resolution: {integrity: sha512-GZSD1s7+JswWOTamVap79QiDaIV7byJFssBW68GYjyRS5EBjNfwA/8s+6uE6g39R3ojyTbYOmvcANoZEhSULXg==}[m
+     engines: {node: '>=16.0.0'}[m
+[36m@@ -384,18 +376,10 @@[m [mpackages:[m
+     resolution: {integrity: sha512-vDCeMXvic/LU0KFIUjpC3RiSTIkkvESsEfbVHiHH0YINfl8HnEqR5rj+L8+phsCeVg2+LmYwYxd5NRz4PHxt5g==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@aws-sdk/s3-request-presigner@3.651.1':[m
+[31m-    resolution: {integrity: sha512-PNoZkSDjvZs/ekm79jJzZMBp+3oCG74/6K/SPKKyUWiFMfrYIsnQD2y/V75n9s/2Vxie08Bgf2jroX41uQAFAw==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@aws-sdk/signature-v4-multi-region@3.635.0':[m
+     resolution: {integrity: sha512-J6QY4/invOkpogCHjSaDON1hF03viPpOnsrzVuCvJMmclS/iG62R4EY0wq1alYll0YmSdmKlpJwHMWwGtqK63Q==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@aws-sdk/signature-v4-multi-region@3.651.1':[m
+[31m-    resolution: {integrity: sha512-aLPCMq4c/A9DmdZLhufWOgfHN2Vgft65dB2tfbATjs6kZjusSaDFxWzjmWX3y8i2ZQ+vU0nAkkWIHFJdf+47fA==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@aws-sdk/token-providers@3.614.0':[m
+     resolution: {integrity: sha512-okItqyY6L9IHdxqs+Z116y5/nda7rHxLvROxtAJdLavWTYDydxrZstImNgGWTeVdmc0xX2gJCI77UYUTQWnhRw==}[m
+     engines: {node: '>=16.0.0'}[m
+[36m@@ -406,10 +390,6 @@[m [mpackages:[m
+     resolution: {integrity: sha512-+Tqnh9w0h2LcrUsdXyT1F8mNhXz+tVYBtP19LpeEGntmvHwa2XzvLUCWpoIAIVsHp5+HdB2X9Sn0KAtmbFXc2Q==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@aws-sdk/types@3.649.0':[m
+[31m-    resolution: {integrity: sha512-PuPw8RysbhJNlaD2d/PzOTf8sbf4Dsn2b7hwyGh7YVG3S75yTpxSAZxrnhKsz9fStgqFmnw/jUfV/G+uQAeTVw==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@aws-sdk/util-arn-parser@3.568.0':[m
+     resolution: {integrity: sha512-XUKJWWo+KOB7fbnPP0+g/o5Ulku/X53t7i/h+sPHr5xxYTJJ9CYnbToo95mzxe7xWvkLrsNtJ8L+MnNn9INs2w==}[m
+     engines: {node: '>=16.0.0'}[m
+[36m@@ -418,10 +398,6 @@[m [mpackages:[m
+     resolution: {integrity: sha512-LlYMU8pAbcEQphOpE6xaNLJ8kPGhklZZTVzZVpVW477NaaGgoGTMYNXTABYHcxeF5E2lLrxql9OmVpvr8GWN8Q==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@aws-sdk/util-format-url@3.649.0':[m
+[31m-    resolution: {integrity: sha512-I5olOLkXQRJWAaoTSTXcycNBJ26daeEpgxYD6VPpQma9StFVK7a0MbHa1QGkOy9eVTTuf6xb2U1eiCWDWn3TXA==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@aws-sdk/util-locate-window@3.568.0':[m
+     resolution: {integrity: sha512-3nh4TINkXYr+H41QaPelCceEB2FXP3fxp93YZXB/kqJvX0U9j0N0Uk45gvsjmEPzG8XxkPEeLIfT2I1M7A6Lig==}[m
+     engines: {node: '>=16.0.0'}[m
+[36m@@ -2074,10 +2050,6 @@[m [mpackages:[m
+     resolution: {integrity: sha512-MBJBiidoe+0cTFhyxT8g+9g7CeVccLM0IOKKUMCNQ1CNMJ/eIfoo0RTfVrXOONEI1UCN1W+zkiHSbzUNE9dZtQ==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/abort-controller@3.1.4':[m
+[31m-    resolution: {integrity: sha512-VupaALAQlXViW3/enTf/f5l5JZYSAxoJL7f0nanhNNKnww6DGCg1oYIuNP78KDugnkwthBO6iEcym16HhWV8RQ==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/chunked-blob-reader-native@3.0.0':[m
+     resolution: {integrity: sha512-VDkpCYW+peSuM4zJip5WDfqvg2Mo/e8yxOv3VF1m11y7B8KKMKVFtmZWDe36Fvk8rGuWrPZHHXZ7rR7uM5yWyg==}[m
+ [m
+[36m@@ -2092,10 +2064,6 @@[m [mpackages:[m
+     resolution: {integrity: sha512-cHXq+FneIF/KJbt4q4pjN186+Jf4ZB0ZOqEaZMBhT79srEyGDDBV31NqBRBjazz8ppQ1bJbDJMY9ba5wKFV36w==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/core@2.4.3':[m
+[31m-    resolution: {integrity: sha512-4LTusLqFMRVQUfC3RNuTg6IzYTeJNpydRdTKq7J5wdEyIRQSu3rGIa3s80mgG2hhe6WOZl9IqTSo1pgbn6EHhA==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/credential-provider-imds@3.2.0':[m
+     resolution: {integrity: sha512-0SCIzgd8LYZ9EJxUjLXBmEKSZR/P/w6l7Rz/pab9culE/RWuqelAKGJvn5qUOl8BgX8Yj5HWM50A5hiB/RzsgA==}[m
+     engines: {node: '>=16.0.0'}[m
+[36m@@ -2122,9 +2090,6 @@[m [mpackages:[m
+   '@smithy/fetch-http-handler@3.2.4':[m
+     resolution: {integrity: sha512-kBprh5Gs5h7ug4nBWZi1FZthdqSM+T7zMmsZxx0IBvWUn7dK3diz2SHn7Bs4dQGFDk8plDv375gzenDoNwrXjg==}[m
+ [m
+[31m-  '@smithy/fetch-http-handler@3.2.7':[m
+[31m-    resolution: {integrity: sha512-Ra6IPI1spYLO+t62/3jQbodjOwAbto9wlpJdHZwkycm0Kit+GVpzHW/NMmSgY4rK1bjJ4qLAmCnaBzePO5Nkkg==}[m
+[31m-[m
+   '@smithy/hash-blob-browser@3.1.2':[m
+     resolution: {integrity: sha512-hAbfqN2UbISltakCC2TP0kx4LqXBttEv2MqSPE98gVuDFMf05lU+TpC41QtqGP3Ff5A3GwZMPfKnEy0VmEUpmg==}[m
+ [m
+[36m@@ -2158,128 +2123,65 @@[m [mpackages:[m
+     resolution: {integrity: sha512-5y5aiKCEwg9TDPB4yFE7H6tYvGFf1OJHNczeY10/EFF8Ir8jZbNntQJxMWNfeQjC1mxPsaQ6mR9cvQbf+0YeMw==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/middleware-endpoint@3.1.3':[m
+[31m-    resolution: {integrity: sha512-KeM/OrK8MVFUsoJsmCN0MZMVPjKKLudn13xpgwIMpGTYpA8QZB2Xq5tJ+RE6iu3A6NhOI4VajDTwBsm8pwwrhg==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/middleware-retry@3.0.15':[m
+     resolution: {integrity: sha512-iTMedvNt1ApdvkaoE8aSDuwaoc+BhvHqttbA/FO4Ty+y/S5hW6Ci/CTScG7vam4RYJWZxdTElc3MEfHRVH6cgQ==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/middleware-retry@3.0.18':[m
+[31m-    resolution: {integrity: sha512-YU1o/vYob6vlqZdd97MN8cSXRToknLXhFBL3r+c9CZcnxkO/rgNZ++CfgX2vsmnEKvlqdi26+SRtSzlVp5z6Mg==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/middleware-serde@3.0.3':[m
+     resolution: {integrity: sha512-puUbyJQBcg9eSErFXjKNiGILJGtiqmuuNKEYNYfUD57fUl4i9+mfmThtQhvFXU0hCVG0iEJhvQUipUf+/SsFdA==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/middleware-serde@3.0.6':[m
+[31m-    resolution: {integrity: sha512-KKTUSl1MzOM0MAjGbudeaVNtIDo+PpekTBkCNwvfZlKndodrnvRo+00USatiyLOc0ujjO9UydMRu3O9dYML7ag==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/middleware-stack@3.0.3':[m
+     resolution: {integrity: sha512-r4klY9nFudB0r9UdSMaGSyjyQK5adUyPnQN/ZM6M75phTxOdnc/AhpvGD1fQUvgmqjQEBGCwpnPbDm8pH5PapA==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/middleware-stack@3.0.6':[m
+[31m-    resolution: {integrity: sha512-2c0eSYhTQ8xQqHMcRxLMpadFbTXg6Zla5l0mwNftFCZMQmuhI7EbAJMx6R5eqfuV3YbJ3QGyS3d5uSmrHV8Khg==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/node-config-provider@3.1.4':[m
+     resolution: {integrity: sha512-YvnElQy8HR4vDcAjoy7Xkx9YT8xZP4cBXcbJSgm/kxmiQu08DwUwj8rkGnyoJTpfl/3xYHH+d8zE+eHqoDCSdQ==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/node-config-provider@3.1.7':[m
+[31m-    resolution: {integrity: sha512-g3mfnC3Oo8pOI0dYuPXLtdW1WGVb3bR2tkV21GNkm0ZvQjLTtamXAwCWt/FCb0HGvKt3gHHmF1XerG0ICfalOg==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/node-http-handler@3.1.4':[m
+     resolution: {integrity: sha512-+UmxgixgOr/yLsUxcEKGH0fMNVteJFGkmRltYFHnBMlogyFdpzn2CwqWmxOrfJELhV34v0WSlaqG1UtE1uXlJg==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/node-http-handler@3.2.2':[m
+[31m-    resolution: {integrity: sha512-42Cy4/oT2O+00aiG1iQ7Kd7rE6q8j7vI0gFfnMlUiATvyo8vefJkhb7O10qZY0jAqo5WZdUzfl9IV6wQ3iMBCg==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/property-provider@3.1.3':[m
+     resolution: {integrity: sha512-zahyOVR9Q4PEoguJ/NrFP4O7SMAfYO1HLhB18M+q+Z4KFd4V2obiMnlVoUFzFLSPeVt1POyNWneHHrZaTMoc/g==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/property-provider@3.1.6':[m
+[31m-    resolution: {integrity: sha512-NK3y/T7Q/Bw+Z8vsVs9MYIQ5v7gOX7clyrXcwhhIBQhbPgRl6JDrZbusO9qWDhcEus75Tg+VCxtIRfo3H76fpw==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/protocol-http@4.1.0':[m
+     resolution: {integrity: sha512-dPVoHYQ2wcHooGXg3LQisa1hH0e4y0pAddPMeeUPipI1tEOqL6A4N0/G7abeq+K8wrwSgjk4C0wnD1XZpJm5aA==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/protocol-http@4.1.3':[m
+[31m-    resolution: {integrity: sha512-GcbMmOYpH9iRqtC05RbRnc/0FssxSTHlmaNhYBTgSgNCYpdR3Kt88u5GAZTBmouzv+Zlj/VRv92J9ruuDeJuEw==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/querystring-builder@3.0.3':[m
+     resolution: {integrity: sha512-vyWckeUeesFKzCDaRwWLUA1Xym9McaA6XpFfAK5qI9DKJ4M33ooQGqvM4J+LalH4u/Dq9nFiC8U6Qn1qi0+9zw==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/querystring-builder@3.0.6':[m
+[31m-    resolution: {integrity: sha512-sQe08RunoObe+Usujn9+R2zrLuQERi3CWvRO3BvnoWSYUaIrLKuAIeY7cMeDax6xGyfIP3x/yFWbEKSXvOnvVg==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/querystring-parser@3.0.3':[m
+     resolution: {integrity: sha512-zahM1lQv2YjmznnfQsWbYojFe55l0SLG/988brlLv1i8z3dubloLF+75ATRsqPBboUXsW6I9CPGE5rQgLfY0vQ==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/querystring-parser@3.0.6':[m
+[31m-    resolution: {integrity: sha512-UJKw4LlEkytzz2Wq+uIdHf6qOtFfee/o7ruH0jF5I6UAuU+19r9QV7nU3P/uI0l6+oElRHmG/5cBBcGJrD7Ozg==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/service-error-classification@3.0.3':[m
+     resolution: {integrity: sha512-Jn39sSl8cim/VlkLsUhRFq/dKDnRUFlfRkvhOJaUbLBXUsLRLNf9WaxDv/z9BjuQ3A6k/qE8af1lsqcwm7+DaQ==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/service-error-classification@3.0.6':[m
+[31m-    resolution: {integrity: sha512-53SpchU3+DUZrN7J6sBx9tBiCVGzsib2e4sc512Q7K9fpC5zkJKs6Z9s+qbMxSYrkEkle6hnMtrts7XNkMJJMg==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/shared-ini-file-loader@3.1.4':[m
+     resolution: {integrity: sha512-qMxS4hBGB8FY2GQqshcRUy1K6k8aBWP5vwm8qKkCT3A9K2dawUwOIJfqh9Yste/Bl0J2lzosVyrXDj68kLcHXQ==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/shared-ini-file-loader@3.1.7':[m
+[31m-    resolution: {integrity: sha512-IA4K2qTJYXkF5OfVN4vsY1hfnUZjaslEE8Fsr/gGFza4TAC2A9NfnZuSY2srQIbt9bwtjHiAayrRVgKse4Q7fA==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/signature-v4@4.1.0':[m
+     resolution: {integrity: sha512-aRryp2XNZeRcOtuJoxjydO6QTaVhxx/vjaR+gx7ZjaFgrgPRyZ3HCTbfwqYj6ZWEBHkCSUfcaymKPURaByukag==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/signature-v4@4.1.3':[m
+[31m-    resolution: {integrity: sha512-YD2KYSCEEeFHcWZ1E3mLdAaHl8T/TANh6XwmocQ6nPcTdBfh4N5fusgnblnWDlnlU1/cUqEq3PiGi22GmT2Lkg==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/smithy-client@3.2.0':[m
+     resolution: {integrity: sha512-pDbtxs8WOhJLJSeaF/eAbPgXg4VVYFlRcL/zoNYA5WbG3wBL06CHtBSg53ppkttDpAJ/hdiede+xApip1CwSLw==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/smithy-client@3.3.2':[m
+[31m-    resolution: {integrity: sha512-RKDfhF2MTwXl7jan5d7QfS9eCC6XJbO3H+EZAvLQN8A5in4ib2Ml4zoeLo57w9QrqFekBPcsoC2hW3Ekw4vQ9Q==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/types@3.3.0':[m
+     resolution: {integrity: sha512-IxvBBCTFDHbVoK7zIxqA1ZOdc4QfM5HM7rGleCuHi7L1wnKv5Pn69xXJQ9hgxH60ZVygH9/JG0jRgtUncE3QUA==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/types@3.4.2':[m
+[31m-    resolution: {integrity: sha512-tHiFcfcVedVBHpmHUEUHOCCih8iZbIAYn9NvPsNzaPm/237I3imdDdZoOC8c87H5HBAVEa06tTgb+OcSWV9g5w==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/url-parser@3.0.3':[m
+     resolution: {integrity: sha512-pw3VtZtX2rg+s6HMs6/+u9+hu6oY6U7IohGhVNnjbgKy86wcIsSZwgHrFR+t67Uyxvp4Xz3p3kGXXIpTNisq8A==}[m
+ [m
+[31m-  '@smithy/url-parser@3.0.6':[m
+[31m-    resolution: {integrity: sha512-47Op/NU8Opt49KyGpHtVdnmmJMsp2hEwBdyjuFB9M2V5QVOwA7pBhhxKN5z6ztKGrMw76gd8MlbPuzzvaAncuQ==}[m
+[31m-[m
+   '@smithy/util-base64@3.0.0':[m
+     resolution: {integrity: sha512-Kxvoh5Qtt0CDsfajiZOCpJxgtPHXOKwmM+Zy4waD43UoEMA+qPxxa98aE/7ZhdnBFZFXMOiBR5xbcaMhLtznQQ==}[m
+     engines: {node: '>=16.0.0'}[m
+[36m@@ -2323,26 +2225,14 @@[m [mpackages:[m
+     resolution: {integrity: sha512-l+StyYYK/eO3DlVPbU+4Bi06Jjal+PFLSMmlWM1BEwyLxZ3aKkf1ROnoIakfaA7mC6uw3ny7JBkau4Yc+5zfWw==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/util-middleware@3.0.6':[m
+[31m-    resolution: {integrity: sha512-BxbX4aBhI1O9p87/xM+zWy0GzT3CEVcXFPBRDoHAM+pV0eSW156pR+PSYEz0DQHDMYDsYAflC2bQNz2uaDBUZQ==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/util-retry@3.0.3':[m
+     resolution: {integrity: sha512-AFw+hjpbtVApzpNDhbjNG5NA3kyoMs7vx0gsgmlJF4s+yz1Zlepde7J58zpIRIsdjc+emhpAITxA88qLkPF26w==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/util-retry@3.0.6':[m
+[31m-    resolution: {integrity: sha512-BRZiuF7IwDntAbevqMco67an0Sr9oLQJqqRCsSPZZHYRnehS0LHDAkJk/pSmI7Z8c/1Vet294H7fY2fWUgB+Rg==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/util-stream@3.1.3':[m
+     resolution: {integrity: sha512-FIv/bRhIlAxC0U7xM1BCnF2aDRPq0UaelqBHkM2lsCp26mcBbgI0tCVTv+jGdsQLUmAMybua/bjDsSu8RQHbmw==}[m
+     engines: {node: '>=16.0.0'}[m
+ [m
+[31m-  '@smithy/util-stream@3.1.6':[m
+[31m-    resolution: {integrity: sha512-lQEUfTx1ht5CRdvIjdAN/gUL6vQt2wSARGGLaBHNe+iJSkRHlWzY+DOn0mFTmTgyU3jcI5n9DkT5gTzYuSOo6A==}[m
+[31m-    engines: {node: '>=16.0.0'}[m
+[31m-[m
+   '@smithy/util-uri-escape@3.0.0':[m
+     resolution: {integrity: sha512-LqR7qYLgZTD7nWLBecUi4aqolw8Mhza9ArpNEQ881MJJIU2sE5iHCK6TdyqqzcDLy0OPe10IY4T8ctVdtynubg==}[m
+     engines: {node: '>=16.0.0'}[m
+[36m@@ -5245,19 +5135,6 @@[m [msnapshots:[m
+       fast-xml-parser: 4.4.1[m
+       tslib: 2.6.3[m
+ [m
+[31m-  '@aws-sdk/core@3.651.1':[m
+[31m-    dependencies:[m
+[31m-      '@smithy/core': 2.4.3[m
+[31m-      '@smithy/node-config-provider': 3.1.7[m
+[31m-      '@smithy/property-provider': 3.1.6[m
+[31m-      '@smithy/protocol-http': 4.1.3[m
+[31m-      '@smithy/signature-v4': 4.1.3[m
+[31m-      '@smithy/smithy-client': 3.3.2[m
+[31m-      '@smithy/types': 3.4.2[m
+[31m-      '@smithy/util-middleware': 3.0.6[m
+[31m-      fast-xml-parser: 4.4.1[m
+[31m-      tslib: 2.6.3[m
+[31m-[m
+   '@aws-sdk/credential-provider-env@3.620.1':[m
+     dependencies:[m
+       '@aws-sdk/types': 3.609.0[m
+[36m@@ -5414,23 +5291,6 @@[m [msnapshots:[m
+       '@smithy/util-utf8': 3.0.0[m
+       tslib: 2.6.3[m
+ [m
+[31m-  '@aws-sdk/middleware-sdk-s3@3.651.1':[m
+[31m-    dependencies:[m
+[31m-      '@aws-sdk/core': 3.651.1[m
+[31m-      '@aws-sdk/types': 3.649.0[m
+[31m-      '@aws-sdk/util-arn-parser': 3.568.0[m
+[31m-      '@smithy/core': 2.4.3[m
+[31m-      '@smithy/node-config-provider': 3.1.7[m
+[31m-      '@smithy/protocol-http': 4.1.3[m
+[31m-      '@smithy/signature-v4': 4.1.3[m
+[31m-      '@smithy/smithy-client': 3.3.2[m
+[31m-      '@smithy/types': 3.4.2[m
+[31m-      '@smithy/util-config-provider': 3.0.0[m
+[31m-      '@smithy/util-middleware': 3.0.6[m
+[31m-      '@smithy/util-stream': 3.1.6[m
+[31m-      '@smithy/util-utf8': 3.0.0[m
+[31m-      tslib: 2.6.3[m
+[31m-[m
+   '@aws-sdk/middleware-ssec@3.609.0':[m
+     dependencies:[m
+       '@aws-sdk/types': 3.609.0[m
+[36m@@ -5454,17 +5314,6 @@[m [msnapshots:[m
+       '@smithy/util-middleware': 3.0.3[m
+       tslib: 2.6.3[m
+ [m
+[31m-  '@aws-sdk/s3-request-presigner@3.651.1':[m
+[31m-    dependencies:[m
+[31m-      '@aws-sdk/signature-v4-multi-region': 3.651.1[m
+[31m-      '@aws-sdk/types': 3.649.0[m
+[31m-      '@aws-sd

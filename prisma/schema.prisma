@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,33 +9,29 @@ datasource db {
 
 model User {
   id            String          @id @default(cuid())
-  name          String?
   email         String          @unique
+  name          String?
+  createdAt     DateTime        @default(now())
   emailVerified DateTime?
   image         String?
   password      String?
+  updatedAt     DateTime        @updatedAt
   type          String          @default("user")
   skip          Boolean?        @default(false)
   accounts      Account[]
-  sessions      Session[]
-  // Optional for WebAuthn support
   Authenticator Authenticator[]
-
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  companyInfo companyInfo[]
-  Product     Product[]
-  Review      Review[]
-  userAccount userAccount[]
-
-  SaveProduct  SaveProduct[]
-  Notification Notification[]
+  Notification  Notification[]
+  Product       Product[]
+  Review        Review[]
+  SaveProduct   SaveProduct[]
+  sessions      Session[]
+  companyInfo   companyInfo[]
+  userAccount   userAccount[]
 }
 
 model userAccount {
   id             String  @id @default(cuid())
   userId         String
-  OrgType        String?
   Contact        String?
   Location       String?
   Address        String?
@@ -49,8 +39,8 @@ model userAccount {
   CompanyType    String?
   CompanyAddress String?
   CompanyEmail   String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  OrgType        String?
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -65,11 +55,9 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
 }
@@ -78,10 +66,9 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {
@@ -92,7 +79,6 @@ model VerificationToken {
   @@id([identifier, token])
 }
 
-// Optional for WebAuthn support
 model Authenticator {
   credentialID         String  @unique
   userId               String
@@ -102,8 +88,7 @@ model Authenticator {
   credentialDeviceType String
   credentialBackedUp   Boolean
   transports           String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
 }
@@ -128,24 +113,22 @@ model companyInfo {
   founderVision             String?
   regionServed              String?
   TeamSize                  String?
-  overview                  String?
   Awards                    String?
   PointOfContactName        String?
   PointOfContactPhone       String?
   PointOfContactDesignation String?
-  user                      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  overview                  String?
   Product                   Product[]
+  user                      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Product {
-  id                      String      @id @default(cuid())
+  id                      String        @id @default(cuid())
   userId                  String
   companyId               String
   name                    String
-  slug                    String      @unique
   logoUrl                 String
-  active                  String      @default("draft")
-  featured                Boolean     @default(false)
+  active                  String        @default("draft")
   category                String[]
   deployement             String[]
   mobileAvailable         String?
@@ -157,28 +140,19 @@ model Product {
   description             String?
   usp                     String?
   upcomingUpdates         String?
+  painPointAddressed      String?
   userCategory            String[]
-  userCategoryPercentage  String[]
   industry                String[]
   industryPercentage      String[]
   practiceAreas           String[]
-  practiceAreasPercentage String[]
-  teamSize                String[]
-  teamsizePercentage      String[]
-  processLifecycle        Json?
-  features                Json?
-
   freeTrial               String?
   timePeriod              String?
   freeVersion             String?
-  pricingModel            String[]
   contractPeriod          String?
   nameofPlan              String[]
   validity                String[]
   price                   String[]
   pricingParams           String[]
-
-  
   Demo                    String[]
   DemoNote                String?
   support                 String[]
@@ -189,7 +163,6 @@ model Product {
   storageNote             String?
   fileSize                String[]
   fileSizeNote            String?
-  
   maintenance             String?
   maintenanceNote         String?
   reqForChange            String?
@@ -198,7 +171,6 @@ model Product {
   trainingReqNote         String?
   dataMigration           String?
   dataMigrationNote       String?
-
   Images                  String[]
   videoUrl                String?
   attachments             String[]
@@ -206,28 +178,40 @@ model Product {
   linkedinUrl             String?
   twitterUrl              String?
   instagramUrl            String?
-
-  createdAt               DateTime    @default(now())
-  updatedAt               DateTime    @updatedAt
-  user                    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  company                 companyInfo @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  websiteUrl              String?
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+  practiceAreasPercentage String[]
+  userCategoryPercentage  String[]
+  teamSize                String[]
+  teamsizePercentage      String[]
+  processLifecycle        Json?
+  features                Json?
+  pricingModel            String[]
+  featured                Boolean       @default(false)
+  slug                    String        @unique
+  company                 companyInfo   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user                    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   Review                  Review[]
-
-  SaveProduct SaveProduct[]
+  SaveProduct             SaveProduct[] @relation("ProductToSaveProduct")
 }
 
 model Review {
   id               String   @id @default(cuid())
   userId           String
-  productId        String
-  involvement      String[]
-  WhyBought        String[]
-  GoalBehind       String[]
   otherProducts    String
   oftenUsed        String
   overallExperienc String
   bestThing        String
   worstThing       String
+  reference        String
+  attachement      String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  productId        String
+  involvement      String[]
+  WhyBought        String[]
+  GoalBehind       String[]
   easeOfLearning   Int
   integration      Int
   support          Int
@@ -235,18 +219,13 @@ model Review {
   functionality    Json
   processStep      Json
   recommend        Int
-  reference        String
-  attachement      String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product          Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Analytics {
-  id           String  @id @default(cuid())
-  productId    String  @unique
+  id           String   @id @default(cuid())
+  productId    String   @unique
   shares       Int?
   followers    Int?
   views        Int?
@@ -256,9 +235,8 @@ model Analytics {
   mobileViews  Int?
   tabletViews  Int?
   country      Json?
+  createdAt    DateTime @default(now())
   month        String?
-
-  createdAt DateTime @default(now())
 }
 
 model ClickCount {
@@ -272,7 +250,7 @@ model SaveProduct {
   userId    String
   productId String[]
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Product   Product[]
+  Product   Product[] @relation("ProductToSaveProduct")
 }
 
 model Admins {
@@ -286,7 +264,7 @@ model Interest {
   id                  String   @id @default(cuid())
   userId              String
   productId           String
-  companyId           String // Added companyId
+  companyId           String
   companyTypeFromUser String
   createdAt           DateTime @default(now())
 }
@@ -295,9 +273,11 @@ model Notification {
   id        String   @id @default(cuid())
   message   String
   createdAt DateTime @default(now())
-  userId    String? // Nullable foreign key for User
+  userId    String?  // Nullable foreign key for User
   type      String?
   read      Boolean  @default(false) // Indicates whether the notification has been read
+  user      User?    @relation(fields: [userId], references: [id])
 
-  user User? @relation(fields: [userId], references: [id])
+ 
 }
+

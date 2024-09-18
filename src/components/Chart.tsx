@@ -156,7 +156,7 @@ const ChartSection = ({ title, tooltip, data }) => {
   const series = chartData.map(item => item.percentage);
 
   return (
-    <div className="flex flex-col md:flex-row w-full gap-4">
+    <div className="flex mb-6 flex-col md:flex-row w-full gap-4">
       <div className="flex-1">
         <div className="flex gap-2 items-center">
           <h2 className="text-2xl font-bold text-gray-700 mb-3">{title}</h2>
@@ -203,7 +203,7 @@ const ChartSection = ({ title, tooltip, data }) => {
             <p>No data available for chart</p>
           )}
           <h2 className="text-xs my-2 font-bold italic text-primary1 md:text-center">
-            Distribution
+             Existing Distribution
           </h2>
         </div>
       </div>
@@ -224,6 +224,7 @@ const Dashboard = ({ product }) => {
         title="Target Industriess"
         tooltip="Sectors this product is making an impact in"
         data={product.industry}
+
       />
       <div className="w-full h-px bg-slate-200 my-4"></div>
       <ChartSection

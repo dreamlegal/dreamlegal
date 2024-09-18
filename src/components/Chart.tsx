@@ -214,30 +214,43 @@ const ChartSection = ({ title, tooltip, data }) => {
 const Dashboard = ({ product }) => {
   return (
     <>
-      <ChartSection
+    <div className="flex flex-col gap-5">
+
+       <div>
+       <ChartSection
         title="Target Users"
         tooltip="Type of company's clientele"
         data={product.userCategory}
       />
       <div className="w-full h-px bg-slate-200 my-4"></div>
-      <ChartSection
+       </div>
+     
+     <div className="">
+     <ChartSection
         title="Target Industriess"
         tooltip="Sectors this product is making an impact in"
         data={product.industry}
 
       />
       <div className="w-full h-px bg-slate-200 my-4"></div>
-      <ChartSection
+     </div>
+     <div>
+     <ChartSection
         title="Target Practice Areas"
         tooltip="Legal practice areas supported by this product"
         data={product.practiceAreas}
       />
       <div className="w-full h-px bg-slate-200 my-4"></div>
-      <ChartSection
+     </div>
+     <div>
+     <ChartSection
         title="Target Client Team Size"
         tooltip="Size of the client's team"
         data={product.teamSize}
       />
+     </div>
+     
+      </div>
     </>
   );
 };

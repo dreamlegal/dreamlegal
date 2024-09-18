@@ -203,7 +203,7 @@ function PdfDownload({ data }: any) {
                       </TooltipProvider>
                     </div>
                     <p className=" text-sm text-slate-500">
-                      {product.painPointAddressed}
+                    Legal Buddy addresses the pain point of complex and disorganized contract management, where unclear clauses, lack of privacy controls, and limited data insights often lead to inefficiencies. By simplifying the contract lifecycle, it helps businesses avoid confusion, reduce risks, and make informed decisions with ease.
                     </p>
                   </div>
 
@@ -449,18 +449,17 @@ function PdfDownload({ data }: any) {
                 </TooltipProvider>
               </div>
 
-              <div>
-                <SliderElement>
-                  {product?.Images?.map((image: string, index: number) => (
-                    <img
-                      key={index}
-                      src={image}
-                      className="w-full rounded-3xl"
-                      alt=""
-                    />
-                  ))}
-                </SliderElement>
-              </div>
+              <div className="space-y-4">
+      {product?.Images?.map((image, index) => (
+        <div key={index} className="w-full">
+          <img
+            src={image}
+            className="w-full h-auto object-cover rounded-lg"
+            alt={`Product image ${index + 1}`}
+          />
+        </div>
+      ))}
+    </div>
 
               <ProductReference product={product} />
 

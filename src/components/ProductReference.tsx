@@ -9,6 +9,7 @@ type Platform = "youtube" | "vimeo";
 
 function ProductReference({ product }: any) {
   const videoInfo = product.videoUrl ? getVideoId(product.videoUrl) : null;
+  console.log("video ", product.videoUrl);
 
   return (
     <div>

@@ -716,6 +716,8 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
     console.log("Form submitted with:", {
       Images: uploadedImages,
       Attachments: uploadedAttachments,
+      image: imagesUrl,
+      attachment: attachmentsUrl,
       instagramUrl,
       videoUrl,
       linkedinUrl,

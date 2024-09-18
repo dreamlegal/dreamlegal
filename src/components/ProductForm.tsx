@@ -681,8 +681,8 @@ setStorage(storage);
           trainingReq: trainingReq,  // Mapped from global state
           dataMigration: dataMigration,  // Mapped from global state
 
-          ImagesUrl: images || undefined,  // Mapped from global state
-          attachmentUrl: attachments || undefined,  // Mapped from global state
+          ImageUrl: imagesUrl || undefined,  // Mapped from global state
+          attachmentUrl: attachmentsUrl || undefined,  // Mapped from global state
           instagramUrl: instagramUrl,  // Mapped from global state
           videoUrl: videoUrl,  // Mapped from global state
           linkedinUrl: linkedinUrl,  // Mapped from global state

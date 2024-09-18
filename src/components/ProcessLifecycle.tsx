@@ -241,7 +241,139 @@ const lifecycleStages = [
       "Analysis",
     ],
   },
-  // other lifecycle stages...
+ {
+        category: "Client Relationship Management ",
+        stages: [
+          "Intake",
+          "Assessment",
+          "Strategize",
+          "Represent",
+          "Communication",
+          "Review",
+        ],
+      },
+      {
+        category: "Governance, Risk and Compliance",
+        stages: [
+          "Coverage",
+          "Assessment",
+          "Validation",
+          "Implementation",
+          "Monitoring",
+          "Analysis",
+        ],
+      },
+      {
+        category: "Contract Lifecycle Management",
+        stages: [
+          "Create",
+          "Negotiation",
+          "Authentication",
+          "Execute",
+          "Store",
+          "Tracking",
+        ],
+      },
+      {
+        category: "E-Signature",
+        stages: [
+          "Document Preparation",
+          "Authentication",
+          "Signing",
+          "Encryption",
+          "Verification",
+          "Distribution",
+        ],
+      },
+      {
+        category: "Document Management System",
+        stages: [
+          "Capture",
+          "Change management",
+          "Review",
+          "Organize",
+          "Access management",
+          "Retrieval",
+        ],
+      },
+      {
+        category: "Document Management System Software",
+        stages: [
+          "Capture",
+          "Change management",
+          "Review",
+          "Organize",
+          "Access management",
+          "Retrieval",
+        ],
+      },
+      {
+        category: "E-billing and Invoicing",
+        stages: [
+          "Invoice generation",
+          "Authorization",
+          "Distribution and Accessibility",
+          "Payment Facilitation",
+          "Tracking",
+          "Analysis",
+        ],
+      },
+      {
+        category: "E-discovery",
+        stages: [
+          "Discover",
+          "Preserve",
+          "Acquire",
+          "Examine",
+          "Evaluate",
+          "Present",
+        ],
+      },
+      {
+        category: "Intellectual Property Management",
+        stages: [
+          "Cataloging",
+          "Analysis",
+          "Protection",
+          "Monitoring",
+          "Enforcement",
+          "Reporting",
+        ],
+      },
+      {
+        category: "Litigation Management and Analytics",
+        stages: [
+          "Intake",
+          "Strategize",
+          "Preparation",
+          "Litigation Support",
+          "Analytics",
+          "Outcome evaluation",
+        ],
+      },
+      {
+        category: "Legal Workflow Automation",
+        stages: [
+          "Process Identification",
+          "Workflow configuration",
+          "Validation",
+          "Implementation",
+          "Tracking",
+          "Optimization",
+        ],
+      },
+      {
+        category: "Legal Research",
+        stages: [
+          "Query Identification",
+         " Source and Type Selection",
+         " Filtration and sorting",
+         " Data extraction",
+          "Data Analysis and Organization",
+          "Storage or retrieval"
+        ],
+      },
+  // other lifecycle stages..
 ];
 
 const ProcessLifecycle = ({ product }: any) => {

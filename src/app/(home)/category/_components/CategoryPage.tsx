@@ -4,6 +4,7 @@ import FeaturedProduct from "@/components/FeaturedProduct";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { data } from "./data";
+import { Button } from "@/components/ui/button";
 
 interface Product {
   id: string;
@@ -68,7 +69,10 @@ const CategoryPage = () => {
 
   useEffect(() => {
     if (dataState) {
-      const products = dataState.products;
+      console.log(dataState);
+      const products = dataState.products.filter((product) => {
+        return product.active === "active";
+      });
       const matchedProducts = products.filter(
         (product) =>
           // console.log(product)
@@ -124,10 +128,18 @@ const CategoryPage = () => {
         </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
-        {categoryData &&
+        {/* {categoryData &&
           categoryData?.labels.map((label: string) => (
             <div key={label}>{label}</div>
-          ))}
+          ))} */}
+        {categoryData &&
+          categoryData?.labels
+            .sort(() => Math.random() - 0.5)
+            .map((label: string) => (
+              <Button variant={"outline"} className="mx-2" key={label}>
+                {label}
+              </Button>
+            ))}
       </div>
       <div>
         {loading && (

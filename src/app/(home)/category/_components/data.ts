@@ -21,7 +21,12 @@ export const data: CategoryData[] = [
     blogHref:
       "https://blog.dreamlegal.in/guide-to-find-best-client-relationship-management-for-lawyers/",
     image: "/CRM.jpg",
-    labels: ["label1", "label2", "label3", "label4"],
+    labels: [
+      "Market Leader",
+      "Challenger",
+      "Emerging player",
+      "Trending product",
+    ],
   },
   {
     slug: "government-risk-and-compliance",
@@ -34,7 +39,12 @@ export const data: CategoryData[] = [
     blogHref:
       "https://blog.dreamlegal.in/guide-to-find-best-client-relationship-management-for-lawyers/",
     image: "/GRC.jpg",
-    labels: ["label1", "label2", "label3", "label4"],
+    labels: [
+      "Market Leader",
+      "Challenger",
+      "Emerging player",
+      "Trending product",
+    ],
   },
   {
     slug: "contract-lifecycle-management",
@@ -47,7 +57,12 @@ export const data: CategoryData[] = [
     blogHref:
       "https://blog.dreamlegal.in/guide-to-find-best-contract-lifecycle-management-tools-for-lawyers/",
     image: "/CLM.jpg",
-    labels: ["label1", "label2", "label3", "label4"],
+    labels: [
+      "Market Leader",
+      "Challenger",
+      "Emerging player",
+      "Trending product",
+    ],
   },
   {
     slug: "e-signature",
@@ -59,7 +74,12 @@ export const data: CategoryData[] = [
     blogHref:
       "https://blog.dreamlegal.in/guide-to-find-best-e-signature-tools-for-lawyers/",
     image: "/esign.jpg",
-    labels: ["label1", "label2", "label3", "label4"],
+    labels: [
+      "Market Leader",
+      "Challenger",
+      "Emerging player",
+      "Trending product",
+    ],
   },
   {
     slug: "document-management-system",
@@ -72,7 +92,12 @@ export const data: CategoryData[] = [
     blogHref:
       "https://blog.dreamlegal.in/guide-to-find-best-document-management-system-for-lawyers/",
     image: "/DMS.jpg",
-    labels: ["label1", "label2", "label3", "label4"],
+    labels: [
+      "Market Leader",
+      "Challenger",
+      "Emerging player",
+      "Trending product",
+    ],
   },
   {
     slug: "e-billing-and-invoicing",
@@ -85,7 +110,12 @@ export const data: CategoryData[] = [
     blogHref:
       "https://blog.dreamlegal.in/guide-to-find-best-e-billing-and-invoicing-tools-for-lawyers/",
     image: "/ebilling.jpg",
-    labels: ["label1", "label2", "label3", "label4"],
+    labels: [
+      "Market Leader",
+      "Challenger",
+      "Emerging player",
+      "Trending product",
+    ],
   },
   {
     slug: "e-discovery",
@@ -97,7 +127,12 @@ export const data: CategoryData[] = [
     blogHref:
       "https://blog.dreamlegal.in/guide-to-find-best-e-discovery-tools-for-lawyers/",
     image: "/ediscovery.jpg",
-    labels: ["label1", "label2", "label3", "label4"],
+    labels: [
+      "Market Leader",
+      "Challenger",
+      "Emerging player",
+      "Trending product",
+    ],
   },
   {
     slug: "intellectual-property-management",
@@ -109,7 +144,12 @@ export const data: CategoryData[] = [
       "Check the guide to find the best Intellectual Property Management",
     blogHref: "/",
     image: "/IPR.jpg",
-    labels: ["label1", "label2", "label3", "label4"],
+    labels: [
+      "Market Leader",
+      "Challenger",
+      "Emerging player",
+      "Trending product",
+    ],
   },
   {
     slug: "litigation-management-and-analytics",
@@ -121,7 +161,12 @@ export const data: CategoryData[] = [
       "Check the guide to find the best Litigation management and analytics tools",
     blogHref: "/",
     image: "/Litigation.jpg",
-    labels: ["label1", "label2", "label3", "label4"],
+    labels: [
+      "Market Leader",
+      "Challenger",
+      "Emerging player",
+      "Trending product",
+    ],
   },
   {
     slug: "legal-workflow-automation",
@@ -133,7 +178,12 @@ export const data: CategoryData[] = [
       "Check the guide to find the best Legal Workflow Automation tools",
     blogHref: "/",
     image: "/workflow.jpg",
-    labels: ["label1", "label2", "label3", "label4"],
+    labels: [
+      "Market Leader",
+      "Challenger",
+      "Emerging player",
+      "Trending product",
+    ],
   },
   {
     slug: "legal-research",
@@ -144,6 +194,11 @@ export const data: CategoryData[] = [
     blogLabel: "Check the guide to find the best Legal Research  tools",
     blogHref: "/",
     image: "/Legal Research.jpg",
-    labels: ["label1", "label2", "label3", "label4"],
+    labels: [
+      "Market Leader",
+      "Challenger",
+      "Emerging player",
+      "Trending product",
+    ],
   },
 ];

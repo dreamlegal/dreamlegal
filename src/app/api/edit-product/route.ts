@@ -46,6 +46,7 @@ export async function POST(request: Request) {
     // price3,
     pricingParams,
     painPointAddressed,
+    
     websiteUrl,
     Images,
     attachments,

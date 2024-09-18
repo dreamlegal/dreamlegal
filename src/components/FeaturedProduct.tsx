@@ -148,12 +148,12 @@ function FeaturedProduct({
       });
   };
 
-  const userCategoryIcons = product.userCategory
-    .map((userCat: any) => {
-      const categoryObj = userCategories.find((cat) => cat.name === userCat);
-      return categoryObj ? categoryObj : null;
-    })
-    .filter(Boolean); // Filter out null values
+  // const userCategoryIcons = product.userCategory
+  //   .map((userCat: any) => {
+  //     const categoryObj = userCategories.find((cat) => cat.name === userCat);
+  //     return categoryObj ? categoryObj : null;
+  //   })
+  //   .filter(Boolean); // Filter out null values
 
 
 
@@ -217,7 +217,15 @@ const { overallRating } = ratings;
 
 // Round the overall rating
 const roundedOverallRating = (overallRating ?? 0).toFixed(1);
-
+const parseUserCategory = (category) => {
+  const [name, , ] = category.split('|'); // Extract only the first part which is the name
+  return name;
+};
+const userCategoryIcons = product.userCategory.map((category) => {
+  const parsedCategory = parseUserCategory(category); // Get the name part
+  const categoryObj = userCategories.find((cat) => cat.name === parsedCategory); // Find matching category object from predefined list
+  return categoryObj || null; // Return matching object or null if not found
+}).filter(Boolean); // Filter out any null values
 
 
 
@@ -240,12 +248,24 @@ const roundedOverallRating = (overallRating ?? 0).toFixed(1);
                 </span>{" "}
               </h3>
             </div>
-            <div className="px-2 py-1 bg-primary2 rounded-full">
-              {" "}
+            <div className="flex flex-col">
+      {category.reduce((rows, cat, index) => {
+        if (index % 2 === 0) rows.push([]);
+        rows[rows.length - 1].push(cat);
+        return rows;
+      }, []).map((row, rowIndex) => (
+        <div key={rowIndex} className="flex flex-row mb-2">
+          {row.map((cat, catIndex) => (
+            <div key={catIndex} className="px-2 py-1 bg-primary2 rounded-full inline-block mr-2">
               <span className="text-xs text-primary1 font-bold">
-                {category}
+                {cat}
               </span>
             </div>
+          ))}
+        </div>
+      ))}
+    </div>
+
           </div>
         </div>
 
@@ -382,21 +402,23 @@ const roundedOverallRating = (overallRating ?? 0).toFixed(1);
         <div className="flex flex-col sm:flex-row sm:justify-between">
 
           <div className="flex gap-2 overflow-x-auto sm:flex-row sm:overflow-visible">
-            {userCategoryIcons.map((userCategory: any, index: number) => (
-              <div
-                key={userCategory.name}
-                className="relative group flex gap-2 items-center bg-primary2 rounded-md p-2"
-              >
-                <img
-                  src={userCategory.icon}
-                  alt={userCategory.name}
-                  className="w-6 h-6"
-                />
-                <div className="hidden group-hover:block text-[10px] font-clarity font-bold transition-all duration-200 cursor-pointer">
-                  {userCategory.name}
-                </div>
-              </div>
-            ))}
+          <div className="flex gap-2 flex-row">
+    {userCategoryIcons.map((category, index) => (
+      <div
+        key={category.name}
+        className="relative group flex gap-2 items-center bg-primary2 rounded-md p-2"
+      >
+        <img
+          src={category.icon}
+          alt={category.name}
+          className="w-6 h-6"
+        />
+        <div className="hidden group-hover:block text-[10px] font-clarity font-bold transition-all duration-200 cursor-pointer">
+          {category.name}
+        </div>
+      </div>
+    ))}
+  </div>
           </div>
 
           

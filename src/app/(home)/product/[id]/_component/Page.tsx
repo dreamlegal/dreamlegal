@@ -700,13 +700,20 @@ function PageComponent({ data }: any) {
 
               
 
-              {/* <div className="flex flex-col gap-4 w-full">
-               
-              </div> */}
+              <div className="flex flex-col gap-4 w-full">
+              <h2
+                  id="lifecycle"
+                  className=" text-4xl font-bold text-gray-900"
+                >
+                 Customer Segments
+                </h2>
+                <div className="w-full h-px bg-slate-200 my-4"></div>
+                <Chart product={product} />
+              </div>
 
       
 
-             <Chart product={product} />
+             
 
               <div className="w-full h-px bg-slate-200 my-4"></div>
 
@@ -829,11 +836,20 @@ function PageComponent({ data }: any) {
                 </div>
               ) : null}
 
-              <ProductPricingTable
+
+{(product.nameofPlan && product.nameofPlan.length > 0) ? (
+  <>
+   <ProductPricingTable
                 nameofPlan={product.nameofPlan}
                 validity={product.validity}
                 price={product.price}
               />
+  </>
+   ) : ( 
+      <Label className="text-lg w-[50%] font-semibold bg-white rounded-[5px] shadow-md p-3">No Fixed Pricing Plans Chosen</Label>
+      )}
+             
+             
 
               <div className="w-full h-px bg-slate-200 my-4"></div>
               

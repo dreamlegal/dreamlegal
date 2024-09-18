@@ -433,7 +433,7 @@ function NormalProduct({
             ))}
           </div> */}
            <div className="flex gap-2 overflow-x-auto sm:flex-row sm:overflow-visible">
-           <div>
+           <div className="flex gap-2 flex-row">
     {userCategoryIcons.map((category, index) => (
       <div
         key={category.name}

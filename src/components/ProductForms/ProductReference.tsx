@@ -621,8 +621,8 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
           const url = data.location;
           console.log("Uploaded file location:", url);
           toast({
-            title: "Saved ... ",
-            description: "if attachment are there wait for them to upload",
+            title: "Images Saved ... ",
+            description: "if attachment are there wait for them to upload otherwise move ahead",
             variant: "success",
           });
           return url;

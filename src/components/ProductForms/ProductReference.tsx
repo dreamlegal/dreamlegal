@@ -621,6 +621,42 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
           const url = data.location;
           console.log("Uploaded file location:", url);
           toast({
+            title: "Saved ... ",
+            description: "if attachment are there wait for them to upload",
+            variant: "success",
+          });
+          return url;
+        } else {
+          console.error("Upload failed:", data.error);
+        }
+      } else {
+        console.error("Failed to upload file:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+    return null;
+  };
+  const uploadFileAttachment = async (file: File, folderName: string) => {
+    // Create the form data
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folderName", folderName);
+
+    try {
+      // Send the POST request
+      const response = await fetch("/api/upload-file", {
+        method: "POST",
+        body: formData,
+      });
+
+      // Handle the response
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          const url = data.location;
+          console.log("Uploaded file location:", url);
+          toast({
             title: "Saved",
             description: "Reference Details Saved ",
             variant: "success",
@@ -673,7 +709,7 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
     let updatedAttachments: string[] = [];
     if (attachments && attachments.length > 0) {
       updatedAttachments = await Promise.all(
-        attachments.map((attachment) => uploadFile(attachment, "attachments"))
+        attachments.map((attachment) => uploadFileAttachment(attachment, "attachments"))
       );
       console.log(`Uploaded attachments: ${updatedAttachments}`);
     }

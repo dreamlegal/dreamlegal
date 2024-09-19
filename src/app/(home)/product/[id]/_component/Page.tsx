@@ -9,7 +9,8 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import { IoLinkSharp, IoReturnUpBackOutline } from "react-icons/io5";
 import { MdOutlineBookmarkBorder, MdOutlineInfo } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
-
+// import { Button } from "@/components/ui/button"
+import { Calendar } from "lucide-react"
 import {
   Tooltip,
   TooltipContent,
@@ -32,6 +33,7 @@ import { GoShareAndroid } from "react-icons/go";
 import { FiPrinter } from "react-icons/fi";
 import ReactApexChart from "react-apexcharts";
 import Loading from "@/components/Loading";
+import BookACallForm from "@/components/BookACallForm";
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -359,6 +361,15 @@ function PageComponent({ data }: any) {
     }
   };
 
+  const [showBookACallForm, setShowBookACallForm] = useState(false);
+
+  const handleOpenBookACallForm = () => {
+    setShowBookACallForm(true);
+  };
+
+  const handleCloseBookACallForm = () => {
+    setShowBookACallForm(false);
+  };
   return (
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 font-clarity">
       <Link href={`/directory`}>
@@ -395,6 +406,29 @@ function PageComponent({ data }: any) {
                   {product.name}
                 </h1>
                 <div className="flex gap-3 md:ml-auto">
+                  <div className="">
+                
+                    <Button className="bg-primary1  transition-all duration-300  rounded-[20px]  "
+                     onClick={handleOpenBookACallForm}> 
+                        <Calendar className="mr-2 h-4 w-4" />
+                        <p className="mt-1"> Book a Call</p>
+                    </Button>
+
+                    
+        
+                    {showBookACallForm && 
+                    <BookACallForm onClose={handleCloseBookACallForm} 
+                              teamsize={company.TeamSize} 
+                              designation={company.PointOfContactDesignation} 
+                              orgType={company.type}
+                              email={user.email} 
+                              vendorId={company.id}
+                              productId={product.id}
+
+                              
+                    />}
+                  
+                  </div>
                   <div
                     className="text-xl text-primary1 p-2 rounded-full border border-primary1"
                     onClick={handleBookmarkClick}
@@ -402,6 +436,8 @@ function PageComponent({ data }: any) {
                     <MdOutlineBookmarkBorder
                       className={isBookmarked ? "text-teal-500" : ""}
                     />
+
+
                   </div>
                   <Dialog>
                     <DialogTrigger asChild>
@@ -505,6 +541,7 @@ function PageComponent({ data }: any) {
                       pageStyle="@page { size: 8.5in 11in; margin: 1in; }" // Custom page size and margin
                     />
                   </div>
+
                 </div>
               </div>
              

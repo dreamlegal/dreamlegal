@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -30,22 +30,31 @@ const CheckboxDemo = ({ product }: any) => {
   const [integration, setIntegration] = useState(0);
   const [support, setSupport] = useState(0);
   const [roi, setRoi] = useState(0);
-  const [featureRatings, setFeatureRatings] = useState(() =>
-    product.features.map((feature: { category: any }) => ({
-      category: feature.category,
-      rating: 0, // Default rating value
-    }))
-  );
+  
+  const [featureRatings, setFeatureRatings] = useState<{ category: any; rating: number }[]>([]);
+
+  useEffect(() => {
+    if (product.features && Array.isArray(product.features)) {
+      const initialRatings = product.features.map((feature: { category: any }) => ({
+        category: feature.category,
+        rating: 0, // Default rating value
+      }));
+      setFeatureRatings(initialRatings);
+    }
+  }, [product.features]);
 
   const [processLifecycleRatings, setProcessLifecycleRatings] = useState(
-    product.processLifecycle.flatMap(
-      (lifecycle: { subcategories: any[]; category: any }) =>
-        lifecycle.subcategories.map((subcategory: any) => ({
-          category: `${lifecycle.category} - ${subcategory}`,
-          rating: 0, // Default rating value
-        }))
-    )
+    Array.isArray(product.processLifecycle)
+      ? product.processLifecycle.flatMap(
+          (lifecycle: { subcategories: any[]; category: any }) =>
+            lifecycle.subcategories.map((subcategory: any) => ({
+              category: `${lifecycle.category}-${subcategory}`,
+              rating: 0, // Default rating value
+            }))
+        )
+      : []
   );
+
   const [rating, setRating] = useState<number>(0);
   const [attachmentUrl, setAttachmentUrl] = useState("");
 
@@ -563,69 +572,70 @@ const CheckboxDemo = ({ product }: any) => {
           {/* Features */}
           <div className="flex flex-col space-y-4 mt-4">
             <p className=" font-bold text-xl">Features</p>
-            {product.features.map((feature: { category: string }) => (
-              // @ts-ignore
-              <div key={feature.category}>
-                <p>{feature.category}</p>
-                <Rating
-                  // @ts-ignore
-
-                  name={feature.category.replace(/\s+/g, "-").toLowerCase()}
-                  value={
-                    featureRatings.find(
-                      (rating: { category: any }) =>
-                        rating.category === feature.category
-                    )?.rating || 0
-                  }
-                  precision={0.5}
-                  // ts-ignore
-                  onChange={(event, newValue) =>
+            {Array.isArray(product.features) &&
+              product.features.map((feature: { category: string }) => (
+                // @ts-ignore
+                <div key={feature.category}>
+                  <p>{feature.category}</p>
+                  <Rating
+                    // @ts-ignore
+                    name={feature.category.replace(/\s+/g, "-").toLowerCase()}
+                    value={
+                      featureRatings.find(
+                        (rating: { category: any }) =>
+                          rating.category === feature.category
+                      )?.rating || 0
+                    }
+                    precision={0.5}
                     // ts-ignore
-                    handleFeatureRatingChange(
-                      feature.category,
+                    onChange={(event, newValue) =>
                       // ts-ignore
-                      newValue
-                    )
-                  }
-                />
-              </div>
-            ))}
+                      handleFeatureRatingChange(
+                        feature.category,
+                        // ts-ignore
+                        newValue
+                      )
+                    }
+                  />
+                </div>
+              ))}
           </div>
 
           {/* Process Lifecycle */}
           <div className="flex flex-col space-y-4 mt-4">
             <p className=" font-bold text-xl">Process Lifecycle</p>
 
-            {product.processLifecycle.map(
-              (lifecycle: {
-                category: string;
+            {Array.isArray(product.processLifecycle) &&
+              product.processLifecycle.map(
+                (lifecycle: {
+                  category: string;
 
-                subcategories: any[];
-              }) => (
-                <div key={lifecycle.category}>
-                  <h4>{lifecycle.category}</h4>
-                  {lifecycle.subcategories.map((subcategory: string) => (
-                    <div key={`${lifecycle.category}-${subcategory}`}>
-                      <p>{subcategory}</p>
-                      <Rating
-                        name={`${lifecycle.category}-${subcategory}`
-                          .replace(/\s+/g, "-")
-                          .toLowerCase()}
-                        value={
-                          processLifecycleRatings.find(
-                            (rating: { category: string }) =>
-                              rating.category ===
-                              `${lifecycle.category} - ${subcategory}`
-                          )?.rating || 0
-                        }
-                        precision={0.5}
-                        onChange={(event, newValue) =>
-                          handleProcessLifecycleRatingChange(
-                            `${lifecycle.category} - ${subcategory}`,
-                            // ts-ignore
-                            newValue
-                          )
-                        }
+                  subcategories: any[];
+                }) => (
+                  <div key={lifecycle.category}>
+                    <h4>{lifecycle.category}</h4>
+                    {lifecycle.subcategories.map((subcategory: string) => (
+                      <div key={`${lifecycle.category}-${subcategory}`}>
+                        <p>{subcategory}</p>
+                        <Rating
+                          name={`${lifecycle.category}-${subcategory}`
+                            .replace(/\s+/g, "-")
+                            .toLowerCase()}
+                          value={
+                            processLifecycleRatings.find(
+                              (rating: { category: string }) =>
+                                rating.category ===
+                                `${lifecycle.category} - ${subcategory}`
+                            )?.rating || 0
+                          }
+                          precision={0.5}
+                          onChange={(event, newValue) =>
+                            handleProcessLifecycleRatingChange(
+                              `${lifecycle.category} - ${subcategory}`,
+                              // ts-ignore
+                              newValue
+                            )
+                          }
                       />
                     </div>
                   ))}

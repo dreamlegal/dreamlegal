@@ -11,7 +11,8 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { RiMenu2Line } from "react-icons/ri";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-
+import BookACallForm from "@/components/BookACallForm";
+import VendorLeads from "@/components/VendorLeads";
 function VendorDashboardPage({ verified }: { verified: boolean }) {
   const [selectedMenu, setSelectedMenu] = useState("allProducts");
   const [vendorId, setVendorId] = useState<string | null>(null);
@@ -190,6 +191,9 @@ function VendorDashboardPage({ verified }: { verified: boolean }) {
               )}
               {selectedMenu === "Review" && (
                 <VendorReview userId={vendorId! || getVendorId!} />
+              )}
+              {selectedMenu === "BookACall" && (
+                <VendorLeads userId={vendorId! || getVendorId!} />
               )}
               {selectedMenu === "Profile" && (
                 <VendorProfile verified={verified} getProfile={profile} />

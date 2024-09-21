@@ -324,8 +324,16 @@ function PageComponent({ data }: any) {
   }
 
   console.log(product);
-  console.log(company);
+  const CustomerUserId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+  console.log(CustomerUserId)
+  // if(!CustomerUserId){
 
+  // console.log("User not logged in")
+  // return null
+  // }
+
+  console.log("company",company);
+ 
   const copyToClipboard = (text: string) => {
     navigator.clipboard
       .writeText(text)
@@ -414,16 +422,17 @@ function PageComponent({ data }: any) {
                         <p className="mt-1"> Book a Call</p>
                     </Button>
 
-                    
+                  
         
                     {showBookACallForm && 
                     <BookACallForm onClose={handleCloseBookACallForm} 
-                              teamsize={company.TeamSize} 
-                              designation={company.PointOfContactDesignation} 
-                              orgType={company.type}
-                              email={user.email} 
-                              vendorId={company.id}
+                              CustomerUserId={CustomerUserId}
+                              vendorId={company.userId}
                               productId={product.id}
+                              vendorName={company.companyName}
+                              productName={product.name}
+
+
 
                               
                     />}

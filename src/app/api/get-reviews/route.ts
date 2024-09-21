@@ -27,6 +27,33 @@ export async function POST(request: Request) {
         },
       },
     });
+    // const userDetails = await prisma.userAccount.findFirst({
+    //   where: { userId: reviews[0].user.id },
+     
+    //   select: {
+    //     Designation: true,
+    //     CompanyAddress: true,
+    //   }
+    // });
+    const reviewsWithUserDetails = await Promise.all(reviews.map(async (review) => {
+      const userDetails = await prisma.userAccount.findFirst({
+        where: { userId: review.user.id },
+        select: {
+          Designation: true,
+          CompanyAddress: true,
+        }
+      });
+
+      return {
+        ...review,
+        user: {
+          ...review.user,
+          ...userDetails,
+        },
+        overallExperience: review.overallExperienc // Assuming you meant `overallExperience`
+      };
+    }));
+    // console.log("userDetails:",userDetails)
 
     // Calculate overall rating
     const totalReviews = reviews.length;
@@ -40,10 +67,15 @@ export async function POST(request: Request) {
       JSON.stringify({
         success: true,
         msg: "Reviews fetched successfully",
-        reviews: reviews.map(review => ({
-          ...review,
-          overallExperience: review.overallExperienc // Assuming you meant `overallExperience`
-        })),
+        // reviews: reviews.map(review => ({
+        //   ...review,
+        //   overallExperience: review.overallExperienc // Assuming you meant `overallExperience`
+        // })),
+        // overallRating,
+        // overallRecommendation,
+        // totalReviews,
+        // userDetails, // Add user details to the response
+        reviews: reviewsWithUserDetails,
         overallRating,
         overallRecommendation,
         totalReviews,

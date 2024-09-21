@@ -281,3 +281,22 @@ model Notification {
  
 }
 
+model Booking {
+  id               String      @id @default(cuid())
+  productId        String
+  vendorId         String
+  ProductName      String
+  VendorName       String
+  contactEmail     String
+  designation      String
+  name             String
+  organisationName String
+  organisationType String
+  requirements     String
+  scheduleDemo     Boolean
+  teamSize         String
+  bookingTime      DateTime
+
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}

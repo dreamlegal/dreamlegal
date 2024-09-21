@@ -32,6 +32,7 @@ import {
   TelegramShareButton,
   TelegramIcon,
 } from "next-share";
+import { data } from "@/app/(home)/category/_components/data";
 const userCategories = [
   { name: "Law firms", icon: "/lawfirmicon.svg" },
   { name: "Individual Practitioner", icon: "/prac.svg" },
@@ -42,7 +43,6 @@ const userCategories = [
   { name: "In-House Counsels", icon: "/lawyers.svg" },
 ];
 
-
 function NormalProduct({
   id,
   image,
@@ -50,7 +50,6 @@ function NormalProduct({
   description,
   category,
   product,
- 
 }: any) {
   const userId =
     typeof window !== "undefined" && localStorage.getItem("userId");
@@ -166,11 +165,9 @@ function NormalProduct({
   const industries = product.industry;
   const isOdd = industries.length % 2 !== 0;
 
+  console.log(product);
 
- console.log(product)
-  
-
- const [ratings, setRatings] = useState({
+  const [ratings, setRatings] = useState({
     overallRating: 0,
     message: "",
   });
@@ -197,7 +194,10 @@ function NormalProduct({
 
         // Update the state with the fetched data
         if (data.message === "No reviews found for this product") {
-          setRatings({ overallRating: 0, message: "No reviews found for this product" });
+          setRatings({
+            overallRating: 0,
+            message: "No reviews found for this product",
+          });
         } else {
           setRatings(data);
         }
@@ -229,20 +229,20 @@ function NormalProduct({
   // Round the overall rating
   const roundedOverallRating = (overallRating ?? 0).toFixed(1);
   const parseUserCategory = (category) => {
-    const [name, , ] = category.split('|'); // Extract only the first part which is the name
+    const [name, ,] = category.split("|"); // Extract only the first part which is the name
     return name;
   };
-  
+
   // Map the user categories to match the parsed name with the appropriate icon
-  const userCategoryIcons = product.userCategory.map((category) => {
-    const parsedCategory = parseUserCategory(category); // Get the name part
-    const categoryObj = userCategories.find((cat) => cat.name === parsedCategory); // Find matching category object from predefined list
-    return categoryObj || null; // Return matching object or null if not found
-  }).filter(Boolean); // Filter out any null values
-
-  
-
-
+  const userCategoryIcons = product.userCategory
+    .map((category) => {
+      const parsedCategory = parseUserCategory(category); // Get the name part
+      const categoryObj = userCategories.find(
+        (cat) => cat.name === parsedCategory
+      ); // Find matching category object from predefined list
+      return categoryObj || null; // Return matching object or null if not found
+    })
+    .filter(Boolean); // Filter out any null values
 
   return (
     <div className="w-full px-10 py-7  rounded-xl border  font-clarity bg-gray-50 border-gray-300 shadow-md">
@@ -263,24 +263,34 @@ function NormalProduct({
                 {category}
               </span>
             </div> */}
-           <div className="flex flex-col">
-      {category.reduce((rows, cat, index) => {
-        if (index % 2 === 0) rows.push([]);
-        rows[rows.length - 1].push(cat);
-        return rows;
-      }, []).map((row, rowIndex) => (
-        <div key={rowIndex} className="flex flex-row mb-2">
-          {row.map((cat, catIndex) => (
-            <div key={catIndex} className="px-2 py-1 bg-primary2 rounded-full inline-block mr-2">
-              <span className="text-xs text-primary1 font-bold">
-                {cat}
-              </span>
-            </div>
-          ))}
+            <div className="flex flex-col">
+            {category
+  .reduce((rows, cat, index) => {
+    if (index % 2 === 0) rows.push([]);
+    rows[rows.length - 1].push(cat);
+    return rows;
+  }, [])
+  .map((row, rowIndex) => (
+    <div key={rowIndex} className="flex flex-row mb-2">
+      {row.map((cat) => (
+        <div key={cat} className="px-2 py-1 bg-primary2 rounded-full inline-block mr-2">
+          <span className="text-xs text-primary1 font-bold">
+            {data.map((item) => {
+              let formattedStr = cat.toLowerCase().replace(/ /g, "-");
+              return (
+                <Link href={`/category/${item.slug}`} key={item.slug}>
+                  {formattedStr === item.slug && item.name}
+                </Link>
+              );
+            })}
+          </span>
         </div>
       ))}
     </div>
+  ))}
 
+            </div>
+            
           </div>
         </div>
         <div className=" hidden md:block md:ml-auto">
@@ -414,7 +424,6 @@ function NormalProduct({
       <div>
         <div className="text-xs text-slate-400 mt-4 mb-1">Users</div>
         <div className="flex flex-col sm:flex-row sm:justify-between">
-
           {/* <div className="flex gap-2 overflow-x-auto sm:flex-row sm:overflow-visible">
             {userCategoryIcons.map((userCategory: any, index: number) => (
               <div
@@ -432,27 +441,26 @@ function NormalProduct({
               </div>
             ))}
           </div> */}
-           <div className="flex gap-2 overflow-x-auto sm:flex-row sm:overflow-visible">
-           <div className="flex gap-2 flex-row">
-    {userCategoryIcons.map((category, index) => (
-      <div
-        key={category.name}
-        className="relative group flex gap-2 items-center bg-primary2 rounded-md p-2"
-      >
-        <img
-          src={category.icon}
-          alt={category.name}
-          className="w-6 h-6"
-        />
-        <div className="hidden group-hover:block text-[10px] font-clarity font-bold transition-all duration-200 cursor-pointer">
-          {category.name}
-        </div>
-      </div>
-    ))}
-  </div>
-    </div>
+          <div className="flex gap-2 overflow-x-auto sm:flex-row sm:overflow-visible">
+            <div>
+              {userCategoryIcons.map((category, index) => (
+                <div
+                  key={category.name}
+                  className="relative group flex gap-2 items-center bg-primary2 rounded-md p-2"
+                >
+                  <img
+                    src={category.icon}
+                    alt={category.name}
+                    className="w-6 h-6"
+                  />
+                  <div className="hidden group-hover:block text-[10px] font-clarity font-bold transition-all duration-200 cursor-pointer">
+                    {category.name}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
-          
           <div className="flex flex-col sm:flex-row sm:gap-5 mt-4 sm:mt-0">
             <div className="text-xs text-slate-400 mb-1">
               <p className="text-sm text-gray-600"> Average Adoption Time</p>
@@ -467,11 +475,8 @@ function NormalProduct({
             </div>
           </div>
         </div>
-
-       
       </div>
 
-      
       <div className=" block md:hidden">
         <div className="md:ml-auto mt-4 md:mt-0 flex gap-4 items-center">
           <div>

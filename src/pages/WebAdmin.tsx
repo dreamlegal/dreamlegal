@@ -10,6 +10,7 @@ import NewProductAdmin from "@/components/NewProductAdmin";
 import NewVendor from "@/components/NewVendor";
 import SendNotification from "@/components/SendNotification";
 import AdminSidebar from "@/components/ui/AdminSidebar";
+import AdminLeads from "@/components/AdminLeads";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -67,6 +68,7 @@ function WebAdmin() {
               {selectedMenu === "addAdmin" && <AddAdmin />}
               {selectedMenu === "addAnalytics" && <AddAnalytics />}
               {selectedMenu === "sendNotification" && <SendNotification />}
+              {selectedMenu === "adminLeads" && <AdminLeads/>}
 
               {/* {selectedMenu === "Dashboard" && <VendorDashborad />}
               {selectedMenu === "AddProduct" && <AddProduct />}

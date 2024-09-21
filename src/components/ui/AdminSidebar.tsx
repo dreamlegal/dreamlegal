@@ -16,7 +16,7 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
   const [Admins, setAdmins] = useState(false);
   const [Logout, setLogout] = useState(false);
   const router = useRouter();
-
+  const [AdminLeads, setAdminLeads] = useState(false);
   const handleLogout = () => {
     localStorage.removeItem("adminId"); // Corrected to remove adminId
     router.push("/web-admin/login"); // Redirect to the login page
@@ -170,6 +170,14 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
                   }`}
                 >
                   Notifications
+                </li>
+                <li
+                  onClick={() => onMenuItemClick("adminLeads")}
+                  className={`text-slate-300 hover:cursor-pointer ${
+                    selectedMenu === "adminLeads" ? "text-white" : ""
+                  }`}
+                >
+                  All Leads
                 </li>
               </ul>
             </li>

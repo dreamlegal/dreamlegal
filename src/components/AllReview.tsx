@@ -41,7 +41,7 @@ function AllReview({ type = "user", product }: any) {
         });
 
         const result = await response.json();
-
+        console.log("result:",result)
         if (result.success) {
           setReviews(result.reviews);
           setOverallRating(result.overallRating);

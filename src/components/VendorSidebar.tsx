@@ -7,7 +7,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
 import { FaRegStar } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-
+import { User } from 'lucide-react';
 function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
   const [selectedItem, setSelectedItem] = useState("Products");
   const [Dashboard, setDashboard] = useState(false);
@@ -16,6 +16,7 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
   const [Profile, setProfile] = useState(false);
   const [Logout, setLogout] = useState(false);
   const [Support, setSupport] = useState(false);
+  const [BookACall, setBookACall] = useState(false);
   const router = useRouter();
 
   const handleMenuClick = (item: string) => {
@@ -31,6 +32,10 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
   const handleProfile = () => {
     setProfile(!Profile);
     handleMenuClick("Profile");
+  };
+  const handleBookACall = () => {
+    setBookACall(!BookACall);
+    handleMenuClick("BookACall");
   };
 
   const handlelogout = () => {
@@ -115,6 +120,23 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
 
             <li
               onClick={() => {
+                 setBookACall(!BookACall);
+                handleMenuClick("BookACall");
+              }}
+              className={`flex justify-between text-sm items-center px-4 py-4 rounded-md transition-all duration-200 hover:cursor-pointer ${
+                selectedItem === "BookACall"
+                  ? "text-white bg-[#034b8a]"
+                  : "text-slate-300"
+              }`}
+            >
+              <span className={`flex gap-2 items-center `}>
+                {/* <FaRegUserCircle className="text-xl" /> */}
+                <User className= "text-xl"/>
+                Leads
+              </span>
+            </li>
+            <li
+              onClick={() => {
                 setReview(!Review);
                 handleMenuClick("Review");
               }}
@@ -146,6 +168,7 @@ function VendorSidebar({ onMenuItemClick, selectedMenu }: any) {
                 Profile
               </span>
             </li>
+           
 
             <li
               onClick={() => {

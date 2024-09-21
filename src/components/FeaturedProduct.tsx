@@ -34,6 +34,7 @@ import {
   TelegramIcon,
 } from "next-share";
 import { GoShareAndroid } from "react-icons/go";
+import { data } from "@/app/(home)/category/_components/data";
 
 function FeaturedProduct({
   id,
@@ -148,87 +149,74 @@ function FeaturedProduct({
       });
   };
 
-  // const userCategoryIcons = product.userCategory
-  //   .map((userCat: any) => {
-  //     const categoryObj = userCategories.find((cat) => cat.name === userCat);
-  //     return categoryObj ? categoryObj : null;
-  //   })
-  //   .filter(Boolean); // Filter out null values
+  const userCategoryIcons = product.userCategory
+    .map((userCat: any) => {
+      const categoryObj = userCategories.find((cat) => cat.name === userCat);
+      return categoryObj ? categoryObj : null;
+    })
+    .filter(Boolean); // Filter out null values
 
+  const [ratings, setRatings] = useState({
+    overallRating: 0,
+    message: "",
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    const fetchRatings = async (id: any) => {
+      try {
+        const response = await fetch("/api/cal-review", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ productId: id }),
+        });
 
-    
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
- const [ratings, setRatings] = useState({
-  overallRating: 0,
-  message: "",
-});
-const [loading, setLoading] = useState(true);
-const [error, setError] = useState<string | null>(null);
+        const data = await response.json();
+        console.log("data rating", data);
 
-useEffect(() => {
-  const fetchRatings = async (id: any) => {
-    try {
-      const response = await fetch("/api/cal-review", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ productId: id }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        // Update the state with the fetched data
+        if (data.message === "No reviews found for this product") {
+          setRatings({
+            overallRating: 0,
+            message: "No reviews found for this product",
+          });
+        } else {
+          setRatings(data);
+        }
+      } catch (error) {
+        setError(error instanceof Error ? error.message : "Unknown error");
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const data = await response.json();
-      console.log("data rating", data);
-
-      // Update the state with the fetched data
-      if (data.message === "No reviews found for this product") {
-        setRatings({ overallRating: 0, message: "No reviews found for this product" });
-      } else {
-        setRatings(data);
-      }
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "Unknown error");
-    } finally {
+    if (product && product.id) {
+      fetchRatings(product.id);
+    } else {
       setLoading(false);
+      setError("Product ID is missing.");
     }
-  };
+  }, [product]);
 
-  if (product && product.id) {
-    fetchRatings(product.id);
-  } else {
-    setLoading(false);
-    setError("Product ID is missing.");
+  if (loading) {
+    return <p>Loading...</p>;
   }
-}, [product]);
 
-if (loading) {
-  return <p>Loading...</p>;
-}
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
-if (error) {
-  return <p>Error: {error}</p>;
-}
+  const { overallRating } = ratings;
 
-const { overallRating } = ratings;
-
-// Round the overall rating
-const roundedOverallRating = (overallRating ?? 0).toFixed(1);
-const parseUserCategory = (category) => {
-  const [name, , ] = category.split('|'); // Extract only the first part which is the name
-  return name;
-};
-const userCategoryIcons = product.userCategory.map((category) => {
-  const parsedCategory = parseUserCategory(category); // Get the name part
-  const categoryObj = userCategories.find((cat) => cat.name === parsedCategory); // Find matching category object from predefined list
-  return categoryObj || null; // Return matching object or null if not found
-}).filter(Boolean); // Filter out any null values
-
-
-
+  // Round the overall rating
+  const roundedOverallRating = (overallRating ?? 0).toFixed(1);
 
   return (
     <div className="w-full px-10 py-7 rounded-xl border  font-clarity bg-gray-50 border-gray-300 shadow-md ">
@@ -248,23 +236,33 @@ const userCategoryIcons = product.userCategory.map((category) => {
                 </span>{" "}
               </h3>
             </div>
-            <div className="flex flex-col">
-      {category.reduce((rows, cat, index) => {
-        if (index % 2 === 0) rows.push([]);
-        rows[rows.length - 1].push(cat);
-        return rows;
-      }, []).map((row, rowIndex) => (
-        <div key={rowIndex} className="flex flex-row mb-2">
-          {row.map((cat, catIndex) => (
-            <div key={catIndex} className="px-2 py-1 bg-primary2 rounded-full inline-block mr-2">
+            {/* <div className="px-2 py-1 bg-primary2 rounded-full">
+              {" "}
               <span className="text-xs text-primary1 font-bold">
-                {cat}
+                {data.map((item) => {
+                  let formattedStr = category[0]
+                    .toLowerCase()
+                    .replace(/ /g, "-");
+                  return (
+                    <Link href={`/category/${item.slug}`}>
+                      {formattedStr === item.slug && item.name}
+                    </Link>
+                  );
+                })}
               </span>
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
+            </div> */}
+            <div className="px-2 py-1 bg-primary2 rounded-full">
+  <span className="text-xs text-primary1 font-bold">
+    {data.map((item) => {
+      let formattedStr = category[0].toLowerCase().replace(/ /g, "-");
+      return (
+        <Link href={`/category/${item.slug}`} key={item.slug}>
+          {formattedStr === item.slug && item.name}
+        </Link>
+      );
+    })}
+  </span>
+</div>
 
           </div>
         </div>
@@ -400,28 +398,24 @@ const userCategoryIcons = product.userCategory.map((category) => {
       <div>
         <div className="text-xs text-slate-400 mt-4 mb-1">Users</div>
         <div className="flex flex-col sm:flex-row sm:justify-between">
-
           <div className="flex gap-2 overflow-x-auto sm:flex-row sm:overflow-visible">
-          <div className="flex gap-2 flex-row">
-    {userCategoryIcons.map((category, index) => (
-      <div
-        key={category.name}
-        className="relative group flex gap-2 items-center bg-primary2 rounded-md p-2"
-      >
-        <img
-          src={category.icon}
-          alt={category.name}
-          className="w-6 h-6"
-        />
-        <div className="hidden group-hover:block text-[10px] font-clarity font-bold transition-all duration-200 cursor-pointer">
-          {category.name}
-        </div>
-      </div>
-    ))}
-  </div>
+            {userCategoryIcons.map((userCategory: any, index: number) => (
+              <div
+                key={userCategory.name}
+                className="relative group flex gap-2 items-center bg-primary2 rounded-md p-2"
+              >
+                <img
+                  src={userCategory.icon}
+                  alt={userCategory.name}
+                  className="w-6 h-6"
+                />
+                <div className="hidden group-hover:block text-[10px] font-clarity font-bold transition-all duration-200 cursor-pointer">
+                  {userCategory.name}
+                </div>
+              </div>
+            ))}
           </div>
 
-          
           <div className="flex flex-col sm:flex-row sm:gap-5 mt-4 sm:mt-0">
             <div className="text-xs text-slate-400 mb-1">
               <p className="text-sm text-gray-600"> Average Adoption Time</p>
@@ -436,10 +430,7 @@ const userCategoryIcons = product.userCategory.map((category) => {
             </div>
           </div>
         </div>
-
-       
       </div>
-
 
       <div className=" block md:hidden">
         <div className="md:ml-auto mt-4 md:mt-0 flex gap-4 items-center">

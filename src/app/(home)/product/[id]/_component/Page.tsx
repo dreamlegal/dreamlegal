@@ -256,10 +256,7 @@ function PageComponent({ data }: any) {
   const usps = product.usp ? product.usp.split(",") : [];
   const [isBookmarked, setIsBookmarked] = useState(false);
 
-  useEffect(() => {
-    // Fetch initial bookmark status if needed
-    // This can be an API call to check if the product is already bookmarked by the user
-  }, []);
+ 
   const savePageAsPDF = async () => {
     if (typeof window !== "undefined") {
       window.print();
@@ -319,9 +316,7 @@ function PageComponent({ data }: any) {
     }
   };
 
-  if (!product) {
-    return <Loading />;
-  }
+ 
 
   console.log(product);
   const CustomerUserId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
@@ -378,6 +373,9 @@ function PageComponent({ data }: any) {
   const handleCloseBookACallForm = () => {
     setShowBookACallForm(false);
   };
+  if (!product) {
+    return <Loading />;
+  }
   return (
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 font-clarity">
       <Link href={`/directory`}>
@@ -883,17 +881,17 @@ function PageComponent({ data }: any) {
               ) : null}
 
 
-{(product.nameofPlan && product.nameofPlan.length > 0) ? (
-  <>
-   <ProductPricingTable
-                nameofPlan={product.nameofPlan}
-                validity={product.validity}
-                price={product.price}
-              />
-  </>
-   ) : ( 
-      <Label className="text-lg w-[50%] font-semibold bg-white rounded-[5px] shadow-md p-3">No Fixed Pricing Plans Chosen</Label>
-      )}
+          {(product.nameofPlan && product.nameofPlan.length > 0) ? (
+            <>
+            <ProductPricingTable
+                          nameofPlan={product.nameofPlan}
+                          validity={product.validity}
+                          price={product.price}
+                        />
+            </>
+            ) : ( 
+                <Label className="text-lg w-[50%] font-semibold bg-white rounded-[5px] shadow-md p-3">No Fixed Pricing Plans Chosen</Label>
+                )}
              
              
 

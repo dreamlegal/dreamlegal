@@ -264,37 +264,33 @@ function NormalProduct({
               </span>
             </div> */}
             <div className="flex flex-col">
-              {category
-                .reduce((rows, cat, index) => {
-                  if (index % 2 === 0) rows.push([]);
-                  rows[rows.length - 1].push(cat);
-                  return rows;
-                }, [])
-                .map((row, rowIndex) => (
-                  <div key={rowIndex} className="flex flex-row mb-2">
-                    {row.map((cat, catIndex) => (
-                      <div
-                        key={catIndex}
-                        className="px-2 py-1 bg-primary2 rounded-full inline-block mr-2"
-                      >
-                        <span className="text-xs text-primary1 font-bold">
-                          {data.map((item) => {
-                            let formattedStr = cat
-                              .toLowerCase()
-                              .replace(/ /g, "-");
-                            return (
-                              <Link href={`/category/${item.slug}`}>
-                                {formattedStr === item.slug && item.name}
-                              </Link>
-                            );
-                          })}
-                          {/* {cat} */}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ))}
+            {category
+  .reduce((rows, cat, index) => {
+    if (index % 2 === 0) rows.push([]);
+    rows[rows.length - 1].push(cat);
+    return rows;
+  }, [])
+  .map((row, rowIndex) => (
+    <div key={rowIndex} className="flex flex-row mb-2">
+      {row.map((cat) => (
+        <div key={cat} className="px-2 py-1 bg-primary2 rounded-full inline-block mr-2">
+          <span className="text-xs text-primary1 font-bold">
+            {data.map((item) => {
+              let formattedStr = cat.toLowerCase().replace(/ /g, "-");
+              return (
+                <Link href={`/category/${item.slug}`} key={item.slug}>
+                  {formattedStr === item.slug && item.name}
+                </Link>
+              );
+            })}
+          </span>
+        </div>
+      ))}
+    </div>
+  ))}
+
             </div>
+            
           </div>
         </div>
         <div className=" hidden md:block md:ml-auto">

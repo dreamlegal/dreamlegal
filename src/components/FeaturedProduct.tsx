@@ -236,7 +236,7 @@ function FeaturedProduct({
                 </span>{" "}
               </h3>
             </div>
-            <div className="px-2 py-1 bg-primary2 rounded-full">
+            {/* <div className="px-2 py-1 bg-primary2 rounded-full">
               {" "}
               <span className="text-xs text-primary1 font-bold">
                 {data.map((item) => {
@@ -250,7 +250,20 @@ function FeaturedProduct({
                   );
                 })}
               </span>
-            </div>
+            </div> */}
+            <div className="px-2 py-1 bg-primary2 rounded-full">
+  <span className="text-xs text-primary1 font-bold">
+    {data.map((item) => {
+      let formattedStr = category[0].toLowerCase().replace(/ /g, "-");
+      return (
+        <Link href={`/category/${item.slug}`} key={item.slug}>
+          {formattedStr === item.slug && item.name}
+        </Link>
+      );
+    })}
+  </span>
+</div>
+
           </div>
         </div>
 

@@ -575,7 +575,7 @@ const BookACallForm: React.FC<BookACallFormProps> = ({
   
 
   if (loading) {
-    return <div>Loading user data...</div>;
+    return <div>Autofilling your details..</div>;
   }
 
   return (

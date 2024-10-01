@@ -141,7 +141,7 @@ export async function GET(request: Request) {
   try {
     const products = await prisma.product.findMany({
       where: {
-        active: 'publish', // Fetch only published products
+        active: 'draft', // Fetch only published products
       },
       orderBy: {
         createdAt: 'desc', // Sort by creation date (newest first)

@@ -82,7 +82,7 @@
 //   }
 // }
 
-// authorisation issue commit 
+// authorisation issue commit
 
 // import prisma from '@/lib/prisma';
 
@@ -135,16 +135,17 @@
 //     );
 //   }
 // }
-import prisma from '@/lib/prisma'; // Adjust the path to your prisma setup
+import prisma from '@/lib/prisma';
 
-export async function GET(request: Request) {
+export async function GET(request) {
   try {
+    // Fetch all products where 'active' is 'draft'
     const products = await prisma.product.findMany({
       where: {
-        active: 'draft', // Fetch only published products
+        active: 'draft',
       },
       orderBy: {
-        createdAt: 'desc', // Sort by creation date (newest first)
+        createdAt: 'desc', // Order by most recent products
       },
     });
 
@@ -157,6 +158,7 @@ export async function GET(request: Request) {
       {
         status: 200,
         headers: {
+          // Ensure the response is not cached
           'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
           'Pragma': 'no-cache',
           'Expires': '0',
@@ -165,7 +167,7 @@ export async function GET(request: Request) {
       }
     );
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error(error);
     return new Response(
       JSON.stringify({
         msg: 'An error occurred while fetching the products.',
@@ -173,6 +175,13 @@ export async function GET(request: Request) {
       }),
       {
         status: 500,
+        headers: {
+          // Also ensure no caching in case of error
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+          'Surrogate-Control': 'no-store',
+        },
       }
     );
   }

@@ -300,3 +300,37 @@ model Booking {
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
 }
+
+model ProductView {
+  id            Int      @id @default(autoincrement())
+  productId     String   // Change from Int to String if necessary
+  userOrgType   String?  // Nullable for uncategorized users
+  createdAt     DateTime @default(now()) // Timestamp of the view
+  country       String?
+}
+
+model Bookmark {
+  id            Int      @id @default(autoincrement())
+  productId     String   // Change from Int to String if necessary
+  userOrgType   String?  // Nullable for uncategorized users
+  createdAt     DateTime @default(now()) // Timestamp of the bookmark
+  country       String?
+}
+
+model Share {
+  id            Int      @id @default(autoincrement())
+  productId     String   // Change from Int to String if necessary
+  country       String?
+  userOrgType   String?  // Nullable for uncategorized users
+  createdAt     DateTime @default(now()) // Timestamp of the share
+}
+model Features {
+  id           Int      @id @default(autoincrement())
+  productID    String
+  country      String?  // Optional country field
+  userOrgType  String?
+  time         DateTime @default(now())
+  categoryData Json     // To store category names and their open counts
+
+  @@map("features") // The table is now called "features"
+}

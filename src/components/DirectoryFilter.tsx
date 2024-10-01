@@ -441,7 +441,6 @@ function DirectoryFilter({
       mobileAvailable: [],
     });
   };
-
   useEffect(() => {
     if (category && category !== "") {
       setOpenCategory((prevState) => ({
@@ -829,7 +828,7 @@ function DirectoryFilter({
             }`}
           >
             <ul className="space-y-1 border-t border-gray-200 p-4">
-              {/* Render checkboxes dynamically if possible */}
+           
               {[
                 "Individual Practitioner",
                 "Law firms",

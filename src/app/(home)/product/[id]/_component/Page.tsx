@@ -179,76 +179,152 @@ function PageComponent({ data }: any) {
   const componentRef = useRef(null);
   const userId =
     typeof window !== "undefined" ? localStorage.getItem("userId") : null; // Check if window is defined
+    
+    // add view 
+    const hasViewed = useRef(false); // Ref to track if the view has been added
 
-  useEffect(() => {
-    const addAnalytics = async () => {
-      const loginsViews = userId ? 1 : 0;
-      const userAgent = navigator.userAgent;
-      let desktopViews = 0;
-      let mobileViews = 0;
-      let tabletViews = 0;
-
-      if (/Mobi|Android/i.test(userAgent)) {
-        mobileViews = 1;
-      } else if (/Tablet|iPad/i.test(userAgent)) {
-        tabletViews = 1;
+    // useEffect(() => {
+    
+    //   const viewedKey = `viewed_product_${data.product.id}`; // Unique key for sessionStorage
+  
+    //   const fetchUserData = async () => {
+    //     if (!userId) {
+    //       return 'Uncategorized'; // Return default orgType if user is not logged in
+    //     }
+  
+    //     try {
+    //       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`);
+    //       if (!response.ok) {
+    //         throw new Error("Failed to fetch user data");
+    //       }
+    //       const userData = await response.json();
+    //       if (userData.success) {
+    //         return userData.profile.CompanyType || 'Uncategorized'; // Return orgType
+    //       } else {
+    //         throw new Error("Failed to fetch user data");
+    //       }
+    //     } catch (err) {
+    //       console.error(err.message || "Error fetching user data");
+    //       return 'Uncategorized'; // Fallback to 'Uncategorized' on error
+    //     }
+    //   };
+  
+    //   const addView = async (userOrgType) => {
+    //     try {
+    //       const response = await fetch('/api/add-view', {
+    //         method: 'POST',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //           productId: data.product.id, // Sending the product ID
+    //           userOrgType: userOrgType, // Use the fetched orgType
+    //           country:countryName,
+    //         }),
+    //       });
+  
+    //       const result = await response.json(); // Parse the JSON response
+  
+    //       if (response.ok) {
+    //         console.log('View added successfully:', result.data);
+    //         sessionStorage.setItem(viewedKey, 'true'); // Mark as viewed for this session
+    //       } else {
+    //         console.error('Failed to add view:', result.message);
+    //       }
+    //     } catch (error) {
+    //       console.error('Error adding view:', error);
+    //     }
+    //   };
+  
+    //   const handleAddView = async () => {
+    //     if (!hasViewed.current && !sessionStorage.getItem(viewedKey)) { // Check if view has not been added
+    //       hasViewed.current = true; // Mark as viewed
+    //       const userOrgType = await fetchUserData(); // Fetch the user's orgType
+    //       await addView(userOrgType); // Add the view with the orgType
+    //     } else {
+    //       console.log('Product already viewed in this session');
+    //     }
+    //   };
+  
+    //   handleAddView(); // Trigger the logic to add the view
+    // }, [data.product, userId]); // Dependencies on product and userId
+    
+    useEffect(() => {
+      const viewedKey = `viewed_product_${data.product.id}`; // Unique key for sessionStorage
+    
+      const fetchUserData = async () => {
+        if (!userId) {
+          return 'Uncategorized'; // Return default orgType if user is not logged in
+        }
+    
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch user data");
+          }
+          const userData = await response.json();
+          if (userData.success) {
+            return userData.profile.CompanyType || 'Uncategorized'; // Return orgType
+          } else {
+            throw new Error("Failed to fetch user data");
+          }
+        } catch (err) {
+          console.error(err.message || "Error fetching user data");
+          return 'Uncategorized'; // Fallback to 'Uncategorized' on error
+        }
+      };
+    
+      const addView = async (userOrgType) => {
+        if (!countryName) {
+          console.warn('Country name is not available yet');
+          return; // Exit if countryName is not ready
+        }
+        
+        try {
+          const response = await fetch('/api/add-view', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              productId: data.product.id, // Sending the product ID
+              userOrgType: userOrgType, // Use the fetched orgType
+              country: countryName || 'Unknown Country', // Ensure country is defined
+            }),
+          });
+    
+          const result = await response.json(); // Parse the JSON response
+    
+          if (response.ok) {
+            console.log('View added successfully:', result.data);
+            sessionStorage.setItem(viewedKey, 'true'); // Mark as viewed for this session
+          } else {
+            console.error('Failed to add view:', result.message);
+          }
+        } catch (error) {
+          console.error('Error adding view:', error);
+        }
+      };
+    
+      const handleAddView = async () => {
+        if (!hasViewed.current && !sessionStorage.getItem(viewedKey)) { // Check if view has not been added
+          hasViewed.current = true; // Mark as viewed
+          const userOrgType = await fetchUserData(); // Fetch the user's orgType
+          await addView(userOrgType); // Add the view with the orgType
+        } else {
+          console.log('Product already viewed in this session');
+        }
+      };
+    
+      if (countryName) {
+        handleAddView(); // Trigger the logic to add the view only if countryName is available
       } else {
-        desktopViews = 1;
+        console.warn('Country name is still loading');
       }
+    }, [data.product, userId, countryName]); // Include countryName as a dependency
+    
 
-      try {
-        const response = await fetch("/api/add-analytics", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: data.product.userId,
-            productId: data.product.slug,
-            views: 1,
-            loginsViews: loginsViews,
-            desktopViews: desktopViews,
-            mobileViews: mobileViews,
-            tabletViews: tabletViews,
-            country: countryName,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to add analytics");
-        }
-
-        const result = await response.json();
-        console.log("Analytics added:", result);
-      } catch (error) {
-        console.error("Error adding analytics:", error);
-      }
-    };
-
-    const addInterest = async () => {
-      if (!userId) return;
-      try {
-        const response = await fetch("/api/add-interest", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId, productId: data.product.id }),
-        });
-        if (!response.ok) {
-          console.error("Failed to add interest");
-        }
-
-        const result = await response.json();
-        console.log("Interest added:", result);
-      } catch (error) {
-        console.error("Error adding interest:", error);
-      }
-    };
-
-    addAnalytics();
-    addInterest();
-  }, [data, countryName, userId]);
+    
   const [product, setProduct] = useState(data.product);
   const [company, setCompany] = useState(data.company);
   const [user, _setUser] = useState(data.user);
@@ -292,16 +368,24 @@ function PageComponent({ data }: any) {
       alert("Please log in to bookmark products");
       return;
     }
-
+    const userOrgType = await fetchUserOrgType(); 
+  
     try {
       const response = await fetch("/api/save-product", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId, productId: data.product.slug }),
-      });
+        body: JSON.stringify({
+          userId,
+          productId: data.product.slug,
+          idForBookmark: data.product.id, // Include the additional field
+          userOrgType,
+          country: countryName || 'Unknown Country', 
 
+        }),
+      });
+  
       if (response.ok) {
         const result = await response.json();
         setIsBookmarked(!isBookmarked);
@@ -315,6 +399,7 @@ function PageComponent({ data }: any) {
       alert("Failed to bookmark product");
     }
   };
+  
 
  
 
@@ -329,17 +414,18 @@ function PageComponent({ data }: any) {
 
   console.log("company",company);
  
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        alert("Copied to clipboard!");
-      })
-      .catch((error) => {
-        console.error("Failed to copy to clipboard: ", error);
-      });
-  };
+  // const copyToClipboard = (text: string) => {
+  //   navigator.clipboard
+  //     .writeText(text)
+  //     .then(() => {
+  //       alert("Copied to clipboard!");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Failed to copy to clipboard: ", error);
+  //     });
+  // };
 
+ 
   const handleDownload = async () => {
     const element = componentRef.current;
     if (!element) {
@@ -373,6 +459,91 @@ function PageComponent({ data }: any) {
   const handleCloseBookACallForm = () => {
     setShowBookACallForm(false);
   };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Copied to clipboard!");
+  
+      // Check if the share has been recorded
+      if (!hasShared) {
+        const userOrgType = await fetchUserOrgType(); // Fetch orgType like views
+        // API call to store share data
+        const response = await fetch("/api/add-share", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productId: data.product.id,
+            userOrgType: userOrgType, // Include userOrgType
+            country:countryName,
+          }),
+        });
+  
+        const result = await response.json();
+  
+        if (result.success) {
+          console.log("Share recorded successfully:", result.share);
+          setHasShared(true); // Mark as shared
+        } else {
+          console.error("Failed to record share:", result.msg);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to copy to clipboard: ", error);
+    }
+  };
+  
+
+  const [hasShared, setHasShared] = useState(false);
+
+  const handleShare = async () => {
+    if (!hasShared) {
+      const userOrgType = await fetchUserOrgType(); // Fetch orgType like views
+      // API call to store share data
+      const response = await fetch("/api/add-share", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: data.product.id,
+          userOrgType: userOrgType, // Include userOrgType
+          country:countryName,
+        }),
+      });
+  
+      const result = await response.json();
+  
+      if (result.success) {
+        console.log("Share recorded successfully:", result.share);
+        setHasShared(true); // Mark as shared
+      } else {
+        console.error("Failed to record share:", result.msg);
+      }
+    }
+  };
+  
+
+  const fetchUserOrgType = async () => {
+    if (!userId) {
+      return 'Uncategorized';
+    }
+  
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+      const userData = await response.json();
+      return userData.success ? userData.profile.CompanyType || 'Uncategorized' : 'Uncategorized';
+    } catch (err) {
+      console.error(err.message || "Error fetching user data");
+      return 'Uncategorized';
+    }
+  };
+
   if (!product) {
     return <Loading />;
   }
@@ -446,7 +617,7 @@ function PageComponent({ data }: any) {
 
 
                   </div>
-                  <Dialog>
+                  {/* <Dialog>
                     <DialogTrigger asChild>
                       <div className="text-xl text-primary1 p-2 rounded-full border border-primary1">
                         <GoShareAndroid />
@@ -535,7 +706,99 @@ function PageComponent({ data }: any) {
                         </DialogClose>
                       </DialogFooter>
                     </DialogContent>
-                  </Dialog>
+                  </Dialog> */}
+
+<Dialog>
+      <DialogTrigger asChild>
+        <div className="text-xl text-primary1 p-2 rounded-full border border-primary1">
+          <GoShareAndroid />
+        </div>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Share link</DialogTitle>
+          <DialogDescription>
+            Anyone who has this link will be able to view this.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex items-center space-x-2">
+          <div className="grid flex-1 gap-2">
+            <Label htmlFor="link" className="sr-only">
+              Link
+            </Label>
+            <Input
+              id="link"
+              defaultValue={`https://www.dreamlegal.in/product/${data.product.slug}`}
+              readOnly
+            />
+          </div>
+          <div>
+            <Button
+              variant="outline"
+              onClick={() =>
+                copyToClipboard(
+                  `https://www.dreamlegal.in/product/${data.product.slug}`
+                )
+              }
+            >
+              Copy
+            </Button>
+          </div>
+        </div>
+        <div className="mt-4 flex gap-4">
+          {/* Social Share Buttons */}
+          <FacebookShareButton
+            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
+            onClick={() => handleShare("Facebook")}
+          >
+            <FacebookIcon size={32} round />
+          </FacebookShareButton>
+
+          <TwitterShareButton
+            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
+            onClick={() => handleShare("Twitter")}
+          >
+            <TwitterIcon size={32} round />
+          </TwitterShareButton>
+
+          <WhatsappShareButton
+            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
+            onClick={() => handleShare("Whatsapp")}
+          >
+            <WhatsappIcon size={32} round />
+          </WhatsappShareButton>
+
+          <LinkedinShareButton
+            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
+            onClick={() => handleShare("LinkedIn")}
+          >
+            <LinkedinIcon size={32} round />
+          </LinkedinShareButton>
+
+          <RedditShareButton
+            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
+            onClick={() => handleShare("Reddit")}
+          >
+            <RedditIcon size={32} round />
+          </RedditShareButton>
+
+          <TelegramShareButton
+            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
+            onClick={() => handleShare("Telegram")}
+          >
+            <TelegramIcon size={32} round />
+          </TelegramShareButton>
+        </div>
+        <DialogFooter className="sm:justify-start">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+
 
                   <div>
                     <ReactToPrint
@@ -804,6 +1067,7 @@ function PageComponent({ data }: any) {
               <ProductFeature
                 features={product.features}
                 productId={product.slug}
+                productIdForFeatures={data.product.id}
               />
 
               <div className="w-full h-px bg-slate-200 my-4"></div>

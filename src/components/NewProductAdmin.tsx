@@ -57,6 +57,35 @@ function NewProductAdmin() {
     fetchProducts(); // Invoke the fetch function
   }, []); // Dependency array is empty to run the effect once on mount
   
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch(`/api/get-new-products?_=${new Date().getTime()}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Ensure fresh data by disabling caching
+        cache: 'no-cache',
+        next: { revalidate: 0 },  // Forces no revalidation caching
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setProducts(data.products); // Update the state with fetched products
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false); // Stop loading once data is fetched
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts(); // Fetch products on component mount
+  }, []);
+
 
   if (loading) {
     return <div>Loading...</div>;

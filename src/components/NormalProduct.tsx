@@ -424,42 +424,24 @@ function NormalProduct({
       <div>
         <div className="text-xs text-slate-400 mt-4 mb-1">Users</div>
         <div className="flex flex-col sm:flex-row sm:justify-between">
-          {/* <div className="flex gap-2 overflow-x-auto sm:flex-row sm:overflow-visible">
-            {userCategoryIcons.map((userCategory: any, index: number) => (
-              <div
-                key={userCategory.name}
-                className="relative group flex gap-2 items-center bg-primary2 rounded-md p-2"
-              >
-                <img
-                  src={userCategory.icon}
-                  alt={userCategory.name}
-                  className="w-6 h-6"
-                />
-                <div className="hidden group-hover:block text-[10px] font-clarity font-bold transition-all duration-200 cursor-pointer">
-                  {userCategory.name}
-                </div>
-              </div>
-            ))}
-          </div> */}
-          <div className="flex gap-2 overflow-x-auto sm:flex-row sm:overflow-visible">
-            <div>
-              {userCategoryIcons.map((category, index) => (
-                <div
-                  key={category.name}
-                  className="relative group flex gap-2 items-center bg-primary2 rounded-md p-2"
-                >
-                  <img
-                    src={category.icon}
-                    alt={category.name}
-                    className="w-6 h-6"
-                  />
-                  <div className="hidden group-hover:block text-[10px] font-clarity font-bold transition-all duration-200 cursor-pointer">
-                    {category.name}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          
+         <div className="flex flex-wrap gap-2 sm:flex-nowrap sm:overflow-x-auto">
+    {userCategoryIcons.map((category, index) => (
+      <div
+        key={category.name}
+        className="relative group flex items-center bg-primary2 rounded-md p-2"
+      >
+        <img
+          src={category.icon}
+          alt={category.name}
+          className="w-6 h-6"
+        />
+        <div className="hidden group-hover:block text-[10px] font-clarity font-bold transition-all duration-200 cursor-pointer ml-2">
+          {category.name}
+        </div>
+      </div>
+    ))}
+  </div>
 
           <div className="flex flex-col sm:flex-row sm:gap-5 mt-4 sm:mt-0">
             <div className="text-xs text-slate-400 mb-1">

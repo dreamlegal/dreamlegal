@@ -288,6 +288,7 @@ function DirectoryProduct() {
           (product: any) => product.active === "publish"
         );
         const searchLower = search.toLowerCase();
+        console.log("all products here ",products)
 
         const filtered = products.filter((product: any) => {
           const matchesName = product.name.toLowerCase().includes(searchLower);
@@ -315,11 +316,18 @@ function DirectoryProduct() {
             selectedFilters.country.includes(product.country as never);
 
           // **User Category Filtering**
+          // const matchesSelectedUserCategory =
+          //   selectedFilters.userCategory.length === 0 ||
+          //   product.userCategory.some((cat: any) =>
+          //     selectedFilters.userCategory.includes(cat as never)
+          //   );
           const matchesSelectedUserCategory =
-            selectedFilters.userCategory.length === 0 ||
-            product.userCategory.some((cat: any) =>
-              selectedFilters.userCategory.includes(cat as never)
-            );
+  selectedFilters.userCategory.length === 0 ||
+  product.userCategory.some((cat: string) => {
+    const categoryName = cat.split('|')[0]; // Extract the category name
+    return selectedFilters.userCategory.includes(categoryName as never);
+  });
+
 
           // **Add more filter matches here**
 

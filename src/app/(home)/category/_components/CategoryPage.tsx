@@ -67,27 +67,35 @@ const CategoryPage = () => {
     });
   }, []);
 
+ 
   useEffect(() => {
-    if (dataState) {
-      console.log(dataState);
-      const products = dataState.products.filter((product) => {
-        return product.active === "active";
+    if (dataState && categoryData) {
+      console.log("Category Data Slug: ", categoryData.slug);
+      console.log("All Products: ", dataState.products);
+  
+      // Normalize the category slug (convert to lowercase, replace dashes with spaces)
+      const categorySlug = categoryData.slug.replace(/-/g, ' ').toLowerCase();
+      console.log("Normalized Category Slug: ", categorySlug);
+  
+      // Filter the products based on matching categories and active status
+      const matchedProducts = dataState.products.filter(product => {
+        // Check if product is published
+        const isPublished = product.active === 'publish';
+  
+        // Check if product categories include the target category
+        const isInCategory = product.category.some(cat => {
+          const normalizedCategory = cat.toLowerCase();
+          return normalizedCategory.includes(categorySlug);
+        });
+  
+        return isPublished && isInCategory;
       });
-      const matchedProducts = products.filter(
-        (product) =>
-          // console.log(product)
-          product.category[0].toLowerCase() ===
-          categoryData?.slug.replace(/-/g, " ")
-      );
-      if (matchedProducts) {
-        setFeatureProduct(matchedProducts);
-        setLoading(false);
-      } else {
-        setFeatureProduct([]);
-      }
+  
+      console.log("Matched Products: ", matchedProducts);
+      setFeatureProduct(matchedProducts);
     }
-  }, [dataState]);
-
+  }, [dataState, categoryData]);
+  
   if (loading) {
     return (
       <div className="text-center">
@@ -152,7 +160,7 @@ const CategoryPage = () => {
             <p>No products found in this category.</p>
           </div>
         )}
-        {!loading &&
+        {/* {!loading &&
           featureProduct.length > 0 &&
           featureProduct
             .slice(0, 8)
@@ -167,7 +175,26 @@ const CategoryPage = () => {
                 userCategory={product.userCategory}
                 product={product}
               />
-            ))}
+            ))} */}
+            <div className="flex flex-wrap gap-8">
+  {!loading &&
+    featureProduct.length > 0 &&
+    featureProduct
+      .slice(0, 8)
+      .map((product: any) => (
+        <FeaturedProduct
+          key={product.id}
+          id={product.id}
+          image={product.logoUrl}
+          title={product.name}
+          description={product.description}
+          category={product.category}
+          userCategory={product.userCategory}
+          product={product}
+        />
+      ))}
+</div>
+
       </div>
     </main>
   );

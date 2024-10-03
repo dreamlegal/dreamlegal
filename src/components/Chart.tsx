@@ -158,8 +158,8 @@ const ChartSection = ({ title, tooltip, data }) => {
   return (
     <div className="flex mb-6 flex-col md:flex-row w-full gap-4">
       <div className="flex-1">
-        <div className="flex gap-2 items-center">
-          <h2 className="text-2xl font-bold text-gray-700 mb-3">{title}</h2>
+        <div className="flex gap-2 items-center mb-3">
+          <h2 className="text-2xl font-bold text-gray-700 ">{title}</h2>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>

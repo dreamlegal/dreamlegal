@@ -70,37 +70,37 @@ function ProductService({ product }: { product: Product }) {
 
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-2  items-center h-full">
-        <div className="  mb-10">
-          <h5 className="mb-6 text-lg font-bold leading-none">Demo</h5>
-          
+      <div className="grid grid-cols-1 md:grid-cols-2  items-start h-full">
+        <div className="mb-2">
+          <h5 className="mb-4 text-lg font-bold leading-none">Demo</h5>
+
         </div>
         <div className=" px-5">
-        <div className="grid gap-5 grid-cols-2 row-gap-5 md:grid-cols-3">
+        <div className="mb-6 grid gap-5 grid-cols-2 row-gap-5 md:grid-cols-3">
           {renderSelectedItems("Demo")}
         </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 items-center h-full">
-        <div className=" mb-10">
-          <h5 className="mb-6 text-lg font-bold leading-none">Supports</h5>
+      <div className="grid grid-cols-1 md:grid-cols-2 items-start h-full">
+        <div className=" mb-2">
+          <h5 className="mb-4 text-lg font-bold leading-none">Supports</h5>
         
         </div>
         <div className=" px-5">
-        <div className="grid gap-5 grid-cols-2 row-gap-5 md:grid-cols-3">
+        <div className="mb-6 grid gap-5 grid-cols-2 row-gap-5 md:grid-cols-3">
           {renderSelectedItems("support")}
         </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 items-center h-full ">
-        <div className=" mb-10">
-          <h5 className="mb-6 text-lg font-bold leading-none">Training</h5>
+      <div className="grid grid-cols-1 md:grid-cols-2 items-start h-full ">
+        <div className=" mb-2">
+          <h5 className="mb-4 text-lg font-bold leading-none">Training</h5>
         
         </div>
         <div className=" px-5">
-        <div className="grid gap-5 grid-cols-2 row-gap-5 md:grid-cols-3">
+        <div className="mb-6 grid gap-5 grid-cols-2 row-gap-5 md:grid-cols-3">
           {renderSelectedItems("training")}
         </div>
         </div>

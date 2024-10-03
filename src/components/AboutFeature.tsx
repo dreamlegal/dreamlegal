@@ -8,7 +8,7 @@ function AboutFeature() {
             The values that drives everything we do
           </h2>
           <p className="text-base text-slate-700 md:px-14 ">
-          Our vision is to unlock these six core values in the life of <br /> legal professionals through technology.
+          Our vision is to unlock these six core values in the life of legal professionals through technology.
           </p>
         </div>
         <div className="grid  gap-8  sm:grid-cols-1 lg:grid-cols-3 px-5 md:px-20">

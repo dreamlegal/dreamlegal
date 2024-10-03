@@ -1012,7 +1012,7 @@ function DirectoryFilter({
             <div>
               <div className="inline-flex items-center gap-3">
                 <MdOutlineBusinessCenter className="w-5 h-5" />
-                <span className="text-sm font-medium"> Headquaters </span>
+                <span className="text-sm font-medium"> Headquarters </span>
               </div>
             </div>
             <span

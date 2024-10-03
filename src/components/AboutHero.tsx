@@ -14,7 +14,7 @@ function AboutHero() {
           <p className="text-base text-slate-500 text-justify">
             We simplify selection, onboarding and management of technology for
             legal professionals and teams. Our mission is to simplify every
-            legal professional ’s journey with technology, making it an
+            legal professional’s journey with technology, making it an
             effortless part of your daily workflow. We understand the unique
             challenges that legal professionals face and we're here to ensure
             that technology enhances your practice and eases your workload.

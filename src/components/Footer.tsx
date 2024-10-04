@@ -180,19 +180,17 @@ export const Footer = () => {
               className="inline-flex items-center"
             >
               <span className="text-xl font-bold tracking-wide text-gray-800 uppercase">
-                Users
+                User
               </span>
             </a>
             <div className="mt-4 lg:max-w-sm">
               <ul className="text-gray-800 space-y-2 text-base">
                 <li className="hover:text-primary1 transition-all cursor-pointer">
-                  <Link href={"/directory?customer=Enterprises"}>
-                    Enterprise
-                  </Link>
+                  <Link href={"/directory?customer=Law%20firms"}>Law Firm</Link>
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
-                  <Link href={"/directory?customer=Government%20departments"}>
-                    Government Departments
+                  <Link href={"/directory?customer=Enterprises"}>
+                    Enterprise
                   </Link>
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
@@ -201,17 +199,19 @@ export const Footer = () => {
                   </Link>
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
+                  <Link href={"/directory?customer=Startups"}>Startup</Link>
+                </li>
+                <li className="hover:text-primary1 transition-all cursor-pointer">
+                  <Link href={"/directory?customer=Government%20departments"}>
+                    Government Department
+                  </Link>
+                </li>
+                <li className="hover:text-primary1 transition-all cursor-pointer">
                   <Link href={"/directory?customer=Judiciary"}>Judiciary</Link>
                 </li>
                 <li className="hover:text-primary1 transition-all cursor-pointer">
-                  <Link href={"/directory?customer=Law%20firms"}>Law Firm</Link>
-                </li>
-                <li className="hover:text-primary1 transition-all cursor-pointer">
-                  <Link href={"/directory?customer=Startups"}>Startups</Link>
-                </li>
-                <li className="hover:text-primary1 transition-all cursor-pointer">
                   <Link href={"/directory?customer=In-House%20Counsels"}>
-                    In-House Counsels
+                    In-House Counsel
                   </Link>
                 </li>
               </ul>

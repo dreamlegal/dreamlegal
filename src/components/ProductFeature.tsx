@@ -367,7 +367,7 @@ function ProductFeature({ features, productIdForFeatures }: ProductFeatureProps)
         )}
       </div>
   
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <h4 className="font-bold">Category Open Counts:</h4>
         <ul className="mt-2">
           {Object.entries(categoryOpenCounts).map(([category, count], index) => (
@@ -376,7 +376,8 @@ function ProductFeature({ features, productIdForFeatures }: ProductFeatureProps)
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
+      
     </div>
   );
 }

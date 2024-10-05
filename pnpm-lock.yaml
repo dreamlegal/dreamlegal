@@ -98,15 +98,6 @@ importers:
       '@react-email/components':
         specifier: 0.0.19
         version: 0.0.19(@types/react@18.3.11)(react@18.3.1)
-      '@react-jvectormap/core':
-        specifier: ^1.0.4
-        version: 1.0.4(jquery@3.7.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-jvectormap/world':
-        specifier: ^1.1.2
-        version: 1.1.2
-      '@south-paw/react-vector-maps':
-        specifier: ^3.2.0
-        version: 3.2.0(react@18.3.1)
       '@tailwindcss/forms':
         specifier: ^0.5.7
         version: 0.5.9(tailwindcss@3.4.13)
@@ -1897,22 +1888,6 @@ packages:
     peerDependencies:
       react: ^18.2.0
 
-  '@react-jvectormap/core@1.0.4':
-    resolution: {integrity: sha512-PefUtLG2Uwu6YVMldTqZCaVu5G+4wS3iQDq5aAV/jY/h8+djIgdSKWb1hEsHk/vb0s2pwallS+VvU7N2xCMncA==}
-    peerDependencies:
-      jquery: ^3.6
-      react: ^16.8 || ^17 || ^18
-      react-dom: ^16.8 || ^17 || ^18
-
-  '@react-jvectormap/jquery-mousewheel@1.0.2':
-    resolution: {integrity: sha512-AmRnBdJfBjDUHreEDDs9qaSo3Q/6oC74m321VuzxkDX6ideVks2n2ouGiMcXq41GdJQoCUzSjfF8KyocL6M+SA==}
-
-  '@react-jvectormap/lib@1.0.3':
-    resolution: {integrity: sha512-EdPYen5GGrny7Mxc8IYvXtSdjTr3EfWjGCXuy6+0Yz9wZDmCfLFfjmuEOZirhe00BJOzi2LpnYMSp0WaJ2BH7Q==}
-
-  '@react-jvectormap/world@1.1.2':
-    resolution: {integrity: sha512-jDSy64DZz4mzEOrVni1zV5rak65+1WZhSGsvAvzHNIMHVx+tdD8R5OikyWUjYte8nxIkOUhQZtVJMK7VOIsmQA==}
-
   '@react-stately/utils@3.10.4':
     resolution: {integrity: sha512-gBEQEIMRh5f60KCm7QKQ2WfvhB2gLUr9b72sqUdIZ2EG+xuPgaIlCBeSicvjmjBvYZwOjoOEnmIkcx2GHp/HWw==}
     peerDependencies:
@@ -2134,11 +2109,6 @@ packages:
   '@smithy/util-waiter@3.1.6':
     resolution: {integrity: sha512-xs/KAwWOeCklq8aMlnpk25LgxEYHKOEodfjfKclDMLcBJEVEKzDLxZxBQyztcuPJ7F54213NJS8PxoiHNMdItQ==}
     engines: {node: '>=16.0.0'}
-
-  '@south-paw/react-vector-maps@3.2.0':
-    resolution: {integrity: sha512-4Y88ZA8RuXxlBD7hgguVZjiTZsxvnN0Eheip/7YeM22B8hwae058C4Xx7Fi1PyIhOF5yWU/yXxyCMwFE7Awrwg==}
-    peerDependencies:
-      react: '>=16.8.0'
 
   '@swc/counter@0.1.3':
     resolution: {integrity: sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==}
@@ -2499,9 +2469,6 @@ packages:
 
   class-variance-authority@0.7.0:
     resolution: {integrity: sha512-jFI8IQw4hczaL4ALINxqLEXQbWcNjoSkloa4IaufXCJr6QawJyw7tuRysRsrE8w2p/4gGaxKIt/hX3qz/IbD1A==}
-
-  classnames@2.5.1:
-    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
   cli-cursor@3.1.0:
     resolution: {integrity: sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw==}
@@ -3403,9 +3370,6 @@ packages:
 
   jose@5.9.3:
     resolution: {integrity: sha512-egLIoYSpcd+QUF+UHgobt5YzI2Pkw/H39ou9suW687MY6PmCwPmkNV/4TNjn1p2tX5xO3j0d0sq5hiYE24bSlg==}
-
-  jquery@3.7.1:
-    resolution: {integrity: sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==}
 
   js-beautify@1.15.1:
     resolution: {integrity: sha512-ESjNzSlt/sWE8sciZH8kBF8BPlwXPwhR6pWKAw8bw4Bwj+iZcnKW6ONWUutJ7eObuBZQpiIb8S7OYspWrKt7rA==}
@@ -6650,24 +6614,6 @@ snapshots:
     dependencies:
       react: 18.3.1
 
-  '@react-jvectormap/core@1.0.4(jquery@3.7.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@react-jvectormap/lib': 1.0.3
-      classnames: 2.5.1
-      jquery: 3.7.1
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@react-jvectormap/jquery-mousewheel@1.0.2':
-    dependencies:
-      jquery: 3.7.1
-
-  '@react-jvectormap/lib@1.0.3':
-    dependencies:
-      '@react-jvectormap/jquery-mousewheel': 1.0.2
-
-  '@react-jvectormap/world@1.1.2': {}
-
   '@react-stately/utils@3.10.4(react@18.3.1)':
     dependencies:
       '@swc/helpers': 0.5.13
@@ -7016,10 +6962,6 @@ snapshots:
       '@smithy/abort-controller': 3.1.5
       '@smithy/types': 3.5.0
       tslib: 2.7.0
-
-  '@south-paw/react-vector-maps@3.2.0(react@18.3.1)':
-    dependencies:
-      react: 18.3.1
 
   '@swc/counter@0.1.3': {}
 
@@ -7453,8 +7395,6 @@ snapshots:
   class-variance-authority@0.7.0:
     dependencies:
       clsx: 2.0.0
-
-  classnames@2.5.1: {}
 
   cli-cursor@3.1.0:
     dependencies:
@@ -8527,8 +8467,6 @@ snapshots:
   jmespath@0.16.0: {}
 
   jose@5.9.3: {}
-
-  jquery@3.7.1: {}
 
   js-beautify@1.15.1:
     dependencies:

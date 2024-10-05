@@ -584,7 +584,7 @@ function PageComponent({ data }: PageComponentProps) {
                 <div className=" flex flex-col gap-3">
                   <div>
                     <p className="text-sm text-gray-900 font-bold">
-                      Headquaters
+                      Headquarters
                     </p>
                     <p className="text-sm text-slate-500">
                       {company.headQuaters}

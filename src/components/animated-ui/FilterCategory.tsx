@@ -15,32 +15,32 @@ import { MdArrowForward } from "react-icons/md";
 
 const categories = [
   {
-    name: "Law firms",
+    name: "Law firm",
     href: "/directory?customer=Law%20firms",
     img: "/lawfirmicon.svg",
     description: "Expert legal services team",
   },
   
   {
-    name: "Enterprises",
+    name: "Enterprise",
     href: "/directory?customer=Enterprises",
     img: "/enterpriceicon.svg",
     description: "Corporate legal powerhouses",
   },
  {
-   name: "Individual Practitioners",
+   name: "Individual Practitioner",
    href: "/directory?customer=Individual%20Practitioner",
    img: "/prac.svg",
    description: "Independent legal experts and chambers",
  },
   {
-    name: "Startups",
+    name: "Startup",
     href: "/directory?customer=Startups",
     img: "/startupicon.svg",
     description: "Young-age entities",
   },
   {
-    name: "Government  Departments",
+    name: "Government  Department",
     href: "/directory?customer=Government%20departments",
     img: "/govdepticon.svg",
     description: "Public sector legal teams",
@@ -52,7 +52,7 @@ const categories = [
     description: "Courtroom justice servers",
   },
   {
-    name: "In-House Counsels",
+    name: "In-House Counsel",
     href: "/directory?customer=In-House%20Counsels",
     img: "/lawyers.svg",
     description: "Legal experts navigating companies",

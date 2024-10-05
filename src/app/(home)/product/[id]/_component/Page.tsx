@@ -848,7 +848,7 @@ function PageComponent({ data }: any) {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                <div id="company" className=" flex flex-col gap-3">
+                <div id="company" className=" flex flex-col gap-3 mb-3">
                   <div>
                     <p className="text-sm text-gray-900 font-bold">
                       Company Name
@@ -871,10 +871,10 @@ function PageComponent({ data }: any) {
                   </div>
                 </div>
 
-                <div className=" flex flex-col gap-3">
+                <div className=" flex flex-col gap-3 mb-3">
                   <div>
                     <p className="text-sm text-gray-900 font-bold">
-                      Headquaters
+                      Headquarters
                     </p>
                     <p className="text-sm text-slate-500">
                       {company.headQuaters}
@@ -895,7 +895,7 @@ function PageComponent({ data }: any) {
                   </div>
                 </div>
 
-                <div className=" flex flex-col gap-3">
+                <div className=" flex flex-col gap-3 mb-3">
                   <div>
                     <p className="text-sm text-gray-900 font-bold">Email</p>
                     <p className="text-sm text-slate-500">{user.email}</p>
@@ -903,6 +903,13 @@ function PageComponent({ data }: any) {
                   <div>
                     <p className="text-sm text-gray-900 font-bold">Phone</p>
                     <p className="text-sm text-slate-500">{company.contact}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-900 font-bold">Website</p>
+                    <p className="text-sm text-slate-500"> 
+                      <a href={company.website} target="_blank" rel="noopener noreferrer">
+                  {company.website}
+                       </a></p>
                   </div>
                 </div>
               </div>
@@ -930,8 +937,8 @@ function PageComponent({ data }: any) {
 
               <div className="flex flex-col gap-4">
                 <div className="bg-primary2/40 px-5 py-3 rounded-2xl">
-                  <div className="flex it  gap-2 items-center">
-                    <h2 className=" text-lg font-bold text-gray-900 mb-2">
+                  <div className="flex it  gap-2 items-center mb-2">
+                    <h2 className=" text-lg font-bold text-gray-900">
                       USP
                     </h2>
                     <TooltipProvider>
@@ -960,8 +967,8 @@ function PageComponent({ data }: any) {
 
                 <div className=" flex flex-col gap-4 ">
                   <div className="bg-primary2/40 px-5 py-3 rounded-2xl">
-                    <div className="flex  gap-2 items-center">
-                      <h2 className=" text-lg font-bold text-gray-900 mb-2">
+                    <div className="flex  gap-2 items-center  mb-2">
+                      <h2 className=" text-lg font-bold text-gray-900">
                       Pain point addressed
                       </h2>
                       <TooltipProvider>
@@ -981,8 +988,8 @@ function PageComponent({ data }: any) {
                   </div>
 
                   <div className="bg-primary2/40 px-5 py-3 rounded-2xl">
-                    <div className="flex  gap-2 items-center">
-                      <h2 className=" text-lg font-bold text-gray-900 mb-2">
+                    <div className="flex  gap-2 items-center  mb-2">
+                      <h2 className=" text-lg font-bold text-gray-900">
                         Upcoming Updates
                       </h2>
                       <TooltipProvider>
@@ -1114,8 +1121,8 @@ function PageComponent({ data }: any) {
 
               {product.pricingParams.length > 0 ? (
                 <div>
-                  <div className="flex  gap-2 items-center">
-                    <h2 className=" text-lg  font-bold text-gray-900 mb-3">
+                  <div className="flex  gap-2 items-center mb-3">
+                    <h2 className=" text-lg  font-bold text-gray-900 ">
                       Pricing parameter
                     </h2>
                     <TooltipProvider>

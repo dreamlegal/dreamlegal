@@ -512,7 +512,7 @@ function DirectoryFilter({
             <div>
               <div className="inline-flex items-center gap-3">
                 <MdOutlineBusinessCenter className="w-5 h-5" />
-                <span className="text-sm font-medium"> Categories </span>
+                <span className="text-sm font-medium"> Category </span>
               </div>
             </div>
             <span
@@ -812,7 +812,7 @@ function DirectoryFilter({
           >
             <div className="inline-flex items-center gap-3">
               <MdOutlineBusinessCenter className="w-5 h-5" />
-              <span className="text-sm font-medium">Users</span>
+              <span className="text-sm font-medium">User</span>
             </div>
             <span
               className={`transition-all ml-auto ${
@@ -1012,7 +1012,7 @@ function DirectoryFilter({
             <div>
               <div className="inline-flex items-center gap-3">
                 <MdOutlineBusinessCenter className="w-5 h-5" />
-                <span className="text-sm font-medium"> Headquaters </span>
+                <span className="text-sm font-medium"> Headquarter </span>
               </div>
             </div>
             <span
@@ -1137,7 +1137,7 @@ function DirectoryFilter({
             <div>
               <div className="inline-flex items-center gap-3">
                 <MdOutlineBusinessCenter className="w-5 h-5" />
-                <span className="text-sm font-medium"> Practice Areas </span>
+                <span className="text-sm font-medium"> Practice Area </span>
               </div>
             </div>
             <span

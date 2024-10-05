@@ -58,7 +58,7 @@ export const WhyChooseUs = () => {
               </div>
               <h6 className="mb-2 font-semibold leading-5">Detailed Software Analysis</h6>
               <p className="mb-3 text-base text-gray-700 text-justify">
-              Gain access to detailed feature breakdowns of each legal tech with comprehensive insights 
+              Gain access to detailed feature breakdowns of each legal tech with comprehensive insights.
 
               </p>
             </div>

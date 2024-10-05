@@ -96,7 +96,7 @@ function PdfDownload({ data }: any) {
                   </div>
                   <div>
                     <p className="text-sm text-gray-900 font-bold">
-                      Headquaters
+                      Headquarters
                     </p>
                     <p className="text-sm text-slate-500">
                       {company.headQuaters}

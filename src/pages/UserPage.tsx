@@ -94,13 +94,13 @@ function UserPage({ data }: any) {
       </div>
     </div>
     <div className="w-full md:w-[75%] h-full">
-      <ScrollArea className="h-full px-5">
+      {/* <ScrollArea className="h-full px-5"> */}
         {view === "dashboard" && <UserDashboard />}
         {view === "edit" && (
           <EditUser data={data} onCloseEdit={handleCloseEdit} />
         )}
         {view === "change-password" && <ChangePass />}
-      </ScrollArea>
+      {/* </ScrollArea> */}
     </div>
   </div>
 </div>

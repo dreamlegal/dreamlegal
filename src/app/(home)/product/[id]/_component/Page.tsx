@@ -10,7 +10,8 @@ import { IoLinkSharp, IoReturnUpBackOutline } from "react-icons/io5";
 import { MdOutlineBookmarkBorder, MdOutlineInfo } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
 // import { Button } from "@/components/ui/button"
-import { Calendar } from "lucide-react"
+import { Calendar } from "lucide-react";
+import { Pencil } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -18,7 +19,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { TbPointFilled } from "react-icons/tb";
-import Chart from  "@/components/Chart";
+import Chart from "@/components/Chart";
 import ProcessLifecycle from "@/components/ProcessLifecycle";
 import ProductFeature from "@/components/ProductFeature";
 import ProductPricingTable from "@/components/ProductPricingTable";
@@ -34,6 +35,7 @@ import { FiPrinter } from "react-icons/fi";
 import ReactApexChart from "react-apexcharts";
 import Loading from "@/components/Loading";
 import BookACallForm from "@/components/BookACallForm";
+import RfpForm from "@/components/RfpForm";
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -171,160 +173,96 @@ const countryNames: { [key: string]: string } = {
   YT: "Mayotte",
 };
 import ReactToPrint from "react-to-print";
+
 function PageComponent({ data }: any) {
-  console.log(data)
+  console.log(data);
   const location = useGeoLocation();
   const countryName = countryNames[location.country];
   console.log(countryName);
   const componentRef = useRef(null);
   const userId =
     typeof window !== "undefined" ? localStorage.getItem("userId") : null; // Check if window is defined
-    
-    // add view 
-    const hasViewed = useRef(false); // Ref to track if the view has been added
 
-    // useEffect(() => {
-    
-    //   const viewedKey = `viewed_product_${data.product.id}`; // Unique key for sessionStorage
-  
-    //   const fetchUserData = async () => {
-    //     if (!userId) {
-    //       return 'Uncategorized'; // Return default orgType if user is not logged in
-    //     }
-  
-    //     try {
-    //       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`);
-    //       if (!response.ok) {
-    //         throw new Error("Failed to fetch user data");
-    //       }
-    //       const userData = await response.json();
-    //       if (userData.success) {
-    //         return userData.profile.CompanyType || 'Uncategorized'; // Return orgType
-    //       } else {
-    //         throw new Error("Failed to fetch user data");
-    //       }
-    //     } catch (err) {
-    //       console.error(err.message || "Error fetching user data");
-    //       return 'Uncategorized'; // Fallback to 'Uncategorized' on error
-    //     }
-    //   };
-  
-    //   const addView = async (userOrgType) => {
-    //     try {
-    //       const response = await fetch('/api/add-view', {
-    //         method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //           productId: data.product.id, // Sending the product ID
-    //           userOrgType: userOrgType, // Use the fetched orgType
-    //           country:countryName,
-    //         }),
-    //       });
-  
-    //       const result = await response.json(); // Parse the JSON response
-  
-    //       if (response.ok) {
-    //         console.log('View added successfully:', result.data);
-    //         sessionStorage.setItem(viewedKey, 'true'); // Mark as viewed for this session
-    //       } else {
-    //         console.error('Failed to add view:', result.message);
-    //       }
-    //     } catch (error) {
-    //       console.error('Error adding view:', error);
-    //     }
-    //   };
-  
-    //   const handleAddView = async () => {
-    //     if (!hasViewed.current && !sessionStorage.getItem(viewedKey)) { // Check if view has not been added
-    //       hasViewed.current = true; // Mark as viewed
-    //       const userOrgType = await fetchUserData(); // Fetch the user's orgType
-    //       await addView(userOrgType); // Add the view with the orgType
-    //     } else {
-    //       console.log('Product already viewed in this session');
-    //     }
-    //   };
-  
-    //   handleAddView(); // Trigger the logic to add the view
-    // }, [data.product, userId]); // Dependencies on product and userId
-    
-    useEffect(() => {
-      const viewedKey = `viewed_product_${data.product.id}`; // Unique key for sessionStorage
-    
-      const fetchUserData = async () => {
-        if (!userId) {
-          return 'Uncategorized'; // Return default orgType if user is not logged in
-        }
-    
-        try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch user data");
-          }
-          const userData = await response.json();
-          if (userData.success) {
-            return userData.profile.CompanyType || 'Uncategorized'; // Return orgType
-          } else {
-            throw new Error("Failed to fetch user data");
-          }
-        } catch (err) {
-          console.error(err.message || "Error fetching user data");
-          return 'Uncategorized'; // Fallback to 'Uncategorized' on error
-        }
-      };
-    
-      const addView = async (userOrgType) => {
-        if (!countryName) {
-          console.warn('Country name is not available yet');
-          return; // Exit if countryName is not ready
-        }
-        
-        try {
-          const response = await fetch('/api/add-view', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              productId: data.product.id, // Sending the product ID
-              userOrgType: userOrgType, // Use the fetched orgType
-              country: countryName || 'Unknown Country', // Ensure country is defined
-            }),
-          });
-    
-          const result = await response.json(); // Parse the JSON response
-    
-          if (response.ok) {
-            console.log('View added successfully:', result.data);
-            sessionStorage.setItem(viewedKey, 'true'); // Mark as viewed for this session
-          } else {
-            console.error('Failed to add view:', result.message);
-          }
-        } catch (error) {
-          console.error('Error adding view:', error);
-        }
-      };
-    
-      const handleAddView = async () => {
-        if (!hasViewed.current && !sessionStorage.getItem(viewedKey)) { // Check if view has not been added
-          hasViewed.current = true; // Mark as viewed
-          const userOrgType = await fetchUserData(); // Fetch the user's orgType
-          await addView(userOrgType); // Add the view with the orgType
-        } else {
-          console.log('Product already viewed in this session');
-        }
-      };
-    
-      if (countryName) {
-        handleAddView(); // Trigger the logic to add the view only if countryName is available
-      } else {
-        console.warn('Country name is still loading');
+  // add view
+  const hasViewed = useRef(false); // Ref to track if the view has been added
+
+  useEffect(() => {
+    const viewedKey = `viewed_product_${data.product.id}`; // Unique key for sessionStorage
+
+    const fetchUserData = async () => {
+      if (!userId) {
+        return "Uncategorized"; // Return default orgType if user is not logged in
       }
-    }, [data.product, userId, countryName]); // Include countryName as a dependency
-    
 
-    
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const userData = await response.json();
+        if (userData.success) {
+          return userData.profile.CompanyType || "Uncategorized"; // Return orgType
+        } else {
+          throw new Error("Failed to fetch user data");
+        }
+      } catch (err) {
+        console.error(err.message || "Error fetching user data");
+        return "Uncategorized"; // Fallback to 'Uncategorized' on error
+      }
+    };
+
+    const addView = async (userOrgType) => {
+      if (!countryName) {
+        console.warn("Country name is not available yet");
+        return; // Exit if countryName is not ready
+      }
+
+      try {
+        const response = await fetch("/api/add-view", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productId: data.product.id, // Sending the product ID
+            userOrgType: userOrgType, // Use the fetched orgType
+            country: countryName || "Unknown Country", // Ensure country is defined
+          }),
+        });
+
+        const result = await response.json(); // Parse the JSON response
+
+        if (response.ok) {
+          console.log("View added successfully:", result.data);
+          sessionStorage.setItem(viewedKey, "true"); // Mark as viewed for this session
+        } else {
+          console.error("Failed to add view:", result.message);
+        }
+      } catch (error) {
+        console.error("Error adding view:", error);
+      }
+    };
+
+    const handleAddView = async () => {
+      if (!hasViewed.current && !sessionStorage.getItem(viewedKey)) {
+        // Check if view has not been added
+        hasViewed.current = true; // Mark as viewed
+        const userOrgType = await fetchUserData(); // Fetch the user's orgType
+        await addView(userOrgType); // Add the view with the orgType
+      } else {
+        console.log("Product already viewed in this session");
+      }
+    };
+
+    if (countryName) {
+      handleAddView(); // Trigger the logic to add the view only if countryName is available
+    } else {
+      console.warn("Country name is still loading");
+    }
+  }, [data.product, userId, countryName]); // Include countryName as a dependency
+
   const [product, setProduct] = useState(data.product);
   const [company, setCompany] = useState(data.company);
   const [user, _setUser] = useState(data.user);
@@ -332,12 +270,113 @@ function PageComponent({ data }: any) {
   const usps = product.usp ? product.usp.split(",") : [];
   const [isBookmarked, setIsBookmarked] = useState(false);
 
- 
+  console.log(product);
+  console.log("company", company);
+
+  // page functions 
   const savePageAsPDF = async () => {
     if (typeof window !== "undefined") {
       window.print();
     }
   };
+ 
+
+  const handleBookmarkClick = async () => {
+    if (!userId) {
+      alert("Please log in to bookmark products");
+      return;
+    }
+    const userOrgType = await fetchUserOrgType();
+
+    try {
+      const response = await fetch("/api/save-product", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          productId: data.product.slug,
+          idForBookmark: data.product.id, // Include the additional field
+          userOrgType,
+          country: countryName || "Unknown Country",
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setIsBookmarked(!isBookmarked);
+        alert(result.message);
+      } else {
+        const error = await response.json();
+        alert(error.message);
+      }
+    } catch (error) {
+      console.error("Error bookmarking product", error);
+      alert("Failed to bookmark product");
+    }
+  };
+
+  
+  const handleDownload = async () => {
+    const element = componentRef.current;
+    if (!element) {
+      console.error("Element is not defined");
+      return;
+    }
+
+    try {
+      const canvas = await html2canvas(element);
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", [215.9, 279.4]); // Custom dimensions: 8.5in x 11in in mm
+
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      // Adjust the image size to fit the page dimensions
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("download.pdf");
+    } catch (error) {
+      console.error("Error generating PDF: ", error);
+    }
+  };
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Copied to clipboard!");
+
+      // Check if the share has been recorded
+      if (!hasShared) {
+        const userOrgType = await fetchUserOrgType(); // Fetch orgType like views
+        // API call to store share data
+        const response = await fetch("/api/add-share", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productId: data.product.id,
+            userOrgType: userOrgType, // Include userOrgType
+            country: countryName,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          console.log("Share recorded successfully:", result.share);
+          setHasShared(true); // Mark as shared
+        } else {
+          console.error("Failed to record share:", result.msg);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to copy to clipboard: ", error);
+    }
+  };
+
+  // Analytics
   useEffect(() => {
     const checkBookmark = async () => {
       if (!userId) return;
@@ -363,139 +402,6 @@ function PageComponent({ data }: any) {
     checkBookmark();
   }, [userId, data.product]);
 
-  const handleBookmarkClick = async () => {
-    if (!userId) {
-      alert("Please log in to bookmark products");
-      return;
-    }
-    const userOrgType = await fetchUserOrgType(); 
-  
-    try {
-      const response = await fetch("/api/save-product", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId,
-          productId: data.product.slug,
-          idForBookmark: data.product.id, // Include the additional field
-          userOrgType,
-          country: countryName || 'Unknown Country', 
-
-        }),
-      });
-  
-      if (response.ok) {
-        const result = await response.json();
-        setIsBookmarked(!isBookmarked);
-        alert(result.message);
-      } else {
-        const error = await response.json();
-        alert(error.message);
-      }
-    } catch (error) {
-      console.error("Error bookmarking product", error);
-      alert("Failed to bookmark product");
-    }
-  };
-  
-
- 
-
-  console.log(product);
-  const CustomerUserId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
-  console.log(CustomerUserId)
-  // if(!CustomerUserId){
-
-  // console.log("User not logged in")
-  // return null
-  // }
-
-  console.log("company",company);
- 
-  // const copyToClipboard = (text: string) => {
-  //   navigator.clipboard
-  //     .writeText(text)
-  //     .then(() => {
-  //       alert("Copied to clipboard!");
-  //     })
-  //     .catch((error) => {
-  //       console.error("Failed to copy to clipboard: ", error);
-  //     });
-  // };
-
- 
-  const handleDownload = async () => {
-    const element = componentRef.current;
-    if (!element) {
-      console.error("Element is not defined");
-      return;
-    }
-
-    try {
-      const canvas = await html2canvas(element);
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", [215.9, 279.4]); // Custom dimensions: 8.5in x 11in in mm
-
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      // Adjust the image size to fit the page dimensions
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("download.pdf");
-    } catch (error) {
-      console.error("Error generating PDF: ", error);
-    }
-  };
-
-  const [showBookACallForm, setShowBookACallForm] = useState(false);
-
-  const handleOpenBookACallForm = () => {
-    setShowBookACallForm(true);
-  };
-
-  const handleCloseBookACallForm = () => {
-    setShowBookACallForm(false);
-  };
-
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert("Copied to clipboard!");
-  
-      // Check if the share has been recorded
-      if (!hasShared) {
-        const userOrgType = await fetchUserOrgType(); // Fetch orgType like views
-        // API call to store share data
-        const response = await fetch("/api/add-share", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            productId: data.product.id,
-            userOrgType: userOrgType, // Include userOrgType
-            country:countryName,
-          }),
-        });
-  
-        const result = await response.json();
-  
-        if (result.success) {
-          console.log("Share recorded successfully:", result.share);
-          setHasShared(true); // Mark as shared
-        } else {
-          console.error("Failed to record share:", result.msg);
-        }
-      }
-    } catch (error) {
-      console.error("Failed to copy to clipboard: ", error);
-    }
-  };
-  
-
   const [hasShared, setHasShared] = useState(false);
 
   const handleShare = async () => {
@@ -510,12 +416,12 @@ function PageComponent({ data }: any) {
         body: JSON.stringify({
           productId: data.product.id,
           userOrgType: userOrgType, // Include userOrgType
-          country:countryName,
+          country: countryName,
         }),
       });
-  
+
       const result = await response.json();
-  
+
       if (result.success) {
         console.log("Share recorded successfully:", result.share);
         setHasShared(true); // Mark as shared
@@ -524,24 +430,53 @@ function PageComponent({ data }: any) {
       }
     }
   };
-  
-
   const fetchUserOrgType = async () => {
     if (!userId) {
-      return 'Uncategorized';
+      return "Uncategorized";
     }
-  
+
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch user data");
       }
       const userData = await response.json();
-      return userData.success ? userData.profile.CompanyType || 'Uncategorized' : 'Uncategorized';
+      return userData.success
+        ? userData.profile.CompanyType || "Uncategorized"
+        : "Uncategorized";
     } catch (err) {
       console.error(err.message || "Error fetching user data");
-      return 'Uncategorized';
+      return "Uncategorized";
     }
+  };
+
+
+  // forms  bookmycall and rfp
+  const CustomerUserId =
+  typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+  console.log(CustomerUserId);
+
+ 
+
+  const [showBookACallForm, setShowBookACallForm] = useState(false);
+  const [showRfpForm, setShowRfpForm] = useState(false);
+
+  const handleOpenBookACallForm = () => {
+    setShowBookACallForm(true);
+  };
+
+  const handleCloseBookACallForm = () => {
+    setShowBookACallForm(false);
+  };
+
+  const handleOpenRfpForm = () => {
+    setShowRfpForm(true);
+  };
+
+  const handleCloseRfpForm = () => {
+    setShowRfpForm(false);
   };
 
   if (!product) {
@@ -584,28 +519,45 @@ function PageComponent({ data }: any) {
                 </h1>
                 <div className="flex gap-3 md:ml-auto">
                   <div className="">
-                
-                    <Button className="bg-primary1  transition-all duration-300  rounded-[20px]  "
-                     onClick={handleOpenBookACallForm}> 
+                    <div className="flex gap-4">
+                      <Button
+                        className="bg-primary1 transition-all duration-300 rounded-[20px]"
+                        onClick={handleOpenRfpForm}
+                      >
+                        <Pencil className="mr-2 h-4 w-4" />
+                        <p className="mt-1">Request a Proposal</p>
+                      </Button>
+                      <Button
+                        className="bg-primary1 transition-all duration-300 rounded-[20px]"
+                        onClick={handleOpenBookACallForm}
+                      >
                         <Calendar className="mr-2 h-4 w-4" />
-                        <p className="mt-1"> Book a Call</p>
-                    </Button>
+                        <p className="mt-1">Book a Call</p>
+                      </Button>
+                    </div>
 
-                  
-        
-                    {showBookACallForm && 
-                    <BookACallForm onClose={handleCloseBookACallForm} 
-                              CustomerUserId={CustomerUserId}
-                              vendorId={company.userId}
-                              productId={product.id}
-                              vendorName={company.companyName}
-                              productName={product.name}
-
-
-
-                              
-                    />}
-                  
+                    {showBookACallForm && (
+                      <BookACallForm
+                        onClose={handleCloseBookACallForm}
+                        CustomerUserId={CustomerUserId}
+                        vendorId={company.userId}
+                        productId={product.id}
+                        vendorName={company.companyName}
+                        productName={product.name}
+                      />
+                    )}
+                    {showRfpForm && (
+                      <RfpForm
+                        onClose={handleCloseRfpForm}
+                        CustomerUserId={CustomerUserId}
+                        vendorId={company.userId}
+                        productId={product.id}
+                        vendorName={company.companyName}
+                        productName={product.name}
+                        parentFeatures={product.features}
+                        productCategory={product.category}
+                      />
+                    )}
                   </div>
                   <div
                     className="text-xl text-primary1 p-2 rounded-full border border-primary1"
@@ -614,10 +566,9 @@ function PageComponent({ data }: any) {
                     <MdOutlineBookmarkBorder
                       className={isBookmarked ? "text-teal-500" : ""}
                     />
-
-
                   </div>
-                  {/* <Dialog>
+
+                  <Dialog>
                     <DialogTrigger asChild>
                       <div className="text-xl text-primary1 p-2 rounded-full border border-primary1">
                         <GoShareAndroid />
@@ -641,7 +592,7 @@ function PageComponent({ data }: any) {
                             readOnly
                           />
                         </div>
-                        <div className="">
+                        <div>
                           <Button
                             variant="outline"
                             onClick={() =>
@@ -655,48 +606,48 @@ function PageComponent({ data }: any) {
                         </div>
                       </div>
                       <div className="mt-4 flex gap-4">
-                        <div>
-                          <FacebookShareButton
-                            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
-                          >
-                            <FacebookIcon size={32} round />
-                          </FacebookShareButton>
-                        </div>
-                        <div>
-                          <TwitterShareButton
-                            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
-                          >
-                            <TwitterIcon size={32} round />
-                          </TwitterShareButton>
-                        </div>
-                        <div>
-                          <WhatsappShareButton
-                            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
-                          >
-                            <WhatsappIcon size={32} round />
-                          </WhatsappShareButton>
-                        </div>
-                        <div>
-                          <LinkedinShareButton
-                            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
-                          >
-                            <LinkedinIcon size={32} round />
-                          </LinkedinShareButton>
-                        </div>
-                        <div>
-                          <RedditShareButton
-                            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
-                          >
-                            <RedditIcon size={32} round />
-                          </RedditShareButton>
-                        </div>
-                        <div>
-                          <TelegramShareButton
-                            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
-                          >
-                            <TelegramIcon size={32} round />
-                          </TelegramShareButton>
-                        </div>
+                        {/* Social Share Buttons */}
+                        <FacebookShareButton
+                          url={`https://www.dreamlegal.in/product/${data.product.slug}`}
+                          onClick={() => handleShare("Facebook")}
+                        >
+                          <FacebookIcon size={32} round />
+                        </FacebookShareButton>
+
+                        <TwitterShareButton
+                          url={`https://www.dreamlegal.in/product/${data.product.slug}`}
+                          onClick={() => handleShare("Twitter")}
+                        >
+                          <TwitterIcon size={32} round />
+                        </TwitterShareButton>
+
+                        <WhatsappShareButton
+                          url={`https://www.dreamlegal.in/product/${data.product.slug}`}
+                          onClick={() => handleShare("Whatsapp")}
+                        >
+                          <WhatsappIcon size={32} round />
+                        </WhatsappShareButton>
+
+                        <LinkedinShareButton
+                          url={`https://www.dreamlegal.in/product/${data.product.slug}`}
+                          onClick={() => handleShare("LinkedIn")}
+                        >
+                          <LinkedinIcon size={32} round />
+                        </LinkedinShareButton>
+
+                        <RedditShareButton
+                          url={`https://www.dreamlegal.in/product/${data.product.slug}`}
+                          onClick={() => handleShare("Reddit")}
+                        >
+                          <RedditIcon size={32} round />
+                        </RedditShareButton>
+
+                        <TelegramShareButton
+                          url={`https://www.dreamlegal.in/product/${data.product.slug}`}
+                          onClick={() => handleShare("Telegram")}
+                        >
+                          <TelegramIcon size={32} round />
+                        </TelegramShareButton>
                       </div>
                       <DialogFooter className="sm:justify-start">
                         <DialogClose asChild>
@@ -706,99 +657,7 @@ function PageComponent({ data }: any) {
                         </DialogClose>
                       </DialogFooter>
                     </DialogContent>
-                  </Dialog> */}
-
-<Dialog>
-      <DialogTrigger asChild>
-        <div className="text-xl text-primary1 p-2 rounded-full border border-primary1">
-          <GoShareAndroid />
-        </div>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Share link</DialogTitle>
-          <DialogDescription>
-            Anyone who has this link will be able to view this.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex items-center space-x-2">
-          <div className="grid flex-1 gap-2">
-            <Label htmlFor="link" className="sr-only">
-              Link
-            </Label>
-            <Input
-              id="link"
-              defaultValue={`https://www.dreamlegal.in/product/${data.product.slug}`}
-              readOnly
-            />
-          </div>
-          <div>
-            <Button
-              variant="outline"
-              onClick={() =>
-                copyToClipboard(
-                  `https://www.dreamlegal.in/product/${data.product.slug}`
-                )
-              }
-            >
-              Copy
-            </Button>
-          </div>
-        </div>
-        <div className="mt-4 flex gap-4">
-          {/* Social Share Buttons */}
-          <FacebookShareButton
-            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
-            onClick={() => handleShare("Facebook")}
-          >
-            <FacebookIcon size={32} round />
-          </FacebookShareButton>
-
-          <TwitterShareButton
-            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
-            onClick={() => handleShare("Twitter")}
-          >
-            <TwitterIcon size={32} round />
-          </TwitterShareButton>
-
-          <WhatsappShareButton
-            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
-            onClick={() => handleShare("Whatsapp")}
-          >
-            <WhatsappIcon size={32} round />
-          </WhatsappShareButton>
-
-          <LinkedinShareButton
-            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
-            onClick={() => handleShare("LinkedIn")}
-          >
-            <LinkedinIcon size={32} round />
-          </LinkedinShareButton>
-
-          <RedditShareButton
-            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
-            onClick={() => handleShare("Reddit")}
-          >
-            <RedditIcon size={32} round />
-          </RedditShareButton>
-
-          <TelegramShareButton
-            url={`https://www.dreamlegal.in/product/${data.product.slug}`}
-            onClick={() => handleShare("Telegram")}
-          >
-            <TelegramIcon size={32} round />
-          </TelegramShareButton>
-        </div>
-        <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
-            </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-
+                  </Dialog>
 
                   <div>
                     <ReactToPrint
@@ -811,10 +670,9 @@ function PageComponent({ data }: any) {
                       pageStyle="@page { size: 8.5in 11in; margin: 1in; }" // Custom page size and margin
                     />
                   </div>
-
                 </div>
               </div>
-             
+
               <div className="flex justify-between items-center">
                 <div className=" inline-flex gap-3 flex-wrap">
                   {product?.category?.map(
@@ -844,7 +702,6 @@ function PageComponent({ data }: any) {
                     )
                   )}
                 </div>
-               
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
@@ -906,10 +763,15 @@ function PageComponent({ data }: any) {
                   </div>
                   <div>
                     <p className="text-sm text-gray-900 font-bold">Website</p>
-                    <p className="text-sm text-slate-500"> 
-                      <a href={company.website} target="_blank" rel="noopener noreferrer">
-                  {company.website}
-                       </a></p>
+                    <p className="text-sm text-slate-500">
+                      <a
+                        href={company.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {company.website}
+                      </a>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -929,7 +791,6 @@ function PageComponent({ data }: any) {
               <ProductInfoTab product={product} />
 
               <div className="w-full h-px bg-slate-200 my-4"></div>
-              
 
               <h2 id="overviews" className="text-2xl font-bold">
                 Overview
@@ -938,9 +799,7 @@ function PageComponent({ data }: any) {
               <div className="flex flex-col gap-4">
                 <div className="bg-primary2/40 px-5 py-3 rounded-2xl">
                   <div className="flex it  gap-2 items-center mb-2">
-                    <h2 className=" text-lg font-bold text-gray-900">
-                      USP
-                    </h2>
+                    <h2 className=" text-lg font-bold text-gray-900">USP</h2>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>
@@ -969,7 +828,7 @@ function PageComponent({ data }: any) {
                   <div className="bg-primary2/40 px-5 py-3 rounded-2xl">
                     <div className="flex  gap-2 items-center  mb-2">
                       <h2 className=" text-lg font-bold text-gray-900">
-                      Pain point addressed
+                        Pain point addressed
                       </h2>
                       <TooltipProvider>
                         <Tooltip>
@@ -1012,22 +871,16 @@ function PageComponent({ data }: any) {
 
               <div className="w-full h-px bg-slate-200 my-4"></div>
 
-              
-
               <div className="flex flex-col gap-4 w-full">
-              <h2
+                <h2
                   id="lifecycle"
                   className=" text-4xl font-bold text-gray-900"
                 >
-                 Customer Segments
+                  Customer Segments
                 </h2>
                 <div className="w-full h-px bg-slate-200 my-4"></div>
                 <Chart product={product} />
               </div>
-
-      
-
-             
 
               <div className="w-full h-px bg-slate-200 my-4"></div>
 
@@ -1053,7 +906,6 @@ function PageComponent({ data }: any) {
               <ProcessLifecycle product={product} />
 
               <div className="w-full h-px bg-slate-200 my-4"></div>
-             
 
               <div className="flex  gap-2 items-center">
                 <h2 id="features" className=" text-2xl font-bold text-gray-900">
@@ -1151,23 +1003,22 @@ function PageComponent({ data }: any) {
                 </div>
               ) : null}
 
-
-          {(product.nameofPlan && product.nameofPlan.length > 0) ? (
-            <>
-            <ProductPricingTable
-                          nameofPlan={product.nameofPlan}
-                          validity={product.validity}
-                          price={product.price}
-                        />
-            </>
-            ) : ( 
-                <Label className="text-lg w-[50%] font-semibold bg-white rounded-[5px] shadow-md p-3">No Fixed Pricing Plans Chosen</Label>
-                )}
-             
-             
+              {product.nameofPlan && product.nameofPlan.length > 0 ? (
+                <>
+                  <ProductPricingTable
+                    nameofPlan={product.nameofPlan}
+                    validity={product.validity}
+                    price={product.price}
+                  />
+                </>
+              ) : (
+                <Label className="text-lg w-[50%] font-semibold bg-white rounded-[5px] shadow-md p-3">
+                  No Fixed Pricing Plans Chosen
+                </Label>
+              )}
 
               <div className="w-full h-px bg-slate-200 my-4"></div>
-              
+
               <div className="flex  gap-2 items-center">
                 <h2 id="support" className=" text-2xl font-bold text-gray-900">
                   Support & Services
@@ -1262,7 +1113,7 @@ function PageComponent({ data }: any) {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              
+
               <ProductReview product={product} />
             </div>
           </div>

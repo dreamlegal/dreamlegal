@@ -5,6 +5,15 @@ import SliderElement from "./Silder";
 import { ScrollArea } from "./ui/scroll-area";
 import UserReviewCard from "./UserReviewCard";
 import SavedItems from "./SavedItems";
+import RfpCard from "./RfpCard";
+import { BookOpen } from 'lucide-react';
+
+// const BookmarkCard = ({ product }) => (
+//   <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300">
+//     <h3 className="text-lg font-semibold mb-2">{product.title}</h3>
+//     <p className="text-gray-600">{product.description}</p>
+//   </div>
+// );
 
 function UserDashboard() {
   type Review = {
@@ -122,6 +131,7 @@ function UserDashboard() {
   return (
     <div className="font-clarity">
       <div>
+       
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
           <div>
             <h2 className=" text-gray-900 text-xl font-bold ">
@@ -172,7 +182,8 @@ function UserDashboard() {
           </div>
         </div>
 
-        <h2 className=" text-gray-900 text-xl font-bold ">Bookmarked</h2>
+
+        {/* <h2 className=" text-gray-900 text-xl font-bold ">Bookmarked</h2>
         <div className=" grid grid-cols-1 md:grid-cols-3 gap-4 my-4 ">
           <div className=" col-span-3">
             <SliderElement>
@@ -187,7 +198,29 @@ function UserDashboard() {
               )}
             </SliderElement>
           </div>
-        </div>
+        </div> */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <h2 className="text-3xl font-extrabold text-gray-900 mb-8">Bookmarked</h2>
+      <div className="bg-gray-100 rounded-xl p-6 min-h-[300px] flex items-center justify-center">
+        {savedProductsResponse.length === 0 ? (
+          <div className="text-center">
+            <BookOpen className="mx-auto h-12 w-12 text-gray-400" />
+            <p className="mt-2 text-sm font-medium text-gray-500">No bookmarks yet</p>
+            <p className="mt-1 text-xs text-gray-400">Start saving your favorite items!</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+            {savedProductsResponse.map((product) => (
+              <BookMarkCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  
+
+        <RfpCard userId ={userId}/>
+
       </div>
     </div>
   );

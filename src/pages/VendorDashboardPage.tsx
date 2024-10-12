@@ -841,6 +841,7 @@ import AllProducts from "@/components/ui/AllProducts";
 import VendorReview from "@/components/VendorReview";
 import VendorProfile from "@/components/VendorProfile";
 import VendorLeads from "@/components/VendorLeads";
+import VendorRfps from "@/components/VendorRfps";
 
 const MenuItem = ({ item, onMenuItemClick, selectedMenu, defaultOpen }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -904,6 +905,7 @@ const VendorSidebar = ({ onMenuItemClick, selectedMenu }) => {
     },
     { name: "Review", icon: <MdRateReview size={20} /> },
     { name: "Book A Call", icon: <MdCall size={20} /> },
+    { name: "RFPs", icon: <MdCall size={20} /> },
     { name: "Profile", icon: <RiProfileLine size={20} /> },
     { name: "Logout", icon: <RiProfileLine size={20} /> }, // Add Logout Menu Item
     {
@@ -1096,6 +1098,9 @@ function VendorDashboardPage({ verified }) {
             )}
             {selectedMenu === "Book A Call" && (
               <VendorLeads userId={vendorId || getVendorId} />
+            )}
+            {selectedMenu === "RFPs" && (
+              <VendorRfps userId={vendorId || getVendorId} />
             )}
             {selectedMenu === "Profile" && (
               <VendorProfile verified={verified} getProfile={profile} />

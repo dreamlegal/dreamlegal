@@ -334,3 +334,19 @@ model Features {
 
   @@map("features") // The table is now called "features"
 }
+
+model RfpForm {
+  id              String   @id @default(uuid())
+  userID          String?  // User ID
+  userOrgType     String?  // Organization Type
+  userTeamSize    String?  // Team Size
+  customisation   String?  // Customization requests
+  
+  urgency         Json?    // Urgency details stored as a JSON object
+  budget          Json?    // Budget details stored as a JSON object
+  features        Json?    // Features stored as a JSON object
+  vendors         Json?    // Vendors stored as a JSON object
+
+  createdAt       DateTime @default(now()) // Timestamp for when the RFP form is created
+  updatedAt       DateTime @updatedAt      // Timestamp for last update
+}

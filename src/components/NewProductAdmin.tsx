@@ -9,12 +9,34 @@ function NewProductAdmin() {
 
   useEffect(() => {
     // Function to fetch products from the API
+    // const fetchProducts = async () => {
+    //   try {
+    //     const response = await fetch('/api/get-new-products'); // Adjust the API endpoint as needed
+    //     if (!response.ok) {
+    //       throw new Error('Network response was not ok');
+    //     }
+    //     const data = await response.json();
+    //     setProducts(data.products);
+    //   } catch (error) {
+    //     console.error('Error fetching products:', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/get-new-products'); // Adjust the API endpoint as needed
+        const response = await fetch('/api/get-new-products', {
+          method: 'POST', // Change the method to POST
+          headers: {
+            'Content-Type': 'application/json', // Set the content type
+          },
+          body: JSON.stringify({}) // Send an empty body if no parameters are needed
+        });
+        
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+        
         const data = await response.json();
         setProducts(data.products);
       } catch (error) {
@@ -23,7 +45,7 @@ function NewProductAdmin() {
         setLoading(false);
       }
     };
-
+    
     fetchProducts();
   }, []); 
 

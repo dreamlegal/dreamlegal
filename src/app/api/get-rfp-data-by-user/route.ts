@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     });
 
     if (!rfpData || rfpData.length === 0) {
-        return NextResponse.json({ success: false, message: 'No RFP data found for this user' });
+        return NextResponse.json({ success: false, message: 'You Have Not Made Any RFP' });
     }
 
     const response = rfpData.map((rfp) => {

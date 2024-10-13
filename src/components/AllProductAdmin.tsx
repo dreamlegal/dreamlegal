@@ -9,12 +9,30 @@ function AllProductAdmin() {
 
   useEffect(() => {
     // Function to fetch published products from the API
+    // const fetchProducts = async () => {
+    //   try {
+    //     const response = await fetch('/api/get-publish-product'); // Adjust the API endpoint as needed
+    //     if (!response.ok) {
+    //       throw new Error('Network response was not ok');
+    //     }
+    //     const data = await response.json();
+    //     setProducts(data.products);
+    //   } catch (error) {
+    //     console.error('Error fetching products:', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/get-publish-product'); // Adjust the API endpoint as needed
+        const response = await fetch('/api/get-publish-product', {
+          method: 'POST', // Use POST instead of GET
+        });
+    
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+    
         const data = await response.json();
         setProducts(data.products);
       } catch (error) {
@@ -23,6 +41,7 @@ function AllProductAdmin() {
         setLoading(false);
       }
     };
+    
 
     fetchProducts();
   }, []); // Empty dependency array means this runs once after the initial render

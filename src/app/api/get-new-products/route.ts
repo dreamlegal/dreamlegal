@@ -40,6 +40,9 @@ export async function POST(request: Request) {
       where: {
         active: 'draft',
       },
+      orderBy: {
+        createdAt: 'desc', // or 'createdAt' depending on your schema
+      },
     });
 
     return Response.json(

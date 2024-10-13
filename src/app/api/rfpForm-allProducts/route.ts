@@ -6,8 +6,11 @@ const prisma = new PrismaClient();
 
 export async function POST() {
   try {
-    // Fetch all product instances with their associated company info
+    // Fetch all product instances with their associated company info where active is 'publish'
     const products = await prisma.product.findMany({
+      where: {
+        active: 'publish',
+      },
       select: {
         id: true,
         userId: true,

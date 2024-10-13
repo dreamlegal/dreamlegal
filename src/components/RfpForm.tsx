@@ -2471,42 +2471,85 @@ const RfpForm = ({ CustomerUserId, onClose }) => {
             </div>
 
             {selectedCategory && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Vendor Selection</h3>
-                <RadioGroup value={vendorSelectionType} onValueChange={(value: "byCategory" | "byProduct") => handleVendorSelectionTypeChange(value)}>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="byCategory" id="byCategory" />
-                    <Label htmlFor="byCategory">Send to all vendors in the selected category</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="byProduct" id="byProduct" />
-                    <Label htmlFor="byProduct">Select specific products</Label>
-                  </div>
-                </RadioGroup>
-                {errors.vendorSelectionType && <p className="text-red-500 text-sm">{errors.vendorSelectionType}</p>}
+              // <div className="space-y-4">
+              //   <h3 className="text-lg font-semibold">Vendor Selection</h3>
+              //   <RadioGroup value={vendorSelectionType} onValueChange={(value: "byCategory" | "byProduct") => handleVendorSelectionTypeChange(value)}>
+              //     <div className="flex items-center space-x-2">
+              //       <RadioGroupItem value="byCategory" id="byCategory" />
+              //       <Label htmlFor="byCategory">Send to all vendors in the selected category</Label>
+              //     </div>
+              //     <div className="flex items-center space-x-2">
+              //       <RadioGroupItem value="byProduct" id="byProduct" />
+              //       <Label htmlFor="byProduct">Select specific products</Label>
+              //     </div>
+              //   </RadioGroup>
+              //   {errors.vendorSelectionType && <p className="text-red-500 text-sm">{errors.vendorSelectionType}</p>}
 
-                {vendorSelectionType === "byProduct" && (
-                  <div className="space-y-2">
-                    <Label>Select Products</Label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {products
-                        .filter(product => product.category.includes(selectedCategory))
-                        .map(product => (
-                          <div key={product.id} className="flex items-center space-x-2">
-                            <Checkbox
-                              id={`product-${product.id}`}
-                              checked={selectedProducts.some(p => p.id === product.id)}
-                              onCheckedChange={() => handleProductSelection(product)}
-                            />
-                            <Label htmlFor={`product-${product.id}`}>{product.name}</Label>
-                          </div>
-                        ))
-                      }
-                    </div>
-                    {errors.selectedProducts && <p className="text-red-500 text-sm">{errors.selectedProducts}</p>}
-                  </div>
-                )}
-              </div>
+              //   {vendorSelectionType === "byProduct" && (
+              //     <div className="space-y-2">
+              //       <Label>Select Products</Label>
+              //       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              //         {products
+              //           .filter(product => product.category.includes(selectedCategory))
+              //           .map(product => (
+              //             <div key={product.id} className="flex items-center space-x-2">
+              //               <Checkbox
+              //                 id={`product-${product.id}`}
+              //                 checked={selectedProducts.some(p => p.id === product.id)}
+              //                 onCheckedChange={() => handleProductSelection(product)}
+              //               />
+              //               <Label htmlFor={`product-${product.id}`}>{product.name}</Label>
+              //             </div>
+              //           ))
+              //         }
+              //       </div>
+              //       {errors.selectedProducts && <p className="text-red-500 text-sm">{errors.selectedProducts}</p>}
+              //     </div>
+              //   )}
+              // </div>
+              <div className="space-y-4">
+      <h3 className="text-lg font-semibold">Vendor Selection</h3>
+      <RadioGroup 
+        value={vendorSelectionType} 
+        onValueChange={(value) => handleVendorSelectionTypeChange(value)}
+      >
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="byCategory" id="byCategory" />
+          <Label htmlFor="byCategory">Send to all vendors in the selected category</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="byProduct" id="byProduct" />
+          <Label htmlFor="byProduct">Select specific products</Label>
+        </div>
+      </RadioGroup>
+      {errors.vendorSelectionType && (
+        <p className="text-red-500 text-sm">{errors.vendorSelectionType}</p>
+      )}
+
+      {vendorSelectionType === "byProduct" && (
+        <div className="space-y-2">
+          <Label>Select Products</Label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {products
+              .filter(product => product.category.includes(selectedCategory))
+              .map(product => (
+                <div key={product.id} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`product-${product.id}`}
+                    checked={selectedProducts.some(p => p.id === product.id)}
+                    onCheckedChange={() => handleProductSelection(product)}
+                  />
+                  <Label htmlFor={`product-${product.id}`}>{product.name}</Label>
+                </div>
+              ))
+            }
+          </div>
+          {errors.selectedProducts && (
+            <p className="text-red-500 text-sm">{errors.selectedProducts}</p>
+          )}
+        </div>
+      )}
+    </div>
             )}
 
             {error && <div className="text-red-500">{error}</div>}

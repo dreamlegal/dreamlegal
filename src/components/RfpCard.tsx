@@ -668,7 +668,16 @@ const RfpCard = ({ userId }) => {
   };
 
   if (loading) return <div className="text-center py-10">Loading...</div>;
-  if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
+  if (error) return (
+    <div className="flex justify-center items-center py-10">
+      <div className="flex items-center bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <svg className="fill-current w-6 h-6 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="M10 15a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm0-10a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0010 5z"/>
+        </svg>
+        <span className="block sm:inline">{error}</span>
+      </div>
+    </div>
+  );
   if (rfpData.length === 0) return <div className="text-center py-10">No RFP data available.</div>;
 
   const currentRfp = rfpData[currentRfpIndex];

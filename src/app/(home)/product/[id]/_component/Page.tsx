@@ -513,26 +513,26 @@ function PageComponent({ data }: any) {
           </div>
           <div className=" border shadow-md rounded-3xl px-4 md:px-16 py-10">
             <div className="flex flex-col gap-5">
-              <div className="flex flex-col md:flex-row  md:items-center">
-                <h1 className="font-bold text-xl md:text-3xl">
+              <div className="flex flex-col gap-2 md:flex-row  md:items-center">
+                <h1 className="font-bold text-xl md:text-3xl ">
                   {product.name}
                 </h1>
-                <div className="flex gap-3 md:ml-auto">
-                  <div className="">
-                    <div className="flex gap-4">
+                <div className=" flex gap-3 flex-wrap sm:flex-nowrap">
+                  <div className="pl-1">
+                    <div className=" flex gap-3 flex-wrap sm:flex-nowrap">
                       <Button
-                        className="bg-primary1 transition-all duration-300 rounded-[20px]"
-                        onClick={handleOpenRfpForm}
+                      className="bg-primary1 transition-all duration-300 rounded-[20px] flex items-center"
+                      onClick={handleOpenRfpForm}
                       >
-                        <Pencil className="mr-2 h-4 w-4" />
-                        <p className="mt-1">Request a Proposal</p>
+                      <Pencil className="mr-2 h-4 w-4" />
+                      <p className="mt-1">Request a Proposal</p>
                       </Button>
                       <Button
-                        className="bg-primary1 transition-all duration-300 rounded-[20px]"
-                        onClick={handleOpenBookACallForm}
+                      className="bg-primary1 transition-all duration-300 rounded-[20px] flex items-center"
+                      onClick={handleOpenBookACallForm}
                       >
-                        <Calendar className="mr-2 h-4 w-4" />
-                        <p className="mt-1">Book a Call</p>
+                      <Calendar className="mr-2 h-4 w-4" />
+                      <p className="mt-1">Book a Call</p>
                       </Button>
                     </div>
 

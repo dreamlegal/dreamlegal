@@ -41,6 +41,15 @@ model userAccount {
   CompanyEmail   String?
   OrgType        String?
   user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  PrimaryLanguage  String[]
+  Industry         String[]
+  PracticeArea     String[]
+  WorkType         String[]
+  Goals            String[]
+  ExistingTools    String[]
+  TeamSize         String?
+
 }
 
 model Account {

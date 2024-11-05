@@ -52,7 +52,6 @@ import {
 } from 'lucide-react';
 
 
-// SortableStep component
 const SortableStep = ({ step, index, onRemove, onUpdateStep }) => {
   const {
     attributes,
@@ -69,66 +68,108 @@ const SortableStep = ({ step, index, onRemove, onUpdateStep }) => {
     opacity: isDragging ? 0.5 : 1,
   };
 
+  const generateMarkers = (min, max) => {
+    return [...Array(max - min + 1)].map((_, i) => {
+      const isSelected = (i <= step.repetitiveness && attributes['aria-label']?.includes('Repetitiveness')) || 
+                        (i <= step.exhaustionScale && attributes['aria-label']?.includes('Exhaustion'));
+      return (
+        <div
+          key={i}
+          className={`
+        absolute w-3 h-3 rounded-full 
+        border-2 
+        ${isSelected ? 'border-primary bg-primary/20' : 'border-gray-300 bg-white'}
+        transition-colors duration-200
+          `}
+          style={{
+        left: `${(i / (max - min)) * 92}%`,
+        transform: 'translateX(-50%)',
+        top: '48%',
+        zIndex: 10,
+          }}
+        />
+      );
+    });
+  };
+
   return (
-    <div 
+    <div
       ref={setNodeRef}
       style={style}
-      className="bg-secondary p-4 rounded-lg space-y-4 mb-2"
+      className="bg-secondary p-6 rounded-lg space-y-6 mb-3 shadow-sm"
     >
       <div className="flex items-center space-x-4">
-        <div {...attributes} {...listeners} className="cursor-move">
+        <div {...attributes} {...listeners} className="cursor-move hover:opacity-70 transition-opacity">
           <GripVertical className="h-5 w-5 text-gray-500" />
         </div>
-        <span className="w-8 h-8 flex items-center justify-center bg-primary text-primary-foreground rounded-full">
+        <span className="w-8 h-8 flex items-center justify-center bg-primary text-primary-foreground rounded-full font-medium">
           {index + 1}
         </span>
-        <span className="flex-1 font-medium">{step.step}</span>
+        <span className="flex-1 font-medium text-foreground">{step.step}</span>
         <Button
-        type="button"
+          type="button"
           variant="ghost"
           size="sm"
+          className="hover:bg-destructive/10 hover:text-destructive transition-colors"
           onClick={() => onRemove(index)}
         >
           <X className="h-4 w-4" />
         </Button>
       </div>
 
-      <div className="space-y-6">
-        <div className="space-y-2">
-          <Label className="text-sm">Repetitiveness (1-5)</Label>
-          <Slider
-            value={[step.repetitiveness]}
-            onValueChange={(value) => {
-              onUpdateStep(index, { ...step, repetitiveness: value[0] });
-            }}
-            max={5}
-            min={1}
-            step={1}
-            className="w-full"
-          />
-
-          <div className="flex justify-between text-xs text-gray-500">
-            <span>Rare</span>
-            <span>Frequent</span>
+      <div className="space-y-8">
+        {/* Repetitiveness Slider */}
+        <div className="space-y-3 relative">
+          <Label className="text-sm font-medium">Repetitiveness (0-5)</Label>
+          <div className="flex items-center">
+            {generateMarkers(0, 5)}
+            <Slider
+              value={[step.repetitiveness]}
+              onValueChange={(value) => {
+                onUpdateStep(index, { ...step, repetitiveness: value[0] });
+              }}
+              max={5}
+              min={0}
+              step={1}
+              className="flex-1"
+              aria-label="Repetitiveness Slider"
+            />
+            <span className="ml-4 text-gray-500 min-w-[2.5rem] text-right">
+              {step.repetitiveness.toFixed(1)}
+            </span>
+            
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label className="text-sm">Exhaustion Rate (1-5)</Label>
-          <Slider
-            value={[step.exhaustionScale]}
-            onValueChange={(value) => {
-              onUpdateStep(index, { ...step, exhaustionScale: value[0] });
-            }}
-            max={5}
-            min={1}
-            step={1}
-            className="w-full"
-          />
           <div className="flex justify-between text-xs text-gray-500">
             <span>Low</span>
             <span>High</span>
           </div>
+        </div>
+
+        {/* Exhaustion Rate Slider */}
+        <div className="space-y-3 relative">
+          <Label className="text-sm font-medium">Exhaustion Rate (0-5)</Label>
+          <div className="flex items-center">
+            {generateMarkers(0, 5)}
+            <Slider
+              value={[step.exhaustionScale]}
+              onValueChange={(value) => {
+                onUpdateStep(index, { ...step, exhaustionScale: value[0] });
+              }}
+              max={5}
+              min={0}
+              step={1}
+              className="flex-1"
+              aria-label="Exhaustion Rate Slider"
+            />
+            <span className="ml-4 text-gray-500 min-w-[2.5rem] text-right">
+              {step.exhaustionScale.toFixed(1)}
+            </span>
+           
+          </div>
+          <div className="flex justify-between text-xs text-gray-500">
+            <span>Low</span>
+            <span>High</span>         
+              </div>
         </div>
       </div>
     </div>
@@ -581,7 +622,7 @@ const WorkflowForm = () => {
       !formData.userTeamSize ||
       !formData.catOfWorkFlow ||
       !formData.teamRoles.length ||
-      !formData.toolsUsed.length ||
+
       !formData.steps.length
     ) {
       console.error('Please fill in all required fields');
@@ -752,576 +793,7 @@ const WorkflowForm = () => {
   };
   
   return (
-    // <div className="w-full max-w-4xl mx-auto space-y-8 p-6">
-    //   <h1 className="text-3xl font-bold text-center">WorkFlow Data</h1>
-    //   <Card className="p-6 space-y-6">
-    //   <form onSubmit={handleSubmit} >
-    //     {/* Organization Type Selection */}
-    //     <div className="space-y-2">
-    //       <Label>Organization Type</Label>
-    //       <Select 
-    //         value={formData.userOrgType}
-    //         onValueChange={(value) => setFormData(prev => ({ ...prev, userOrgType: value }))}
-    //       >
-    //         <SelectTrigger className="w-full">
-    //           <SelectValue placeholder="Select organization type" />
-    //         </SelectTrigger>
-    //         <SelectContent>
-    //           {orgTypes.map(type => (
-    //             <SelectItem key={type} value={type}>{type}</SelectItem>
-    //           ))}
-    //         </SelectContent>
-    //       </Select>
-    //     </div>
-
-    //     {/* Team Size Selection */}
-    //     <div className="space-y-2">
-    //       <Label>Team Size</Label>
-    //       <Select 
-    //         value={formData.userTeamSize}
-    //         onValueChange={(value) => setFormData(prev => ({ ...prev, userTeamSize: value }))}
-    //       >
-    //         <SelectTrigger className="w-full">
-    //           <SelectValue placeholder="Select team size" />
-    //         </SelectTrigger>
-    //         <SelectContent>
-    //           {teamSizes.map(size => (
-    //             <SelectItem key={size} value={size}>{size}</SelectItem>
-    //           ))}
-    //         </SelectContent>
-    //       </Select>
-    //     </div>
-
-    //     {/* Workflow Category Selection */}
-    //     <div className="space-y-2">
-    //       <Label>Workflow Category</Label>
-    //       <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-    //         {workflowCategories.map(category => (
-    //           <Button
-    //             type="button"
-    //             key={category}
-    //             variant={formData.catOfWorkFlow === category ? "default" : "outline"}
-    //             onClick={() => setFormData(prev => ({ ...prev, catOfWorkFlow: category }))}
-    //             className="h-auto py-2 px-3 text-sm text-left justify-start"
-    //           >
-    //             {category}
-    //           </Button>
-    //         ))}
-    //       </div>
-    //     </div>
-
-    //     {/* Team Roles Section */}
-    //     {formData.userOrgType && (
-    //       <div className="space-y-4">
-    //         <Label>Team Roles</Label>
-    //         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    //           {teamRolesMap[formData.userOrgType]?.map(role => (
-    //             <div key={role} className="flex items-center space-x-2">
-    //               <Button
-    //               type="button"
-    //                 variant="outline"
-    //                 onClick={() => handleAddTeamRole(role)}
-    //                 className="flex-1"
-    //               >
-    //                 {role}
-    //               </Button>
-    //             </div>
-    //           ))}
-    //         </div>
-            
-    //         {/* Selected Roles */}
-    //         <div className="space-y-2">
-    //           {formData.teamRoles.map(({ role, count }) => (
-    //             <div key={role} className="flex items-center space-x-2">
-    //               <Input 
-    //                 type="number"
-    //                 value={count}
-    //                 onChange={(e) => handleUpdateRoleCount(role, e.target.value)}
-    //                 className="w-20"
-    //                 min="1"
-    //               />
-    //               <span className="flex-1">{role}</span>
-    //               <Button
-    //                 type="button"
-    //                 variant="ghost"
-    //                 size="sm"
-    //                 onClick={() => handleRemoveRole(role)}
-    //               >
-    //                 <X className="h-4 w-4" />
-    //               </Button>
-    //             </div>
-    //           ))}
-    //         </div>
-
-    //         {/* Custom Role Input */}
-    //         <div className="flex space-x-2">
-    //           <Input
-    //             placeholder="Add custom role"
-    //             onKeyPress={(e) => {
-    //               if (e.key === 'Enter') {
-    //                 handleAddCustomTeamRole(e.target.value);
-    //                 e.target.value = '';
-    //               }
-    //             }}
-
-    //             />
-    //           <Button 
-    //              type="button"
-    //             onClick={() => {
-    //               const input = document.querySelector('input[placeholder="Add custom role"]');
-    //               handleAddCustomTeamRole(input.value);
-    //               input.value = '';
-    //             }}
-    //             className="shrink-0"
-    //           >
-    //             <Plus className="h-4 w-4" />
-    //           </Button>
-    //         </div>
-    //       </div>
-    //     )}
-
-    //      {/* Tools Section */}
-    //     {formData.catOfWorkFlow && toolsMap[formData.catOfWorkFlow] && (
-    //       <div className="space-y-4">
-    //         <Label>Tools Used</Label>
-    //         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-    //           {toolsMap[formData.catOfWorkFlow].map(tool => (
-    //             <Button
-    //             type="button"
-    //               key={tool}
-    //               variant={formData.toolsUsed.includes(tool) ? "default" : "outline"}
-    //               onClick={() => handleAddTool(tool)}
-    //               className="h-auto py-2 px-3 text-sm text-left justify-start"
-    //             >
-    //               {tool}
-    //             </Button>
-    //           ))}
-    //         </div>
-
-    //         {/* Selected Tools */}
-    //         <div className="space-y-2">
-    //           {formData.toolsUsed.map(tool => (
-    //             <div key={tool} className="flex items-center space-x-2 bg-secondary p-2 rounded-lg">
-    //               <span className="flex-1">{tool}</span>
-    //               <Button
-    //               type="button"
-    //                 variant="ghost"
-    //                 size="sm"
-    //                 onClick={() => handleRemoveTool(tool)}
-    //               >
-    //                 <X className="h-4 w-4" />
-    //               </Button>
-    //             </div>
-    //           ))}
-    //         </div>
-
-    //         {/* Custom Tool Input */}
-    //         <div className="flex space-x-2">
-    //           <Input
-    //             placeholder="Add custom tool"
-    //             onKeyPress={(e) => {
-    //               if (e.key === 'Enter') {
-    //                 handleAddCustomTool(e.target.value);
-    //                 e.target.value = '';
-    //               }
-    //             }}
-    //           />
-    //           <Button 
-    //           type="button"
-    //             onClick={() => {
-    //               const input = document.querySelector('input[placeholder="Add custom tool"]');
-    //               handleAddCustomTool(input.value);
-    //               input.value = '';
-    //             }}
-    //             className="shrink-0"
-    //           >
-    //             <Plus className="h-4 w-4" />
-    //           </Button>
-    //         </div>
-    //       </div>
-    //     )}
-
-    //     {formData.catOfWorkFlow && (
-    //       <div className="space-y-4">
-    //         <Label>Workflow Steps</Label>
-            
-    //         {/* Available Steps */}
-    //         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-    //           {stepsMap[formData.catOfWorkFlow]?.map((step) => (
-    //             <Button
-    //             type="button"
-    //               key={step}
-    //               variant="outline"
-    //               onClick={() => handleAddStep(step)}
-    //               className="w-full justify-start"
-    //               disabled={formData.steps.some(s => s.step === step)}
-    //             >
-    //               {step}
-    //             </Button>
-    //           ))}
-    //         </div>
-
-    //         {/* Custom Step Input */}
-    //         <div className="flex space-x-2">
-    //           <Input
-    //             placeholder="Add custom step"
-    //             onKeyPress={(e) => {
-    //               if (e.key === 'Enter') {
-    //                 handleAddCustomStep(e.target.value);
-    //                 e.target.value = '';
-    //               }
-    //             }}
-    //           />
-    //           <Button 
-    //           type="button"
-    //             onClick={() => {
-    //               const input = document.querySelector('input[placeholder="Add custom step"]');
-    //               handleAddCustomStep(input.value);
-    //               input.value = '';
-    //             }}
-    //             className="shrink-0"
-    //           >
-    //             <Plus className="h-4 w-4" />
-    //           </Button>
-    //         </div>
-
-    //         {/* Selected Steps with DnD */}
-    //         <DndContext
-    //           sensors={sensors}
-    //           collisionDetection={closestCenter}
-    //           onDragEnd={handleDragEnd}
-    //         >
-    //           <SortableContext
-    //             items={formData.steps.map(step => step.step)}
-    //             strategy={verticalListSortingStrategy}
-    //           >
-    //             {formData.steps.map((step, index) => (
-    //               <SortableStep
-    //                 key={step.step}
-    //                 step={step}
-    //                 index={index}
-    //                 onRemove={(index) => {
-    //                   const newSteps = formData.steps.filter((_, i) => i !== index);
-    //                   setFormData(prev => ({ ...prev, steps: newSteps }));
-    //                 }}
-    //                 onUpdateStep={handleUpdateStep}
-    //               />
-    //             ))}
-    //           </SortableContext>
-    //         </DndContext>
-    //       </div>
-    //     )}
-
-
-    //       <Button 
-    //           type="submit"
-    //           className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-4"
-    //         >
-    //           Submit Workflow Data
-    //         </Button>
-    //    </form>
-    //   </Card>
-
-    //   {/* Debug Output */}
-    //   {/* <pre className="p-4 bg-secondary rounded-lg overflow-auto">
-    //     {JSON.stringify(formData, null, 2)}
-    //   </pre> */}
-    // </div>
     
-//     <div className="w-full max-w-4xl mx-auto space-y-8 p-4">
-//     <h1 className="text-2xl md:text-3xl font-bold text-center">WorkFlow Data</h1>
-//     <Card className="p-4 md:p-6 space-y-6">
-//       <form onSubmit={handleSubmit}>
-//         {/* Organization Type Selection */}
-//         <div className="space-y-2 mb-6">
-//           <Label>Organization Type</Label>
-//           <Select 
-//             value={formData.userOrgType}
-//             onValueChange={(value) => setFormData(prev => ({ ...prev, userOrgType: value }))}
-//           >
-//             <SelectTrigger className="w-full">
-//               <SelectValue placeholder="Select organization type" />
-//             </SelectTrigger>
-//             <SelectContent>
-//               {orgTypes.map(type => (
-//                 <SelectItem key={type} value={type}>{type}</SelectItem>
-//               ))}
-//             </SelectContent>
-//           </Select>
-//         </div>
-
-//         {/* Team Size Selection */}
-//         <div className="space-y-2 mb-6">
-//           <Label>Team Size</Label>
-//           <Select 
-//             value={formData.userTeamSize}
-//             onValueChange={(value) => setFormData(prev => ({ ...prev, userTeamSize: value }))}
-//           >
-//             <SelectTrigger className="w-full">
-//               <SelectValue placeholder="Select team size" />
-//             </SelectTrigger>
-//             <SelectContent>
-//               {teamSizes.map(size => (
-//                 <SelectItem key={size} value={size}>{size}</SelectItem>
-//               ))}
-//             </SelectContent>
-//           </Select>
-//         </div>
-
-//         {/* Workflow Category Selection */}
-//         <div className="space-y-2 mb-6">
-//           <Label>Workflow Category</Label>
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-//             {workflowCategories.map(category => (
-             
-
-//               <Button
-//               type="button"
-//               key={category}
-//               variant={formData.catOfWorkFlow === category ? "default" : "outline"}
-//               onClick={() => setFormData(prev => ({ ...prev, catOfWorkFlow: category }))}
-//               className={`h-auto py-2 px-3 text-sm text-left justify-start break-words ${
-//                 formData.catOfWorkFlow === category 
-//                   ? "bg-blue-600 hover:bg-blue-700 text-white"
-//                   : ""
-//               }`}
-//             >
-//               {category}
-//             </Button>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* Team Roles Section */}
-//         {formData.userOrgType && (
-//   <div className="space-y-4 mb-6">
-//     <Label>Team Roles</Label>
-//     <div className="grid grid-cols-1 gap-2">
-//       {teamRolesMap[formData.userOrgType]?.map(role => {
-//         const isSelected = formData.teamRoles.some(tr => tr.role === role);
-//         return (
-//           <Button
-//             type="button"
-//             key={role}
-//             variant={isSelected ? "default" : "outline"}
-//             onClick={() => handleAddTeamRole(role)}
-//             className={`w-full text-left justify-start break-words ${
-//               isSelected 
-//                 ? "bg-blue-600 hover:bg-blue-700 text-white"
-//                 : ""
-//             }`}
-//           >
-//             {role}
-//           </Button>
-//         );
-//       })}
-//     </div>
-
-//     {/* Selected Roles */}
-//     <div className="space-y-2">
-//       {formData.teamRoles.map(({ role, count }) => (
-//         <div key={role} className="flex items-center space-x-2">
-//           <Input 
-//             type="number"
-//             value={count}
-//             onChange={(e) => handleUpdateRoleCount(role, e.target.value)}
-//             className="w-16 md:w-20"
-//             min="1"
-//           />
-//           <span className="flex-1 break-words">{role}</span>
-//           <Button
-//             type="button"
-//             variant="ghost"
-//             size="sm"
-//             onClick={() => handleRemoveRole(role)}
-//             className="shrink-0 hover:bg-blue-100 hover:text-blue-600"
-//           >
-//             <X className="h-4 w-4" />
-//           </Button>
-//         </div>
-//       ))}
-//     </div>
-
-//     {/* Custom Role Input */}
-//     <div className="flex space-x-2">
-//       <Input
-//         placeholder="Add custom role"
-//         onKeyPress={(e) => {
-//           if (e.key === 'Enter') {
-//             handleAddCustomTeamRole(e.target.value);
-//             e.target.value = '';
-//           }
-//         }}
-//       />
-//       <Button 
-//         type="button"
-//         onClick={() => {
-//           const input = document.querySelector('input[placeholder="Add custom role"]');
-//           handleAddCustomTeamRole(input.value);
-//           input.value = '';
-//         }}
-//         className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-//       >
-//         <Plus className="h-4 w-4" />
-//       </Button>
-//     </div>
-//   </div>
-// )}
-//       {/* Tools Section */}
-// {formData.catOfWorkFlow && toolsMap[formData.catOfWorkFlow] && (
-//   <div className="space-y-4 mb-6">
-//     <Label>Tools Used</Label>
-//     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-//       {toolsMap[formData.catOfWorkFlow].map(tool => (
-//         <Button
-//           type="button"
-//           key={tool}
-//           variant={formData.toolsUsed.includes(tool) ? "default" : "outline"}
-//           onClick={() => handleAddTool(tool)}
-//           className={`h-auto py-2 px-3 text-sm text-left justify-start break-words ${
-//             formData.toolsUsed.includes(tool) 
-//               ? "bg-blue-600 hover:bg-blue-700 text-white"
-//               : ""
-//           }`}
-//         >
-//           {tool}
-//         </Button>
-//       ))}
-//     </div>
-
-//     {/* Selected Tools */}
-//     <div className="space-y-2">
-//       {formData.toolsUsed.map(tool => (
-//         <div key={tool} className="flex items-center space-x-2 bg-blue-50 p-2 rounded-lg">
-//           <span className="flex-1 break-words">{tool}</span>
-//           <Button
-//             type="button"
-//             variant="ghost"
-//             size="sm"
-//             onClick={() => handleRemoveTool(tool)}
-//             className="shrink-0 hover:bg-blue-100 hover:text-blue-600"
-//           >
-//             <X className="h-4 w-4" />
-//           </Button>
-//         </div>
-//       ))}
-//     </div>
-
-//     {/* Custom Tool Input */}
-//     <div className="flex space-x-2">
-//       <Input
-//         placeholder="Add custom tool"
-//         onKeyPress={(e) => {
-//           if (e.key === 'Enter') {
-//             handleAddCustomTool(e.target.value);
-//             e.target.value = '';
-//           }
-//         }}
-//       />
-//       <Button 
-//         type="button"
-//         onClick={() => {
-//           const input = document.querySelector('input[placeholder="Add custom tool"]');
-//           handleAddCustomTool(input.value);
-//           input.value = '';
-//         }}
-//         className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-//       >
-//         <Plus className="h-4 w-4" />
-//       </Button>
-//     </div>
-//   </div>
-// )}
-
-// {/* Workflow Steps Section */}
-// {formData.catOfWorkFlow && (
-//   <div className="space-y-4">
-//     <Label>Workflow Steps</Label>
-//     <div className="grid grid-cols-1 gap-2">
-//       {stepsMap[formData.catOfWorkFlow]?.map((step) => {
-//         const isSelected = formData.steps.some(s => s.step === step);
-//         return (
-//           <Button
-//             type="button"
-//             key={step}
-//             variant={isSelected ? "default" : "outline"}
-//             onClick={() => handleAddStep(step)}
-//             className={`w-full text-left justify-start break-words ${
-//               isSelected 
-//                 ? "bg-blue-600 hover:bg-blue-700 text-white"
-//                 : ""
-//             }`}
-//             disabled={isSelected}
-//           >
-//             {step}
-//           </Button>
-//         );
-//       })}
-//     </div>
-
-//     {/* Custom Step Input */}
-//     <div className="flex space-x-2">
-//       <Input
-//         placeholder="Add custom step"
-//         onKeyPress={(e) => {
-//           if (e.key === 'Enter') {
-//             handleAddCustomStep(e.target.value);
-//             e.target.value = '';
-//           }
-//         }}
-//       />
-//       <Button 
-//         type="button"
-//         onClick={() => {
-//           const input = document.querySelector('input[placeholder="Add custom step"]');
-//           handleAddCustomStep(input.value);
-//           input.value = '';
-//         }}
-//         className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-//       >
-//         <Plus className="h-4 w-4" />
-//       </Button>
-//     </div>
-
-//     {/* Selected Steps with DnD */}
-//     <DndContext
-//       sensors={sensors}
-//       collisionDetection={closestCenter}
-//       onDragEnd={handleDragEnd}
-//     >
-//       <SortableContext
-//         items={formData.steps.map(step => step.step)}
-//         strategy={verticalListSortingStrategy}
-//       >
-//         {formData.steps.map((step, index) => (
-//           <SortableStep
-//             key={step.step}
-//             step={step}
-//             index={index}
-//             onRemove={(index) => {
-//               const newSteps = formData.steps.filter((_, i) => i !== index);
-//               setFormData(prev => ({ ...prev, steps: newSteps }));
-//             }}
-//             onUpdateStep={handleUpdateStep}
-//           />
-//         ))}
-//       </SortableContext>
-//     </DndContext>
-//   </div>
-// )}
-
-//         <Button 
-//           type="submit"
-//           className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-6"
-//         >
-//           Submit Workflow Data
-//         </Button>
-//       </form>
-//     </Card>
-//     <pre className="p-4 bg-secondary rounded-lg overflow-auto">
-//         {JSON.stringify(formData, null, 2)}
-//       </pre>
-//   </div>
 
 <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <style jsx global>{`
@@ -1403,7 +875,7 @@ const WorkflowForm = () => {
               Back to Categories
             </Button>
             
-            <Card className="p-6">
+            {/* <Card className="p-6">
               <CardHeader className="pb-8">
                 <div className="flex items-center space-x-3">
                   {workflowCategories.find(c => c.name === formData.catOfWorkFlow)?.icon && 
@@ -1423,299 +895,623 @@ const WorkflowForm = () => {
               </CardHeader>
 
               <form onSubmit={handleSubmit}>
-         {/* Organization Type Selection */}
-         <div className="space-y-2 mb-6">
-           <Label>Organization Type</Label>
-           <Select 
-            value={formData.userOrgType}
-            onValueChange={(value) => setFormData(prev => ({ ...prev, userOrgType: value }))}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select organization type" />
-            </SelectTrigger>
-            <SelectContent>
-              {orgTypes.map(type => (
-                <SelectItem key={type} value={type}>{type}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Team Size Selection */}
-        <div className="space-y-2 mb-6">
-          <Label>Team Size</Label>
-          <Select 
-            value={formData.userTeamSize}
-            onValueChange={(value) => setFormData(prev => ({ ...prev, userTeamSize: value }))}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select team size" />
-            </SelectTrigger>
-            <SelectContent>
-              {teamSizes.map(size => (
-                <SelectItem key={size} value={size}>{size}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        
 
 
-<div className="border-b border-gray-200 my-6"></div>
-      
-     
-        {/* Team Roles Section */}
-        {formData.userOrgType && (
-  <div className="space-y-4 mb-6">
-    <Label>Team Roles</Label>
-    <div className="grid grid-cols-1 gap-2">
-      {teamRolesMap[formData.userOrgType]?.map(role => {
-        const isSelected = formData.teamRoles.some(tr => tr.role === role);
-        return (
-          <Button
-            type="button"
-            key={role}
-            variant={isSelected ? "default" : "outline"}
-            onClick={() => handleAddTeamRole(role)}
-            className={`w-full text-left justify-start break-words ${
-              isSelected 
-                ? "bg-blue-600 hover:bg-blue-700 text-white"
-                : ""
-            }`}
-          >
-            {role}
-          </Button>
-        );
-      })}
-    </div>
+                
+                
+                  <div className="space-y-2 mb-6 ">
+                    <Label>Organization Type</Label>
+                    <Select 
+                      value={formData.userOrgType}
+                      onValueChange={(value) => setFormData(prev => ({ ...prev, userOrgType: value }))}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select organization type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {orgTypes.map(type => (
+                          <SelectItem key={type} value={type}>{type}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-    {/* Selected Roles */}
-    <div className="space-y-2">
-      {formData.teamRoles.map(({ role, count }) => (
-        <div key={role} className="flex items-center bg-gray-50 space-x-2 p-2  shadow-sm rounded-lg border border-gray-200">
-          <p className='mr-1 text-sm font-semibold text-gray-700'>Count:</p>
-          <Input 
-            type="text"
-            placeholder='Enter Count'
-            value={count}
-            onChange={(e) => handleUpdateRoleCount(role, e.target.value)}
-            className="w-16 md:w-20 border-gray-300 rounded-md"
-            min="1"
-          />
-          <span className="flex-1 break-words text-gray-800">{role}</span>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => handleRemoveRole(role)}
-            className="shrink-0 text-red-600 hover:text-red-800"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      ))}
-    </div>
+                  
+                  <div className="space-y-2 mb-6">
+                    <Label>Team Size</Label>
+                    <Select 
+                      value={formData.userTeamSize}
+                      onValueChange={(value) => setFormData(prev => ({ ...prev, userTeamSize: value }))}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select team size" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {teamSizes.map(size => (
+                          <SelectItem key={size} value={size}>{size}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-    {/* Custom Role Input */}
-    <div className="flex space-x-2">
-      <Input
-        placeholder="Add custom role"
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            handleAddCustomTeamRole(e.target.value);
-            e.target.value = '';
-          }
-        }}
-      />
-      <Button 
-        type="button"
-        onClick={() => {
-          const input = document.querySelector('input[placeholder="Add custom role"]');
-          handleAddCustomTeamRole(input.value);
-          input.value = '';
-        }}
-        className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-      >
-        <Plus className="h-4 w-4" />
-      </Button>
-    </div>
-  </div>
-)}
+                  
 
-<div className="border-b border-gray-200 my-6"></div>
+            
+              
+                 
+                  {formData.userOrgType && (
+            <div className="space-y-4 mb-6">
+              <Label>Team Roles</Label>
+              <div className="grid grid-cols-1 gap-2">
+                {teamRolesMap[formData.userOrgType]?.map(role => {
+                  const isSelected = formData.teamRoles.some(tr => tr.role === role);
+                  return (
+                    <Button
+                      type="button"
+                      key={role}
+                      variant={isSelected ? "default" : "outline"}
+                      onClick={() => handleAddTeamRole(role)}
+                      className={`w-full text-left justify-start break-words ${
+                        isSelected 
+                          ? "bg-blue-600 hover:bg-blue-700 text-white"
+                          : ""
+                      }`}
+                    >
+                      {role}
+                    </Button>
+                  );
+                })}
+              </div>
 
+              
+              <div className="space-y-2">
+                {formData.teamRoles.map(({ role, count }) => (
+                  <div key={role} className="flex items-center bg-gray-50 space-x-2 p-2  shadow-sm rounded-lg border border-gray-200">
+                    <p className='mr-1 text-sm font-semibold text-gray-700'>Count:</p>
+                    <Input 
+                      type="text"
+                      placeholder='Enter Count'
+                      value={count}
+                      onChange={(e) => handleUpdateRoleCount(role, e.target.value)}
+                      className="w-16 md:w-20 border-gray-300 rounded-md"
+                      min="1"
+                    />
+                    <span className="flex-1 break-words text-gray-800">{role}</span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleRemoveRole(role)}
+                      className="shrink-0 text-red-600 hover:text-red-800"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
 
-      {/* Tools Section */}
-{formData.catOfWorkFlow && toolsMap[formData.catOfWorkFlow] && (
-  <div className="space-y-4 mb-6">
-    <Label>Tools Used</Label>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 ">
-      {toolsMap[formData.catOfWorkFlow].map(tool => (
-        <Button
-          type="button"
-          key={tool}
-          variant={formData.toolsUsed.includes(tool) ? "default" : "outline"}
-          onClick={() => handleAddTool(tool)}
-          className={`h-auto py-2 px-3 text-sm text-left justify-start break-words ${
-            formData.toolsUsed.includes(tool) 
-              ? "bg-blue-600 hover:bg-blue-700 text-white"
-              : ""
-          }`}
-        >
-          {tool}
-        </Button>
-      ))}
-    </div>
-
-    {/* Selected Tools */}
-    <div className="space-y-2">
-      {formData.toolsUsed.map(tool => (
-        <div key={tool} className="flex items-center space-x-2 bg-blue-50 p-2 rounded-lg">
-          <span className="flex-1 break-words">{tool}</span>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => handleRemoveTool(tool)}
-            className="shrink-0 hover:bg-blue-100 hover:text-blue-600"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      ))}
-    </div>
-
-    {/* Custom Tool Input */}
-    <div className="flex space-x-2">
-      <Input
-        placeholder="Add custom tool"
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            handleAddCustomTool(e.target.value);
-            e.target.value = '';
-          }
-        }}
-      />
-      <Button 
-        type="button"
-        onClick={() => {
-          const input = document.querySelector('input[placeholder="Add custom tool"]');
-          handleAddCustomTool(input.value);
-          input.value = '';
-        }}
-        className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-      >
-        <Plus className="h-4 w-4" />
-      </Button>
-    </div>
-  </div>
-)}
+             
+              <div className="flex space-x-2">
+                <Input
+                  placeholder="Add custom role"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      handleAddCustomTeamRole(e.target.value);
+                      e.target.value = '';
+                    }
+                  }}
+                />
+                <Button 
+                  type="button"
+                  onClick={() => {
+                    const input = document.querySelector('input[placeholder="Add custom role"]');
+                    handleAddCustomTeamRole(input.value);
+                    input.value = '';
+                  }}
+                  className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+                  )}
 
 
-{/* Workflow Steps Section */}
 
-<div className="border-b border-gray-200 my-6"></div>
+                  
+                  {formData.catOfWorkFlow && toolsMap[formData.catOfWorkFlow] && (
+                    <div className="space-y-4 mb-6">
+                      <Label>Tools Used</Label>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 ">
+                        {toolsMap[formData.catOfWorkFlow].map(tool => (
+                          <Button
+                            type="button"
+                            key={tool}
+                            variant={formData.toolsUsed.includes(tool) ? "default" : "outline"}
+                            onClick={() => handleAddTool(tool)}
+                            className={`h-auto py-2 px-3 text-sm text-left justify-start break-words ${
+                              formData.toolsUsed.includes(tool) 
+                                ? "bg-blue-600 hover:bg-blue-700 text-white"
+                                : ""
+                            }`}
+                          >
+                            {tool}
+                          </Button>
+                        ))}
+                      </div>
 
-{formData.catOfWorkFlow && (
-  <div className="space-y-4">
-    <Label>Workflow Steps</Label>
-    <div className="grid grid-cols-1 gap-2">
-      {stepsMap[formData.catOfWorkFlow]?.map((step) => {
-        const isSelected = formData.steps.some(s => s.step === step);
-        return (
-          <Button
-            type="button"
-            key={step}
-            variant={isSelected ? "default" : "outline"}
-            onClick={() => handleAddStep(step)}
-            className={`w-full text-left justify-start break-words ${
-              isSelected 
-                ? "bg-blue-600 hover:bg-blue-700 text-white"
-                : ""
-            }`}
-            disabled={isSelected}
-          >
-            {step}
-          </Button>
-        );
-      })}
-     </div>
+                    
+                      <div className="space-y-2">
+                        {formData.toolsUsed.map(tool => (
+                          <div key={tool} className="flex items-center space-x-2 bg-blue-50 p-2 rounded-lg">
+                            <span className="flex-1 break-words">{tool}</span>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleRemoveTool(tool)}
+                              className="shrink-0 hover:bg-blue-100 hover:text-blue-600"
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
 
-     {/* Custom Step Input */}
-    <div className="flex space-x-2">
-       <Input
-        placeholder="Add custom step"
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            handleAddCustomStep(e.target.value);
-            e.target.value = '';
-          }
-        }}
-      />
-      <Button 
-        type="button"
-        onClick={() => {
-          const input = document.querySelector('input[placeholder="Add custom step"]');
-          handleAddCustomStep(input.value);
-          input.value = '';
-        }}
-        className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-      >
-        <Plus className="h-4 w-4" />
-      </Button>
-    </div>
+                     
+                      <div className="flex space-x-2">
+                        <Input
+                          placeholder="Add custom tool"
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              handleAddCustomTool(e.target.value);
+                              e.target.value = '';
+                            }
+                          }}
+                        />
+                        <Button 
+                          type="button"
+                          onClick={() => {
+                            const input = document.querySelector('input[placeholder="Add custom tool"]');
+                            handleAddCustomTool(input.value);
+                            input.value = '';
+                          }}
+                          className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
 
-    {/* Selected Steps with DnD */}
-    <div className="display  flex ">
-      <p className='text-sm text-gray-500' >
-        For Changing Order Of Steps ;
-        Use them &nbsp; </p> 
-        <GripVertical className="h-5 w-5 text-gray-500" />
-       
-        
-      
-    </div>
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-       <SortableContext
-        items={formData.steps.map(step => step.step)}
-        strategy={verticalListSortingStrategy}
-      >
-        {formData.steps.map((step, index) => (
-          <SortableStep
-            key={step.step}
-            step={step}
-            index={index}
-            onRemove={(index) => {
-              const newSteps = formData.steps.filter((_, i) => i !== index);
-              setFormData(prev => ({ ...prev, steps: newSteps }));
-            }}
-            onUpdateStep={handleUpdateStep}
-          />
-        ))}
-      </SortableContext>
-    </DndContext>
-  </div>
-)}
 
-        <Button 
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-6"
-        >
-          Submit Workflow Data
-        </Button>
-               </form>
-            </Card>
+                  
+
+                  {formData.catOfWorkFlow && (
+                    <div className="space-y-4">
+                      <Label>Workflow Steps</Label>
+                      <div className="grid grid-cols-1 gap-2">
+                        {stepsMap[formData.catOfWorkFlow]?.map((step) => {
+                          const isSelected = formData.steps.some(s => s.step === step);
+                          return (
+                            <Button
+                              type="button"
+                              key={step}
+                              variant={isSelected ? "default" : "outline"}
+                              onClick={() => handleAddStep(step)}
+                              className={`w-full text-left justify-start break-words ${
+                                isSelected 
+                                  ? "bg-blue-600 hover:bg-blue-700 text-white"
+                                  : ""
+                              }`}
+                              disabled={isSelected}
+                            >
+                              {step}
+                            </Button>
+                          );
+                        })}
+                      </div>
+
+                      <div className="flex space-x-2">
+                        <Input
+                          placeholder="Add custom step"
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              handleAddCustomStep(e.target.value);
+                              e.target.value = '';
+                            }
+                          }}
+                        />
+                        <Button 
+                          type="button"
+                          onClick={() => {
+                            const input = document.querySelector('input[placeholder="Add custom step"]');
+                            handleAddCustomStep(input.value);
+                            input.value = '';
+                          }}
+                          className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+
+                      
+                      <div className="display  flex ">
+                        <p className='text-sm text-gray-500' >
+                          For Changing Order Of Steps ;
+                          Use them &nbsp; </p> 
+                          <GripVertical className="h-5 w-5 text-gray-500" />
+                        
+                          
+                        
+                      </div>
+                      <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                      >
+                        <SortableContext
+                          items={formData.steps.map(step => step.step)}
+                          strategy={verticalListSortingStrategy}
+                        >
+                          {formData.steps.map((step, index) => (
+                            <SortableStep
+                              key={step.step}
+                              step={step}
+                              index={index}
+                              onRemove={(index) => {
+                                const newSteps = formData.steps.filter((_, i) => i !== index);
+                                setFormData(prev => ({ ...prev, steps: newSteps }));
+                              }}
+                              onUpdateStep={handleUpdateStep}
+                            />
+                          ))}
+                        </SortableContext>
+                      </DndContext>
+                    </div>
+                  )}
+
+                          <Button 
+                            type="submit"
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-6"
+                          >
+                            Submit Workflow Data
+                          </Button>
+              </form>
+
+
+            </Card> */}
+
+
+             
+                <div className="flex items-center space-x-3">
+                  {workflowCategories.find(c => c.name === formData.catOfWorkFlow)?.icon && 
+                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${
+                      workflowCategories.find(c => c.name === formData.catOfWorkFlow)?.color
+                    } flex items-center justify-center`}>
+                      {React.createElement(
+                        workflowCategories.find(c => c.name === formData.catOfWorkFlow)?.icon,
+                        { className: "w-5 h-5 text-white" }
+                      )}
+                    </div>
+                  }
+                
+                </div>
+              
+
+              <form onSubmit={handleSubmit}>
+
+
+<Card className='p-6 mb-6'>   
+
+                  <CardTitle className="text-2xl font-bold">
+                    Configure {formData.catOfWorkFlow} Workflow
+                  </CardTitle>             
+</Card>
+<Card className='p-6 mb-6'>           
+                  <div className="space-y-2 mb-6 ">
+                    <Label>Organization Type</Label>
+                    <Select 
+                      value={formData.userOrgType}
+                      onValueChange={(value) => setFormData(prev => ({ ...prev, userOrgType: value }))}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select organization type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {orgTypes.map(type => (
+                          <SelectItem key={type} value={type}>{type}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  
+                  <div className="space-y-2 mb-6">
+                    <Label>Team Size</Label>
+                    <Select 
+                      value={formData.userTeamSize}
+                      onValueChange={(value) => setFormData(prev => ({ ...prev, userTeamSize: value }))}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select team size" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {teamSizes.map(size => (
+                          <SelectItem key={size} value={size}>{size}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  
+</Card>
+            
+<Card className='p-6 mb-6'>
+
+                 
+                  {formData.userOrgType && (
+            <div className="space-y-4 mb-6">
+              
+              <CardTitle className="text-2xl font-bold">
+              
+              Team Roles Involved In The Workflow
+              </CardTitle>
+
+              <div className="grid grid-cols-1 gap-2">
+                {teamRolesMap[formData.userOrgType]?.map(role => {
+                  const isSelected = formData.teamRoles.some(tr => tr.role === role);
+                  return (
+                    <Button
+                      type="button"
+                      key={role}
+                      variant={isSelected ? "default" : "outline"}
+                      onClick={() => handleAddTeamRole(role)}
+                      className={`w-full text-left justify-start break-words ${
+                        isSelected 
+                          ? "bg-blue-600 hover:bg-blue-700 text-white"
+                          : ""
+                      }`}
+                    >
+                      {role}
+                    </Button>
+                  );
+                })}
+              </div>
+
+              
+              <div className="space-y-2">
+                {formData.teamRoles.map(({ role, count }) => (
+                  <div key={role} className="flex items-center bg-gray-50 space-x-2 p-2  shadow-sm rounded-lg border border-gray-200">
+                    <p className='mr-1 text-sm font-semibold text-gray-700'>Count:</p>
+                    <Input 
+                      type="text"
+                      placeholder='Enter Count'
+                      value={count}
+                      onChange={(e) => handleUpdateRoleCount(role, e.target.value)}
+                      className="w-16 md:w-20 border-gray-300 rounded-md"
+                      min="1"
+                    />
+                    <span className="flex-1 break-words text-gray-800">{role}</span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleRemoveRole(role)}
+                      className="shrink-0 text-red-600 hover:text-red-800"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+
+             
+              <div className="flex space-x-2">
+                <Input
+                  placeholder="Add custom role"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      handleAddCustomTeamRole(e.target.value);
+                      e.target.value = '';
+                    }
+                  }}
+                />
+                <Button 
+                  type="button"
+                  onClick={() => {
+                    const input = document.querySelector('input[placeholder="Add custom role"]');
+                    handleAddCustomTeamRole(input.value);
+                    input.value = '';
+                  }}
+                  className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+                  )}
+</Card>
+
+
+<Card className='p-6 mb-6'>
+                  {formData.catOfWorkFlow && toolsMap[formData.catOfWorkFlow] && (
+                    <div className="space-y-4 mb-6">
+                      
+                      <CardTitle className="text-2xl font-bold">
+                      Tools Used
+                      </CardTitle>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 ">
+                        {toolsMap[formData.catOfWorkFlow].map(tool => (
+                          <Button
+                            type="button"
+                            key={tool}
+                            variant={formData.toolsUsed.includes(tool) ? "default" : "outline"}
+                            onClick={() => handleAddTool(tool)}
+                            className={`h-auto py-2 px-3 text-sm text-left justify-start break-words ${
+                              formData.toolsUsed.includes(tool) 
+                                ? "bg-blue-600 hover:bg-blue-700 text-white"
+                                : ""
+                            }`}
+                          >
+                            {tool}
+                          </Button>
+                        ))}
+                      </div>
+
+                      {/* Selected Tools */}
+                      <div className="space-y-2">
+                        {formData.toolsUsed.map(tool => (
+                          <div key={tool} className="flex items-center space-x-2 bg-blue-50 p-2 rounded-lg">
+                            <span className="flex-1 break-words">{tool}</span>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleRemoveTool(tool)}
+                              className="shrink-0 hover:bg-blue-100 hover:text-blue-600"
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Custom Tool Input */}
+                      <div className="flex space-x-2">
+                        <Input
+                          placeholder="Add custom tool"
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              handleAddCustomTool(e.target.value);
+                              e.target.value = '';
+                            }
+                          }}
+                        />
+                        <Button 
+                          type="button"
+                          onClick={() => {
+                            const input = document.querySelector('input[placeholder="Add custom tool"]');
+                            handleAddCustomTool(input.value);
+                            input.value = '';
+                          }}
+                          className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+</Card>
+                  
+<Card className='p-6 mb-4'>
+                  {formData.catOfWorkFlow && (
+                    <div className="space-y-4">
+                      
+                      <CardTitle className="text-2xl font-bold">
+                      Workflow Steps
+                      </CardTitle>
+                      <div className="grid grid-cols-1 gap-2">
+                        {stepsMap[formData.catOfWorkFlow]?.map((step) => {
+                          const isSelected = formData.steps.some(s => s.step === step);
+                          return (
+                            <Button
+                              type="button"
+                              key={step}
+                              variant={isSelected ? "default" : "outline"}
+                              onClick={() => handleAddStep(step)}
+                              className={`w-full text-left justify-start break-words ${
+                                isSelected 
+                                  ? "bg-blue-600 hover:bg-blue-700 text-white"
+                                  : ""
+                              }`}
+                              disabled={isSelected}
+                            >
+                              {step}
+                            </Button>
+                          );
+                        })}
+                      </div>
+
+                      {/* Custom Step Input */}
+                      <div className="flex space-x-2">
+                        <Input
+                          placeholder="Add custom step"
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              handleAddCustomStep(e.target.value);
+                              e.target.value = '';
+                            }
+                          }}
+                        />
+                        <Button 
+                          type="button"
+                          onClick={() => {
+                            const input = document.querySelector('input[placeholder="Add custom step"]');
+                            handleAddCustomStep(input.value);
+                            input.value = '';
+                          }}
+                          className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+
+                      {/* Selected Steps with DnD */}
+
+                     
+
+                      <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                      >
+                        <SortableContext
+                          items={formData.steps.map(step => step.step)}
+                          strategy={verticalListSortingStrategy}
+                        >
+                          {formData.steps.map((step, index) => (
+                            <SortableStep
+                              key={step.step}
+                              step={step}
+                              index={index}
+                              onRemove={(index) => {
+                                const newSteps = formData.steps.filter((_, i) => i !== index);
+                                setFormData(prev => ({ ...prev, steps: newSteps }));
+                              }}
+                              onUpdateStep={handleUpdateStep}
+                            />
+                          ))}
+                        </SortableContext>
+                      </DndContext>
+                       {formData.steps.length > 1 && (
+                        <div className="display flex">
+                          <p className='text-sm text-gray-500 ml-2'>
+                            <i>Drag to reorder using &nbsp; </i>
+                          </p>
+                          <GripVertical className="h-5 w-5 text-gray-500" />
+                        </div>
+                      )}
+                    </div>
+                  )}
+</Card>
+                          <Button 
+                            type="submit"
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-6"
+                          >
+                            Submit Workflow Data
+                          </Button>
+              </form>
+
+
+          
           </div>
         )}
       </div>
-      <pre className="p-4 bg-secondary rounded-lg overflow-auto">
+      {/* <pre className="p-4 bg-secondary rounded-lg overflow-auto">
          {JSON.stringify(formData, null, 2)}
-      </pre>
+      </pre> */}
     </div>
   );
 };

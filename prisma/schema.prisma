@@ -359,3 +359,18 @@ model RfpForm {
   createdAt       DateTime @default(now()) // Timestamp for when the RFP form is created
   updatedAt       DateTime @updatedAt      // Timestamp for last update
 }
+
+
+model workFlowProcess  {
+  id                   String   @id @default(uuid())
+  userID               String?  // User ID
+  userOrgType          String
+  userTeamSize         String
+  categoryOfWorkflow   String
+  teamRoles            Json      
+  toolsUsed            Json      
+  workFlowSteps        Json      
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

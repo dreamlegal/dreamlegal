@@ -227,7 +227,7 @@ const Dashboard = ({ product }) => {
      
      <div className="">
      <ChartSection
-        title="Target Industriess"
+        title="Target Industries"
         tooltip="Sectors this product is making an impact in"
         data={product.industry}
 

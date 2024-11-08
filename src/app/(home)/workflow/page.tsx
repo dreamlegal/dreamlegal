@@ -1509,9 +1509,9 @@ const WorkflowForm = () => {
           </div>
         )}
       </div>
-      {/* <pre className="p-4 bg-secondary rounded-lg overflow-auto">
+     <pre className="p-4 bg-secondary rounded-lg overflow-auto">
          {JSON.stringify(formData, null, 2)}
-      </pre> */}
+      </pre> 
     </div>
   );
 };

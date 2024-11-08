@@ -374,3 +374,13 @@ model workFlowProcess  {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model PasswordReset {
+  id                 String   @id @default(cuid())
+  userId             String   // Foreign key to User
+  token              String   // Reset token
+  tokenExpiration    DateTime // Token expiration time
+  createdAt          DateTime @default(now()) // When the reset request was created
+
+  @@unique([token])  // Ensure token is unique
+}

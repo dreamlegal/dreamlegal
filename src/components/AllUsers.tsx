@@ -8,12 +8,34 @@ function AllUsers() {
   const [vendors, setVendors] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  // useEffect(() => {
+  //   const fetchVendors = async () => {
+  //     try {
+  //       const response = await fetch('/api/get-all-users', {
+  //         method: 'GET',
+  //         headers: { 'Content-Type': 'application/json' },
+  //       });
+  //       const result = await response.json();
+  //       if (result.success) {
+  //         setVendors(result.users);
+  //       } else {
+  //         setError(result.msg);
+  //       }
+  //     } catch (error) {
+  //       setError(error instanceof Error ? error.message : 'Unknown error');
+  //     }
+  //   };
+
+  //   fetchVendors();
+  // }, []);
+
   useEffect(() => {
     const fetchVendors = async () => {
       try {
         const response = await fetch('/api/get-all-users', {
-          method: 'GET',
+          method: 'POST',  // Change method to POST
           headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})  // Add an empty body if no filters are needed
         });
         const result = await response.json();
         if (result.success) {
@@ -25,10 +47,10 @@ function AllUsers() {
         setError(error instanceof Error ? error.message : 'Unknown error');
       }
     };
-
+  
     fetchVendors();
   }, []);
-
+  
   const handleEdit = (id: string) => {
     // Logic for editing a vendor
     console.log('Edit vendor with ID:', id);

@@ -270,6 +270,63 @@
 
 // export default EditUser;
 
+
+//  // New options
+//  const languageOptions = ["English", "Spanish", "French", "German", "Chinese"];
+//  const industryOptions = [
+//    "Accounting firms",
+//    "Agriculture",
+//    "Banking and Finance",
+//    "Construction and Engineering",
+//    "Consulting firms",
+//    "Defence",
+//    "Education",
+//    "Energy and Utilities",
+//    "Government and Public Sector",
+//    "Healthcare",
+//  ];
+
+//  const practiceAreaOptions = [
+//    "Appellate Law",
+//    "Antitrust Law",
+//    "Alternative Dispute Resolution",
+//    "Aviation",
+//    "Banking & Finance",
+//    "Business Law",
+//    "Civil Law"
+//  ];
+
+//  const workTypeOptions = [
+//    "Dispute Resolution",
+//    "Diligence",
+//    "Drafting",
+//    "Advisory",
+//    "Research",
+//    "Representation"
+//  ];
+
+//  const goalOptions = [
+//    "Streamlining workflows",
+//    "Time management",
+//    "Cost efficiency",
+//    "Improving client services",
+//    "Enhancing collaboration",
+//    "Reducing turnaround time",
+//    "Automating repetitive tasks",
+//    "Optimizing document management"
+//  ];
+
+//  const toolOptions = [
+//    "Analytics dashboard",
+//    "Report generation",
+//    "Dashboard Customization",
+//    "Report Customization",
+//    "Multiple User role",
+//    "Granular Permission",
+//    "Information access control",
+//    "Role based access control"
+//  ];
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

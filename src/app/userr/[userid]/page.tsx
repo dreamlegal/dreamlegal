@@ -62,7 +62,7 @@ export default function Page({ params }: { params: { userid: string } }) {
   if (data && data.success) {
     console.log(data)
     // return <div>hello ji</div>;
-    return <ProfilePage data={data}  userId={params.userid} />;
+    return <ProfilePage data={data}  userId={params.userid} />
   }
 
   return <div>no no </div>;

@@ -51,10 +51,7 @@ import {
 
 } from 'lucide-react';
 
-
-
-
-
+import WorkflowReportModal from './_components/WorkflowReportModal';
 
 
 const SortableStep = ({ step, index, onRemove, onUpdateStep, categoryName, teamRoles }) => {
@@ -656,78 +653,172 @@ const WorkflowForm = () => {
 
 
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement> ) => {
-    // Check if all fields are filled
-    e.preventDefault(); // This is crucial to prevent form submission on every change
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement> ) => {
+  //   // Check if all fields are filled
+  //   e.preventDefault(); // This is crucial to prevent form submission on every change
     
-    if (
-      !CustomerUserId ||
-      !formData.userOrgType ||
-      !formData.userTeamSize ||
-      !formData.catOfWorkFlow ||
-      !formData.teamRoles.length ||
+  //   if (
+  //     !CustomerUserId ||
+  //     !formData.userOrgType ||
+  //     !formData.userTeamSize ||
+  //     !formData.catOfWorkFlow ||
+  //     !formData.teamRoles.length ||
 
-      !formData.steps.length
-    ) {
-      console.error('Please fill in all required fields');
-      toast({
-        title: "Missing Fields",
-        description:  "Please fill in all required fields.",
-        variant: "destructive",
-      });
-      return; // Exit the function if validation fails
-    }
+  //     !formData.steps.length
+  //   ) {
+  //     console.error('Please fill in all required fields');
+  //     toast({
+  //       title: "Missing Fields",
+  //       description:  "Please fill in all required fields.",
+  //       variant: "destructive",
+  //     });
+  //     return; // Exit the function if validation fails
+  //   }
   
-    try {
-      // Prepare the request body with necessary data
-      const requestBody = {
-        userID: CustomerUserId, // The user ID passed as an argument
-        userOrgType: formData.userOrgType,
-        userTeamSize: formData.userTeamSize,
-        categoryOfWorkflow: formData.catOfWorkFlow,
-        teamRoles: formData.teamRoles,
-        toolsUsed: formData.toolsUsed,
-        workFlowSteps: formData.steps,
+  //   try {
+  //     // Prepare the request body with necessary data
+  //     const requestBody = {
+  //       userID: CustomerUserId, // The user ID passed as an argument
+  //       userOrgType: formData.userOrgType,
+  //       userTeamSize: formData.userTeamSize,
+  //       categoryOfWorkflow: formData.catOfWorkFlow,
+  //       teamRoles: formData.teamRoles,
+  //       toolsUsed: formData.toolsUsed,
+  //       workFlowSteps: formData.steps,
+  //     };
+  
+  //     // Make a POST request to your API endpoint
+  //     const response = await fetch('/api/submit-workFlowData', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(requestBody),
+  //     });
+  
+  //     // Handle the response
+  //     const result = await response.json();
+  //     if (response.ok) {
+  //       console.log('Workflow created successfully:', result.data);
+  //       toast({
+  //         title: "Success",
+  //         description: "Form submitted successfully!",
+  //         variant: "success",
+  //       });
+  //       // Optionally handle success (e.g., clear the form or show a success message)
+  //     } else {
+  //       console.error('Error creating workflow:', result.message);
+  //       toast({
+  //         title: "Error",
+  //         description: result.msg || "Failed to submit Form.",
+  //         variant: "destructive",
+  //       });
+  //       // Optionally show an error message to the user
+  //     }
+  //   } catch (error) {
+  //     console.error('Network or server error:', error);
+  //     toast({
+  //       title: "Error",
+  //       description: "An error occurred while submitting the Form.",
+  //       variant: "destructive",
+  //     });
+  //     // Optionally show an error message to the user
+  //   }
+  // };
+
+
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+const [reportData, setReportData] = useState(null);
+
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  
+  // Validation check
+  if (
+    !CustomerUserId ||
+    !formData.userOrgType ||
+    !formData.userTeamSize ||
+    !formData.catOfWorkFlow ||
+    !formData.teamRoles.length ||
+    !formData.steps.length
+  ) {
+    console.error('Please fill in all required fields');
+    toast({
+      title: "Missing Fields",
+      description: "Please fill in all required fields.",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  try {
+    // First API call
+    const requestBody = {
+      userID: CustomerUserId,
+      userOrgType: formData.userOrgType,
+      userTeamSize: formData.userTeamSize,
+      categoryOfWorkflow: formData.catOfWorkFlow,
+      teamRoles: formData.teamRoles,
+      toolsUsed: formData.toolsUsed,
+      workFlowSteps: formData.steps,
+    };
+
+    const response = await fetch('/api/submit-workFlowData', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    const result = await response.json();
+    
+    if (response.ok) {
+      // Second API call for workflow report
+      const reportRequestBody = {
+        workflow_report: {
+          userOrgType: formData.userOrgType,
+          userTeamSize: formData.userTeamSize,
+          catOfWorkFlow: formData.catOfWorkFlow,
+          teamRoles: formData.teamRoles,
+          toolsUsed: formData.toolsUsed,
+          steps: formData.steps,
+        }
       };
-  
-      // Make a POST request to your API endpoint
-      const response = await fetch('/api/submit-workFlowData', {
+
+      const reportResponse = await fetch('https://ai-backend-y6mq.onrender.com/workflow_report/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(reportRequestBody),
       });
-  
-      // Handle the response
-      const result = await response.json();
-      if (response.ok) {
-        console.log('Workflow created successfully:', result.data);
+
+      const reportResult = await reportResponse.json();
+      
+      if (reportResponse.ok) {
+        setReportData(reportResult);
+        setIsReportModalOpen(true);
         toast({
           title: "Success",
           description: "Form submitted successfully!",
           variant: "success",
         });
-        // Optionally handle success (e.g., clear the form or show a success message)
       } else {
-        console.error('Error creating workflow:', result.message);
-        toast({
-          title: "Error",
-          description: result.msg || "Failed to submit Form.",
-          variant: "destructive",
-        });
-        // Optionally show an error message to the user
+        throw new Error('Failed to fetch report');
       }
-    } catch (error) {
-      console.error('Network or server error:', error);
-      toast({
-        title: "Error",
-        description: "An error occurred while submitting the Form.",
-        variant: "destructive",
-      });
-      // Optionally show an error message to the user
+    } else {
+      throw new Error(result.message || 'Failed to submit form');
     }
-  };
+  } catch (error) {
+    console.error('Error:', error);
+    toast({
+      title: "Error",
+      description: error.message || "An error occurred while submitting the form.",
+      variant: "destructive",
+    });
+  }
+};
 
 
   const [step, setStep] = useState(1);
@@ -879,6 +970,15 @@ const WorkflowForm = () => {
     
 
 <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+
+
+    {/* Your existing form JSX */}
+    <WorkflowReportModal 
+      isOpen={isReportModalOpen}
+      onClose={() => setIsReportModalOpen(false)}
+      report={reportData}
+/>
+
       <style jsx global>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }
@@ -1494,7 +1594,7 @@ const WorkflowForm = () => {
                             type="submit"
                             className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-6"
                           >
-                            Submit Workflow Data
+                            Analyse
                           </Button>
               </form>
 

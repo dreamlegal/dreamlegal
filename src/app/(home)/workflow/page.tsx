@@ -734,27 +734,27 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   
   // Validation check
-  if (
-    !CustomerUserId ||
-    !formData.userOrgType ||
-    !formData.userTeamSize ||
-    !formData.catOfWorkFlow ||
-    !formData.teamRoles.length ||
-    !formData.steps.length
-  ) {
-    console.error('Please fill in all required fields');
-    toast({
-      title: "Missing Fields",
-      description: "Please fill in all required fields.",
-      variant: "destructive",
-    });
-    return;
-  }
+  // if (
+  //   !CustomerUserId ||
+  //   !formData.userOrgType ||
+  //   !formData.userTeamSize ||
+  //   !formData.catOfWorkFlow ||
+  //   !formData.teamRoles.length ||
+  //   !formData.steps.length
+  // ) {
+  //   console.error('Please fill in all required fields');
+  //   toast({
+  //     title: "Missing Fields",
+  //     description: "Please fill in all required fields.",
+  //     variant: "destructive",
+  //   });
+  //   return;
+  // }
 
   try {
     // First API call
     const requestBody = {
-      userID: CustomerUserId,
+      // userID: CustomerUserId,
       userOrgType: formData.userOrgType,
       userTeamSize: formData.userTeamSize,
       categoryOfWorkflow: formData.catOfWorkFlow,

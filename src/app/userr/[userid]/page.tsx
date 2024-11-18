@@ -1,77 +1,77 @@
-// "use client"
-// import { useState, useEffect } from "react";
-// import UserPage from "@/pages/UserPage";
-// // import Complete from "./_components/Complete";
-// import Loading from "@/components/Loading";
-// import ProfilePage from "../_components/ProfilePage";
-// import NotificationsPage from "../_components/NotificationsPage";
-// import BookmarksPage from "../_components/BookmarksPage";
-// interface UserProfile {
-//   success: boolean;
-//   profile: any;
-//   account: any;
-// }
-// import ReviewsPage from "../_components/ReviewsPage";
+"use client"
+import { useState, useEffect } from "react";
+import UserPage from "@/pages/UserPage";
+// import Complete from "./_components/Complete";
+import Loading from "@/components/Loading";
+import ProfilePage from "../_components/ProfilePage";
+import NotificationsPage from "../_components/NotificationsPage";
+import BookmarksPage from "../_components/BookmarksPage";
+interface UserProfile {
+  success: boolean;
+  profile: any;
+  account: any;
+}
+import ReviewsPage from "../_components/ReviewsPage";
 
-// const fetchProfile = async (userId: string): Promise<UserProfile | null> => {
-//   try {
-//     const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`);
-//     if (!response.ok) {
-//       throw new Error("Failed to fetch data");
-//     }
-//     const data: UserProfile = await response.json();
+const fetchProfile = async (userId: string): Promise<UserProfile | null> => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const data: UserProfile = await response.json();
     
-//     if (data.success) {
-//       return data;
-//     } else {
-//       console.error("API response error:", data);
-//       return null;
-//     }
-//   } catch (err) {
-//     console.error("Fetch error:", err);
-//     return null;
-//   }
-// };
+    if (data.success) {
+      return data;
+    } else {
+      console.error("API response error:", data);
+      return null;
+    }
+  } catch (err) {
+    console.error("Fetch error:", err);
+    return null;
+  }
+};
 
-// export default function Page({ params }: { params: { userid: string } }) {
-//   const [data, setData] = useState<UserProfile | null>(null);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState<string | null>(null);
+export default function Page({ params }: { params: { userid: string } }) {
+  const [data, setData] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-//   useEffect(() => {
-//     const loadData = async () => {
-//       try {
-//         const result = await fetchProfile(params.userid);
-//         setData(result);
-//       } catch (err) {
-//         setError("Failed to load data");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const result = await fetchProfile(params.userid);
+        setData(result);
+      } catch (err) {
+        setError("Failed to load data");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-//     loadData();
-//   }, [params.userid]);
+    loadData();
+  }, [params.userid]);
 
-//   if (loading) {
-//     return <Loading />;
-//   }
+  if (loading) {
+    return <Loading />;
+  }
 
-//   if (error) {
-//     return <div>Error: {error}</div>;
-//   }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
-//   if (data && data.success) {
-//     console.log(data)
-//     // return <div>hello ji</div>;
-//     // return <ProfilePage data={data}  userId={params.userid} />
-//     // return <NotificationsPage   userId={params.userid} />
-//     // return <BookmarksPage   userId={params.userid} />
-//     return <ReviewsPage   userId={params.userid} />
-//   }
+  if (data && data.success) {
+    console.log(data)
+    // return <div>hello ji</div>;
+    // return <ProfilePage data={data}  userId={params.userid} />
+    // return <NotificationsPage   userId={params.userid} />
+    // return <BookmarksPage   userId={params.userid} />
+    return <ReviewsPage   userId={params.userid} />
+  }
 
-//   return <div>no no </div>;
-// }
+  return <div>no no </div>;
+}
 
 // // app/user/[userid]/page.tsx
 // // 'use client';
@@ -733,123 +733,123 @@
 // }
 
 // // export default Page
-'use client'
+// // 'use client'
 
-import { useState, useEffect } from "react"
-import { 
-  Home, 
-  Box, 
-  Briefcase, 
-  Users, 
-  Star, 
-  FileText,
-  MessageSquare,
-  Mail,
-  Phone,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Youtube,
-  Link as LinkIcon,
-  Menu,
-  X
-} from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
-import Loading from "@/components/Loading"
-import ProfilePage from "../_components/ProfilePage"
-import NotificationsPage from "../_components/NotificationsPage"
-import BookmarksPage from "../_components/BookmarksPage"
-import ReviewsPage from "../_components/ReviewsPage"
+// // import { useState, useEffect } from "react"
+// // import { 
+// //   Home, 
+// //   Box, 
+// //   Briefcase, 
+// //   Users, 
+// //   Star, 
+// //   FileText,
+// //   MessageSquare,
+// //   Mail,
+// //   Phone,
+// //   Facebook,
+// //   Twitter,
+// //   Linkedin,
+// //   Youtube,
+// //   Link as LinkIcon,
+// //   Menu,
+// //   X
+// // } from 'lucide-react'
+// // import { motion, AnimatePresence } from 'framer-motion'
+// // import Loading from "@/components/Loading"
+// // import ProfilePage from "../_components/ProfilePage"
+// // import NotificationsPage from "../_components/NotificationsPage"
+// // import BookmarksPage from "../_components/BookmarksPage"
+// // import ReviewsPage from "../_components/ReviewsPage"
 
-interface UserProfile {
-  success: boolean
-  profile: any
-  account: any
-}
+// // interface UserProfile {
+// //   success: boolean
+// //   profile: any
+// //   account: any
+// // }
 
-interface SidebarProps {
-  className?: string
-  activeTab: string
-  onTabChange: (tab: string) => void
-  userData: UserProfile | null
-}
+// // interface SidebarProps {
+// //   className?: string
+// //   activeTab: string
+// //   onTabChange: (tab: string) => void
+// //   userData: UserProfile | null
+// // }
 
-// Next.js specific page props type
-type PageProps = {
-  params: {
-    userid: string
-  }
-}
+// // // Next.js specific page props type
+// // type PageProps = {
+// //   params: {
+// //     userid: string
+// //   }
+// // }
 
-const fetchProfile = async (userId: string): Promise<UserProfile | null> => {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`)
-    if (!response.ok) throw new Error("Failed to fetch data")
-    const data: UserProfile = await response.json()
-    return data.success ? data : null
-  } catch (err) {
-    console.error("Fetch error:", err)
-    return null
-  }
-}
+// // const fetchProfile = async (userId: string): Promise<UserProfile | null> => {
+// //   try {
+// //     const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`)
+// //     if (!response.ok) throw new Error("Failed to fetch data")
+// //     const data: UserProfile = await response.json()
+// //     return data.success ? data : null
+// //   } catch (err) {
+// //     console.error("Fetch error:", err)
+// //     return null
+// //   }
+// // }
 
-const Sidebar = ({ className = '', activeTab, onTabChange, userData }: SidebarProps) => {
-  // ... rest of Sidebar component code remains the same ...
-}
+// // const Sidebar = ({ className = '', activeTab, onTabChange, userData }: SidebarProps) => {
+// //   // ... rest of Sidebar component code remains the same ...
+// // }
 
-// Next.js page component
-export default function Page({ params }: PageProps) {
-  const [data, setData] = useState<UserProfile | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState('profile')
+// // // Next.js page component
+// // export default function Page({ params }: PageProps) {
+// //   const [data, setData] = useState<UserProfile | null>(null)
+// //   const [loading, setLoading] = useState(true)
+// //   const [error, setError] = useState<string | null>(null)
+// //   const [activeTab, setActiveTab] = useState('profile')
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const result = await fetchProfile(params.userid)
-        setData(result)
-      } catch (err) {
-        setError("Failed to load data")
-      } finally {
-        setLoading(false)
-      }
-    }
+// //   useEffect(() => {
+// //     const loadData = async () => {
+// //       try {
+// //         const result = await fetchProfile(params.userid)
+// //         setData(result)
+// //       } catch (err) {
+// //         setError("Failed to load data")
+// //       } finally {
+// //         setLoading(false)
+// //       }
+// //     }
 
-    loadData()
-  }, [params.userid])
+// //     loadData()
+// //   }, [params.userid])
 
-  if (loading) return <Loading />
-  if (error) return <div>Error: {error}</div>
-  if (!data?.success) return <div>No data found</div>
+// //   if (loading) return <Loading />
+// //   if (error) return <div>Error: {error}</div>
+// //   if (!data?.success) return <div>No data found</div>
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'profile':
-        return <ProfilePage data={data} userId={params.userid} />
-      case 'reviews':
-        return <ReviewsPage userId={params.userid} />
-      case 'notifications':
-        return <NotificationsPage userId={params.userid} />
-      case 'bookmarks':
-        return <BookmarksPage userId={params.userid} />
-      case 'saved':
-        return <div>Saved Content</div>
-      default:
-        return <ProfilePage data={data} userId={params.userid} />
-    }
-  }
+// //   const renderContent = () => {
+// //     switch (activeTab) {
+// //       case 'profile':
+// //         return <ProfilePage data={data} userId={params.userid} />
+// //       case 'reviews':
+// //         return <ReviewsPage userId={params.userid} />
+// //       case 'notifications':
+// //         return <NotificationsPage userId={params.userid} />
+// //       case 'bookmarks':
+// //         return <BookmarksPage userId={params.userid} />
+// //       case 'saved':
+// //         return <div>Saved Content</div>
+// //       default:
+// //         return <ProfilePage data={data} userId={params.userid} />
+// //     }
+// //   }
 
-  return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar 
-        activeTab={activeTab} 
-        onTabChange={setActiveTab}
-        userData={data}
-      />
-      <div className="flex-1 md:pl-96 p-6 mt-16 md:mt-0">
-        {renderContent()}
-      </div>
-    </div>
-  )
-}
+// //   return (
+// //     <div className="flex min-h-screen bg-gray-50">
+// //       <Sidebar 
+// //         activeTab={activeTab} 
+// //         onTabChange={setActiveTab}
+// //         userData={data}
+// //       />
+// //       <div className="flex-1 md:pl-96 p-6 mt-16 md:mt-0">
+// //         {renderContent()}
+// //       </div>
+// //     </div>
+// //   )
+// // }

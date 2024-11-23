@@ -18,6 +18,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+
+// import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Check, X, AlertCircle } from "lucide-react";
+
+
 import { TbPointFilled } from "react-icons/tb";
 import Chart from "@/components/Chart";
 import ProcessLifecycle from "@/components/ProcessLifecycle";
@@ -60,6 +65,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+// import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ChevronDown } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
+
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -67,7 +78,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import PostImplementation from "@/components/PostImplementation";
 import PdfDownload from "./PdfDownload";
-
+import CompatibilityResults from "./CompatibilityResults"
 const countryNames: { [key: string]: string } = {
   US: "United States of America",
   IN: "India",
@@ -172,6 +183,7 @@ const countryNames: { [key: string]: string } = {
   RE: "Reunion",
   YT: "Mayotte",
 };
+import ChatInterface from "./ChatInterface";
 import ReactToPrint from "react-to-print";
 
 function PageComponent({ data }: any) {
@@ -203,6 +215,7 @@ function PageComponent({ data }: any) {
         }
         const userData = await response.json();
         if (userData.success) {
+          console.log("User data fetched successfully:", userData);
           return userData.profile.CompanyType || "Uncategorized"; // Return orgType
         } else {
           throw new Error("Failed to fetch user data");
@@ -270,8 +283,42 @@ function PageComponent({ data }: any) {
   const usps = product.usp ? product.usp.split(",") : [];
   const [isBookmarked, setIsBookmarked] = useState(false);
 
-  console.log(product);
+
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!userId) {
+        return "Uncategorized"; // Return default orgType if user is not logged in
+      }
+
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${userId}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const userData = await response.json();
+        if (userData.success) {
+          console.log("User data fetched successfully:", userData);
+          setUserData(userData.profile); // Store user data in state
+        } else {
+          throw new Error("Failed to fetch user data");
+        }
+      } catch (err) {
+        console.error(err.message || "Error fetching user data");
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
+
+  console.log("product data: ",product);
   console.log("company", company);
+
+  console.log("user data :",userData)
+
 
   // page functions 
   const savePageAsPDF = async () => {
@@ -479,10 +526,295 @@ function PageComponent({ data }: any) {
     setShowRfpForm(false);
   };
 
+  //compatibilty test
+  // const [isOpen, setIsOpen] = useState(false);
+  // const [results, setResults] = useState(null);
+
+
+  // const [error, setError] = useState(null);
+
+//   const formatDataForCompatibility = (productData, userData) => {
+//     // Format industry data from product
+//     const formattedIndustry = productData.industry.map(ind => {
+//       const [industry, percentage, available] = ind.split('|');
+//       return {
+//         industry,
+//         percentage: parseInt(percentage),
+//         available: available === 'true'
+//       };
+//     });
+  
+//     // Format team size data from product
+//     const formattedTeamSize = productData.teamSize.map(size => {
+//       const [sizeRange, percentage, available] = size.split('|');
+//       return {
+//         size: sizeRange,
+//         percentage: parseInt(percentage),
+//         available: available === 'true'
+//       };
+//     });
+  
+//     // Format user category data from product
+//     const formattedUserCategory = productData.userCategory.map(cat => {
+//       const [category, percentage, available] = cat.split('|');
+//       return {
+//         category,
+//         percentage: parseInt(percentage),
+//         available: available === 'true'
+//       };
+//     });
+  
+//     // Structure the data in the required format
+//     const formattedData = {
+//       product_profile: {
+//         focusCountries: productData.focusCountries,
+//         languages: productData.languages,
+//         userCategory: formattedUserCategory,
+//         industry: formattedIndustry,
+//         teamSize: formattedTeamSize
+//       },
+//       user_profile: {
+//         Location: userData.Location,
+//         CompanyType: userData.CompanyType,
+//         PrimaryLanguage: userData.PrimaryLanguage,
+//         Industry: userData.Industry,
+//         TeamSize: userData.TeamSize,
+//         Goals: userData.Goals
+//       }
+//     };
+  
+//     return formattedData;
+//   };
+
+//  // In your CompatibilityChecker component:
+// const checkCompatibility = async () => {
+//   try {
+//     setError(null);
+//     const formattedData = formatDataForCompatibility(product, userData);
+    
+//     const response = await fetch('http://localhost:8000/compatibility/', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(formattedData),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error('Failed to check compatibility');
+//     }
+
+//     const data = await response.json();
+//     setResults(data);
+//     setIsOpen(true);
+//   } catch (err) {
+//     setError(err instanceof Error ? err.message : 'An error occurred');
+//   }
+// };
+
+//   const getMatchColor = (isMatch) => {
+//     return isMatch ? 'bg-green-100' : 'bg-red-100';
+//   };
+
+//   const getMatchIcon = (isMatch) => {
+//     return isMatch ? (
+//       <Check className="h-5 w-5 text-green-600" />
+//     ) : (
+//       <X className="h-5 w-5 text-red-600" />
+//     );
+//   };
+
+const formatDataForCompatibility = (productData, userData) => {
+  // Format industry data from product
+  const formattedIndustry = productData.industry.map(ind => {
+    const [industry, percentage, available] = ind.split('|');
+    return {
+      industry,
+      percentage: parseInt(percentage),
+      available: available === 'true'
+    };
+  });
+
+  // Format team size data from product
+  const formattedTeamSize = productData.teamSize.map(size => {
+    const [sizeRange, percentage, available] = size.split('|');
+    return {
+      size: sizeRange,
+      percentage: parseInt(percentage),
+      available: available === 'true'
+    };
+  });
+
+  // Format user category data from product
+  const formattedUserCategory = productData.userCategory.map(cat => {
+    const [category, percentage, available] = cat.split('|');
+    return {
+      category,
+      percentage: parseInt(percentage),
+      available: available === 'true'
+    };
+  });
+
+  return {
+    product_profile: {
+      focusCountries: productData.focusCountries,
+      languages: productData.languages,
+      userCategory: formattedUserCategory,
+      industry: formattedIndustry,
+      teamSize: formattedTeamSize
+    },
+    user_profile: {
+      Location: userData.Location,
+      CompanyType: userData.CompanyType,
+      PrimaryLanguage: userData.PrimaryLanguage,
+      Industry: userData.Industry,
+      TeamSize: userData.TeamSize,
+      Goals: userData.Goals
+    }
+  };
+};
+
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [results, setResults] = useState(null);
+
+  const [loading, setLoading] = useState(false);
+
+  const calculateOverallMatch = () => {
+    if (!results) return 0;
+    const matches = Object.values(results.response).filter(value => value).length;
+    return Math.round((matches / Object.values(results.response).length) * 100);
+  };
+
+  const getMatchColor = (percentage) => {
+    if (percentage >= 80) return "bg-green-100 text-green-800";
+    if (percentage >= 60) return "bg-blue-100 text-blue-800";
+    if (percentage >= 40) return "bg-yellow-100 text-yellow-800";
+    return "bg-red-100 text-red-800";
+  };
+
+  const checkCompatibility = async () => {
+    // If we already have results, just open the dialog
+    if (results) {
+      setIsOpen(true);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      const formattedData = formatDataForCompatibility(product, userData);
+      
+      const response = await fetch('http://localhost:8000/compatibility/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formattedData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to check compatibility');
+      }
+
+      const data = await response.json();
+      setResults(data);
+      setIsOpen(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const matchPercentage = calculateOverallMatch();
+
+
+
+
   if (!product) {
     return <Loading />;
   }
   return (
+
+<>
+
+    <div>
+  
+
+    {/* {error && (
+      <Alert variant="destructive" className="mt-4">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>{error}</AlertDescription>
+      </Alert>
+    )} */}
+
+{/* <CompatibilityResults 
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+        results={results}
+      /> */}
+
+{/* <ChatInterface 
+  userData={product} 
+  productData={userData}
+/> */}
+
+<ChatInterface 
+  productId={product.id}
+  userId={CustomerUserId}
+/>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="max-w-xl">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold mb-4">
+              Compatibility Analysis
+            </DialogTitle>
+          </DialogHeader>
+
+          {results && (
+            <div className="space-y-4">
+              {/* Overall Match Card */}
+              <div className={cn(
+                "p-4 rounded-lg flex items-center justify-between",
+                getMatchColor(matchPercentage)
+              )}>
+                <div>
+                  <h3 className="text-lg font-semibold">Overall Match</h3>
+                  <Progress 
+                    value={matchPercentage} 
+                    className="h-2 w-40 mt-2"
+                  />
+                </div>
+                <span className="text-2xl font-bold">{matchPercentage}%</span>
+              </div>
+
+              {/* Results Grid */}
+              <div className="grid grid-cols-2 gap-3">
+                {Object.entries(results.response).map(([key, value]) => (
+                  <div
+                    key={key}
+                    className={cn(
+                      "p-3 rounded-lg flex items-center justify-between",
+                      value ? "bg-green-50" : "bg-red-50"
+                    )}
+                  >
+                    <span className="font-medium text-sm">{key}</span>
+                    {value ? (
+                      <Check className="h-5 w-5 text-green-600" />
+                    ) : (
+                      <X className="h-5 w-5 text-red-600" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+  
+  </div>
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 font-clarity">
       <Link href={`/directory`}>
         <div className=" flex gap-2  text-gray-900  my-4 transition-all duration-200 hover:cursor-pointer hover:translate-y-[-3px] hover:text-primary1 hover:gap-3 items-center ">
@@ -511,6 +843,21 @@ function PageComponent({ data }: any) {
               </Sheet>
             </div>
           </div>
+            <div className="flex justify-end p-4">
+            {/* <Button 
+              onClick={checkCompatibility}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              Check Compatibility
+            </Button> */}
+             <Button 
+        onClick={checkCompatibility}
+        className="bg-blue-600 hover:bg-blue-700 text-white"
+        disabled={loading}
+      >
+        {loading ? "Checking..." : "Check Compatibility"}
+      </Button>
+            </div>
           <div className=" border shadow-md rounded-3xl px-4 md:px-16 py-10">
             <div className="flex flex-col gap-5">
               <div className="flex flex-col gap-2 md:flex-row  md:items-center">
@@ -1136,6 +1483,7 @@ function PageComponent({ data }: any) {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

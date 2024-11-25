@@ -3,17 +3,18 @@ import React from 'react'
 import TrustedClients from './homePageComponents/TrustedClients';
 import Features from './homePageComponents/Features';
 import PremiumTestimonials from './homePageComponents/Testimonial';
-const MainHomePage = () => {
+const MainHomePage: React.FC = () => {
   return (
-  <>
-   <HomeHero />
-    <TrustedClients />
-    <Features />
-    <PremiumTestimonials />
-  </>
-   
-  )
-}
+    <>
+      <HomeHero />
+      <TrustedClients />
+      <Features />
+      <PremiumTestimonials />
+    </>
+  );
+};
+
+export default MainHomePage;
 
 
 // "use client"

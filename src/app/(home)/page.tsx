@@ -1,6 +1,6 @@
 import HomePage from "@/pages/HomePage";
 import Image from "next/image";
-
+import MainHomePage from "@/pages/MainHomePage";
 // async function getData() {
 //   const response = await fetch(
 //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-all-products`,
@@ -19,4 +19,5 @@ import Image from "next/image";
 export default async function Home() {
   // const data = await getData();
   return <HomePage ></HomePage>;
+  // return <MainHomePage/>;
 }

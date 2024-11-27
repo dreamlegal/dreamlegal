@@ -18,6 +18,6 @@ import MainHomePage from "@/pages/MainHomePage";
 
 export default async function Home() {
   // const data = await getData();
-  return <HomePage ></HomePage>;
-  // return <MainHomePage/>;
+  // return <HomePage ></HomePage>;
+  return <MainHomePage/>;
 }

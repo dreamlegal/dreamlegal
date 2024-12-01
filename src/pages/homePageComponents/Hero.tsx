@@ -744,9 +744,10 @@ import {  Zap, Shield, BarChart2, Globe } from "lucide-react";
 
 // export default Hero;
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, Code, LineChart, Workflow } from 'lucide-react';
+import VideoPlayer from "./VideoPlayer";
 
 const ResponsiveHero = () => {
   // Animation variant for floating elements
@@ -794,6 +795,19 @@ const ResponsiveHero = () => {
       delay: 3
     }
   ];
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.muted = false; // Autoplay requires muted for most browsers
+      videoElement.play().catch(error => {
+        console.error('Autoplay was prevented:', error);
+      });
+    }
+  }, []);
+
 
   return (
     <>
@@ -843,9 +857,9 @@ const ResponsiveHero = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 max-w-4xl mx-auto mb-4 sm:mb-6 px-4"
             >
-              Discover technology
+              Making Next Gen 
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
-                {" "}tailored for legal professionals
+                {" "}Legal  Professionals & Legal Teams
               </span>
             </motion.h1>
 
@@ -855,7 +869,7 @@ const ResponsiveHero = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto mb-8 sm:mb-12 px-4"
             >
-              Optimize legal process and operations- Find, compare and evaluate the best technology for your unique legal needs.
+             Solving efficiency management and technology procurement for legal industry.
             </motion.p>
 
             {/* Premium CTA Button */}
@@ -870,7 +884,7 @@ const ResponsiveHero = () => {
               <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-blue-300 
                            opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-lg" />
               <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 mr-2 animate-pulse" />
-              Explore Solutions
+              Call Now
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
             </motion.button>
           </motion.div>
@@ -892,14 +906,28 @@ const ResponsiveHero = () => {
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent" />
             
-            <div className="aspect-video relative">
-              <iframe 
-                className="w-full h-full"
-                src="https://www.youtube.com/embed/VAwxjkHmBTs?si=6xpdIQJEXvpPoPy2" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
+            {/* <div className="aspect-video relative">
+             
+              <video 
+              className="w-full h-full"
+              controls
+              src="videos/Dream_Legal_Wc.mp4"
               />
-            </div>
+          
+            </div> */}
+            {/* <div className="aspect-video relative">
+      <video 
+        ref={videoRef}
+        className="w-full h-full object-cover"
+        autoPlay
+        muted
+        playsInline
+        loop
+        src="/videos/Dream_Legal_Wc.mp4"
+      />
+
+    </div> */}
+    <VideoPlayer/>
             
             {/* Premium Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-blue-900/5 to-transparent pointer-events-none" />

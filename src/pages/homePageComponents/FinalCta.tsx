@@ -57,16 +57,20 @@ const FinalCTA = () => {
                 </span>
                 <h2 className={`text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 transition-all duration-700 delay-500
                              ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                  Transform Your Business{' '}
+                  Transform Your Legal Operations {' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
-                    With Us
+                  With Us
                   </span>
                 </h2>
                 <p className={`text-lg text-gray-600 transition-all duration-700 delay-700
                            ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                   Join thousands of companies already growing with our solutions
+
                 </p>
               </div>
+              
+
+
 
               {/* Right side with button */}
               <div className={`transition-all duration-700 delay-1000

@@ -80,14 +80,13 @@ const AnimatedMetric = ({ value, suffix = '', prefix = '', isVisible }) => {
 const AnimatedAchievements = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [sectionRef, isInView] = useIntersectionObserver();
-
   const achievements = [
     {
       icon: <Target className="w-6 h-6" />,
       metric: "130",
       suffix: "%",
-      title: "Revenue Growth",
-      description: "Boost your bottom line with our proven strategies",
+      title: "Strategic Efficiency",
+      description: "Boost your processes with data and measure.",
       accentColor: "bg-purple-500"
     },
     {
@@ -95,342 +94,22 @@ const AnimatedAchievements = () => {
       metric: "10",
       prefix: "",
       suffix: "x",
-      title: "Faster Launch",
-      description: "Accelerate your time to market significantly",
+      title: "Accelerated Innovation",
+      description: "Fast technology adoption to stay ahead of time",
       accentColor: "bg-blue-600"
     },
     {
       icon: <Zap className="w-6 h-6" />,
       metric: "24",
       suffix: "/7",
-      title: "Always Online",
-      description: "Continuous operation with zero downtime",
+      title: "Optimised Workflow",
+      description: "Structured processes for precision and growth",
       accentColor: "bg-indigo-500"
     }
   ];
 
   return (
-    // <div ref={sectionRef} className="w-full bg-gray-50 py-24 relative">
-    // {/* <div className="absolute inset-0 bg-[linear-gradient(to_right,#0000000A_1px,transparent_1px),linear-gradient(to_bottom,#0000000A_1px,transparent_1px)] bg-[size:24px_24px]" />
-    //    */}
-       
-
-    //   <div className="max-w-7xl mx-auto px-4 relative">
-    //     {/* Centered Header with animation */}
-    //     <div className={`mb-20 text-center relative transition-all duration-700 transform
-    //                   ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-    //       <div className="inline-block">
-    //         <span className="block text-sm font-semibold text-blue-600 mb-2 tracking-wider">
-    //           DELIVERING RESULTS
-    //         </span>
-    //         <h2 className="text-5xl font-bold text-gray-900 mb-4 relative inline-block">
-    //           Our Impact
-    //           <div className={`absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-purple-500 
-    //                        transform origin-left transition-transform duration-1000 
-    //                        ${isInView ? 'scale-x-100' : 'scale-x-0'}`} />
-    //         </h2>
-    //         <p className="text-gray-600 mt-4 max-w-xl mx-auto">
-    //           Transforming businesses with cutting-edge solutions and measurable results
-    //         </p>
-    //       </div>
-    //     </div>
-
-    //     {/* Main achievements container */}
-    //     <div className="relative">
-    //       {/* Premium accent line */}
-    //       <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-900/10 to-transparent" />
-
-    //       {/* Achievement cards in a single row */}
-    //       <div className="flex justify-between items-center gap-8">
-    //         {achievements.map((achievement, index) => (
-    //           <div
-    //             key={index}
-    //             className={`relative group flex-1 transform transition-all duration-700
-    //                       ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-    //                       ${activeIndex === index ? 'scale-105 z-10' : 'scale-95 opacity-90'}`}
-    //             style={{ transitionDelay: `${index * 150}ms` }}
-    //             onMouseEnter={() => setActiveIndex(index)}
-    //           >
-    //             {/* Card */}
-    //             <div className="relative overflow-hidden rounded-xl bg-white p-6 
-    //                            border border-gray-200/80 backdrop-blur-sm
-    //                            shadow-lg hover:shadow-xl transition-all duration-300">
-    //               {/* Gradient accent line */}
-    //               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-purple-500 opacity-0 
-    //                             group-hover:opacity-100 transition-opacity duration-300" />
-                  
-    //               {/* Top section */}
-    //               <div className="flex items-start justify-between mb-6">
-    //                 <div className="p-2.5 bg-gray-900 rounded-lg group-hover:bg-gray-800 
-    //                               transition-colors duration-300">
-    //                   <div className="text-gray-100 group-hover:text-white transition-colors duration-300">
-    //                     {achievement.icon}
-    //                   </div>
-    //                 </div>
-    //                 <AnimatedMetric 
-    //                   value={achievement.metric}
-    //                   suffix={achievement.suffix}
-    //                   prefix={achievement.prefix}
-    //                   isVisible={isInView}
-    //                 />
-    //               </div>
-
-    //               {/* Content section */}
-    //               <div className="space-y-2">
-    //                 <h3 className="text-lg font-semibold text-gray-900 
-    //                              group-hover:text-blue-600 transition-colors duration-300">
-    //                   {achievement.title}
-    //                 </h3>
-    //                 <p className="text-sm text-gray-600 leading-relaxed">
-    //                   {achievement.description}
-    //                 </p>
-    //               </div>
-
-    //               {/* Premium corner accents */}
-    //               <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-gray-900/5 to-transparent 
-    //                            opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-bl-3xl" />
-    //               <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-gray-900/5 to-transparent 
-    //                            opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-tr-3xl" />
-    //             </div>
-    //           </div>
-    //         ))}
-    //       </div>
-    //     </div>
-
-    //     {/* Navigation dots */}
-    //     <div className="mt-12 flex justify-center space-x-3">
-    //       {[0, 1, 2].map((i) => (
-    //         <button
-    //           key={i}
-    //           className={`w-2 h-2 rounded-full transition-all duration-300
-    //                      ${activeIndex === i 
-    //                        ? 'bg-gray-900 scale-150' 
-    //                        : 'bg-gray-300 hover:bg-gray-400'}`}
-    //           onClick={() => setActiveIndex(i)}
-    //         />
-    //       ))}
-    //     </div>
-    //   </div>
-    // </div>
-  
-    // <div ref={sectionRef} className="w-full bg-gray-50 py-24 relative overflow-hidden">
-    //   {/* Base grid pattern */}
-    //   <div className="absolute inset-0 bg-[linear-gradient(to_right,#0000000A_1px,transparent_1px),linear-gradient(to_bottom,#0000000A_1px,transparent_1px)] bg-[size:24px_24px]" />
-      
-    //   {/* Top fade gradient */}
-    //   <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-gray-50 via-gray-50/80 to-transparent" />
-      
-    //   {/* Bottom fade gradient */}
-    //   <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-gray-50 via-gray-50/80 to-transparent" />
-      
-    //   {/* Side fade gradients */}
-    //   <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-gray-50 to-transparent" />
-    //   <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-gray-50 to-transparent" />
-
-    //   <div className="max-w-7xl mx-auto px-4 relative">
-    //     {/* Rest of your existing content remains the same */}
-    //     <div className={`mb-20 text-center relative transition-all duration-700 transform
-    //                   ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-    //       <div className="inline-block">
-    //         <span className="block text-sm font-semibold text-blue-600 mb-2 tracking-wider">
-    //           DELIVERING RESULTS
-    //         </span>
-    //         <h2 className="text-5xl font-bold text-gray-900 mb-4 relative inline-block">
-    //           Our Impact
-    //           <div className={`absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-purple-500 
-    //                        transform origin-left transition-transform duration-1000 
-    //                        ${isInView ? 'scale-x-100' : 'scale-x-0'}`} />
-    //         </h2>
-    //         <p className="text-gray-600 mt-4 max-w-xl mx-auto">
-    //           Transforming businesses with cutting-edge solutions and measurable results
-    //         </p>
-    //       </div>
-    //     </div>
-
-    //     {/* Main achievements container */}
-    //     <div className="relative">
-    //       <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-900/10 to-transparent" />
-
-    //       <div className="flex justify-between items-center gap-8">
-    //         {achievements.map((achievement, index) => (
-    //           <div
-    //             key={index}
-    //             className={`relative group flex-1 transform transition-all duration-700
-    //                       ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-    //                       ${activeIndex === index ? 'scale-105 z-10' : 'scale-95 opacity-90'}`}
-    //             style={{ transitionDelay: `${index * 150}ms` }}
-    //             onMouseEnter={() => setActiveIndex(index)}
-    //           >
-    //             <div className="relative overflow-hidden rounded-xl bg-white p-6 
-    //                            border border-gray-200/80 backdrop-blur-sm
-    //                            shadow-lg hover:shadow-xl transition-all duration-300">
-    //               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-purple-500 opacity-0 
-    //                             group-hover:opacity-100 transition-opacity duration-300" />
-                  
-    //               <div className="flex items-start justify-between mb-6">
-    //                 <div className="p-2.5 bg-gray-900 rounded-lg group-hover:bg-gray-800 
-    //                               transition-colors duration-300">
-    //                   <div className="text-gray-100 group-hover:text-white transition-colors duration-300">
-    //                     {achievement.icon}
-    //                   </div>
-    //                 </div>
-    //                 <AnimatedMetric 
-    //                   value={achievement.metric}
-    //                   suffix={achievement.suffix}
-    //                   prefix={achievement.prefix}
-    //                   isVisible={isInView}
-    //                 />
-    //               </div>
-
-    //               <div className="space-y-2">
-    //                 <h3 className="text-lg font-semibold text-gray-900 
-    //                              group-hover:text-blue-600 transition-colors duration-300">
-    //                   {achievement.title}
-    //                 </h3>
-    //                 <p className="text-sm text-gray-600 leading-relaxed">
-    //                   {achievement.description}
-    //                 </p>
-    //               </div>
-
-    //               <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-gray-900/5 to-transparent 
-    //                            opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-bl-3xl" />
-    //               <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-gray-900/5 to-transparent 
-    //                            opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-tr-3xl" />
-    //             </div>
-    //           </div>
-    //         ))}
-    //       </div>
-    //     </div>
-
-    //     <div className="mt-12 flex justify-center space-x-3">
-    //       {[0, 1, 2].map((i) => (
-    //         <button
-    //           key={i}
-    //           className={`w-2 h-2 rounded-full transition-all duration-300
-    //                      ${activeIndex === i 
-    //                        ? 'bg-gray-900 scale-150' 
-    //                        : 'bg-gray-300 hover:bg-gray-400'}`}
-    //           onClick={() => setActiveIndex(i)}
-    //         />
-    //       ))}
-    //     </div>
-    //   </div>
-    // </div>
-
- 
-    // <div ref={sectionRef} className="w-full bg-white py-24 relative overflow-hidden">
-    //   {/* Main grid pattern with dual-layer effect */}
-    //   <div className="absolute inset-0">
-    //     {/* Primary grid */}
-    //     <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px]" />
-        
-    //     {/* Secondary grid for depth */}
-    //     <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000005_1px,transparent_1px),linear-gradient(to_bottom,#00000005_1px,transparent_1px)] bg-[size:48px_48px] opacity-70" />
-        
-    //     {/* Top fade with white */}
-    //     <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white via-white/95 to-transparent" />
-        
-    //     {/* Bottom fade with white */}
-    //     <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white via-white/95 to-transparent" />
-        
-    //     {/* Soft radial overlay for depth */}
-    //     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,white_100%)] opacity-40" />
-        
-    //     {/* Side fades */}
-    //     <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-white via-white/90 to-transparent" />
-    //     <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-white via-white/90 to-transparent" />
-    //   </div>
-
-    //   <div className="max-w-7xl mx-auto px-4 relative">
-    //     {/* Your existing content */}
-    //     <div className={`mb-20 text-center relative transition-all duration-700 transform
-    //                   ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-    //       <div className="inline-block">
-    //         <span className="block text-sm font-semibold text-blue-600 mb-2 tracking-wider">
-    //           DELIVERING RESULTS
-    //         </span>
-    //         <h2 className="text-5xl font-bold text-gray-900 mb-4 relative inline-block">
-    //           Our Impact
-    //           <div className={`absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-purple-500 
-    //                        transform origin-left transition-transform duration-1000 
-    //                        ${isInView ? 'scale-x-100' : 'scale-x-0'}`} />
-    //         </h2>
-    //         <p className="text-gray-600 mt-4 max-w-xl mx-auto">
-    //           Transforming businesses with cutting-edge solutions and measurable results
-    //         </p>
-    //       </div>
-    //     </div>
-
-    //     {/* Main achievements container */}
-    //     <div className="relative">
-    //       <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-900/10 to-transparent" />
-
-    //       <div className="flex justify-between items-center gap-8">
-    //         {achievements.map((achievement, index) => (
-    //           <div
-    //             key={index}
-    //             className={`relative group flex-1 transform transition-all duration-700
-    //                       ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-    //                       ${activeIndex === index ? 'scale-105 z-10' : 'scale-95 opacity-90'}`}
-    //             style={{ transitionDelay: `${index * 150}ms` }}
-    //             onMouseEnter={() => setActiveIndex(index)}
-    //           >
-    //             <div className="relative overflow-hidden rounded-xl bg-white p-6 
-    //                            border border-gray-200/80 backdrop-blur-sm
-    //                            shadow-lg hover:shadow-xl transition-all duration-300">
-    //               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-purple-500 opacity-0 
-    //                             group-hover:opacity-100 transition-opacity duration-300" />
-                  
-    //               <div className="flex items-start justify-between mb-6">
-    //                 <div className="p-2.5 bg-gray-900 rounded-lg group-hover:bg-gray-800 
-    //                               transition-colors duration-300">
-    //                   <div className="text-gray-100 group-hover:text-white transition-colors duration-300">
-    //                     {achievement.icon}
-    //                   </div>
-    //                 </div>
-    //                 <AnimatedMetric 
-    //                   value={achievement.metric}
-    //                   suffix={achievement.suffix}
-    //                   prefix={achievement.prefix}
-    //                   isVisible={isInView}
-    //                 />
-    //               </div>
-
-    //               <div className="space-y-2">
-    //                 <h3 className="text-lg font-semibold text-gray-900 
-    //                              group-hover:text-blue-600 transition-colors duration-300">
-    //                   {achievement.title}
-    //                 </h3>
-    //                 <p className="text-sm text-gray-600 leading-relaxed">
-    //                   {achievement.description}
-    //                 </p>
-    //               </div>
-
-    //               <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-gray-900/5 to-transparent 
-    //                            opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-bl-3xl" />
-    //               <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-gray-900/5 to-transparent 
-    //                            opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-tr-3xl" />
-    //             </div>
-    //           </div>
-    //         ))}
-    //       </div>
-    //     </div>
-
-    //     <div className="mt-12 flex justify-center space-x-3">
-    //       {[0, 1, 2].map((i) => (
-    //         <button
-    //           key={i}
-    //           className={`w-2 h-2 rounded-full transition-all duration-300
-    //                      ${activeIndex === i 
-    //                        ? 'bg-gray-900 scale-150' 
-    //                        : 'bg-gray-300 hover:bg-gray-400'}`}
-    //           onClick={() => setActiveIndex(i)}
-    //         />
-    //       ))}
-    //     </div>
-    //   </div>
-    // </div>
-
+   
     <div ref={sectionRef} className="w-full bg-white py-12 md:py-24 relative overflow-hidden">
       {/* Main grid pattern with dual-layer effect */}
       <div className="absolute inset-0">
@@ -463,10 +142,13 @@ const AnimatedAchievements = () => {
                            ${isInView ? 'scale-x-100' : 'scale-x-0'}`} />
             </h2>
             <p className="text-sm sm:text-base text-gray-600 mt-4 max-w-xl mx-auto px-4 sm:px-0">
-              Transforming businesses with cutting-edge solutions and measurable results
+            Transforming legal ops with cutting-edge solutions and measurable results
+            s
             </p>
           </div>
         </div>
+
+
 
         {/* Main achievements container */}
         <div className="relative">

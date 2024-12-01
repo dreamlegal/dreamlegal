@@ -32,26 +32,29 @@ const ProblemSection = () => {
   const problems = [
     {
       icon: AlertTriangle,
-      title: "Inefficient Processes",
-      description: "Traditional methods lead to wasted resources and missed opportunities, creating bottlenecks in your workflow.",
-      stat: "43%",
-      impact: "Operational Inefficiency"
+      title: "Broken Legal Workflows",
+      description: "Fragmented processes & lack of structure lead to delays, errors, & missed opportunities, undermining your team's efficiency.",
+      stat: "56%",
+      impact: "Workflow Disruption"
     },
     {
       icon: PieChart,
-      title: "Data Fragmentation",
-      description: "Scattered information across multiple platforms makes it impossible to gain meaningful insights.",
-      stat: "68%",
-      impact: "Data Accuracy Loss"
+      title: "No Efficiency Plans",
+      description: "The absence of a clear strategy results in wasted resources, untracked progress, and missed chances to optimize operations.",
+      stat: "61%",
+      impact: "Strategic Gaps"
     },
     {
       icon: TrendingDown,
-      title: "Revenue Leakage",
-      description: "Unoptimized systems result in significant revenue loss and decreased market competitiveness.",
-      stat: "31%",
-      impact: "Revenue Loss"
+      title: "Long Tech Adoption Cycles",
+      description: "Prolonged adoption timelines create setbacks, slow progress, and increase resistance, delaying the realization of value.",
+      stat: "49%",
+      impact: "Delayed Implementation"
     }
   ];
+
+  
+
 
   return (
     <div ref={sectionRef} className="w-full bg-gradient-to-br from-gray-100 to-white py-24 relative overflow-hidden">
@@ -94,7 +97,9 @@ const ProblemSection = () => {
                            ${isInView ? 'scale-x-100' : 'scale-x-0'}`} />
             </h2>
             <p className="text-gray-600 mt-6 max-w-2xl mx-auto text-lg">
-              Identify and address the critical challenges holding back your business growth
+             
+Identify and address the critical challenges holding back your growth
+
             </p>
           </div>
         </div>

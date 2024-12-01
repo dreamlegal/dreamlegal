@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Call FastAPI chat service
-    const chatResponse = await fetch('http://localhost:8000/chat', {
+    const chatResponse = await fetch('https://ai-backend-y6mq.onrender.com/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

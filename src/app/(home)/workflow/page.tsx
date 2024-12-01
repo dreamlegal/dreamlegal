@@ -1,12 +1,18 @@
-"use client"
-import React, { useEffect, useState  } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
-import { ChevronUp, ChevronDown, X, Plus, GripVertical } from 'lucide-react';
+"use client";
+import React, { useEffect, useState } from "react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { ChevronUp, ChevronDown, X, Plus, GripVertical } from "lucide-react";
 
 import {
   DndContext,
@@ -16,24 +22,24 @@ import {
   useSensor,
   useSensors,
   DragOverlay,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
   useSortable,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { toast } from "@/components/ui/use-toast";
 
-import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
-import { 
-  Code2, 
-  Megaphone, 
-  HeadphonesIcon, 
-  BarChart2, 
+import {
+  Code2,
+  Megaphone,
+  HeadphonesIcon,
+  BarChart2,
   Briefcase,
   PenTool,
   ArrowRight,
@@ -48,13 +54,282 @@ import {
   FileText,
   PlusCircle,
   PlusSquare,
+} from "lucide-react";
 
-} from 'lucide-react';
+import WorkflowReportModal from "./_components/WorkflowReportModal";
 
-import WorkflowReportModal from './_components/WorkflowReportModal';
+// workflow steps
+// const SortableStep = ({
+//   step,
+//   index,
+//   onRemove,
+//   onUpdateStep,
+//   categoryName,
+//   teamRoles,
+//   stepsMap,
+// }) => {
+//   const {
+//     attributes,
+//     listeners,
+//     setNodeRef,
+//     transform,
+//     transition,
+//     isDragging,
+//   } = useSortable({ id: step.step });
 
+//   const style = {
+//     transform: CSS.Transform.toString(transform),
+//     transition,
+//     opacity: isDragging ? 0.5 : 1,
+//   };
 
-const SortableStep = ({ step, index, onRemove, onUpdateStep, categoryName, teamRoles }) => {
+//   const toggleTeamRole = (role) => {
+//     const currentRoles = step.teamRoles || [];
+//     const newRoles = currentRoles.includes(role)
+//       ? currentRoles.filter((r) => r !== role)
+//       : [...currentRoles, role];
+
+//     onUpdateStep(index, { ...step, teamRoles: newRoles });
+//   };
+
+//   const toggleSubstep = (substep) => {
+//     const currentSubsteps = step.selectedSteps || [];
+//     const newSubsteps = currentSubsteps.includes(substep)
+//       ? currentSubsteps.filter((s) => s !== substep)
+//       : [...currentSubsteps, substep];
+  
+//     onUpdateStep(index, { ...step, selectedSteps: newSubsteps });
+//   };
+  
+//   const handleAddCustomSubstep = (stage, customSubstep) => {
+//     if (
+//       customSubstep.trim() &&
+//       !(step.selectedSteps || []).includes(customSubstep.trim())
+//     ) {
+//       toggleSubstep(customSubstep.trim());
+//     }
+//   };
+
+//   const generateMarkers = (min, max, type) => {
+//     return [...Array(max - min + 1)].map((_, i) => {
+//       const isSelected =
+//         (type === "Repetitiveness" && i <= step.repetitiveness) ||
+//         (type === "Exhaustion" && i <= step.exhaustionScale);
+
+//       return (
+//         <div
+//           key={i}
+//           className={`absolute w-3 h-3 rounded-full border-2 ${
+//             isSelected
+//               ? "border-primary bg-primary/20"
+//               : "border-gray-300 bg-white"
+//           } transition-colors duration-200`}
+//           style={{
+//             left: `${(i / (max - min)) * 92}%`,
+//             transform: "translateX(-50%)",
+//             top: "48%",
+//             zIndex: 10,
+//           }}
+//         />
+//       );
+//     });
+//   };
+
+//   return (
+//     <div
+//       ref={setNodeRef}
+//       style={style}
+//       className="bg-secondary p-6 rounded-lg space-y-6 mb-3 shadow-sm"
+//     >
+//       <div className="flex items-center space-x-4">
+//         <div
+//           {...attributes}
+//           {...listeners}
+//           className="cursor-move hover:opacity-70 transition-opacity"
+//         >
+//           <GripVertical className="h-5 w-5 text-gray-500" />
+//         </div>
+//         <span className="w-8 h-8 flex items-center justify-center bg-primary text-primary-foreground rounded-full font-medium">
+//           {index + 1}
+//         </span>
+//         <span className="flex-1 font-medium text-foreground">{step.step}</span>
+//         <Button
+//           type="button"
+//           variant="ghost"
+//           size="sm"
+//           className="hover:bg-destructive/10 hover:text-destructive transition-colors"
+//           onClick={() => onRemove(index)}
+//         >
+//           <X className="h-4 w-4" />
+//         </Button>
+//       </div>
+
+//       <div className="space-y-8">
+//         {/* Repetitiveness Slider */}
+//         <div className="space-y-3 relative">
+//           <Label className="text-sm font-medium">Repetitiveness (0-5)</Label>
+//           <div className="flex items-center">
+//             {generateMarkers(0, 5, "Repetitiveness")}
+//             <Slider
+//               value={[step.repetitiveness]}
+//               onValueChange={(value) =>
+//                 onUpdateStep(index, { ...step, repetitiveness: value[0] })
+//               }
+//               max={5}
+//               min={0}
+//               step={1}
+//               className="flex-1"
+//               aria-label="Repetitiveness Slider"
+//             />
+//             <span className="ml-4 text-gray-500 min-w-[2.5rem] text-right">
+//               {step.repetitiveness.toFixed(1)}
+//             </span>
+//           </div>
+//           <div className="flex justify-between text-xs text-gray-500">
+//             <span>Low</span>
+//             <span>High</span>
+//           </div>
+//         </div>
+
+//         {/* Exhaustion Rate Slider */}
+//         <div className="space-y-3 relative">
+//           <Label className="text-sm font-medium">Exhaustion Rate (0-5)</Label>
+//           <div className="flex items-center">
+//             {generateMarkers(0, 5, "Exhaustion")}
+//             <Slider
+//               value={[step.exhaustionScale]}
+//               onValueChange={(value) =>
+//                 onUpdateStep(index, { ...step, exhaustionScale: value[0] })
+//               }
+//               max={5}
+//               min={0}
+//               step={1}
+//               className="flex-1"
+//               aria-label="Exhaustion Rate Slider"
+//             />
+//             <span className="ml-4 text-gray-500 min-w-[2.5rem] text-right">
+//               {step.exhaustionScale.toFixed(1)}
+//             </span>
+//           </div>
+//           <div className="flex justify-between text-xs text-gray-500">
+//             <span>Low</span>
+//             <span>High</span>
+//           </div>
+//         </div>
+
+//         {/* Team Roles Section */}
+//         <div className="space-y-2">
+//           <Label className="text-sm font-medium">Team Roles</Label>
+//           <div className="flex flex-wrap gap-2">
+//             {teamRoles.map((role) => {
+//               const isSelected = (step.teamRoles || []).includes(role);
+//               return (
+//                 <Button
+//                   key={role}
+//                   type="button"
+//                   variant={isSelected ? "default" : "outline"}
+//                   size="sm"
+//                   onClick={() => toggleTeamRole(role)}
+//                   className={`relative group ${
+//                     isSelected
+//                       ? "bg-blue-600 text-white hover:bg-blue-700"
+//                       : "hover:bg-gray-100"
+//                   }`}
+//                 >
+//                   {role}
+//                   {isSelected && (
+//                     <button
+//                       onClick={(e) => {
+//                         e.stopPropagation();
+//                         toggleTeamRole(role);
+//                       }}
+//                       className="absolute -right-1 -top-1 w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+//                     >
+//                       <X className="w-3 h-3" />
+//                     </button>
+//                   )}
+//                 </Button>
+//               );
+//             })}
+//           </div>
+//         </div>
+
+//         {/* After the Team Roles Section */}
+//         <div className="space-y-2">
+//           <Label className="text-sm font-medium">Steps</Label>
+//           <div className="flex flex-wrap gap-2">
+            
+//               {stepsMap[formData.catOfWorkFlow]?.stages?.map((step) => {
+//               const isSelected = (step.selectedSteps || []).includes(substep);
+//               return (
+//                 <Button
+//                   key={substep}
+//                   type="button"
+//                   variant={isSelected ? "default" : "outline"}
+//                   size="sm"
+//                   onClick={() => toggleSubstep(substep)}
+//                   className={`relative group ${
+//                     isSelected
+//                       ? "bg-blue-600 text-white hover:bg-blue-700"
+//                       : "hover:bg-gray-100"
+//                   }`}
+//                 >
+//                   {substep}
+//                   {isSelected && (
+//                     <button
+//                       onClick={(e) => {
+//                         e.stopPropagation();
+//                         toggleSubstep(substep);
+//                       }}
+//                       className="absolute -right-1 -top-1 w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+//                     >
+//                       <X className="w-3 h-3" />
+//                     </button>
+//                   )}
+//                 </Button>
+//               );
+//             })}
+//           </div>
+          
+         
+//           <div className="flex space-x-2 mt-2">
+//             <Input
+//               placeholder="Add custom step"
+//               onKeyPress={(e) => {
+//                 if (e.key === "Enter") {
+//                   handleAddCustomSubstep(step.step, e.target.value);
+//                   e.target.value = "";
+//                 }
+//               }}
+//             />
+//             <Button
+//               type="button"
+//               onClick={() => {
+//                 const input = document.querySelector(
+//                   'input[placeholder="Add custom step"]'
+//                 );
+//                 handleAddCustomSubstep(step.step, input.value);
+//                 input.value = "";
+//               }}
+//               className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+//             >
+//               <Plus className="h-4 w-4" />
+//             </Button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+const SortableStep = ({
+  step,
+  index,
+  onRemove,
+  onUpdateStep,
+  categoryName,
+  teamRoles,
+  stepsMap
+}) => {
   const {
     attributes,
     listeners,
@@ -75,32 +350,62 @@ const SortableStep = ({ step, index, onRemove, onUpdateStep, categoryName, teamR
     const newRoles = currentRoles.includes(role)
       ? currentRoles.filter((r) => r !== role)
       : [...currentRoles, role];
-    
+
     onUpdateStep(index, { ...step, teamRoles: newRoles });
+  };
+
+  const toggleSubstep = (substep) => {
+    const currentSubsteps = step.selectedSteps || [];
+    const newSubsteps = currentSubsteps.includes(substep)
+      ? currentSubsteps.filter((s) => s !== substep)
+      : [...currentSubsteps, substep];
+  
+    onUpdateStep(index, {
+      ...step,
+      selectedSteps: newSubsteps
+    });
+  };
+ 
+  const handleAddCustomSubstep = (customSubstep) => {
+    const trimmedStep = customSubstep.trim();
+    if (trimmedStep) {
+      const currentSubsteps = step.selectedSteps || [];
+      if (!currentSubsteps.includes(trimmedStep)) {
+        onUpdateStep(index, {
+          ...step,
+          selectedSteps: [...currentSubsteps, trimmedStep]
+        });
+      }
+    }
   };
 
   const generateMarkers = (min, max, type) => {
     return [...Array(max - min + 1)].map((_, i) => {
       const isSelected =
-        (type === 'Repetitiveness' && i <= step.repetitiveness) ||
-        (type === 'Exhaustion' && i <= step.exhaustionScale);
+        (type === "Repetitiveness" && i <= step.repetitiveness) ||
+        (type === "Exhaustion" && i <= step.exhaustionScale);
 
       return (
         <div
           key={i}
           className={`absolute w-3 h-3 rounded-full border-2 ${
-            isSelected ? 'border-primary bg-primary/20' : 'border-gray-300 bg-white'
+            isSelected
+              ? "border-primary bg-primary/20"
+              : "border-gray-300 bg-white"
           } transition-colors duration-200`}
           style={{
             left: `${(i / (max - min)) * 92}%`,
-            transform: 'translateX(-50%)',
-            top: '48%',
+            transform: "translateX(-50%)",
+            top: "48%",
             zIndex: 10,
           }}
         />
       );
     });
   };
+
+  // Get substeps for the current stage
+  const currentStageSubsteps = stepsMap[categoryName]?.substeps[step.step] || [];
 
   return (
     <div
@@ -109,7 +414,11 @@ const SortableStep = ({ step, index, onRemove, onUpdateStep, categoryName, teamR
       className="bg-secondary p-6 rounded-lg space-y-6 mb-3 shadow-sm"
     >
       <div className="flex items-center space-x-4">
-        <div {...attributes} {...listeners} className="cursor-move hover:opacity-70 transition-opacity">
+        <div
+          {...attributes}
+          {...listeners}
+          className="cursor-move hover:opacity-70 transition-opacity"
+        >
           <GripVertical className="h-5 w-5 text-gray-500" />
         </div>
         <span className="w-8 h-8 flex items-center justify-center bg-primary text-primary-foreground rounded-full font-medium">
@@ -132,10 +441,12 @@ const SortableStep = ({ step, index, onRemove, onUpdateStep, categoryName, teamR
         <div className="space-y-3 relative">
           <Label className="text-sm font-medium">Repetitiveness (0-5)</Label>
           <div className="flex items-center">
-            {generateMarkers(0, 5, 'Repetitiveness')}
+            {generateMarkers(0, 5, "Repetitiveness")}
             <Slider
               value={[step.repetitiveness]}
-              onValueChange={(value) => onUpdateStep(index, { ...step, repetitiveness: value[0] })}
+              onValueChange={(value) =>
+                onUpdateStep(index, { ...step, repetitiveness: value[0] })
+              }
               max={5}
               min={0}
               step={1}
@@ -156,10 +467,12 @@ const SortableStep = ({ step, index, onRemove, onUpdateStep, categoryName, teamR
         <div className="space-y-3 relative">
           <Label className="text-sm font-medium">Exhaustion Rate (0-5)</Label>
           <div className="flex items-center">
-            {generateMarkers(0, 5, 'Exhaustion')}
+            {generateMarkers(0, 5, "Exhaustion")}
             <Slider
               value={[step.exhaustionScale]}
-              onValueChange={(value) => onUpdateStep(index, { ...step, exhaustionScale: value[0] })}
+              onValueChange={(value) =>
+                onUpdateStep(index, { ...step, exhaustionScale: value[0] })
+              }
               max={5}
               min={0}
               step={1}
@@ -190,7 +503,9 @@ const SortableStep = ({ step, index, onRemove, onUpdateStep, categoryName, teamR
                   size="sm"
                   onClick={() => toggleTeamRole(role)}
                   className={`relative group ${
-                    isSelected ? 'bg-blue-600 text-white hover:bg-blue-700' : 'hover:bg-gray-100'
+                    isSelected
+                      ? "bg-blue-600 text-white hover:bg-blue-700"
+                      : "hover:bg-gray-100"
                   }`}
                 >
                   {role}
@@ -210,27 +525,254 @@ const SortableStep = ({ step, index, onRemove, onUpdateStep, categoryName, teamR
             })}
           </div>
         </div>
+
+        {/* Substeps Section */}
+        {/* <div className="space-y-2">
+          <Label className="text-sm font-medium">Steps</Label>
+          <div className="flex flex-wrap gap-2">
+            {currentStageSubsteps.map((substep) => {
+              const isSelected = (step.selectedSteps || []).includes(substep);
+              return (
+                <Button
+                  key={substep}
+                  type="button"
+                  variant={isSelected ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => toggleSubstep(substep)}
+                  className={`relative group ${
+                    isSelected
+                      ? "bg-blue-600 text-white hover:bg-blue-700"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  {substep}
+                  {isSelected && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSubstep(substep);
+                      }}
+                      className="absolute -right-1 -top-1 w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  )}
+                </Button>
+              );
+            })}
+          </div>
+          
+         
+          <div className="flex space-x-2 mt-2">
+            <Input
+              placeholder="Add custom step"
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleAddCustomSubstep(step.step, e.target.value);
+                  e.target.value = "";
+                }
+              }}
+            />
+            <Button
+              type="button"
+              onClick={() => {
+                const input = document.querySelector(
+                  'input[placeholder="Add custom step"]'
+                );
+                handleAddCustomSubstep(step.step, input.value);
+                input.value = "";
+              }}
+              className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+        </div> */}
+        {/* Substeps Section */}
+<div className="space-y-2">
+  {/* <Label className="text-sm font-medium">Action Items for {step.step} steps</Label> */}
+  <Label className="text-sm font-medium">Steps </Label>
+  {/* Available Substeps */}
+  <div className="flex flex-wrap gap-2">
+    {currentStageSubsteps.map((substep) => {
+      const isSelected = (step.selectedSteps || []).includes(substep);
+      return (
+        <Button
+          key={substep}
+          type="button"
+          variant={isSelected ? "default" : "outline"}
+          size="sm"
+          onClick={() => toggleSubstep(substep)}
+          className={`relative group ${
+            isSelected
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "hover:bg-gray-100"
+          }`}
+        >
+          {substep}
+          {isSelected && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleSubstep(substep);
+              }}
+              className="absolute -right-1 -top-1 w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <X className="w-3 h-3" />
+            </button>
+          )}
+        </Button>
+      );
+    })}
+  </div>
+
+  {/* Selected Custom Steps */}
+  {step.selectedSteps?.filter(substep => !currentStageSubsteps.includes(substep)).length > 0 && (
+    <div className="mt-2">
+      <Label className="text-sm font-medium">Custom Action Items</Label>
+      <div className="flex flex-wrap gap-2 mt-1">
+        {step.selectedSteps
+          .filter(substep => !currentStageSubsteps.includes(substep))
+          .map((substep) => (
+            <Button
+              key={substep}
+              type="button"
+              variant="default"
+              size="sm"
+              className="relative group bg-blue-600 text-white hover:bg-blue-700"
+            >
+              {substep}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleSubstep(substep);
+                }}
+                className="absolute -right-1 -top-1 w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </Button>
+          ))}
+      </div>
+    </div>
+  )}
+  
+  {/* Custom Step Input */}
+  {/* <div className="flex space-x-2 mt-2">
+    <Input
+      placeholder="Add custom action item"
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && e.target.value.trim()) {
+          handleAddCustomSubstep(step.step, e.target.value);
+          e.target.value = "";
+        }
+      }}
+    />
+    <Button
+      type="button"
+      onClick={() => {
+        const input = document.querySelector(
+          `input[placeholder="Add custom action item"]`
+        );
+        if (input && input.value.trim()) {
+          handleAddCustomSubstep(step.step, input.value);
+          input.value = "";
+        }
+      }}
+      className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+    >
+      <Plus className="h-4 w-4" />
+    </Button>
+  </div> */}
+
+  {/* Custom substep input */}
+{/* <div className="flex space-x-2 mt-2">
+  <Input
+    key={`custom-input-${step.step}`} // Add unique key to prevent input sharing
+    placeholder="Add custom action item"
+    onKeyDown={(e) => {
+      if (e.key === "Enter" && e.target.value.trim()) {
+        e.preventDefault(); // Prevent form submission
+        handleAddCustomSubstep(e.target.value);
+        e.target.value = "";
+      }
+    }}
+  />
+  <Button
+    type="button"
+    onClick={() => {
+      const input = document.querySelector(
+        `input[placeholder="Add custom action item"][key="custom-input-${step.step}"]`
+      );
+      if (input && input.value.trim()) {
+        handleAddCustomSubstep(input.value);
+        input.value = "";
+      }
+    }}
+    className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+  >
+    <Plus className="h-4 w-4" />
+  </Button>
+</div> */}
+{/* Custom substep input */}
+<div className="flex space-x-2 mt-2">
+  <Input
+    id={`custom-input-${step.step}`} // Add unique ID for each stage
+    placeholder="Add custom action item"
+    onKeyDown={(e) => {
+      if (e.key === "Enter" && e.target.value.trim()) {
+        e.preventDefault();
+        handleAddCustomSubstep(e.target.value);
+        e.target.value = "";
+      }
+    }}
+  />
+  <Button
+    type="button"
+    onClick={() => {
+      const input = document.getElementById(`custom-input-${step.step}`); // Use getElementById with unique ID
+      if (input && input.value.trim()) {
+        handleAddCustomSubstep(input.value);
+        input.value = "";
+      }
+    }}
+    className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+  >
+    <Plus className="h-4 w-4" />
+  </Button>
+</div>
+</div>
       </div>
     </div>
   );
-}
-
-
+};
 
 const WorkflowForm = () => {
-   // forms  bookmycall and rfp
-   const CustomerUserId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
-   console.log(CustomerUserId);
+  // forms  bookmycall and rfp
+  const CustomerUserId =
+    typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+  console.log(CustomerUserId);
 
-   const [loading, setLoading] = useState(true);
-   const [error, setError] = useState(null);
-   useEffect(() => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [formData, setFormData] = useState({
+    userOrgType: "",
+    userTeamSize: "",
+    catOfWorkFlow: "",
+    teamRoles: [],
+    toolsUsed: [],
+    steps: [],
+  });
+
+  //  user data fetching
+  useEffect(() => {
     const fetchUserData = async () => {
       if (!CustomerUserId) {
         setLoading(false);
         return;
       }
-  
+
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user?userId=${CustomerUserId}`
@@ -239,15 +781,15 @@ const WorkflowForm = () => {
           throw new Error("Failed to fetch user data");
         }
         const userData = await response.json();
-  
+
         if (userData.success) {
           const { profile } = userData;
-  
+
           // Use setFormData with the spread operator to update state immutably
-          setFormData(prevFormData => ({
+          setFormData((prevFormData) => ({
             ...prevFormData,
             userOrgType: profile.CompanyType || "",
-            userTeamSize: profile.TeamSize || ""
+            userTeamSize: profile.TeamSize || "",
           }));
         } else {
           throw new Error("Failed to fetch user data");
@@ -258,361 +800,231 @@ const WorkflowForm = () => {
         setLoading(false);
       }
     };
-  
+
     fetchUserData();
   }, [CustomerUserId]);
-  
-  const [formData, setFormData] = useState({
-    userOrgType: '',
-    userTeamSize: '',
-    catOfWorkFlow: '',
-    teamRoles: [],
-    toolsUsed: [],
-    steps: []
-  });
 
-  // Organization types and team sizes
+  // data
   const orgTypes = [
-    'Individual Practitioner',
-    'Law Firms',
-    'Government Departments',
-    'Startups',
-    'Enterprises',
-    'Judiciary',
-    'In-House Counsels'
+    "Individual Practitioner",
+    "Law Firms",
+    "Government Departments",
+    "Startups",
+    "Enterprises",
+    "Judiciary",
+    "In-House Counsels",
   ];
 
-  const teamSizes = ['1-10', '11-50', '51-200', '201-500', '500+'];
+  const teamSizes = ["1-10", "11-50", "51-200", "201-500", "500+"];
 
-  // Workflow categories
   const workflowCategories = [
-    'Client Management',
-    'Contract Management',
-    'E-Signature',
-    'Document Management',
-    'Billing and Invoicing',
-    'Discovery',
-    'Compliance Management',
-    'IP Management',
-    'Legal Research',
-    'Workflow Automation',
-    'Litigation Management'
+    "Client Management",
+    "Contract Management",
+    "E-Signature",
+    "Document Management",
+    "Billing and Invoicing",
+    "Discovery",
+    "Compliance Management",
+    "IP Management",
+    "Legal Research",
+    "Workflow Automation",
+    "Litigation Management",
   ];
 
-  
   const teamRolesMap = {
-    'Individual Practitioner': [
-      'Lawyer',
-      'Junior Lawyer',
-      'Paralegal',
-      'Externally Associated Counsel',
-      'Intern',
-      'Administrative Support'
+    "Individual Practitioner": [
+      "Lawyer",
+      "Junior Lawyer",
+      "Paralegal",
+      "Externally Associated Counsel",
+      "Intern",
+      "Administrative Support",
     ],
-    'Law Firms': [
-      'Managing Partner',
-      'Senior Partner',
-      'Partner',
-      'Principal Associate',
-      'Senior Associate',
-      'Associate',
-      'Junior Associate',
-      'Paralegal',
-      'Company Secretary',
-      'Case Manager/Clerk',
-      'Administrative Support',
-      'Intern'
+    "Law Firms": [
+      "Managing Partner",
+      "Senior Partner",
+      "Partner",
+      "Principal Associate",
+      "Senior Associate",
+      "Associate",
+      "Junior Associate",
+      "Paralegal",
+      "Company Secretary",
+      "Case Manager/Clerk",
+      "Administrative Support",
+      "Intern",
     ],
-    'Government Departments': [
-      'Chief Legal Officer',
-      'Compliance Officer',
-      'Legal Analyst',
-      'Policy Advisor',
-      'Administrative Officer',
-      'Clerk',
-      'Intern',
-      'Outsourced Lawyer/Firm'
+    "Government Departments": [
+      "Chief Legal Officer",
+      "Compliance Officer",
+      "Legal Analyst",
+      "Policy Advisor",
+      "Administrative Officer",
+      "Clerk",
+      "Intern",
+      "Outsourced Lawyer/Firm",
     ],
-    'Startups': [
-      'Legal Head',
-      'Compliance Officer',
-      'Legal Associate',
-      'Contract Manager',
-      'Operations Manager',
-      'Outsourced Lawyer/Firm'
+    Startups: [
+      "Legal Head",
+      "Compliance Officer",
+      "Legal Associate",
+      "Contract Manager",
+      "Operations Manager",
+      "Outsourced Lawyer/Firm",
     ],
-    'Enterprises': [
-      'General Counsel',
-      'Legal President',
-      'Legal Vice President',
-      'Legal Director',
-      'Legal Manager',
-      'Legal Operations Manager',
-      'Contract Specialist',
-      'Compliance Manager',
-      'Outsourced Lawyer/Firm'
+    Enterprises: [
+      "General Counsel",
+      "Legal President",
+      "Legal Vice President",
+      "Legal Director",
+      "Legal Manager",
+      "Legal Operations Manager",
+      "Contract Specialist",
+      "Compliance Manager",
+      "Outsourced Lawyer/Firm",
     ],
-    'Judiciary': [
-      'Judge',
-      'Court Clerk',
-      'Judicial Assistant',
-      'Research Attorney',
-      'Case Administrator'
+    Judiciary: [
+      "Judge",
+      "Court Clerk",
+      "Judicial Assistant",
+      "Research Attorney",
+      "Case Administrator",
     ],
-    'In-House Counsels': [
-      'General Counsel',
-      'Legal Counsel',
-      'Compliance Officer',
-      'Legal Operations Manager',
-      'Paralegal/Legal Assistant'
-    ]
+    "In-House Counsels": [
+      "General Counsel",
+      "Legal Counsel",
+      "Compliance Officer",
+      "Legal Operations Manager",
+      "Paralegal/Legal Assistant",
+    ],
   };
-  
 
- 
   const toolsMap = {
-    'Client Management': [
-      'Client Intake Software',
-      'Case Management Software',
-      'Communication Platforms',
-      'Client Portal Software',
-      'Relationship Tracking Tools'
+    "Client Management": [
+      "Client Intake Software",
+      "Case Management Software",
+      "Communication Platforms",
+      "Client Portal Software",
+      "Relationship Tracking Tools",
     ],
-    'Contract Management': [
-      'Contract Drafting Tools',
-      'Contract Review Platforms',
-      'Contract Repository',
-      'Approval Workflow Software',
-      'Contract Analytics Tools',
-      'Lifecycle Management Software'
+    "Contract Management": [
+      "Contract Drafting Tools",
+      "Contract Review Platforms",
+      "Contract Repository",
+      "Approval Workflow Software",
+      "Contract Analytics Tools",
+      "Lifecycle Management Software",
     ],
-    'E-Signature': [
-      'Digital Signature Software',
-      'Authentication Tools',
-      'Secure Document Sharing',
-      'Signature Tracking Software',
-      'Compliance-Based E-Sign Solutions'
+    "E-Signature": [
+      "Digital Signature Software",
+      "Authentication Tools",
+      "Secure Document Sharing",
+      "Signature Tracking Software",
+      "Compliance-Based E-Sign Solutions",
     ],
-    'Document Management': [
-      'Document Storage Solutions',
-      'Version Control Software',
-      'Access Control Tools',
-      'Document Sharing Platforms',
-      'Document Search and Retrieval'
+    "Document Management": [
+      "Document Storage Solutions",
+      "Version Control Software",
+      "Access Control Tools",
+      "Document Sharing Platforms",
+      "Document Search and Retrieval",
     ],
-    'Billing and Invoicing': [
-      'Billing Management Software',
-      'Invoice Generation Tools',
-      'Payment Tracking Systems',
-      'Expense Management Tools',
-      'Automated Billing Workflows'
+    "Billing and Invoicing": [
+      "Billing Management Software",
+      "Invoice Generation Tools",
+      "Payment Tracking Systems",
+      "Expense Management Tools",
+      "Automated Billing Workflows",
     ],
-    'Discovery': [
-      'Document Review Tools',
-      'Data Collection Software',
-      'Redaction Tools',
-      'Data Processing Tools',
-      'Legal Hold Management Software'
+    Discovery: [
+      "Document Review Tools",
+      "Data Collection Software",
+      "Redaction Tools",
+      "Data Processing Tools",
+      "Legal Hold Management Software",
     ],
-    'Compliance Management': [
-      'Compliance Management Tools',
-      'Risk Assessment Software',
-      'Policy Management Tools',
-      'Audit Management Solutions',
-      'Incident Management Tools'
+    "Compliance Management": [
+      "Compliance Management Tools",
+      "Risk Assessment Software",
+      "Policy Management Tools",
+      "Audit Management Solutions",
+      "Incident Management Tools",
     ],
-    'IP Management': [
-      'IP Portfolio Management Software',
-      'Patent and Trademark Management Tools',
-      'IP Search and Monitoring Tools',
-      'IP Filing Software',
-      'Licensing and Royalty Management'
+    "IP Management": [
+      "IP Portfolio Management Software",
+      "Patent and Trademark Management Tools",
+      "IP Search and Monitoring Tools",
+      "IP Filing Software",
+      "Licensing and Royalty Management",
     ],
-    'Legal Research': [
-      'Legal Database Access Tools',
-      'Case Law Research Platforms',
-      'Statutory and Regulatory Databases',
-      'AI-Powered Research Tools',
-      'Citation Management Tools'
+    "Legal Research": [
+      "Legal Database Access Tools",
+      "Case Law Research Platforms",
+      "Statutory and Regulatory Databases",
+      "AI-Powered Research Tools",
+      "Citation Management Tools",
     ],
-    'Workflow Automation': [
-      'Workflow Design Software',
-      'Task Automation Tools',
-      'Workflow Management Platforms',
-      'Approval Workflow Software',
-      'Document Automation Tools'
+    "Workflow Automation": [
+      "Workflow Design Software",
+      "Task Automation Tools",
+      "Workflow Management Platforms",
+      "Approval Workflow Software",
+      "Document Automation Tools",
     ],
-    'Litigation Management': [
-      'Case Tracking Tools',
-      'Analytics for Litigation Trends',
-      'Court Docket Management',
-      'Case Data Analytics',
-      'Outcome Prediction Software'
-    ]
-  };
-  
-
- 
-  const stepsMap = {
-    'Client Management': [
-      'Conduct Client Intake',
-      'Assess Client Needs',
-      'Develop Strategy Plan',
-      'Represent Client Interests',
-      'Communicate with Client',
-      'Review Client Feedback'
+    "Litigation Management": [
+      "Case Tracking Tools",
+      "Analytics for Litigation Trends",
+      "Court Docket Management",
+      "Case Data Analytics",
+      "Outcome Prediction Software",
     ],
-    'Contract Management': [
-      'Draft Contract Terms',
-      'Negotiate Contract Details',
-      'Authenticate Contract Parties',
-      'Execute Contract Agreement',
-      'Store Contract Safely',
-      'Track Contract Status'
-    ],
-    'E-Signature': [
-      'Prepare Document for Signing',
-      'Authenticate Signer Identity',
-      'Sign Document Electronically',
-      'Encrypt Document Securely',
-      'Verify Signature Validity',
-      'Distribute Signed Document'
-    ],
-    'Document Management': [
-      'Capture New Documents',
-      'Manage Document Changes',
-      'Review Document Content',
-      'Organize Document Structure',
-      'Control Access Permissions',
-      'Retrieve Documents Easily'
-    ],
-    'Billing and Invoicing': [
-      'Generate Client Invoices',
-      'Authorize Billing Amounts',
-      'Distribute Invoices Securely',
-      'Facilitate Payment Process',
-      'Track Payment Status',
-      'Analyze Billing Data'
-    ],
-    'Discovery': [
-      'Discover Relevant Evidence',
-      'Preserve Digital Data',
-      'Acquire Case Documents',
-      'Examine Data Thoroughly',
-      'Evaluate Findings',
-      'Present Evidence Clearly'
-    ],
-    'Compliance Management': [
-      'Assess Coverage Needs',
-      'Validate Compliance Risks',
-      'Implement Compliance Controls',
-      'Monitor Compliance Actions',
-      'Analyze Risk Levels'
-    ],
-    'IP Management': [
-      'Catalogue IP Assets',
-      'Analyze IP Value',
-      'Protect IP Rights',
-      'Monitor IP Use',
-      'Enforce IP Protections',
-      'Report IP Status'
-    ],
-    'Workflow Automation': [
-      'Identify Workflow Steps',
-      'Configure Workflow Process',
-      'Validate Workflow Stages',
-      'Implement Automation',
-      'Track Workflow Progress',
-      'Optimize Workflow Efficiency'
-    ],
-    'Litigation Management': [
-      'Intake Case Details',
-      'Develop Case Strategy',
-      'Prepare Litigation Materials',
-      'Support Litigation Process',
-      'Analyze Case Data',
-      'Evaluate Case Outcome'
-    ]
-  };
-  
-  
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  const handleDragEnd = (event) => {
-    const { active, over } = event;
-    
-    if (active.id !== over.id) {
-      setFormData((prev) => {
-        const oldIndex = prev.steps.findIndex((step) => step.step === active.id);
-        const newIndex = prev.steps.findIndex((step) => step.step === over.id);
-        
-        return {
-          ...prev,
-          steps: arrayMove(prev.steps, oldIndex, newIndex),
-        };
-      });
-    }
   };
 
-  // Keep all the existing handlers (handleAddTeamRole, handleAddCustomTeamRole, etc.)
-  // ... [Include all handlers from the original code]
-
-  const handleUpdateStep = (index, updatedStep) => {
-    const newSteps = [...formData.steps];
-    newSteps[index] = updatedStep;
-    setFormData(prev => ({ ...prev, steps: newSteps }));
-  };
-
-
-  
   // Team Roles handlers
   const handleAddTeamRole = (role) => {
-    if (!formData.teamRoles.find(r => r.role === role)) {
+    if (!formData.teamRoles.find((r) => r.role === role)) {
       const newRole = {
         role,
-        count: 1
+        count: 1,
       };
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        teamRoles: [...prev.teamRoles, newRole]
+        teamRoles: [...prev.teamRoles, newRole],
       }));
     }
   };
 
   const handleAddCustomTeamRole = (customRole) => {
-    if (customRole.trim() && !formData.teamRoles.find(r => r.role === customRole.trim())) {
+    if (
+      customRole.trim() &&
+      !formData.teamRoles.find((r) => r.role === customRole.trim())
+    ) {
       handleAddTeamRole(customRole.trim());
     }
   };
 
   const handleUpdateRoleCount = (role, count) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      teamRoles: prev.teamRoles.map(r => 
+      teamRoles: prev.teamRoles.map((r) =>
         r.role === role ? { ...r, count: parseInt(count) || 0 } : r
-      )
+      ),
     }));
   };
 
   const handleRemoveRole = (roleToRemove) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      teamRoles: prev.teamRoles.filter(r => r.role !== roleToRemove)
+      teamRoles: prev.teamRoles.filter((r) => r.role !== roleToRemove),
     }));
   };
 
   // Tools handlers
   const handleAddTool = (tool) => {
     if (!formData.toolsUsed.includes(tool)) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        toolsUsed: [...prev.toolsUsed, tool]
+        toolsUsed: [...prev.toolsUsed, tool],
       }));
     }
   };
@@ -624,205 +1036,789 @@ const WorkflowForm = () => {
   };
 
   const handleRemoveTool = (tool) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      toolsUsed: prev.toolsUsed.filter(t => t !== tool)
+      toolsUsed: prev.toolsUsed.filter((t) => t !== tool),
     }));
   };
 
-  // Steps handlers
+  // workflow steps
+
+  // const stepsMap = {
+  //   "Client Management": [
+  //     "Client Onboarding",
+  //     "Client Interaction",
+  //     "Client Information Management",
+  //     "Billing and Invoicing",
+  //     "Feedback Collection",
+  //     "Client Retention and Development",
+  //   ],
+  //   "Contract  Management": [
+  //     "Initiation",
+  //     "Drafting",
+  //     "Negotiation",
+  //     "Approval",
+  //     "Execution",
+  //     "Post-Execution Management",
+  //   ],
+  //   "E-Signature": [
+  //     "Document Preparation",
+  //     "Signatory Identification",
+  //     "Sending for Signature",
+  //     "Signature Verification",
+  //     "Completion",
+  //     "Post-Signing Workflow",
+  //   ],
+  //   "Document Management": [
+  //     "Document Creation",
+  //     "Document Categorization",
+  //     "Collaboration",
+  //     "Storage",
+  //     "Access Control",
+  //     "Archiving and Retention",
+  //   ],
+  //   "Billing and Invoicing": [
+  //     "Client Rate Agreement",
+  //     "Time Tracking",
+  //     "Invoice Creation",
+  //     "Invoice Approval",
+  //     "Payment Processing",
+  //     "Reporting and Analysis",
+  //   ],
+  //   Discovery: [
+  //     "Data Collection",
+  //     "Data Processing",
+  //     "Review and Analysis",
+  //     "Legal Holds",
+  //     "Production",
+  //     "Post-Discovery Evaluation",
+  //   ],
+  //   "Compliance Management": [
+  //     "Policy Development",
+  //     "Risk Assessment",
+  //     "Compliance Monitoring",
+  //     "Incident Management",
+  //     "Training and Awareness",
+  //     "Reporting and Improvement",
+  //   ],
+  //   "IP Management": [
+  //     "Asset Identification",
+  //     "Registration",
+  //     "Monitoring",
+  //     "Licensing and Agreements",
+  //     "Litigation and Enforcement",
+  //     "Portfolio Management",
+  //   ],
+  //   "Legal Research": [
+  //     "Topic Identification",
+  //     "Source Collection",
+  //     "Analysis",
+  //     "Drafting",
+  //     "Review",
+  //     "Storage",
+  //   ],
+  //   "Workflow Automation": [
+  //     "Workflow Mapping",
+  //     "Tool Selection",
+  //     "Implementation",
+  //     "Monitoring",
+  //     "Training",
+  //     "Optimization",
+  //   ],
+  //   "Litigation Management": [
+  //     "Case Intake",
+  //     "Pleadings",
+  //     "Discovery",
+  //     "Trial Preparation",
+  //     "Analytics",
+  //     "Post-Trial Management",
+  //   ],
+  // };
+
+  // const stepsMap = {
+  //   "Client Management": {
+  //     stages: [
+  //       "Client Onboarding",
+  //       "Client Interaction",
+  //       "Client Information Management",
+  //       "Billing and Invoicing",
+  //       "Feedback Collection",
+  //       "Client Retention and Development",
+  //     ],
+  //     substeps: {
+  //       "Client Onboarding": [
+  //         "Gather client details",
+  //         "Verify credentials",
+  //         "Draft engagement contracts",
+  //         "Set up communication preferences",
+  //         "Assign account managers"
+  //       ],
+  //       "Client Interaction": [
+  //         "Schedule meetings",
+  //         "Record meeting notes",
+  //         "Share case or project updates",
+  //         "Address client concerns"
+  //       ],
+  //       // ... and so on for each stage
+  //     }
+  //   },
+  //   "Contract Management": {
+  //     stages: [
+  //       "Initiation",
+  //       "Drafting",
+  //       "Negotiation",
+  //       "Approval",
+  //       "Execution",
+  //       "Post-Execution Management",
+  //     ],
+  //     substeps: {
+  //       "Initiation": [
+  //         "Identify contract need",
+  //         "Gather necessary inputs",
+  //         "Define roles and responsibilities"
+  //       ],
+  //       // ... and so on for other stages
+  //     }
+  //   },
+  //   // ... continue for other categories
+  // };
+  const stepsMap = {
+    "Client Management": {
+      stages: [
+        "Client Onboarding",
+        "Client Interaction",
+        "Client Information Management",
+        "Billing and Invoicing",
+        "Feedback Collection",
+        "Client Retention and Development",
+      ],
+      substeps: {
+        "Client Onboarding": [
+          "Gather client details",
+          "Verify credentials",
+          "Draft engagement contracts",
+          "Set up communication preferences",
+          "Assign account managers"
+        ],
+        "Client Interaction": [
+          "Schedule meetings",
+          "Record meeting notes",
+          "Share case or project updates",
+          "Address client concerns"
+        ],
+        "Client Information Management": [
+          "Organize client files",
+          "Update and sync records",
+          "Maintain data privacy standards"
+        ],
+        "Billing and Invoicing": [
+          "Generate invoices",
+          "Track payments and dues",
+          "Resolve disputes or discrepancies"
+        ],
+        "Feedback Collection": [
+          "Conduct satisfaction surveys",
+          "Record client feedback",
+          "Analyze and report trends"
+        ],
+        "Client Retention and Development": [
+          "Identify upselling or cross-selling opportunities",
+          "Send newsletters or updates",
+          "Host webinars and events"
+        ]
+      }
+    },
+    "Contract Management": {
+      stages: [
+        "Initiation",
+        "Drafting",
+        "Negotiation",
+        "Approval",
+        "Execution",
+        "Post-Execution Management"
+      ],
+      substeps: {
+        "Initiation": [
+          "Identify contract need",
+          "Gather necessary inputs",
+          "Define roles and responsibilities"
+        ],
+        "Drafting": [
+          "Use templates or create new drafts",
+          "Include compliance and jurisdiction-specific clauses",
+          "Review and approve internally"
+        ],
+        "Negotiation": [
+          "Exchange redlines with counterparties",
+          "Resolve key terms and disputes",
+          "Finalize language for approval"
+        ],
+        "Approval": [
+          "Send drafts to stakeholders",
+          "Ensure compliance with internal policies",
+          "Obtain approval for finalized drafts"
+        ],
+        "Execution": [
+          "Authenticate parties' identities",
+          "Route for digital or physical signatures",
+          "Distribute signed contracts"
+        ],
+        "Post-Execution Management": [
+          "Track key dates and milestones",
+          "Monitor performance and obligations",
+          "Manage renewals and amendments"
+        ]
+      }
+    },
+    "E-Signature": {
+      stages: [
+        "Document Preparation",
+        "Signatory Identification",
+        "Sending for Signature",
+        "Signature Verification",
+        "Completion",
+        "Post-Signing Workflow"
+      ],
+      substeps: {
+        "Document Preparation": [
+          "Format documents for signature",
+          "Assign roles and fields"
+        ],
+        "Signatory Identification": [
+          "Verify identities",
+          "Determine signing order"
+        ],
+        "Sending for Signature": [
+          "Send documents to signatories",
+          "Notify parties of deadlines"
+        ],
+        "Signature Verification": [
+          "Validate signed documents",
+          "Ensure compliance with legal standards"
+        ],
+        "Completion": [
+          "Consolidate signed documents",
+          "Distribute finalized copies"
+        ],
+        "Post-Signing Workflow": [
+          "Archive documents",
+          "Record transaction details for audits"
+        ]
+      }
+    },
+    "Document Management": {
+      stages: [
+        "Document Creation",
+        "Document Categorization",
+        "Collaboration",
+        "Storage",
+        "Access Control",
+        "Archiving and Retention"
+      ],
+      substeps: {
+        "Document Creation": [
+          "Draft new documents",
+          "Use templates or AI-based tools"
+        ],
+        "Document Categorization": [
+          "Classify by type or department",
+          "Assign metadata tags"
+        ],
+        "Collaboration": [
+          "Enable role-based access",
+          "Track changes with versioning"
+        ],
+        "Storage": [
+          "Save in secure repositories",
+          "Organize by folder structure"
+        ],
+        "Access Control": [
+          "Define access permissions",
+          "Monitor document activity"
+        ],
+        "Archiving and Retention": [
+          "Apply retention schedules",
+          "Safely archive inactive documents"
+        ]
+      }
+    },
+    "Billing and Invoicing": {
+      stages: [
+        "Client Rate Agreement",
+        "Time Tracking",
+        "Invoice Creation",
+        "Invoice Approval",
+        "Payment Processing",
+        "Reporting and Analysis"
+      ],
+      substeps: {
+        "Client Rate Agreement": [
+          "Establish rates and terms",
+          "Define billing cycles"
+        ],
+        "Time Tracking": [
+          "Track billable and non-billable hours",
+          "Sync logs with invoice systems"
+        ],
+        "Invoice Creation": [
+          "Generate itemized invoices",
+          "Include applicable taxes and discounts"
+        ],
+        "Invoice Approval": [
+          "Send for internal reviews",
+          "Approve and distribute invoices"
+        ],
+        "Payment Processing": [
+          "Monitor payments",
+          "Send reminders for overdue invoices"
+        ],
+        "Reporting and Analysis": [
+          "Track billing trends",
+          "Generate financial reports"
+        ]
+      }
+    },
+    "Discovery": {
+      stages: [
+        "Data Collection",
+        "Data Processing",
+        "Review and Analysis",
+        "Legal Holds",
+        "Production",
+        "Post-Discovery Evaluation"
+      ],
+      substeps: {
+        "Data Collection": [
+          "Identify relevant sources",
+          "Preserve evidence integrity"
+        ],
+        "Data Processing": [
+          "Filter by relevance",
+          "Remove duplicates"
+        ],
+        "Review and Analysis": [
+          "Categorize data by priority",
+          "Highlight key documents"
+        ],
+        "Legal Holds": [
+          "Notify custodians",
+          "Monitor compliance"
+        ],
+        "Production": [
+          "Convert documents for submission",
+          "Share with relevant parties"
+        ],
+        "Post-Discovery Evaluation": [
+          "Assess lessons learned",
+          "Refine future processes"
+        ]
+      }
+    },
+    "Compliance Management": {
+      stages: [
+        "Policy Development",
+        "Risk Assessment",
+        "Compliance Monitoring",
+        "Incident Management",
+        "Training and Awareness",
+        "Reporting and Improvement"
+      ],
+      substeps: {
+        "Policy Development": [
+          "Draft governance policies",
+          "Ensure legal and regulatory compliance"
+        ],
+        "Risk Assessment": [
+          "Identify key risks",
+          "Evaluate impact and likelihood"
+        ],
+        "Compliance Monitoring": [
+          "Track adherence to policies",
+          "Conduct periodic audits"
+        ],
+        "Incident Management": [
+          "Report violations",
+          "Take corrective actions"
+        ],
+        "Training and Awareness": [
+          "Educate employees",
+          "Update policies regularly"
+        ],
+        "Reporting and Improvement": [
+          "Create compliance reports",
+          "Implement recommendations"
+        ]
+      }
+    },
+    "IP Management": {
+      stages: [
+        "Asset Identification",
+        "Registration",
+        "Monitoring",
+        "Licensing and Agreements",
+        "Litigation and Enforcement",
+        "Portfolio Management"
+      ],
+      substeps: {
+        "Asset Identification": [
+          "Catalog IP assets",
+          "Conduct audits"
+        ],
+        "Registration": [
+          "File applications",
+          "Manage renewals"
+        ],
+        "Monitoring": [
+          "Track usage and infringements",
+          "Enforce IP rights"
+        ],
+        "Licensing and Agreements": [
+          "Draft license agreements",
+          "Monitor compliance"
+        ],
+        "Litigation and Enforcement": [
+          "Handle disputes",
+          "Take legal action"
+        ],
+        "Portfolio Management": [
+          "Analyze asset value",
+          "Optimize asset strategies"
+        ]
+      }
+    },
+    "Legal Research": {
+      stages: [
+        "Topic Identification",
+        "Source Collection",
+        "Analysis",
+        "Drafting",
+        "Review",
+        "Storage"
+      ],
+      substeps: {
+        "Topic Identification": [
+          "Define the research objective",
+          "Identify jurisdictions"
+        ],
+        "Source Collection": [
+          "Gather case laws and statutes",
+          "Access legal databases"
+        ],
+        "Analysis": [
+          "Interpret findings",
+          "Highlight precedents"
+        ],
+        "Drafting": [
+          "Create research memos",
+          "Provide actionable insights"
+        ],
+        "Review": [
+          "Verify findings",
+          "Ensure citations are accurate"
+        ],
+        "Storage": [
+          "Archive research for reuse",
+          "Update databases regularly"
+        ]
+      }
+    },
+    "Workflow Automation": {
+      stages: [
+        "Workflow Mapping",
+        "Tool Selection",
+        "Implementation",
+        "Monitoring",
+        "Training",
+        "Optimization"
+      ],
+      substeps: {
+        "Workflow Mapping": [
+          "Identify tasks for automation",
+          "Define dependencies"
+        ],
+        "Tool Selection": [
+          "Choose automation platforms",
+          "Integrate with existing tools"
+        ],
+        "Implementation": [
+          "Set up workflows",
+          "Conduct pilot testing"
+        ],
+        "Monitoring": [
+          "Track efficiency",
+          "Fix issues promptly"
+        ],
+        "Training": [
+          "Educate users",
+          "Provide troubleshooting support"
+        ],
+        "Optimization": [
+          "Gather feedback",
+          "Update workflows regularly"
+        ]
+      }
+    },
+    "Litigation Management": {
+      stages: [
+        "Case Intake",
+        "Pleadings",
+        "Discovery",
+        "Trial Preparation",
+        "Analytics",
+        "Post-Trial Management"
+      ],
+      substeps: {
+        "Case Intake": [
+          "Collect case details",
+          "Assign case numbers"
+        ],
+        "Pleadings": [
+          "Draft complaints",
+          "Respond to motions"
+        ],
+        "Discovery": [
+          "Manage evidence",
+          "Respond to requests"
+        ],
+        "Trial Preparation": [
+          "Develop arguments",
+          "Organize exhibits"
+        ],
+        "Analytics": [
+          "Review litigation trends",
+          "Assess case outcomes"
+        ],
+        "Post-Trial Management": [
+          "Archive records",
+          "Conduct debriefs"
+        ]
+      }
+    }
+  };
+
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+  
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      setFormData((prev) => {
+        const oldIndex = prev.steps.findIndex(
+          (step) => step.step === active.id
+        );
+        const newIndex = prev.steps.findIndex((step) => step.step === over.id);
+        return {
+          ...prev,
+          steps: arrayMove(prev.steps, oldIndex, newIndex),
+        };
+      });
+    }
+  };
+  
+  const handleUpdateStep = (index, updatedStep) => {
+    const newSteps = [...formData.steps];
+    newSteps[index] = updatedStep;
+    setFormData((prev) => ({ ...prev, steps: newSteps }));
+  };
+  
+  // For adding a new stage (either from predefined or custom)
   const handleAddStep = (step) => {
-    if (!formData.steps.find(s => s.step === step)) {
+    if (!formData.steps.find((s) => s.step === step)) {
       const newStep = {
         step,
         repetitiveness: 3,
-        exhaustionScale: 3
+        exhaustionScale: 3,
+        selectedSteps: [], // Initialize empty array for substeps
+        teamRoles: []
       };
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        steps: [...prev.steps, newStep]
+        steps: [...prev.steps, newStep],
       }));
     }
   };
-
+  
+  // For adding custom stage
   const handleAddCustomStep = (customStep) => {
-    if (customStep.trim() && !formData.steps.find(s => s.step === customStep.trim())) {
+    if (
+      customStep.trim() &&
+      !formData.steps.find((s) => s.step === customStep.trim())
+    ) {
       handleAddStep(customStep.trim());
     }
   };
+  // const sensors = useSensors(
+  //   useSensor(PointerSensor),
+  //   useSensor(KeyboardSensor, {
+  //     coordinateGetter: sortableKeyboardCoordinates,
+  //   })
+  // );
 
+  // const handleDragEnd = (event) => {
+  //   const { active, over } = event;
 
+  //   if (active.id !== over.id) {
+  //     setFormData((prev) => {
+  //       const oldIndex = prev.steps.findIndex(
+  //         (step) => step.step === active.id
+  //       );
+  //       const newIndex = prev.steps.findIndex((step) => step.step === over.id);
 
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement> ) => {
-  //   // Check if all fields are filled
-  //   e.preventDefault(); // This is crucial to prevent form submission on every change
-    
-  //   if (
-  //     !CustomerUserId ||
-  //     !formData.userOrgType ||
-  //     !formData.userTeamSize ||
-  //     !formData.catOfWorkFlow ||
-  //     !formData.teamRoles.length ||
-
-  //     !formData.steps.length
-  //   ) {
-  //     console.error('Please fill in all required fields');
-  //     toast({
-  //       title: "Missing Fields",
-  //       description:  "Please fill in all required fields.",
-  //       variant: "destructive",
+  //       return {
+  //         ...prev,
+  //         steps: arrayMove(prev.steps, oldIndex, newIndex),
+  //       };
   //     });
-  //     return; // Exit the function if validation fails
-  //   }
-  
-  //   try {
-  //     // Prepare the request body with necessary data
-  //     const requestBody = {
-  //       userID: CustomerUserId, // The user ID passed as an argument
-  //       userOrgType: formData.userOrgType,
-  //       userTeamSize: formData.userTeamSize,
-  //       categoryOfWorkflow: formData.catOfWorkFlow,
-  //       teamRoles: formData.teamRoles,
-  //       toolsUsed: formData.toolsUsed,
-  //       workFlowSteps: formData.steps,
-  //     };
-  
-  //     // Make a POST request to your API endpoint
-  //     const response = await fetch('/api/submit-workFlowData', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(requestBody),
-  //     });
-  
-  //     // Handle the response
-  //     const result = await response.json();
-  //     if (response.ok) {
-  //       console.log('Workflow created successfully:', result.data);
-  //       toast({
-  //         title: "Success",
-  //         description: "Form submitted successfully!",
-  //         variant: "success",
-  //       });
-  //       // Optionally handle success (e.g., clear the form or show a success message)
-  //     } else {
-  //       console.error('Error creating workflow:', result.message);
-  //       toast({
-  //         title: "Error",
-  //         description: result.msg || "Failed to submit Form.",
-  //         variant: "destructive",
-  //       });
-  //       // Optionally show an error message to the user
-  //     }
-  //   } catch (error) {
-  //     console.error('Network or server error:', error);
-  //     toast({
-  //       title: "Error",
-  //       description: "An error occurred while submitting the Form.",
-  //       variant: "destructive",
-  //     });
-  //     // Optionally show an error message to the user
   //   }
   // };
 
+  // const handleUpdateStep = (index, updatedStep) => {
+  //   const newSteps = [...formData.steps];
+  //   newSteps[index] = updatedStep;
+  //   setFormData((prev) => ({ ...prev, steps: newSteps }));
+  // };
 
-  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
-const [reportData, setReportData] = useState(null);
+  // // Steps handlers
+  // // const handleAddStep = (step) => {
+  // //   if (!formData.steps.find((s) => s.step === step)) {
+  // //     const newStep = {
+  // //       step,
+  // //       repetitiveness: 3,
+  // //       exhaustionScale: 3,
+  // //     };
+  // //     setFormData((prev) => ({
+  // //       ...prev,
+  // //       steps: [...prev.steps, newStep],
+  // //     }));
+  // //   }
+  // // };
 
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+
+  // const handleAddStep = (step) => {
+  //   if (!formData.steps.find((s) => s.step === step)) {
+  //     const newStep = {
+  //       step,
+  //       repetitiveness: 3,
+  //       exhaustionScale: 3,
+  //       selectedSteps: [], // Initialize empty array for substeps
+  //       teamRoles: []
+  //     };
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       steps: [...prev.steps, newStep],
+  //     }));
+  //   }
+  // };
+
+  // // const handleAddCustomStep = (customStep) => {
+  // //   if (
+  // //     customStep.trim() &&
+  // //     !formData.steps.find((s) => s.step === customStep.trim())
+  // //   ) {
+  // //     handleAddStep(customStep.trim());
+  // //   }
+  // // };
+
+  // const handleAddCustomSubstep = (stage, customSubstep) => {
+  //   const trimmedStep = customSubstep.trim();
+  //   if (
+  //     trimmedStep &&
+  //     !(step.selectedSteps || []).includes(trimmedStep)
+  //   ) {
+  //     toggleSubstep(trimmedStep);
+  //   }
+  // };
+
   
-  // Validation check
-  // if (
-  //   !CustomerUserId ||
-  //   !formData.userOrgType ||
-  //   !formData.userTeamSize ||
-  //   !formData.catOfWorkFlow ||
-  //   !formData.teamRoles.length ||
-  //   !formData.steps.length
-  // ) {
-  //   console.error('Please fill in all required fields');
-  //   toast({
-  //     title: "Missing Fields",
-  //     description: "Please fill in all required fields.",
-  //     variant: "destructive",
-  //   });
-  //   return;
-  // }
 
-  try {
-    // First API call
-    const requestBody = {
-      // userID: CustomerUserId,
-      userOrgType: formData.userOrgType,
-      userTeamSize: formData.userTeamSize,
-      categoryOfWorkflow: formData.catOfWorkFlow,
-      teamRoles: formData.teamRoles,
-      toolsUsed: formData.toolsUsed,
-      workFlowSteps: formData.steps,
-    };
 
-    const response = await fetch('/api/submit-workFlowData', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    });
 
-    const result = await response.json();
-    
-    if (response.ok) {
-      // Second API call for workflow report
-      const reportRequestBody = {
-        workflow_report: {
-          userOrgType: formData.userOrgType,
-          userTeamSize: formData.userTeamSize,
-          catOfWorkFlow: formData.catOfWorkFlow,
-          teamRoles: formData.teamRoles,
-          toolsUsed: formData.toolsUsed,
-          steps: formData.steps,
-        }
+  //  sending data
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [reportData, setReportData] = useState(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      // First API call
+      const requestBody = {
+        // userID: CustomerUserId,
+        userOrgType: formData.userOrgType,
+        userTeamSize: formData.userTeamSize,
+        categoryOfWorkflow: formData.catOfWorkFlow,
+        teamRoles: formData.teamRoles,
+        toolsUsed: formData.toolsUsed,
+        workFlowSteps: formData.steps,
       };
 
-      const reportResponse = await fetch('https://ai-backend-y6mq.onrender.com/workflow_report/', {
-        method: 'POST',
+      const response = await fetch("/api/submit-workFlowData", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(reportRequestBody),
+        body: JSON.stringify(requestBody),
       });
 
-      const reportResult = await reportResponse.json();
-      
-      if (reportResponse.ok) {
-        setReportData(reportResult);
-        setIsReportModalOpen(true);
-        toast({
-          title: "Success",
-          description: "Form submitted successfully!",
-          variant: "success",
-        });
-      } else {
-        throw new Error('Failed to fetch report');
-      }
-    } else {
-      throw new Error(result.message || 'Failed to submit form');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    toast({
-      title: "Error",
-      description: error.message || "An error occurred while submitting the form.",
-      variant: "destructive",
-    });
-  }
-};
+      const result = await response.json();
 
+      if (response.ok) {
+        // Second API call for workflow report
+        const reportRequestBody = {
+          workflow_report: {
+            userOrgType: formData.userOrgType,
+            userTeamSize: formData.userTeamSize,
+            catOfWorkFlow: formData.catOfWorkFlow,
+            teamRoles: formData.teamRoles,
+            toolsUsed: formData.toolsUsed,
+            steps: formData.steps,
+          },
+        };
+
+        const reportResponse = await fetch(
+          "https://ai-backend-y6mq.onrender.com/workflow_report/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(reportRequestBody),
+          }
+        );
+
+        const reportResult = await reportResponse.json();
+
+        if (reportResponse.ok) {
+          setReportData(reportResult);
+          setIsReportModalOpen(true);
+          toast({
+            title: "Success",
+            description: "Form submitted successfully!",
+            variant: "success",
+          });
+        } else {
+          throw new Error("Failed to fetch report");
+        }
+      } else {
+        throw new Error(result.message || "Failed to submit form");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast({
+        title: "Error",
+        description:
+          error.message || "An error occurred while submitting the form.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const [step, setStep] = useState(1);
-  
 
   const workflowCategoriess = [
     {
@@ -830,93 +1826,92 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       name: "Client Management",
       icon: Megaphone,
       description: "Manage client interactions and relationships effectively",
-      color: "from-blue-500 to-cyan-500"
+      color: "from-blue-500 to-cyan-500",
     },
     {
       id: "contract-management",
       name: "Contract Management",
       icon: Briefcase,
       description: "Streamline contract creation, negotiation, and management",
-      color: "from-purple-500 to-pink-500"
+      color: "from-purple-500 to-pink-500",
     },
     {
       id: "e-signature",
       name: "E-Signature",
       icon: PenTool,
       description: "Facilitate secure and efficient electronic signatures",
-      color: "from-green-500 to-emerald-500"
+      color: "from-green-500 to-emerald-500",
     },
     {
       id: "document-management",
       name: "Document Management",
       icon: FileText,
       description: "Organize and manage documents efficiently",
-      color: "from-orange-500 to-amber-500"
+      color: "from-orange-500 to-amber-500",
     },
     {
       id: "billing-invoicing",
       name: "Billing and Invoicing",
       icon: DollarSign,
       description: "Optimize billing and invoicing processes",
-      color: "from-indigo-500 to-violet-500"
+      color: "from-indigo-500 to-violet-500",
     },
     {
       id: "discovery",
       name: "Discovery",
       icon: Search,
       description: "Enhance discovery processes and data collection",
-      color: "from-rose-500 to-red-500"
+      color: "from-rose-500 to-red-500",
     },
     {
       id: "compliance-management",
       name: "Compliance Management",
       icon: Shield,
       description: "Ensure compliance with regulations and standards",
-      color: "from-teal-500 to-blue-500"
+      color: "from-teal-500 to-blue-500",
     },
     {
       id: "ip-management",
       name: "IP Management",
       icon: Lightbulb,
       description: "Manage intellectual property effectively",
-      color: "from-yellow-500 to-orange-500"
+      color: "from-yellow-500 to-orange-500",
     },
     {
       id: "legal-research",
       name: "Legal Research",
       icon: BookOpen,
       description: "Conduct thorough and efficient legal research",
-      color: "from-red-500 to-pink-500"
+      color: "from-red-500 to-pink-500",
     },
     {
       id: "workflow-automation",
       name: "Workflow Automation",
       icon: Settings,
       description: "Automate and optimize workflows",
-      color: "from-green-500 to-teal-500"
+      color: "from-green-500 to-teal-500",
     },
     {
       id: "litigation-management",
       name: "Litigation Management",
       icon: Gavel,
       description: "Manage litigation processes effectively",
-      color: "from-blue-500 to-indigo-500"
-    }
+      color: "from-blue-500 to-indigo-500",
+    },
   ];
 
-  
   const handleCategorySelect = (categoryName) => {
     // Set the selected category
-    setFormData(prev => ({ ...prev, catOfWorkFlow: categoryName }));
-    
+    setFormData((prev) => ({ ...prev, catOfWorkFlow: categoryName }));
+
     // Add CSS class for transition
-    const formContainer = document.getElementById('form-container');
-    formContainer.classList.add('slide-out');
-  
+    const formContainer = document.getElementById("form-container");
+    formContainer.classList.add("slide-out");
+
     // Delay the step change to ensure animation completes
     setTimeout(() => {
       setStep(2);
-      formContainer.classList.remove('slide-out'); // Optionally remove the class after setting step
+      formContainer.classList.remove("slide-out"); // Optionally remove the class after setting step
     }, 300);
   };
   // const [customRoleInput, setCustomRoleInput] = useState('');
@@ -934,69 +1929,78 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   //     setCustomRoleInput('');
   //   }
   // };
-  const [customRoleInput, setCustomRoleInput] = useState('');
-  const [customToolInput, setCustomToolInput] = useState('');
+  const [customRoleInput, setCustomRoleInput] = useState("");
+  const [customToolInput, setCustomToolInput] = useState("");
 
   // Combine predefined and custom roles
   const allRoles = [
     ...(teamRolesMap[formData.userOrgType] || []),
     ...formData.teamRoles
-      .filter(role => !teamRolesMap[formData.userOrgType]?.includes(role.role))
-      .map(role => role.role)
+      .filter(
+        (role) => !teamRolesMap[formData.userOrgType]?.includes(role.role)
+      )
+      .map((role) => role.role),
   ];
 
   // Combine predefined and custom tools
   const allTools = [
     ...(toolsMap[formData.catOfWorkFlow] || []),
-    ...formData.toolsUsed.filter(tool => !toolsMap[formData.catOfWorkFlow]?.includes(tool))
+    ...formData.toolsUsed.filter(
+      (tool) => !toolsMap[formData.catOfWorkFlow]?.includes(tool)
+    ),
   ];
 
   const handleCustomRoleAdd = () => {
     if (customRoleInput.trim()) {
       handleAddCustomTeamRole(customRoleInput);
-      setCustomRoleInput('');
+      setCustomRoleInput("");
     }
   };
 
   const handleCustomToolAdd = () => {
     if (customToolInput.trim()) {
       handleAddCustomTool(customToolInput);
-      setCustomToolInput('');
+      setCustomToolInput("");
     }
   };
   const teamRoleNames = formData.teamRoles.map(({ role }) => role);
 
   return (
-    
-
-<div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-
-
-    {/* Your existing form JSX */}
-    <WorkflowReportModal 
-      isOpen={isReportModalOpen}
-      onClose={() => setIsReportModalOpen(false)}
-      report={reportData}
-/>
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      {/* Your existing form JSX */}
+      <WorkflowReportModal
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        report={reportData}
+      />
 
       <style jsx global>{`
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
-        
+
         @keyframes slideOut {
-          to { transform: translateX(-100%); opacity: 0; }
+          to {
+            transform: translateX(-100%);
+            opacity: 0;
+          }
         }
-        
+
         .slide-out {
           animation: slideOut 0.3s ease-in-out forwards;
         }
-        
+
         .workflow-card {
           transition: all 0.3s ease;
         }
-        
+
         .workflow-card:hover {
           transform: translateY(-4px);
         }
@@ -1004,13 +2008,17 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
       <div className="max-w-5xl bg-gray-50 mx-auto" id="form-container">
         {step === 1 ? (
-          <div className="space-y-8" style={{ animation: 'fadeIn 0.5s ease-out' }}>
+          <div
+            className="space-y-8"
+            style={{ animation: "fadeIn 0.5s ease-out" }}
+          >
             <div className="text-center space-y-4">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-                Select Which Workflow to Analyse 
+                Select Which Workflow to Analyse
               </h1>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Select your workflow category to begin optimizing your business processes
+                Select your workflow category to begin optimizing your business
+                processes
               </p>
             </div>
 
@@ -1018,13 +2026,15 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               {workflowCategoriess.map((category) => {
                 const Icon = category.icon;
                 return (
-                  <Card 
+                  <Card
                     key={category.id}
                     className="workflow-card hover:shadow-xl cursor-pointer border-0 shadow-md"
                     onClick={() => handleCategorySelect(category.name)}
                   >
                     <CardContent className="p-6 space-y-4">
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${category.color} flex items-center justify-center`}>
+                      <div
+                        className={`w-12 h-12 rounded-xl bg-gradient-to-br ${category.color} flex items-center justify-center`}
+                      >
                         <Icon className="w-6 h-6 text-white" />
                       </div>
                       <div className="space-y-2">
@@ -1046,566 +2056,449 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             </div>
           </div>
         ) : (
-
-          <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
-            
-            <Button 
-              variant="ghost" 
+          <div style={{ animation: "fadeIn 0.5s ease-out" }}>
+            <Button
+              variant="ghost"
               onClick={() => setStep(1)}
               className="mb-6 text-gray-600 hover:text-gray-900"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Categories
             </Button>
-            
-            
-                <div className="flex items-center space-x-3">
-                  {workflowCategories.find(c => c.name === formData.catOfWorkFlow)?.icon && 
-                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${
-                      workflowCategories.find(c => c.name === formData.catOfWorkFlow)?.color
-                    } flex items-center justify-center`}>
-                      {React.createElement(
-                        workflowCategories.find(c => c.name === formData.catOfWorkFlow)?.icon,
-                        { className: "w-5 h-5 text-white" }
-                      )}
-                    </div>
-                  }
-                
-                </div>
-              
 
-              <form onSubmit={handleSubmit}>
-
-
-<Card className='p-6 mb-6'>   
-
-                  <CardTitle className="text-2xl font-bold">
-                    Configure {formData.catOfWorkFlow} Workflow
-                  </CardTitle>             
-</Card>
-<Card className='p-6 mb-6'>           
-                  <div className="space-y-2 mb-6 ">
-                    <Label>Organization Type</Label>
-                    <Select 
-                      value={formData.userOrgType}
-                      onValueChange={(value) => setFormData(prev => ({ ...prev, userOrgType: value }))}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select organization type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {orgTypes.map(type => (
-                          <SelectItem key={type} value={type}>{type}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  
-                  <div className="space-y-2 mb-6">
-                    <Label>Team Size</Label>
-                    <Select 
-                      value={formData.userTeamSize}
-                      onValueChange={(value) => setFormData(prev => ({ ...prev, userTeamSize: value }))}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select team size" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {teamSizes.map(size => (
-                          <SelectItem key={size} value={size}>{size}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  
-</Card>
-            
-{/* <Card className='p-6 mb-6'>
-
-                 
-                  {formData.userOrgType && (
-            <div className="space-y-4 mb-6">
-              
-              <CardTitle className="text-2xl font-bold">
-              
-              Team Roles Involved In The Workflow
-              </CardTitle>
-
-              <div className="grid grid-cols-1 gap-2">
-                {teamRolesMap[formData.userOrgType]?.map(role => {
-                  const isSelected = formData.teamRoles.some(tr => tr.role === role);
-                  return (
-                    <Button
-                      type="button"
-                      key={role}
-                      variant={isSelected ? "default" : "outline"}
-                      onClick={() => handleAddTeamRole(role)}
-                      className={`w-full text-left justify-start break-words ${
-                        isSelected 
-                          ? "bg-blue-600 hover:bg-blue-700 text-white"
-                          : ""
-                      }`}
-                    >
-                      {role}
-                    </Button>
-                  );
-                })}
-              </div>
-
-              
-              <div className="space-y-2">
-                {formData.teamRoles.map(({ role, count }) => (
-                  <div key={role} className="flex items-center bg-gray-50 space-x-2 p-2  shadow-sm rounded-lg border border-gray-200">
-                    <p className='mr-1 text-sm font-semibold text-gray-700'>Count:</p>
-                    <Input 
-                      type="text"
-                      placeholder='Enter Count'
-                      value={count}
-                      onChange={(e) => handleUpdateRoleCount(role, e.target.value)}
-                      className="w-16 md:w-20 border-gray-300 rounded-md"
-                      min="1"
-                    />
-                    <span className="flex-1 break-words text-gray-800">{role}</span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleRemoveRole(role)}
-                      className="shrink-0 text-red-600 hover:text-red-800"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-
-             
-              <div className="flex space-x-2">
-                <Input
-                  placeholder="Add custom role"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      handleAddCustomTeamRole(e.target.value);
-                      e.target.value = '';
-                    }
-                  }}
-                />
-                <Button 
-                  type="button"
-                  onClick={() => {
-                    const input = document.querySelector('input[placeholder="Add custom role"]');
-                    handleAddCustomTeamRole(input.value);
-                    input.value = '';
-                  }}
-                  className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+            <div className="flex items-center space-x-3">
+              {workflowCategories.find((c) => c.name === formData.catOfWorkFlow)
+                ?.icon && (
+                <div
+                  className={`w-10 h-10 rounded-lg bg-gradient-to-br ${
+                    workflowCategories.find(
+                      (c) => c.name === formData.catOfWorkFlow
+                    )?.color
+                  } flex items-center justify-center`}
                 >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
+                  {React.createElement(
+                    workflowCategories.find(
+                      (c) => c.name === formData.catOfWorkFlow
+                    )?.icon,
+                    { className: "w-5 h-5 text-white" }
+                  )}
+                </div>
+              )}
             </div>
-                  )}
-</Card> */}
 
-{/* <Card className="p-6 mb-6">
-      {formData.userOrgType && (
-        <div className="space-y-4 mb-6">
-          <CardTitle className="text-2xl font-bold">
-            Team Roles Involved In The Workflow
-          </CardTitle>
+            <form onSubmit={handleSubmit}>
+              <Card className="p-6 mb-6">
+                <CardTitle className="text-2xl font-bold">
+                  Configure {formData.catOfWorkFlow} Workflow
+                </CardTitle>
+              </Card>
+              <Card className="p-6 mb-6">
+                <div className="space-y-2 mb-6 ">
+                  <Label>Organization Type</Label>
+                  <Select
+                    value={formData.userOrgType}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, userOrgType: value }))
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select organization type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {orgTypes.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-          <div className="grid grid-cols-1 gap-2">
-            {teamRolesMap[formData.userOrgType]?.map(role => {
-              const isSelected = formData.teamRoles.some(tr => tr.role === role);
-              const selectedRole = formData.teamRoles.find(tr => tr.role === role);
+                <div className="space-y-2 mb-6">
+                  <Label>Team Size</Label>
+                  <Select
+                    value={formData.userTeamSize}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, userTeamSize: value }))
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select team size" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {teamSizes.map((size) => (
+                        <SelectItem key={size} value={size}>
+                          {size}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </Card>
 
-              return (
-                <div key={role} className="relative">
-                  {!isSelected ? (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => handleAddTeamRole(role)}
-                      className="w-full text-left justify-start break-words"
-                    >
-                      {role}
-                    </Button>
-                  ) : (
-                    <div className="flex items-center bg-blue-600 text-white p-2 rounded-lg space-x-2">
-                      <div className="flex items-center space-x-2 flex-1">
-                        <span className="text-sm font-semibold">Count:</span>
-                        <Input 
-                          type="text"
-                          value={selectedRole.count}
-                          onChange={(e) => handleUpdateRoleCount(role, e.target.value)}
-                          className="w-16 md:w-20 bg-white/10 border-white/20 text-white placeholder-white/50"
-                          min="1"
-                        />
-                        <span className="flex-1 break-words">{role}</span>
-                      </div>
+              <Card className="p-6 mb-6">
+                {formData.userOrgType && (
+                  <div className="space-y-4 mb-6">
+                    <CardTitle className="text-2xl font-bold">
+                      Team Roles Involved In The Workflow
+                    </CardTitle>
+
+                    <div className="grid grid-cols-1 gap-2">
+                      {allRoles.map((role) => {
+                        const isSelected = formData.teamRoles.some(
+                          (tr) => tr.role === role
+                        );
+                        const selectedRole = formData.teamRoles.find(
+                          (tr) => tr.role === role
+                        );
+
+                        return (
+                          <div key={role} className="relative">
+                            {!isSelected ? (
+                              <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => handleAddTeamRole(role)}
+                                className="w-full text-left justify-start break-words"
+                              >
+                                {role}
+                              </Button>
+                            ) : (
+                              <div className="flex items-center bg-blue-600 text-white px-2 rounded-lg space-x-2">
+                                <div className="flex items-center space-x-2 flex-1">
+                                  <span className="flex-1 break-words">
+                                    {role}
+                                  </span>
+                                  <span className="text-sm font-semibold">
+                                    Count:
+                                  </span>
+                                  <Input
+                                    type="text"
+                                    value={selectedRole.count}
+                                    onChange={(e) =>
+                                      handleUpdateRoleCount(
+                                        role,
+                                        e.target.value
+                                      )
+                                    }
+                                    className="w-16 md:w-20 bg-white/50 py-1 border-white/20 text-white placeholder-white/50"
+                                    min="1"
+                                  />
+                                </div>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleRemoveRole(role)}
+                                  className="shrink-0 text-white hover:text-white/80 hover:bg-blue-700"
+                                >
+                                  <X className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="flex space-x-2">
+                      <Input
+                        placeholder="Add custom role"
+                        value={customRoleInput}
+                        onChange={(e) => setCustomRoleInput(e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === "Enter") {
+                            handleCustomRoleAdd();
+                          }
+                        }}
+                      />
                       <Button
                         type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleRemoveRole(role)}
-                        className="shrink-0 text-white hover:text-white/80 hover:bg-blue-700"
+                        onClick={handleCustomRoleAdd}
+                        className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
                       >
-                        <X className="h-4 w-4" />
+                        <Plus className="h-4 w-4" />
                       </Button>
                     </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                  </div>
+                )}
+              </Card>
 
-          <div className="flex space-x-2">
-            <Input
-              placeholder="Add custom role"
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  handleAddCustomTeamRole(e.target.value);
-                  e.target.value = '';
-                }
-              }}
-            />
-            <Button 
-              type="button"
-              onClick={() => {
-                const input = document.querySelector('input[placeholder="Add custom role"]');
-                handleAddCustomTeamRole(input.value);
-                input.value = '';
-              }}
-              className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      )}
-    </Card> */}
- <Card className="p-6 mb-6">
-      {formData.userOrgType && (
-        <div className="space-y-4 mb-6">
-          <CardTitle className="text-2xl font-bold">
-            Team Roles Involved In The Workflow
-          </CardTitle>
-
-          <div className="grid grid-cols-1 gap-2">
-            {allRoles.map(role => {
-              const isSelected = formData.teamRoles.some(tr => tr.role === role);
-              const selectedRole = formData.teamRoles.find(tr => tr.role === role);
-
-              return (
-                <div key={role} className="relative">
-                  {!isSelected ? (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => handleAddTeamRole(role)}
-                      className="w-full text-left justify-start break-words"
-                    >
-                      {role}
-                    </Button>
-                  ) : (
-                    <div className="flex items-center bg-blue-600 text-white px-2 rounded-lg space-x-2">
-                      <div className="flex items-center space-x-2 flex-1">
-                        
-                        <span className="flex-1 break-words">{role}</span>
-                        <span className="text-sm font-semibold">Count:</span>
-                        <Input 
-                          type="text"
-                          value={selectedRole.count}
-                          onChange={(e) => handleUpdateRoleCount(role, e.target.value)}
-                          className="w-16 md:w-20 bg-white/50 py-1 border-white/20 text-white placeholder-white/50"
-                          min="1"
-                        />
-                      </div>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleRemoveRole(role)}
-                        className="shrink-0 text-white hover:text-white/80 hover:bg-blue-700"
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="flex space-x-2">
-            <Input
-              placeholder="Add custom role"
-              value={customRoleInput}
-              onChange={(e) => setCustomRoleInput(e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  handleCustomRoleAdd();
-                }
-              }}
-            />
-            <Button 
-              type="button"
-              onClick={handleCustomRoleAdd}
-              className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      )}
-    </Card>
-
-{/* <Card className='p-6 mb-6'>
-                  {formData.catOfWorkFlow && toolsMap[formData.catOfWorkFlow] && (
-                    <div className="space-y-4 mb-6">
-                      
-                      <CardTitle className="text-2xl font-bold">
+              <Card className="p-6 mb-6">
+                {formData.catOfWorkFlow && toolsMap[formData.catOfWorkFlow] && (
+                  <div className="space-y-4 mb-6">
+                    <CardTitle className="text-2xl font-bold">
                       Tools Used
-                      </CardTitle>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 ">
-                        {toolsMap[formData.catOfWorkFlow].map(tool => (
+                    </CardTitle>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                      {allTools.map((tool) => {
+                        const isSelected = formData.toolsUsed.includes(tool);
+
+                        return (
+                          <div key={tool} className="relative">
+                            {!isSelected ? (
+                              <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => handleAddTool(tool)}
+                                className="h-auto py-2 px-3 text-sm w-full text-left justify-start break-words"
+                              >
+                                {tool}
+                              </Button>
+                            ) : (
+                              <div className="flex items-center bg-blue-600 text-white p-2 rounded-lg space-x-2">
+                                <span className="flex-1 break-words text-sm">
+                                  {tool}
+                                </span>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleRemoveTool(tool)}
+                                  className="shrink-0 text-white hover:text-white/80 hover:bg-blue-700"
+                                >
+                                  <X className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="flex space-x-2">
+                      <Input
+                        placeholder="Add custom tool"
+                        value={customToolInput}
+                        onChange={(e) => setCustomToolInput(e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === "Enter") {
+                            handleCustomToolAdd();
+                          }
+                        }}
+                      />
+                      <Button
+                        type="button"
+                        onClick={handleCustomToolAdd}
+                        className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </Card>
+
+
+                      {/* {stepsMap[formData.catOfWorkFlow]?.map((step) => { */}
+                      
+              {/* <Card className="p-6 mb-4">
+                {formData.catOfWorkFlow && (
+                  <div className="space-y-4">
+                    <CardTitle className="text-2xl font-bold">
+                      Workflow Steps
+                    </CardTitle>
+                    <div className="grid grid-cols-1 gap-2">{stepsMap[formData.catOfWorkFlow]?.stages?.map((step) => {
+                      
+                        const isSelected = formData.steps.some(
+                          (s) => s.step === step
+                        );
+                        return (
                           <Button
                             type="button"
-                            key={tool}
-                            variant={formData.toolsUsed.includes(tool) ? "default" : "outline"}
-                            onClick={() => handleAddTool(tool)}
-                            className={`h-auto py-2 px-3 text-sm text-left justify-start break-words ${
-                              formData.toolsUsed.includes(tool) 
+                            key={step}
+                            variant={isSelected ? "default" : "outline"}
+                            onClick={() => handleAddStep(step)}
+                            className={`w-full text-left justify-start break-words ${
+                              isSelected
                                 ? "bg-blue-600 hover:bg-blue-700 text-white"
                                 : ""
                             }`}
+                            disabled={isSelected}
                           >
-                            {tool}
+                            {step}
                           </Button>
-                        ))}
-                      </div>
-
-                     
-                      <div className="space-y-2">
-                        {formData.toolsUsed.map(tool => (
-                          <div key={tool} className="flex items-center space-x-2 bg-blue-50 p-2 rounded-lg">
-                            <span className="flex-1 break-words">{tool}</span>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleRemoveTool(tool)}
-                              className="shrink-0 hover:bg-blue-100 hover:text-blue-600"
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-
-                      
-                      <div className="flex space-x-2">
-                        <Input
-                          placeholder="Add custom tool"
-                          onKeyPress={(e) => {
-                            if (e.key === 'Enter') {
-                              handleAddCustomTool(e.target.value);
-                              e.target.value = '';
-                            }
-                          }}
-                        />
-                        <Button 
-                          type="button"
-                          onClick={() => {
-                            const input = document.querySelector('input[placeholder="Add custom tool"]');
-                            handleAddCustomTool(input.value);
-                            input.value = '';
-                          }}
-                          className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
+                        );
+                      })}
                     </div>
-                  )}
 
-</Card> */}
-                  
-
-                  <Card className="p-6 mb-6">
-        {formData.catOfWorkFlow && toolsMap[formData.catOfWorkFlow] && (
-          <div className="space-y-4 mb-6">
-            <CardTitle className="text-2xl font-bold">
-              Tools Used
-            </CardTitle>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-              {allTools.map(tool => {
-                const isSelected = formData.toolsUsed.includes(tool);
-
-                return (
-                  <div key={tool} className="relative">
-                    {!isSelected ? (
+                    <div className="flex space-x-2">
+                      <Input
+                        placeholder="Add custom step"
+                        onKeyPress={(e) => {
+                          if (e.key === "Enter") {
+                            handleAddCustomStep(e.target.value);
+                            e.target.value = "";
+                          }
+                        }}
+                      />
                       <Button
                         type="button"
-                        variant="outline"
-                        onClick={() => handleAddTool(tool)}
-                        className="h-auto py-2 px-3 text-sm w-full text-left justify-start break-words"
+                        onClick={() => {
+                          const input = document.querySelector(
+                            'input[placeholder="Add custom step"]'
+                          );
+                          handleAddCustomStep(input.value);
+                          input.value = "";
+                        }}
+                        className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
                       >
-                        {tool}
+                        <Plus className="h-4 w-4" />
                       </Button>
-                    ) : (
-                      <div className="flex items-center bg-blue-600 text-white p-2 rounded-lg space-x-2">
-                        <span className="flex-1 break-words text-sm">{tool}</span>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleRemoveTool(tool)}
-                          className="shrink-0 text-white hover:text-white/80 hover:bg-blue-700"
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
+                    </div>
+
+                    <DndContext
+                      sensors={sensors}
+                      collisionDetection={closestCenter}
+                      onDragEnd={handleDragEnd}
+                    >
+                      <SortableContext
+                        items={formData.steps.map((step) => step.step)}
+                        strategy={verticalListSortingStrategy}
+                      >
+                        {formData.steps.map((step, index) => (
+                          <SortableStep
+                            key={step.step}
+                            step={step}
+                            index={index}
+                            onRemove={(index) => {
+                              const newSteps = formData.steps.filter(
+                                (_, i) => i !== index
+                              );
+                              setFormData((prev) => ({
+                                ...prev,
+                                steps: newSteps,
+                              }));
+                            }}
+                            onUpdateStep={handleUpdateStep}
+                            categoryName={formData.userOrgType}
+                            teamRoles={teamRoleNames}
+                          />
+                        ))}
+                      </SortableContext>
+                    </DndContext>
+                    {formData.steps.length > 1 && (
+                      <div className="display flex">
+                        <p className="text-sm text-gray-500 ml-2">
+                          <i>Drag to reorder using &nbsp; </i>
+                        </p>
+                        <GripVertical className="h-5 w-5 text-gray-500" />
                       </div>
                     )}
                   </div>
+                )}
+              </Card> */}
+              <Card className="p-6 mb-4">
+  {formData.catOfWorkFlow && (
+    <div className="space-y-4">
+      <CardTitle className="text-2xl font-bold">
+        Workflow Steps
+      </CardTitle>
+      <div className="grid grid-cols-1 gap-2">
+        {stepsMap[formData.catOfWorkFlow]?.stages?.map((step) => {
+          const isSelected = formData.steps.some(
+            (s) => s.step === step
+          );
+          return (
+            <Button
+              type="button"
+              key={step}
+              variant={isSelected ? "default" : "outline"}
+              onClick={() => handleAddStep(step)}
+              className={`w-full text-left justify-start break-words ${
+                isSelected
+                  ? "bg-blue-600 hover:bg-blue-700 text-white"
+                  : ""
+              }`}
+              disabled={isSelected}
+            >
+              {step}
+            </Button>
+          );
+        })}
+      </div>
+
+      <div className="flex space-x-2">
+        <Input
+          placeholder="Add custom step"
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              handleAddCustomStep(e.target.value);
+              e.target.value = "";
+            }
+          }}
+        />
+        <Button
+          type="button"
+          onClick={() => {
+            const input = document.querySelector(
+              'input[placeholder="Add custom step"]'
+            );
+            handleAddCustomStep(input.value);
+            input.value = "";
+          }}
+          className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          <Plus className="h-4 w-4" />
+        </Button>
+      </div>
+
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={formData.steps.map((step) => step.step)}
+          strategy={verticalListSortingStrategy}
+        >
+          {formData.steps.map((step, index) => (
+            <SortableStep
+              key={step.step}
+              step={step}
+              index={index}
+              onRemove={(index) => {
+                const newSteps = formData.steps.filter(
+                  (_, i) => i !== index
                 );
-              })}
-            </div>
-
-            <div className="flex space-x-2">
-              <Input
-                placeholder="Add custom tool"
-                value={customToolInput}
-                onChange={(e) => setCustomToolInput(e.target.value)}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
-                    handleCustomToolAdd();
-                  }
-                }}
-              />
-              <Button 
-                type="button"
-                onClick={handleCustomToolAdd}
-                className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+                setFormData((prev) => ({
+                  ...prev,
+                  steps: newSteps,
+                }));
+              }}
+              onUpdateStep={handleUpdateStep}
+              categoryName={formData.catOfWorkFlow}  // Changed from userOrgType to catOfWorkFlow
+              teamRoles={teamRoleNames}
+              stepsMap={stepsMap}  // Pass stepsMap as prop
+            />
+          ))}
+        </SortableContext>
+      </DndContext>
+      {formData.steps.length > 1 && (
+        <div className="display flex">
+          <p className="text-sm text-gray-500 ml-2">
+            <i>Drag to reorder using &nbsp; </i>
+          </p>
+          <GripVertical className="h-5 w-5 text-gray-500" />
+        </div>
+      )}
+    </div>
+  )}
+              </Card>
+              <Button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-6"
               >
-                <Plus className="h-4 w-4" />
+                Analyse
               </Button>
-            </div>
-          </div>
-        )}
-      </Card>
-<Card className='p-6 mb-4'>
-                  {formData.catOfWorkFlow && (
-                    <div className="space-y-4">
-                      
-                      <CardTitle className="text-2xl font-bold">
-                      Workflow Steps
-                      </CardTitle>
-                      <div className="grid grid-cols-1 gap-2">
-                        {stepsMap[formData.catOfWorkFlow]?.map((step) => {
-                          const isSelected = formData.steps.some(s => s.step === step);
-                          return (
-                            <Button
-                              type="button"
-                              key={step}
-                              variant={isSelected ? "default" : "outline"}
-                              onClick={() => handleAddStep(step)}
-                              className={`w-full text-left justify-start break-words ${
-                                isSelected 
-                                  ? "bg-blue-600 hover:bg-blue-700 text-white"
-                                  : ""
-                              }`}
-                              disabled={isSelected}
-                            >
-                              {step}
-                            </Button>
-                          );
-                        })}
-                      </div>
-
-                      {/* Custom Step Input */}
-                      <div className="flex space-x-2">
-                        <Input
-                          placeholder="Add custom step"
-                          onKeyPress={(e) => {
-                            if (e.key === 'Enter') {
-                              handleAddCustomStep(e.target.value);
-                              e.target.value = '';
-                            }
-                          }}
-                        />
-                        <Button 
-                          type="button"
-                          onClick={() => {
-                            const input = document.querySelector('input[placeholder="Add custom step"]');
-                            handleAddCustomStep(input.value);
-                            input.value = '';
-                          }}
-                          className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
-
-                      {/* Selected Steps with DnD */}
-
-                     
-
-                      <DndContext
-                        sensors={sensors}
-                        collisionDetection={closestCenter}
-                        onDragEnd={handleDragEnd}
-                      >
-                        <SortableContext
-                          items={formData.steps.map(step => step.step)}
-                          strategy={verticalListSortingStrategy}
-                        >
-                          {formData.steps.map((step, index) => (
-                            <SortableStep
-                              key={step.step}
-                              step={step}
-                              index={index}
-                              onRemove={(index) => {
-                                const newSteps = formData.steps.filter((_, i) => i !== index);
-                                setFormData(prev => ({ ...prev, steps: newSteps }));
-                              }}
-                              onUpdateStep={handleUpdateStep}
-                              categoryName={formData.userOrgType}
-                              teamRoles={teamRoleNames}  
-                            />
-                          ))}
-                        </SortableContext>
-                      </DndContext>
-                       {formData.steps.length > 1 && (
-                        <div className="display flex">
-                          <p className='text-sm text-gray-500 ml-2'>
-                            <i>Drag to reorder using &nbsp; </i>
-                          </p>
-                          <GripVertical className="h-5 w-5 text-gray-500" />
-                        </div>
-                      )}
-                    </div>
-                  )}
-</Card>
-                          <Button 
-                            type="submit"
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-6"
-                          >
-                            Analyse
-                          </Button>
-              </form>
-
-
-          
+            </form>
           </div>
         )}
       </div>
-     <pre className="p-4 bg-secondary rounded-lg overflow-auto">
-         {JSON.stringify(formData, null, 2)}
-      </pre> 
+      <pre className="p-4 bg-secondary rounded-lg overflow-auto">
+        {JSON.stringify(formData, null, 2)}
+      </pre>
     </div>
   );
 };

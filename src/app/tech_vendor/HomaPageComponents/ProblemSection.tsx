@@ -32,24 +32,24 @@ const ProblemSection = () => {
   const problems = [
     {
       icon: AlertTriangle,
-      title: "Broken Legal Workflows",
-      description: "Fragmented processes & lack of structure lead to delays, errors, & missed opportunities, undermining your team's efficiency.",
-      stat: "56%",
-      impact: "Workflow Disruption"
+      title: "Long Sales Cycle",
+      description: "Prolonged sales timelines hinder growth, slow down revenue generation, and create missed opportunities, delaying the overall business impact.",
+      stat: "45%",
+      impact: "Sales Cycle Delays"
     },
     {
       icon: PieChart,
-      title: "No Efficiency Plans",
-      description: "The absence of a clear strategy results in wasted resources, untracked progress, and missed chances to optimize operations.",
-      stat: "61%",
-      impact: "Strategic Gaps"
+      title: "Unexpected Legal Team's Demands",
+      description: "Unforeseen requests from legal teams disrupt workflows, create resource strain, and lead to project delays, impacting overall efficiency.",
+      stat: "40%",
+      impact: "Increase in Resource Strain"
     },
     {
       icon: TrendingDown,
-      title: "Long Tech Adoption Cycles",
-      description: "Prolonged adoption timelines create setbacks, slow progress, and increase resistance, delaying the realization of value.",
-      stat: "49%",
-      impact: "Delayed Implementation"
+      title: "High-Cost Client Nurturing",
+      description: "Expensive and resource-draining client nurturing processes lead to inefficiencies, prolonged sales cycles, and reduced profitability.",
+      stat: "35%",
+      impact: "Increased Client Acquisition Costs"
     }
   ];
 

@@ -83,10 +83,10 @@ const PremiumMarquee = () => {
   const allLogos = [...logos, ...logos];
 
   return (
-    <div ref={sectionRef} className="w-full bg-white relative overflow-hidden py-10 md:py-16 lg:py-4">
+    <div ref={sectionRef} className="w-full bg-white relative overflow-hidden py-10 md:py-16 lg:py-32">
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px]" />
-     
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000005_1px,transparent_1px),linear-gradient(to_bottom,#00000005_1px,transparent_1px)] bg-[size:48px_48px] opacity-70" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,white_100%)] opacity-40" />
       </div>
     

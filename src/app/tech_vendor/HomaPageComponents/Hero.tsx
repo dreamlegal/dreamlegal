@@ -117,9 +117,10 @@ const ResponsiveHero = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 max-w-4xl mx-auto mb-4 sm:mb-6 px-4"
             >
-              Making Next Gen 
+         
+         The only client prospecting solution 
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
-                {" "}Legal  Professionals & Legal Teams
+                {" "}for legal tech companies. 
               </span>
             </motion.h1>
 
@@ -129,8 +130,12 @@ const ResponsiveHero = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto mb-8 sm:mb-12 px-4"
             >
-             Solving efficiency management and technology procurement for legal industry.
+             Intelligence and insights driven pre sales solution to close more law firms and inhouse teams
+
+
             </motion.p>
+
+
 
             {/* Premium CTA Button */}
             <motion.button
@@ -152,7 +157,6 @@ const ResponsiveHero = () => {
       </section>
 
       {/* Premium Video Section */}
-   
       <motion.section
   initial={{ opacity: 0, y: 40 }}
   animate={{ opacity: 1, y: 0 }}

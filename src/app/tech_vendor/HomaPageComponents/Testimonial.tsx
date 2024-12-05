@@ -228,11 +228,16 @@ const PremiumTestimonials = () => {
   return (
     <div ref={sectionRef} className="w-full bg-gradient-to-br from-blue-50 to-white py-12 lg:py-4 relative overflow-hidden">
       <div className="absolute inset-0">
+        {/* Primary blue grid */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#3B82F61A_1px,transparent_1px),linear-gradient(to_bottom,#3B82F61A_1px,transparent_1px)] bg-[size:24px_24px]" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white via-white/95 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white via-white/95 to-transparent" />
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white via-white/90 to-transparent" />
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white via-white/90 to-transparent" />
+        
+        {/* White fade overlays */}
+        <div className="absolute inset-x-0 top-0 h-24 lg:h-32 bg-gradient-to-b from-white via-white/95 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-24 lg:h-32 bg-gradient-to-t from-white via-white/95 to-transparent" />
+        
+        {/* Side fades */}
+        <div className="absolute inset-y-0 left-0 w-16 lg:w-32 bg-gradient-to-r from-white via-white/90 to-transparent" />
+        <div className="absolute inset-y-0 right-0 w-16 lg:w-32 bg-gradient-to-l from-white via-white/90 to-transparent" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 relative">

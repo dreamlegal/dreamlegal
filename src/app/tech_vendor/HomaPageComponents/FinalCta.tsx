@@ -30,7 +30,8 @@ const FinalCTA = () => {
   const [sectionRef, isInView] = useIntersectionObserver();
 
   return (
-    <div ref={sectionRef} className="w-full bg-gradient-to-t from-blue-50 to-white pb-24 pt-4 relative">
+    
+ <div ref={sectionRef} className="w-full bg-gradient-to-t from-blue-50 to-white pb-24 pt-4 relative">
 
       <div className="max-w-7xl mx-auto px-4">
         <div className={`transition-all duration-700 transform

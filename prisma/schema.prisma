@@ -384,3 +384,17 @@ model PasswordReset {
 
   @@unique([token])  // Ensure token is unique
 }
+
+model workflowResponse {
+  id                 String   @id @default(cuid())
+  formId             String?   @unique
+  userId             String?
+  name               String?
+  categoryOfAnalysis String?
+  data               Json?
+  isSaved            Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+ 
+}

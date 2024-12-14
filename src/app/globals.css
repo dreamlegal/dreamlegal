@@ -11,6 +11,11 @@
   scrollbar-width: none;  /* Firefox */
 }
 
+@media print {
+  .pdf-page-break {
+      page-break-before: always;
+  }
+}
 
 @layer base {
   :root {

@@ -96,7 +96,7 @@
 
 
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { toast } from "react-toastify";
 import Modal from "@/components/Modal"; // Assuming you have a Modal component
@@ -142,42 +142,42 @@ const transformData = (rawData: any) => {
   return transformed;
 };
 
-// const NavigationTab = ({ icon: Icon, label, isActive, onClick }) => (
-//   <motion.div
-//     whileHover={{ scale: 1.02 }}
-//     whileTap={{ scale: 0.98 }}
-//     onClick={onClick}
-//     className={`
-//       flex items-center gap-3 p-3 rounded-lg cursor-pointer
-//       transition-all duration-200 ${
-//         isActive
-//           ? 'bg-indigo-50 text-indigo-600 shadow-sm'
-//           : 'hover:bg-gray-50 text-gray-600'
-//       }
-//     `}
-//   >
-//     <Icon className="w-5 h-5" />
-//     <span className="text-sm font-medium">{label}</span>
-//     <ChevronRight className={`w-4 h-4 ml-auto transition-transform duration-200 ${
-//       isActive ? 'rotate-90' : ''
-//     }`} />
-//   </motion.div>
-// );
-const NavigationTab = ({ icon: Icon, label, onClick }) => (
-    <motion.div
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        onClick={onClick}
-        className="
-            flex items-center gap-3 p-3 rounded-lg cursor-pointer
-            transition-all duration-200 hover:bg-gray-50 text-gray-600
-        "
-    >
-        <Icon className="w-5 h-5" />
-        <span className="text-sm font-medium">{label}</span>
-        {/* <ChevronRight className="w-4 h-4 ml-auto transition-transform duration-200" /> */}
-    </motion.div>
+const NavigationTab = ({ icon: Icon, label, isActive, onClick }) => (
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    onClick={onClick}
+    className={`
+      flex items-center gap-3 p-3 rounded-lg cursor-pointer
+      transition-all duration-200 ${
+        isActive
+          ? 'bg-indigo-50 text-indigo-600 shadow-sm'
+          : 'hover:bg-gray-50 text-gray-600'
+      }
+    `}
+  >
+    <Icon className="w-5 h-5" />
+    <span className="text-sm font-medium">{label}</span>
+    <ChevronRight className={`w-4 h-4 ml-auto transition-transform duration-200 ${
+      isActive ? 'rotate-90' : ''
+    }`} />
+  </motion.div>
 );
+// const NavigationTab = ({ icon: Icon, label, onClick }) => (
+//     <motion.div
+//         whileHover={{ scale: 1.02 }}
+//         whileTap={{ scale: 0.98 }}
+//         onClick={onClick}
+//         className="
+//             flex items-center gap-3 p-3 rounded-lg cursor-pointer
+//             transition-all duration-200 hover:bg-gray-50 text-gray-600
+//         "
+//     >
+//         <Icon className="w-5 h-5" />
+//         <span className="text-sm font-medium">{label}</span>
+//         {/* <ChevronRight className="w-4 h-4 ml-auto transition-transform duration-200" /> */}
+//     </motion.div>
+// );
 const SectionWrapper = ({ children, isVisible }) => (
   <AnimatePresence>
     {isVisible && (
@@ -359,10 +359,6 @@ const ReportPage = () => {
     { id: 'summary', label: 'Executive Summary', icon: FileText, component: ExecutiveSummary }
   ];
 
-  const animationControls = sections.reduce((acc, section) => {
-    acc[section.id] = useAnimation();
-    return acc;
-  }, {});
 
 // Initialize as false until we get the real value from API
 const [isSaved, setIsSaved] = useState(false);
@@ -370,24 +366,49 @@ const [isLoading, setIsLoading] = useState(false);
 const [notification, setNotification] = useState(null);
 
 // Update only when we have valid responseData
+// useEffect(() => {
+//   if (responseData && typeof responseData.isSaved === 'boolean') {
+//     setIsSaved(responseData.isSaved);
+//   }
+
+//   setTimeout(() => {
+//     // Start all animations after loading is done
+//     Promise.all(
+//         Object.values(animationControls).map((controls) =>
+//             controls.start({ opacity: 1, y: 0 })
+//         )
+//     ).then(() => {
+//         setIsLoading(false); // Remove loading indicator
+//     });
+// }, 1000); // Adjust timeout based on your data processing time
+
+// }, [responseData?.isSaved],animationControls);
+// Using useMemo to stabilize animationControls
+// const animationControls = useMemo(() => 
+//   sections.reduce((acc, section) => {
+//     acc[section.id] = useAnimation();
+//     return acc;
+//   }, {}), [sections]);
+
 useEffect(() => {
   if (responseData && typeof responseData.isSaved === 'boolean') {
     setIsSaved(responseData.isSaved);
   }
 
-  setTimeout(() => {
-    // Start all animations after loading is done
-    Promise.all(
-        Object.values(animationControls).map((controls) =>
-            controls.start({ opacity: 1, y: 0 })
-        )
-    ).then(() => {
-        setIsLoading(false); // Remove loading indicator
-    });
-}, 1000); // Adjust timeout based on your data processing time
+  // setTimeout(() => {
+  //   // Start all animations after loading is done
+  //   Promise.all(
+  //     Object.values(animationControls).map((controls) =>
+  //       controls.start({ opacity: 1, y: 0 })
+  //     )
+  //   ).then(() => {
+  //     setIsLoading(false); // Remove loading indicator
+  //   });
+  // }, 1000); // Adjust timeout based on your data processing time
 
-}, [responseData?.isSaved],animationControls);
+}, [responseData?.isSaved, ]); // Correct dependencies
 
+// animationControls
   const showNotification = (success, message) => {
     setNotification({ success, message });
     setTimeout(() => setNotification(null), 3000);
@@ -535,50 +556,50 @@ useEffect(() => {
 //       });
 // };
 
-// const generatePDF = () => {
-//   // Clone the contentRef element
-//   const element = contentRef.current.cloneNode(true);
+const generatePDF = () => {
+  // Clone the contentRef element
+  const element = contentRef.current.cloneNode(true);
 
-//   // Ensure all sections are visible
-//   Array.from(element.querySelectorAll('[style]')).forEach((el) => {
-//       el.style.display = 'block'; // Make all sections visible
-//   });
+  // Ensure all sections are visible
+  Array.from(element.querySelectorAll('[style]')).forEach((el) => {
+      el.style.display = 'block'; // Make all sections visible
+  });
 
-//   // Disable animations and transitions
-//   Array.from(element.querySelectorAll('*')).forEach((el) => {
-//       el.style.animation = 'none';
-//       el.style.transition = 'none';
-//   });
+  // Disable animations and transitions
+  Array.from(element.querySelectorAll('*')).forEach((el) => {
+      el.style.animation = 'none';
+      el.style.transition = 'none';
+  });
 
-//   // Handle lazy-loaded images
-//   Array.from(element.querySelectorAll('img')).forEach((img) => {
-//       if (!img.complete) {
-//           img.onload = () => img.style.visibility = 'visible';
-//       }
-//   });
+  // Handle lazy-loaded images
+  Array.from(element.querySelectorAll('img')).forEach((img) => {
+      if (!img.complete) {
+          img.onload = () => img.style.visibility = 'visible';
+      }
+  });
 
-//   // Append to DOM for debugging (optional)
-//   // document.body.appendChild(element);
+  // Append to DOM for debugging (optional)
+  // document.body.appendChild(element);
 
-//   // Generate PDF
-//   html2pdf()
-//       .set({
-//           margin: [10, 10, 10, 10],
-//           filename: 'workflow-analysis.pdf',
-//           image: { type: 'jpeg', quality: 1.0 },
-//           html2canvas: {
-//               scale: 3,
-//               logging: true,
-//               useCORS: true,
-//               ignoreElements: (el) => el.tagName === 'SCRIPT',
-//           },
-//           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-//       })
-//       .from(element)
-//       .save()
-//       .then(() => console.log('PDF generated successfully!'))
-//       .catch((error) => console.error('Error generating PDF:', error));
-// };
+  // Generate PDF
+  html2pdf()
+      .set({
+          margin: [10, 10, 10, 10],
+          filename: 'workflow-analysis.pdf',
+          image: { type: 'jpeg', quality: 1.0 },
+          html2canvas: {
+              scale: 3,
+              logging: true,
+              useCORS: true,
+              ignoreElements: (el) => el.tagName === 'SCRIPT',
+          },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      })
+      .from(element)
+      .save()
+      .then(() => console.log('PDF generated successfully!'))
+      .catch((error) => console.error('Error generating PDF:', error));
+};
 
 
 
@@ -809,96 +830,6 @@ useEffect(() => {
 //     });
 //   });
 // };
-const generatePDF = () => {
-  const { createRoot } = require('react-dom/client');
-  
-  Promise.all(
-    Object.values(animationControls).map((controls) => {
-      controls.stop();
-      return controls.set({ opacity: 1, y: 0 });
-    })
-  ).then(() => {
-    const element = contentRef.current.cloneNode(true);
-    
-    // Create outer container for full bleed background
-    const container = document.createElement('div');
-    container.style.backgroundColor = '#1a365d';
-    container.style.position = 'relative';
-    container.style.width = '210mm'; // A4 width
-    container.style.minHeight = '297mm'; // A4 height
-    container.style.margin = '0';
-    container.style.padding = '0';
-    
-    // Create wrapper for content
-    const wrapper = document.createElement('div');
-    wrapper.style.backgroundColor = '#1a365d';
-    wrapper.style.minHeight = '100%';
-    wrapper.style.color = 'white';
-    wrapper.style.padding = '20px';
-    wrapper.style.boxSizing = 'border-box';
-    
-    container.appendChild(wrapper);
-    const root = createRoot(wrapper);
-   
-    new Promise(resolve => {
-      root.render(<PdfHeaderAndToc sections={sections} />);
-      setTimeout(resolve, 100);
-    }).then(() => {
-      element.insertBefore(container, element.firstChild);
-      
-      // Apply background color to the main content element
-      element.style.backgroundColor = '#1a365d';
-      element.style.color = 'white';
-      element.style.margin = '0';
-      element.style.padding = '0';
-      
-      // Make sure all text elements are visible against dark background
-      Array.from(element.querySelectorAll('*')).forEach((el) => {
-        const computedStyle = window.getComputedStyle(el);
-        if (computedStyle.color === 'rgb(0, 0, 0)' || computedStyle.color === '#000000') {
-          el.style.color = 'white';
-        }
-      });
-      
-      // Disable animations
-      Array.from(element.querySelectorAll('[style], [data-motion-style]')).forEach((el) => {
-        el.style.animation = 'none';
-        el.style.transition = 'none';
-      });
-      
-      // Generate PDF with no margins
-      html2pdf()
-        .set({
-          margin: 0, // Remove all margins
-          filename: 'workflow-analysis.pdf',
-          image: { type: 'jpeg', quality: 1.0 },
-          html2canvas: {
-            scale: 3,
-            useCORS: true,
-            backgroundColor: '#1a365d',
-            
-          },
-          jsPDF: { 
-            unit: 'mm', 
-            format: 'a4', 
-            orientation: 'portrait',
-            putTotalPages: true,
-            compress: true,
-          },
-        })
-        .from(element)
-        .save()
-        .then(() => {
-          console.log('PDF generated successfully!');
-          root.unmount();
-        })
-        .catch((error) => {
-          console.error('Error generating PDF:', error);
-          root.unmount();
-        });
-    });
-  });
-};
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -1135,7 +1066,7 @@ const generatePDF = () => {
       className="fixed lg:sticky top-0 left-0 z-30 w-72 h-screen bg-white border-r border-gray-200 shadow-lg lg:shadow-none flex flex-col"
     >
       <div className="p-6 flex-1">
-        {/* Premium Back Button */}
+        
         <motion.button
           onClick={() => router.back()}
           className="w-10 h-10 flex items-center justify-center mb-6 rounded-xl bg-gray-900/95 hover:bg-gray-800 text-white/90 shadow-lg hover:shadow-xl transition-all duration-200"
@@ -1172,7 +1103,7 @@ const generatePDF = () => {
         </ScrollArea>
       </div>
 
-      {/* Compact Export PDF Button */}
+     
       <div className="px-6 pb-8">
         <motion.button
           // onClick={() => {
@@ -1236,9 +1167,9 @@ const generatePDF = () => {
             </div>
 
 
-            {/* <div ref={contentRef}> */}
+            <div ref={contentRef}>
            
-            {/* {sections.map((section) => (
+            {sections.map((section) => (
               <SectionWrapper key={section.id} isVisible={activeSection === section.id}>
                 {activeSection === section.id && (
                   <section.component data={transformedData} />
@@ -1246,9 +1177,9 @@ const generatePDF = () => {
               </SectionWrapper>
             ))}
 
-            </div> */}
-
-          {/* <div ref={contentRef}>
+            </div>
+{/* 
+          <div ref={contentRef}>
                   {sections.map((section) => (
                     <SectionWrapper
                       key={section.id}
@@ -1290,7 +1221,7 @@ const generatePDF = () => {
             </div> */}
 
 
-<div ref={contentRef}>
+{/* <div ref={contentRef}>
                 {sections.map((section) => (
                     <motion.div
                         key={section.id}
@@ -1306,7 +1237,7 @@ const generatePDF = () => {
                         <section.component data={transformedData} />
                     </motion.div>
                 ))}
-            </div>
+            </div> */}
 
 
           </div>

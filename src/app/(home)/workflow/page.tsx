@@ -1031,7 +1031,7 @@ const CustomNotification = ({ notification, position = "bottom-right" }) => {
           {notification.success ? (
             <CheckCircle className="w-5 h-5 text-white" />
           ) : (
-            <XCircle className="w-5 h-5 text-white" />
+            <CheckCircle className="w-5 h-5 text-white" />
           )}
           <span className="text-white text-sm font-medium">
             {notification.message}

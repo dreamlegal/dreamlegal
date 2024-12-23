@@ -133,8 +133,8 @@ model companyInfo {
 
 model Product {
   id                      String        @id @default(cuid())
-  userId                  String
-  companyId               String
+  userId                  String?
+  companyId               String?
   name                    String
   logoUrl                 String
   active                  String        @default("draft")
@@ -199,10 +199,12 @@ model Product {
   pricingModel            String[]
   featured                Boolean       @default(false)
   slug                    String        @unique
-  company                 companyInfo   @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  user                    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company                 companyInfo?   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user                    User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
   Review                  Review[]
   SaveProduct             SaveProduct[] @relation("ProductToSaveProduct")
+  isVendorVerified        Boolean       @default(true) 
+  completionRate          Int           @default(0) 
 }
 
 model Review {

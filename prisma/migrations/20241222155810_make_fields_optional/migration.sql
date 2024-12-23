@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Product" ADD COLUMN     "completionRate" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "isVendorVerified" BOOLEAN NOT NULL DEFAULT true,
+ALTER COLUMN "userId" DROP NOT NULL,
+ALTER COLUMN "companyId" DROP NOT NULL;

@@ -7,6 +7,8 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
 import { FaRegStar } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import AddProduct from "../AddProduct";
+import AdminProductCreation from "../AdminProductCreation";
 
 function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
   const [Products, setProducts] = useState(true);
@@ -60,6 +62,15 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
                 >
                   All Products
                 </li>
+                <li
+                  onClick={() => onMenuItemClick("AdminProductCreation")}
+                  className={`text-slate-300 hover:cursor-pointer ${
+                    selectedMenu === "AdminProductCreation" ? "text-white" : ""
+                  }`}
+                >
+                  Admin Product Creation
+                </li>
+
               </ul>
             </li>
 

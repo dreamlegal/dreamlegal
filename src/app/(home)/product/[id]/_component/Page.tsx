@@ -1065,9 +1065,17 @@ const formatDataForCompatibility = (productData, userData) => {
                     <p className="text-sm text-gray-900 font-bold">
                       Year Founded
                     </p>
-                    <p className="text-sm text-slate-500">
+                    {/* <p className="text-sm text-slate-500">
                       {company.yearFounded}
-                    </p>
+                    </p> */}
+                    <div className="relative">
+  {!data.product.isVendorVerified && (
+    <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10" />
+  )}
+  <p className={`text-sm text-slate-500 ${!product.isVendorVerified ? 'select-none' : ''}`}>
+    {company.yearFounded}
+  </p>
+</div>
                   </div>
                   <div>
                     <p className="text-sm text-gray-900 font-bold">Awards</p>

@@ -11,7 +11,7 @@ import NewVendor from "@/components/NewVendor";
 import SendNotification from "@/components/SendNotification";
 import AdminSidebar from "@/components/ui/AdminSidebar";
 import AdminLeads from "@/components/AdminLeads";
-
+import AdminProductCreation from "@/components/AdminProductCreation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import React, { useState } from "react";
@@ -63,6 +63,7 @@ function WebAdmin() {
               {selectedMenu === "AllProduct" && <AllProductAdmin />}
               {selectedMenu === "NewVendor" && <NewVendor />}
               {selectedMenu === "allProducts" && <AllProducts />}
+              {selectedMenu === "AdminProductCreation" && <AdminProductCreation />}
               {selectedMenu === "allUsers" && <AllUsers />}
               {selectedMenu === "allAdmins" && <AllAdmins />}
               {selectedMenu === "addAdmin" && <AddAdmin />}

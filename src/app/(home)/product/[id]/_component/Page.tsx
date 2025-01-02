@@ -860,30 +860,34 @@ const formatDataForCompatibility = (productData, userData) => {
             </div>
           <div className=" border shadow-md rounded-3xl px-4 md:px-16 py-10">
             <div className="flex flex-col gap-5">
-              <div className="flex flex-col gap-2 md:flex-row  md:items-center">
-                <h1 className="font-bold text-xl md:text-3xl ">
-                  {product.name}
-                </h1>
-                <div className=" flex gap-3 flex-wrap sm:flex-nowrap">
+              <div className="flex flex-row justify-between">
+                <div className="flex flex-col gap-2">
+                  <h1 className="font-bold text-xl md:text-3xl ">
+                    {product.name}
+                  </h1>
+                </div>
+                <div className="flex gap-3 flex-wrap sm:flex-nowrap">
                   <div className="pl-1">
-                    <div className=" flex gap-3 flex-wrap sm:flex-nowrap">
-                      <Button
-                      className="bg-primary1 transition-all duration-300 rounded-[20px] flex items-center"
-                      onClick={handleOpenRfpForm}
-                      >
-                      <Pencil className="mr-2 h-4 w-4" />
-                      <p className="mt-1">Request a Proposal</p>
-                      </Button>
-                      <Button
-                      className="bg-primary1 transition-all duration-300 rounded-[20px] flex items-center"
-                      onClick={handleOpenBookACallForm}
-                      >
-                      <Calendar className="mr-2 h-4 w-4" />
-                      <p className="mt-1">Book a Call</p>
-                      </Button>
-                    </div>
+                    {product.isVendorVerified && (
+                      <div className="flex gap-3 flex-wrap sm:flex-nowrap">
+                        <Button
+                        className="bg-primary1 transition-all duration-300 rounded-[20px] flex items-center"
+                        onClick={handleOpenRfpForm}
+                        >
+                        <Pencil className="mr-2 h-4 w-4" />
+                        <p className="mt-1">Request a Proposal</p>
+                        </Button>
+                        <Button
+                        className="bg-primary1 transition-all duration-300 rounded-[20px] flex items-center"
+                        onClick={handleOpenBookACallForm}
+                        >
+                        <Calendar className="mr-2 h-4 w-4" />
+                        <p className="mt-1">Book a Call</p>
+                        </Button>
+                      </div>
+                    )}
 
-                    {showBookACallForm && (
+                    {product.isVendorVerified && showBookACallForm && (
                       <BookACallForm
                         onClose={handleCloseBookACallForm}
                         CustomerUserId={CustomerUserId}
@@ -893,7 +897,7 @@ const formatDataForCompatibility = (productData, userData) => {
                         productName={product.name}
                       />
                     )}
-                    {showRfpForm && (
+                    {product.isVendorVerified && showRfpForm && (
                       <RfpForm
                         onClose={handleCloseRfpForm}
                         CustomerUserId={CustomerUserId}
@@ -1021,7 +1025,7 @@ const formatDataForCompatibility = (productData, userData) => {
               </div>
 
               <div className="flex justify-between items-center">
-                <div className=" inline-flex gap-3 flex-wrap">
+                {/* <div className=" inline-flex gap-3 flex-wrap">
                   {product?.category?.map(
                     (
                       cat:
@@ -1048,88 +1052,139 @@ const formatDataForCompatibility = (productData, userData) => {
                       </div>
                     )
                   )}
-                </div>
+                </div> */}
+                {product?.category?.length > 0 ? (
+  <div className="inline-flex gap-3 flex-wrap">
+    {product.category.map((cat, index) => (
+      <div
+        key={index}
+        className="py-1 px-2.5 border transition-all duration-200 hover:cursor-pointer rounded-full text-xs bg-primary2 border-primary1 text-primary1"
+      >
+        {cat}
+      </div>
+    ))}
+  </div>
+) : (
+  <div className="inline-flex gap-3 flex-wrap">
+    <div className="py-1 px-2.5 border transition-all duration-200 rounded-full text-xs bg-primary2 border-primary1">
+      <span className="text-gray-800 blur-[3px] select-none font-bold">Document Management System</span>
+    </div>
+    <div className="py-1 px-2.5 border transition-all duration-200 rounded-full text-xs bg-primary2 border-primary1">
+      <span className="text-gray-800 blur-[3px] select-none font-bold">Contract Lifecycle Management</span>
+    </div>
+  </div>
+)}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                <div id="company" className=" flex flex-col gap-3 mb-3">
-                  <div>
-                    <p className="text-sm text-gray-900 font-bold">
-                      Company Name
-                    </p>
-                    <p className="text-sm text-slate-500">
-                      {company?.companyName}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-900 font-bold">
-                      Year Founded
-                    </p>
-                    {/* <p className="text-sm text-slate-500">
-                      {company.yearFounded}
-                    </p> */}
-                    <div className="relative">
-  {!data.product.isVendorVerified && (
-    <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10" />
-  )}
-  <p className={`text-sm text-slate-500 ${!product.isVendorVerified ? 'select-none' : ''}`}>
-    {company.yearFounded}
-  </p>
+  {/* Column 1 */}
+  <div id="company" className="flex flex-col gap-3 mb-3">
+    <div>
+      <p className="text-sm text-gray-900 font-bold">Company Name</p>
+      {company?.companyName ? (
+        <p className="text-sm text-slate-500">{company.companyName}</p>
+      ) : (
+        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+          Tech Solutions Inc.
+        </p>
+      )}
+    </div>
+    <div>
+      <p className="text-sm text-gray-900 font-bold">Year Founded</p>
+      {company?.yearFounded && product.isVendorVerified ? (
+        <p className="text-sm text-slate-500">{company.yearFounded}</p>
+      ) : (
+        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+          2015
+        </p>
+      )}
+    </div>
+    <div>
+      <p className="text-sm text-gray-900 font-bold">Awards</p>
+      {company?.Awards ? (
+        <p className="text-sm text-slate-500">{company.Awards}</p>
+      ) : (
+        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+          Best Innovation Award 2023
+        </p>
+      )}
+    </div>
+  </div>
+
+  {/* Column 2 */}
+  <div className="flex flex-col gap-3 mb-3">
+    <div>
+      <p className="text-sm text-gray-900 font-bold">Headquarters</p>
+      {company?.headQuaters ? (
+        <p className="text-sm text-slate-500">{company.headQuaters}</p>
+      ) : (
+        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+          San Francisco, CA
+        </p>
+      )}
+    </div>
+    <div>
+      <p className="text-sm text-gray-900 font-bold">Founders</p>
+      {company?.NameOfFounders ? (
+        <p className="text-sm text-slate-500">{company.NameOfFounders}</p>
+      ) : (
+        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+          John Smith, Sarah Johnson
+        </p>
+      )}
+    </div>
+    <div>
+      <p className="text-sm text-gray-900 font-bold">Team size</p>
+      {company?.TeamSize ? (
+        <p className="text-sm text-slate-500">{company.TeamSize}</p>
+      ) : (
+        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+          50-100 employees
+        </p>
+      )}
+    </div>
+  </div>
+
+  {/* Column 3 */}
+  <div className="flex flex-col gap-3 mb-3">
+    <div>
+      <p className="text-sm text-gray-900 font-bold">Email</p>
+      {user?.email ? (
+        <p className="text-sm text-slate-500">{user.email}</p>
+      ) : (
+        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+          contact@company.com
+        </p>
+      )}
+    </div>
+    <div>
+      <p className="text-sm text-gray-900 font-bold">Phone</p>
+      {company?.contact ? (
+        <p className="text-sm text-slate-500">{company.contact}</p>
+      ) : (
+        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+          +1 (555) 123-4567
+        </p>
+      )}
+    </div>
+    <div>
+      <p className="text-sm text-gray-900 font-bold">Website</p>
+      {company?.website ? (
+        <p className="text-sm text-slate-500">
+          <a href={company.website} target="_blank" rel="noopener noreferrer">
+            {company.website}
+          </a>
+        </p>
+      ) : (
+        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+          www.company.com
+        </p>
+      )}
+    </div>
+  </div>
 </div>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-900 font-bold">Awards</p>
-                    <p className="text-sm text-slate-500">{company.Awards}</p>
-                  </div>
-                </div>
 
-                <div className=" flex flex-col gap-3 mb-3">
-                  <div>
-                    <p className="text-sm text-gray-900 font-bold">
-                      Headquarters
-                    </p>
-                    <p className="text-sm text-slate-500">
-                      {company.headQuaters}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-900 font-bold">Founders</p>
-                    <p className="text-sm text-slate-500">
-                      {company.NameOfFounders}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-sm text-gray-900 font-bold">
-                      Team size{" "}
-                    </p>
-                    <p className="text-sm text-slate-500">{company.TeamSize}</p>
-                  </div>
-                </div>
-
-                <div className=" flex flex-col gap-3 mb-3">
-                  <div>
-                    <p className="text-sm text-gray-900 font-bold">Email</p>
-                    <p className="text-sm text-slate-500">{user.email}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-900 font-bold">Phone</p>
-                    <p className="text-sm text-slate-500">{company.contact}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-900 font-bold">Website</p>
-                    <p className="text-sm text-slate-500">
-                      <a
-                        href={company.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {company.website}
-                      </a>
-                    </p>
-                  </div>
-                </div>
-              </div>
+            
 
               <div className="w-full h-px bg-slate-200 my-4"></div>
               <div>
@@ -1138,7 +1193,11 @@ const formatDataForCompatibility = (productData, userData) => {
                     About the product
                   </h2>
                   <p className="text-sm text-slate-500 my-2">
-                    {product.description}
+                    {product.description ? product.description : <div className="relative bg-white py-1">
+                      <p className="text-gray-800 blur-[3px] select-none text-base font-bold">
+                        This product description is currently unavailable. We apologize for the inconvenience and are working to provide it as soon as possible. Thank you for your patience.
+                      </p>
+                    </div>}
                   </p>
                 </div>
               </div>
@@ -1167,15 +1226,19 @@ const formatDataForCompatibility = (productData, userData) => {
                     </TooltipProvider>
                   </div>
                   <div>
-                    <p className="text-gray-500 text-[15px] ">{product.usp}</p>
-                    {/* <ul className="flex flex-col gap-4 py-3">
-                      {usps.map((usp: string, index: number) => (
-                        <li key={index} className="flex gap-3 items-center">
-                          <TbPointFilled className="text-primary1" />
-                          <p className="text-gray-900">{usp.trim()}</p>
-                        </li>
-                      ))}
-                    </ul> */}
+         
+{product.usp ? (
+  <p className="text-gray-500 text-base">{product.usp}</p>
+) : (
+  <div className="relative bg-white py-1">
+    <p className="text-gray-800 blur-[3px] select-none text-base font-bold">
+      Premium quality product with exceptional features and advanced technology
+    </p>
+    <p className="text-gray-800 blur-[3px] select-none text-base font-bold mt-1">
+      Enhanced performance with cutting-edge innovations for best results
+    </p>
+  </div>
+)}
                   </div>
                 </div>
 
@@ -1196,9 +1259,18 @@ const formatDataForCompatibility = (productData, userData) => {
                         </Tooltip>
                       </TooltipProvider>
                     </div>
-                    <p className=" text-sm text-slate-500">
-                      {product.painPointAddressed}
-                    </p>
+                    {product.painPointAddressed ? (
+                      <p className="text-sm text-slate-500">{product.painPointAddressed}</p>
+                    ) : (
+                      <div className="relative bg-white py-1">
+                        <p className="text-gray-800 blur-[3px] select-none text-sm font-bold">
+                          Addressing key pain points for a smoother user experience
+                        </p>
+                        <p className="text-gray-800 blur-[3px] select-none text-sm font-bold mt-1">
+                          Ensuring seamless integration and efficient workflows
+                        </p>
+                      </div>
+                    )}
                   </div>
 
                   <div className="bg-primary2/40 px-5 py-3 rounded-2xl">
@@ -1217,9 +1289,18 @@ const formatDataForCompatibility = (productData, userData) => {
                         </Tooltip>
                       </TooltipProvider>
                     </div>
-                    <p className=" text-sm text-slate-500">
-                      {product.upcomingUpdates}
-                    </p>
+                    {product.upcomingUpdates ? (
+                      <p className="text-sm text-slate-500">{product.upcomingUpdates}</p>
+                    ) : (
+                      <div className="relative bg-white py-1">
+                        <p className="text-gray-800 blur-[3px] select-none text-sm font-bold">
+                          Unlocking new possibilities with future updates
+                        </p>
+                        <p className="text-gray-800 blur-[3px] select-none text-sm font-bold mt-1">
+                          Enhancing user experience through continuous improvement
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1286,7 +1367,7 @@ const formatDataForCompatibility = (productData, userData) => {
 
               <div className="w-full h-px bg-slate-200 my-4"></div>
 
-              <div className="flex  gap-2 items-center">
+              {/* <div className="flex  gap-2 items-center">
                 <h2 id="pricing" className=" text-2xl font-bold text-gray-900">
                   Pricing
                 </h2>
@@ -1370,7 +1451,151 @@ const formatDataForCompatibility = (productData, userData) => {
                 <Label className="text-lg w-[50%] font-semibold bg-white rounded-[5px] shadow-md p-3">
                   No Fixed Pricing Plans Chosen
                 </Label>
-              )}
+              )} */}
+              {/* Header Section */}
+<div className="flex gap-2 items-center">
+  <h2 id="pricing" className="text-2xl font-bold text-gray-900">
+    Pricing
+  </h2>
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger>
+        <MdOutlineInfo className="text-slate-500 text-sm" />
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Terms of product costing</p>
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+</div>
+
+{/* Trial and Version Info */}
+<div className="flex flex-col md:flex-row justify-between">
+  <div>
+    <p className="text-lg text-gray-900 font-bold">Free Trial</p>
+    {product.freeTrial ? (
+      <p className="text-sm text-slate-500">{product.freeTrial}</p>
+    ) : (
+      <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+        14 days trial available
+      </p>
+    )}
+  </div>
+
+  <div>
+    <p className="text-lg text-gray-900 font-bold">
+      Time period <span className="text-slate-500 text-sm">(Free Trial)</span>
+    </p>
+    {product.timePeriod ? (
+      <p className="text-sm text-slate-500">{product.timePeriod}</p>
+    ) : (
+      <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+        2 weeks duration
+      </p>
+    )}
+  </div>
+
+  <div>
+    <p className="text-lg text-gray-900 font-bold">Free version</p>
+    {product.freeVersion ? (
+      <p className="text-sm text-slate-500">{product.freeVersion}</p>
+    ) : (
+      <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+        Limited features available
+      </p>
+    )}
+  </div>
+</div>
+
+{/* Pricing Parameters Section */}
+{product.pricingParams?.length > 0 ? (
+  <div>
+    <div className="flex gap-2 items-center mb-3">
+      <h2 className="text-lg font-bold text-gray-900">Pricing parameter</h2>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <MdOutlineInfo className="text-slate-500 text-sm" />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Factors that impact pricing of this product</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
+    <div className="flex justify-between items-center">
+      <div className="inline-flex gap-3 flex-wrap">
+        {product.pricingParams.map((parameter: string) => (
+          <div
+            key={parameter}
+            className="py-1 px-2.5 border transition-all duration-200 hover:cursor-pointer rounded-full text-xs bg-primary2 border-primary1 text-primary1"
+          >
+            {parameter}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+) : (
+  <div>
+    <div className="flex gap-2 items-center mb-3">
+      <h2 className="text-lg font-bold text-gray-900">Pricing parameter</h2>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <MdOutlineInfo className="text-slate-500 text-sm" />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Factors that impact pricing of this product</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
+    <div className="flex justify-between items-center">
+      <div className="inline-flex gap-3 flex-wrap">
+        {["Users", "Features", "Storage"].map((param) => (
+          <div
+            key={param}
+            className="py-1 px-2.5 border transition-all duration-200 rounded-full text-xs bg-primary2 border-primary1"
+          >
+            <span className="text-gray-800 blur-[3px] select-none font-bold">
+              {param}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
+{/* Pricing Plans Section */}
+{product.nameofPlan && product.nameofPlan.length > 0 ? (
+  <ProductPricingTable
+    nameofPlan={product.nameofPlan}
+    validity={product.validity}
+    price={product.price}
+  />
+) : (
+  <div>
+    <Label className="text-lg w-[50%] font-semibold bg-white rounded-[5px] shadow-md p-3">
+      No Fixed Pricing Plans Chosen
+    </Label>
+    {/* <div className="mt-4">
+      <div className="flex gap-4 blur-[3px] select-none">
+        <div className="p-4 border rounded-lg shadow-sm">
+          <p className="font-bold text-gray-800">Basic Plan</p>
+          <p className="text-gray-600 mt-2">Starting from</p>
+          <p className="font-bold text-xl mt-1">$19/month</p>
+        </div>
+        <div className="p-4 border rounded-lg shadow-sm">
+          <p className="font-bold text-gray-800">Pro Plan</p>
+          <p className="text-gray-600 mt-2">Starting from</p>
+          <p className="font-bold text-xl mt-1">$49/month</p>
+        </div>
+      </div>
+    </div> */}
+  </div>
+)}
 
               <div className="w-full h-px bg-slate-200 my-4"></div>
 
@@ -1437,16 +1662,33 @@ const formatDataForCompatibility = (productData, userData) => {
               </div>
 
               <div>
-                <SliderElement>
-                  {product?.Images?.map((image: string, index: number) => (
-                    <img
-                      key={index}
-                      src={image}
-                      className="w-full rounded-3xl"
-                      alt=""
-                    />
-                  ))}
-                </SliderElement>
+                              {product?.Images?.length > 0 ? (
+                  <SliderElement>
+                    {product.Images.map((image: string, index: number) => (
+                      <img
+                        key={index}
+                        src={image}
+                        className="w-full rounded-3xl"
+                        alt=""
+                      />
+                    ))}
+                  </SliderElement>
+                ) : (
+                  <SliderElement>
+                    {[1, 2,3].map((_, index) => (
+                      <div 
+                        key={index} 
+                        className="w-full aspect-video rounded-3xl bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse"
+                      >
+                        <div className="w-full h-full rounded-3xl blur-md bg-gray-200 flex items-center justify-center">
+                          <span className="text-gray-800 blur-[3px] select-none font-bold text-xl">
+                            Product Image {index + 1}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </SliderElement>
+                )}
               </div>
 
               <ProductReference product={product} />
@@ -1485,11 +1727,13 @@ const formatDataForCompatibility = (productData, userData) => {
           </div>
         </div>
       </div>
-      <div style={{ position: "absolute", top: "-9999px", left: "-9999px" }}>
-        <div ref={componentRef}>
-          <PdfDownload data={data} />
+      {product.isVendorVerified && (
+        <div style={{ position: "absolute", top: "-9999px", left: "-9999px" }}>
+          <div ref={componentRef}>
+            <PdfDownload data={data} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
     </>
   );

@@ -364,12 +364,7 @@ const LegalTechDashboard = () => {
             <span className="block text-sm font-semibold text-blue-600 mb-2 tracking-wider">
               Legal Tech Intelligence
             </span>
-            {/* <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 relative inline-block">
-              Our Solution Suite
-              <div className={`absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-blue-400 
-                           transform origin-left transition-transform duration-1000 
-                           ${isInView ? 'scale-x-100' : 'scale-x-0'}`} />
-            </h2> */}
+          
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 relative inline-block">
   Our Solution Suite
   <div

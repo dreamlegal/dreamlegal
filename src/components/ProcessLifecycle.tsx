@@ -378,35 +378,115 @@ const lifecycleStages = [
 
 const ProcessLifecycle = ({ product }: any) => {
   // Loop over the keys in product.processLifecycle instead of assuming a fixed structure
-  const selectedCategories = Object.keys(product.processLifecycle);
+  // const selectedCategories = Object.keys(product.processLifecycle);
+  const hasLifecycleData = product?.processLifecycle && Object.keys(product.processLifecycle).length > 0;
+
+  // If no data, show first two categories as placeholder
+  const categoriesToShow = hasLifecycleData 
+    ? Object.keys(product.processLifecycle)
+    : ['Client Relationship Management', 'Governance, Risk and Compliance'];
 
   return (
+    // <div>
+    //   {selectedCategories.map((category) => {
+    //     const selectedStages = product.processLifecycle[category];
+    //     const lifecycle = lifecycleStages.find(
+    //       (stage) => stage.category === category
+    //     );
+
+    //     return lifecycle ? (
+    //       <div key={category}>
+    //         <h3>{category}</h3>
+    //         <div className="grid gap-4 mb-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    //           {lifecycle.stages.slice(0, 3).map((stage, index) => (
+    //             <div
+    //               key={index}
+    //               className={`p-5 duration-300 transform bg-white border rounded shadow-sm hover:-translate-y-2 ${
+    //                 selectedStages.includes(stage)
+    //                   ? "border-teal-500"
+    //                   : "border-red-500 opacity-90"
+    //               }`}
+    //             >
+    //               <div className="flex items-center gap-5">
+    //                 <p
+    //                   className={`flex items-center justify-center w-6 h-6 font-bold rounded ${
+    //                     selectedStages.includes(stage)
+    //                       ? "text-teal-500 bg-teal-100"
+    //                       : "text-red-500 bg-red-100"
+    //                   }`}
+    //                 >
+    //                   {index + 1}
+    //                 </p>
+    //                 <p className="text-sm font-bold leading-5 mb-2">{stage}</p>
+    //               </div>
+    //             </div>
+    //           ))}
+    //         </div>
+
+    //         <div className="grid gap-4 mb-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    //           {lifecycle.stages.slice(3).map((stage, index) => (
+    //             <div
+    //               key={index + 3}
+    //               className={`p-5 duration-300 transform bg-white border rounded shadow-sm hover:-translate-y-2 ${
+    //                 selectedStages.includes(stage)
+    //                   ? "border-teal-500"
+    //                   : "border-red-500 opacity-90"
+    //               }`}
+    //             >
+    //               <div className="flex items-center gap-5">
+    //                 <p
+    //                   className={`flex items-center justify-center w-6 h-6 font-bold rounded ${
+    //                     selectedStages.includes(stage)
+    //                       ? "text-teal-500 bg-teal-100"
+    //                       : "text-red-500 bg-red-100"
+    //                   }`}
+    //                 >
+    //                   {index + 4}
+    //                 </p>
+    //                 <p className="text-sm font-bold leading-5 mb-2">{stage}</p>
+    //               </div>
+    //             </div>
+    //           ))}
+    //         </div>
+    //       </div>
+    //     ) : null;
+    //   })}
+    // </div>
     <div>
-      {selectedCategories.map((category) => {
-        const selectedStages = product.processLifecycle[category];
+      {categoriesToShow.map((category) => {
         const lifecycle = lifecycleStages.find(
           (stage) => stage.category === category
         );
+        
+        // Get selected stages if data exists
+        const selectedStages = hasLifecycleData ? product.processLifecycle[category] : [];
 
         return lifecycle ? (
           <div key={category}>
-            <h3>{category}</h3>
+            <h3 className={hasLifecycleData ? "" : "text-gray-800 blur-[3px] select-none"}>{category}</h3>
+            {/* First row of stages */}
             <div className="grid gap-4 mb-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {lifecycle.stages.slice(0, 3).map((stage, index) => (
                 <div
                   key={index}
-                  className={`p-5 duration-300 transform bg-white border rounded shadow-sm hover:-translate-y-2 ${
-                    selectedStages.includes(stage)
-                      ? "border-teal-500"
-                      : "border-red-500 opacity-90"
+                  className={`p-5 duration-300 transform bg-white border rounded shadow-sm ${
+                    hasLifecycleData 
+                      ? `hover:-translate-y-2 ${
+                          selectedStages.includes(stage)
+                            ? "border-teal-500"
+                            : "border-red-500 opacity-90"
+                        }`
+                      : "border-gray-200 blur-[3px] select-none"
                   }`}
                 >
                   <div className="flex items-center gap-5">
                     <p
                       className={`flex items-center justify-center w-6 h-6 font-bold rounded ${
-                        selectedStages.includes(stage)
-                          ? "text-teal-500 bg-teal-100"
-                          : "text-red-500 bg-red-100"
+                        hasLifecycleData
+                          ? selectedStages.includes(stage)
+                            ? "text-teal-500 bg-teal-100"
+                            : "text-red-500 bg-red-100"
+                          : "text-gray-600 bg-gray-100"
                       }`}
                     >
                       {index + 1}
@@ -417,22 +497,29 @@ const ProcessLifecycle = ({ product }: any) => {
               ))}
             </div>
 
+            {/* Second row of stages */}
             <div className="grid gap-4 mb-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {lifecycle.stages.slice(3).map((stage, index) => (
                 <div
                   key={index + 3}
-                  className={`p-5 duration-300 transform bg-white border rounded shadow-sm hover:-translate-y-2 ${
-                    selectedStages.includes(stage)
-                      ? "border-teal-500"
-                      : "border-red-500 opacity-90"
+                  className={`p-5 duration-300 transform bg-white border rounded shadow-sm ${
+                    hasLifecycleData 
+                      ? `hover:-translate-y-2 ${
+                          selectedStages.includes(stage)
+                            ? "border-teal-500"
+                            : "border-red-500 opacity-90"
+                        }`
+                      : "border-gray-200 blur-[3px] select-none"
                   }`}
                 >
                   <div className="flex items-center gap-5">
                     <p
                       className={`flex items-center justify-center w-6 h-6 font-bold rounded ${
-                        selectedStages.includes(stage)
-                          ? "text-teal-500 bg-teal-100"
-                          : "text-red-500 bg-red-100"
+                        hasLifecycleData
+                          ? selectedStages.includes(stage)
+                            ? "text-teal-500 bg-teal-100"
+                            : "text-red-500 bg-red-100"
+                          : "text-gray-600 bg-gray-100"
                       }`}
                     >
                       {index + 4}

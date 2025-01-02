@@ -12,6 +12,8 @@ import VendorProductLifeCycle from './VendorProductForms/VendorProductLifeCycle'
 import VendorProductReference from './VendorProductForms/VendorProductReference';
 import VendorProductPostImplementationService from './VendorProductForms/VendorProductPostImplementationService';
 
+import FormProgress from '@/components/FormProgress';
+
 
 
 import { Button } from "./ui/button";
@@ -750,7 +752,8 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
   return (
     
     <div className="relative">
-     
+    
+     <FormProgress />
      
      
       <div className="hidden md:flex absolute left-0 top-0 bottom-0 w-16 flex-col items-center">

@@ -21,9 +21,14 @@ const Navbar = () => {
 
   const navItems = [
     {
-      title: 'Legal Professionals',
+      title: 'Home',
       hasDropdown: false,
       href: '/'
+    },
+    {
+      title: 'Legal Professionals',
+      hasDropdown: false,
+      href: '/legal_professionals'
     },
     {
       title: 'Tech Vendors',
@@ -81,7 +86,11 @@ const Navbar = () => {
               {/* Logo */}
               <div className="flex-shrink-0">
                 <a href="/" className="block">
-                  <div className="h-8 w-8 bg-black rounded-lg"></div>
+                {/* <img src="logos/Dreamlegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" /> */}
+                <img src="logos/Dreamlegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" />
+                {/* <img src="logos/Dreamlegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" /> */}
+                {/* <img src="logos/Dreamlegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" /> */}
+                {/* <img src="logos/Dreamlegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" /> */}
                 </a>
               </div>
 
@@ -125,7 +134,7 @@ const Navbar = () => {
                 <a href="/signup" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-black transition-colors duration-200">
                   Sign Up
                 </a>
-                <a href="/login" className="px-4 py-2 text-sm font-medium bg-black text-white rounded-xl hover:bg-gray-800 transition-colors duration-200">
+                <a href="/login" className="px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded-xl hover:bg-blue-800 transition-colors duration-200">
                   Log in
                 </a>
               </div>
@@ -196,7 +205,7 @@ const Navbar = () => {
                     <a href="/signup" className="block w-full p-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200">
                       Sign Up
                     </a>
-                    <a href="/login" className="block w-full p-2 text-sm font-medium bg-black text-white rounded-lg hover:bg-gray-800 transition-colors duration-200">
+                    <a href="/login" className="block w-full p-2 text-sm font-medium bg-blue-500 text-white rounded-lg hover:bg-blue-800 transition-colors duration-200">
                       Log in
                     </a>
                   </div>

@@ -1,37 +1,164 @@
-import Item from "./Faq";
+
+
+// // Enhanced FAQ Item Component
+// const FaqItem = ({ question, answer, delay = 0 }) => {
+//   const [isOpen, setIsOpen] = useState(false);
+
+//   return (
+//     <div 
+//       className="rounded-xl overflow-hidden bg-blue-50/50 hover:bg-blue-50 transition-colors duration-300"
+//       style={{ animationDelay: `${delay}s` }}
+//     >
+//       <button
+//         type="button"
+//         aria-label={isOpen ? "Close question" : "Open question"}
+//         onClick={() => setIsOpen(!isOpen)}
+//         className="flex items-center justify-between w-full p-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-200 rounded-xl"
+//       >
+//         <p className="text-base font-medium text-gray-900 pr-8">
+//           {question}
+//         </p>
+//         <ChevronDown 
+//           className={`w-5 h-5 text-blue-600 transform transition-transform duration-300 flex-shrink-0 ${
+//             isOpen ? 'rotate-180' : 'rotate-0'
+//           }`}
+//         />
+//       </button>
+//       <div
+//         className={`transition-all duration-300 ease-in-out ${
+//           isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+//         }`}
+//       >
+//         <div className="p-4 pt-0 text-gray-600">
+//           {answer}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ContactFaq;
+import React from "react";
+import { HelpCircle } from 'lucide-react';
+
 
 function ContactFaq() {
   return (
-    <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 font-clarity">
-      <div className="max-w-xl sm:mx-auto lg:max-w-2xl">
-        <div className="flex flex-col mb-16 sm:text-center">
-          <div className="max-w-xl md:mx-auto sm:text-center lg:max-w-2xl">
-            <h2 className="max-w-lg mb-6   text-3xl font-bold leading-none  text-gray-900 sm:text-4xl md:mx-auto">
-              Frequently asked questions
-            </h2>
-           
+    <div className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white">
+      {/* Decorative Background Elements - Adjusted for mobile */}
+      <div className="absolute left-1/4 top-0 w-48 md:w-96 h-48 md:h-96 bg-blue-100 rounded-full blur-3xl opacity-20 animate-pulse" />
+      <div className="absolute right-1/4 bottom-0 w-48 md:w-96 h-48 md:h-96 bg-blue-100 rounded-full blur-3xl opacity-20 animate-pulse delay-500" />
+
+      <div className="px-4 py-10 md:py-16 mx-auto max-w-7xl lg:px-8 lg:py-20 font-clarity relative z-10">
+        <div className="max-w-xl mx-auto lg:max-w-2xl">
+          <div className="flex flex-col mb-8 md:mb-16 text-center animate-fadeIn">
+            <div className="inline-flex flex-col items-center">
+              <div className="inline-block px-4 py-1 bg-blue-100 rounded-full mb-4 hover:bg-blue-200 transition-colors duration-300">
+                <p className="text-blue-600 font-medium text-xs md:text-sm">FAQ</p>
+              </div>
+              <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 mb-6">
+                
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent text-center md:text-left">
+                  Frequently asked questions
+                </h2>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-3 md:space-y-5 animate-slideUp">
+            <Item title="What is DreamLegal directory?">
+              <div className="text-gray-600 leading-relaxed text-sm md:text-base">
+                DreamLegal directory is a comprehensive online resource that lists various legal technology tools and solutions available for lawyers, law firms, legal departments and other legal professionals.
+              </div>
+            </Item>
+
+            <Item title="What features are available in the directory?">
+              <div className="text-gray-600 leading-relaxed text-sm md:text-base">
+                Our directory offers comprehensive listings, detailed profiles, comparison of tools, search and filter options, user reviews, expert insights, vendor information and alerts.
+              </div>
+            </Item>
+
+            <Item title="Is this directory free to use?">
+              <div className="text-gray-600 leading-relaxed text-sm md:text-base">
+                Yes, this directory is free for users to view information, compare, download resources and use filters. Some functionalities may require signing in.
+              </div>
+            </Item>
+
+            <Item title="Do you also provide legal tech consultation?">
+              <div className="text-gray-600 leading-relaxed text-sm md:text-base">
+                Yes, DreamLegal helps with selection, onboarding, management and even training of employees post legal tech implementation. Kindly contact us in case you need any of the above services.
+              </div>
+            </Item>
+
+            <Item title="How can vendors list their product?">
+              <div className="text-gray-600 leading-relaxed text-sm md:text-base">
+                Vendors can contact us via our website's contact form or email at vendor@dreamlegal.in to submit their product for listing.
+              </div>
+            </Item>
           </div>
         </div>
-        <div className="space-y-5">
-          <Item title="What is DreamLegal directory?">
-          DreamLegal directory is a comprehensive online resource that lists various legal technology tools and solutions available for lawyers, law firms, legal departments and other legal professionals.
-          </Item>
-          <Item title="What features are available in the directory?">
-          Our directory offers comprehensive listings, detailed profiles, comparison  of tools, search and filter options, user reviews, expert insights, vendor information and alerts.
-          </Item>
-          <Item title="Is this directory free to use?">
-          Yes, this directory is free for users to view information, compare, download resources and use filters. Some functionalities may require signing in.
-          </Item>
-          <Item title="Do you also provide legal tech consultation?">
-          Yes, DreamLegal helps with selection, onboarding, management and even training of employees post legal tech implementation. Kindly contact us in case you need any of the above services.
-          </Item>
-          <Item title="How can vendors list their product?">
-          Vendors can contact us via our website's contact form or email at vendor@dreamlegal.in to submit their product for listing
-          </Item>
-        </div>
       </div>
+
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(40px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 1s ease-out forwards;
+        }
+        .animate-slideUp {
+          animation: slideUp 1s ease-out forwards;
+          animation-delay: 0.2s;
+          opacity: 0;
+        }
+      `}</style>
     </div>
   );
 }
 
+
 export default ContactFaq;
+
+// Enhanced FAQ Item Component (save as FaqItem.tsx)
+import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+
+const Item = ({ title, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="group border border-blue-100 rounded-xl md:rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-all duration-300">
+      <button
+        type="button"
+        aria-label={isOpen ? "Close question" : "Open question"}
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-start md:items-center justify-between w-full p-3 md:p-4 focus:outline-none focus:ring-2 focus:ring-blue-100 rounded-xl md:rounded-2xl gap-4"
+      >
+        <p className="text-base md:text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 text-left pr-2">
+          {title}
+        </p>
+        <ChevronDown 
+          className={`w-4 h-4 md:w-5 md:h-5 text-blue-600 transform transition-transform duration-300 flex-shrink-0 mt-1 md:mt-0 ${
+            isOpen ? 'rotate-180' : 'rotate-0'
+          }`}
+        />
+      </button>
+      <div
+        className={`transition-all duration-300 ease-in-out ${
+          isOpen
+            ? 'max-h-96 opacity-100'
+            : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="p-3 md:p-4 pt-0 border-t border-blue-100">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};

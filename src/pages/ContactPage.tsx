@@ -1,3 +1,4 @@
+"use client"
 import ContactDesk from "@/components/ContactDesk";
 import ContactFaq from "@/components/ContactFaq";
 import ContactHero from "@/components/ContactHero";

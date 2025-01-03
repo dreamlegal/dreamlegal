@@ -87,7 +87,7 @@ const Navbar = () => {
               <div className="flex-shrink-0">
                 <a href="/" className="block">
                 {/* <img src="logos/Dreamlegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" /> */}
-                <img src="logos/Dreamlegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" />
+                <img src="/logos/DreamLegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" />
                 {/* <img src="logos/Dreamlegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" /> */}
                 {/* <img src="logos/Dreamlegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" /> */}
                 {/* <img src="logos/Dreamlegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" /> */}

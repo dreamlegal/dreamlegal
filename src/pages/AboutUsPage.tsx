@@ -1,7 +1,8 @@
+"use client"
 import AboutFaq from "@/components/AboutFaq";
 import AboutFeature from "@/components/AboutFeature";
 import AboutHero from "@/components/AboutHero";
-import { WhyChooseUs } from "@/components/WhyChooseUs";
+import  WhyChooseUs  from "@/components/WhyChooseUs";
 import React from "react";
 
 function AboutUsPage() {

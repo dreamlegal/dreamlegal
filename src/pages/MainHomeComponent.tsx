@@ -1270,7 +1270,7 @@ const LandingPages = () => {
                        hover:shadow-xl transition-shadow duration-300 animate-float">
             <div className="flex items-center gap-3">
               {/* <Layout className="w-6 h-6 text-blue-600 animate-spin-slow" /> */}
-            <img src="logos/Dreamlegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" />
+            <img src="/logos/DreamLegal_logo_allblue.png" alt="DreamLegal Logo" className=" h-6" />
               {/* <span className="text-xl font-bold text-gray-800">Platform</span> */}
             </div>
           </div>

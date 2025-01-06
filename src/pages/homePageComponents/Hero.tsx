@@ -4,7 +4,7 @@ import {  Zap, Shield, BarChart2, Globe } from "lucide-react";
 
 
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, Code, LineChart, Workflow } from 'lucide-react';
 import VideoPlayer from "./VideoPlayer";
@@ -67,6 +67,69 @@ const ResponsiveHero = () => {
       });
     }
   }, []);
+
+  const [email, setEmail] = useState('');
+    const [isInputFocused, setIsInputFocused] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [status, setStatus] = useState({ type: '', message: '' });
+  
+    const FloatingElement = ({ children, className, delay = 0 }) => (
+      <div className={className}>
+        {children}
+      </div>
+    );
+  
+    const validateEmail = (email) => {
+      return email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    };
+  
+    const handleSubmit = async () => {
+      // Reset status
+      setStatus({ type: '', message: '' });
+  
+      // Validate email
+      if (!validateEmail(email)) {
+        setStatus({ 
+          type: 'error', 
+          message: 'Please enter a valid email address' 
+        });
+        return;
+      }
+  
+      setIsLoading(true);
+      console.log('Email:', email);
+      setIsLoading(false);
+  
+      // try {
+      //   const response = await fetch('/api/subscribe', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify({ email }),
+      //   });
+  
+      //   const data = await response.json();
+  
+      //   if (!response.ok) {
+      //     throw new Error(data.message || 'Something went wrong');
+      //   }
+  
+      //   setStatus({
+      //     type: 'success',
+      //     message: 'Thanks for subscribing!'
+      //   });
+      //   setEmail('');
+        
+      // } catch (error) {
+      //   setStatus({
+      //     type: 'error',
+      //     message: error.message || 'Failed to submit email'
+      //   });
+      // } finally {
+      //   setIsLoading(false);
+      // }
+    };
 
 
   return (
@@ -133,7 +196,7 @@ const ResponsiveHero = () => {
             </motion.p>
 
             {/* Premium CTA Button */}
-            <motion.button
+            {/* <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="group relative inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg 
@@ -146,7 +209,67 @@ const ResponsiveHero = () => {
               <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 mr-2 animate-pulse" />
               Call Now
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
-            </motion.button>
+            </motion.button> */}
+              <FloatingElement delay={0.3} className="max-w-xl mx-auto mt-8 sm:mt-12 px-4">
+                        <div 
+                          className={`flex flex-col sm:flex-row gap-3 transition-all duration-200 
+                                     ${isInputFocused ? 'transform -translate-y-1' : ''}`}
+                        >
+                          <div className="relative flex-1">
+                            <input
+                              type="email"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              onFocus={() => setIsInputFocused(true)}
+                              onBlur={() => setIsInputFocused(false)}
+                              placeholder="Enter your work email"
+                              className={`w-full px-6 py-4 bg-white rounded-xl text-gray-700 placeholder-gray-400
+                                       border-2 ${status.type === 'error' ? 'border-red-300' : 'border-blue-100'} 
+                                       focus:border-blue-400 outline-none
+                                       shadow-sm hover:shadow-md focus:shadow-lg
+                                       transition-all duration-200`}
+                            />
+                            {isInputFocused && (
+                              <div className="absolute -bottom-2 left-6 text-xs text-blue-600 bg-white px-2">
+                                Work email address
+                              </div>
+                            )}
+                          </div>
+                          <button 
+                            onClick={handleSubmit}
+                            disabled={isLoading}
+                            className={`group relative px-8 py-4 bg-blue-600 text-white rounded-xl font-medium
+                                     ${isLoading ? 'opacity-75 cursor-not-allowed' : 'hover:bg-blue-700'}
+                                     shadow-sm hover:shadow-md
+                                     transition-all duration-200 flex items-center justify-center gap-2`}
+                          >
+                            {isLoading ? (
+                              <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                              />
+                            ) : (
+                              <>
+                                Get started
+                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                              </>
+                            )}
+                            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-400 to-blue-300 
+                                         opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-sm" />
+                          </button>
+                        </div>
+            
+                        {/* Status Message */}
+                        {status.message && (
+                          <div className={`mt-3 text-sm ${
+                              status.type === 'error' ? 'text-red-500' : 'text-green-500'
+                            }`}
+                          >
+                            {status.message}
+                          </div>
+                        )}
+              </FloatingElement>
           </motion.div>
         </div>
       </section>

@@ -185,6 +185,9 @@ importers:
       react-beautiful-dnd:
         specifier: ^13.1.1
         version: 13.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-calendly:
+        specifier: ^4.3.1
+        version: 4.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-dom:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
@@ -3910,6 +3913,13 @@ packages:
     peerDependencies:
       react: ^16.8.5 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.5 || ^17.0.0 || ^18.0.0
+
+  react-calendly@4.3.1:
+    resolution: {integrity: sha512-poyUH3NOUOlsotr8ho5WzbsbPuRAppaY+Jvu+C/PkwTP6WT807pNFI8+HrbbuRknXZbd75zpzysOJQvcu3P8Pg==}
+    engines: {node: '>=8', npm: '>=5'}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
 
   react-dom@18.2.0:
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
@@ -9016,6 +9026,11 @@ snapshots:
       use-memo-one: 1.1.3(react@18.3.1)
     transitivePeerDependencies:
       - react-native
+
+  react-calendly@4.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   react-dom@18.2.0(react@18.2.0):
     dependencies:

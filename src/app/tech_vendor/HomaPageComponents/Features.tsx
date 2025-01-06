@@ -67,94 +67,158 @@ const ServiceTab = ({ service, isActive, onClick, index, isInView }) => {
   );
 };
 
-const MobileTabSelector = ({ services, activeTab, setActiveTab }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
+// const MobileTabSelector = ({ services, activeTab, setActiveTab }) => {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const dropdownRef = useRef(null);
   
-  const activeService = services.find(service => service.id === activeTab);
+//   const activeService = services.find(service => service.id === activeTab);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+//         setIsOpen(false);
+//       }
+//     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+//     document.addEventListener('mousedown', handleClickOutside);
+//     return () => document.removeEventListener('mousedown', handleClickOutside);
+//   }, []);
 
-  const dropdownVariants = {
-    hidden: {
-      opacity: 0,
-      y: -10,
-      transition: { duration: 0.2 }
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.2 }
-    },
-    exit: {
-      opacity: 0,
-      y: -10,
-      transition: { duration: 0.2 }
-    }
-  };
+//   const dropdownVariants = {
+//     hidden: {
+//       opacity: 0,
+//       y: -10,
+//       transition: { duration: 0.2 }
+//     },
+//     visible: {
+//       opacity: 1,
+//       y: 0,
+//       transition: { duration: 0.2 }
+//     },
+//     exit: {
+//       opacity: 0,
+//       y: -10,
+//       transition: { duration: 0.2 }
+//     }
+//   };
 
+//   return (
+//     <div className="relative md:hidden px-4 z-50" ref={dropdownRef}>
+//       <button
+//         onClick={() => setIsOpen(!isOpen)}
+//         className="w-full px-6 py-3 bg-white/70 backdrop-blur-lg
+//                  rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)]
+//                  border border-gray-100
+//                  text-left relative
+//                  transition-all duration-200
+//                  hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
+//       >
+//         <span className="text-gray-600 font-medium text-sm">{activeService?.title}</span>
+//         <div className={`absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
+//           <ChevronDown className="w-5 h-5" />
+//         </div>
+//       </button>
+
+//       <AnimatePresence>
+//         {isOpen && (
+//           <motion.div
+//             initial="hidden"
+//             animate="visible"
+//             exit="exit"
+//             variants={dropdownVariants}
+//             className="absolute top-full left-4 right-4 mt-2"
+//           >
+//             <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 overflow-hidden">
+//               <div className="py-1">
+//                 {services.map((service) => (
+//                   <button
+//                     key={service.id}
+//                     onClick={() => {
+//                       setActiveTab(service.id);
+//                       setIsOpen(false);
+//                     }}
+//                     className={`w-full px-6 py-3 text-left text-sm transition-colors duration-200
+//                               ${service.id === activeTab 
+//                                 ? 'bg-gray-50/80 text-gray-900 font-medium' 
+//                                 : 'text-gray-600 hover:bg-gray-50/50 hover:text-gray-900'
+//                               }`}
+//                   >
+//                     {service.title}
+//                   </button>
+//                 ))}
+//               </div>
+//             </div>
+//           </motion.div>
+//         )}
+//       </AnimatePresence>
+//     </div>
+//   );
+// };
+
+const MobileTabSelector = ({ services, activeTab, setActiveTab }) => {
+  const [touchedTab, setTouchedTab] = useState(null);
+  
   return (
-    <div className="relative md:hidden px-4 z-50" ref={dropdownRef}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-6 py-3 bg-white/70 backdrop-blur-lg
-                 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)]
-                 border border-gray-100
-                 text-left relative
-                 transition-all duration-200
-                 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
-      >
-        <span className="text-gray-600 font-medium text-sm">{activeService?.title}</span>
-        <div className={`absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
-          <ChevronDown className="w-5 h-5" />
-        </div>
-      </button>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={dropdownVariants}
-            className="absolute top-full left-4 right-4 mt-2"
-          >
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 overflow-hidden">
-              <div className="py-1">
-                {services.map((service) => (
-                  <button
-                    key={service.id}
-                    onClick={() => {
-                      setActiveTab(service.id);
-                      setIsOpen(false);
-                    }}
-                    className={`w-full px-6 py-3 text-left text-sm transition-colors duration-200
-                              ${service.id === activeTab 
-                                ? 'bg-gray-50/80 text-gray-900 font-medium' 
-                                : 'text-gray-600 hover:bg-gray-50/50 hover:text-gray-900'
-                              }`}
-                  >
-                    {service.title}
-                  </button>
-                ))}
+    <div className="md:hidden px-4 py-2">
+      <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100">
+        <div className="flex justify-around items-center px-2 py-3">
+          {services.map((service) => {
+            const Icon = service.icon;
+            const isActive = service.id === activeTab;
+            
+            return (
+              <div
+                key={service.id}
+                className="relative flex flex-col items-center"
+                onTouchStart={(e) => {
+                  e.preventDefault();
+                  setTouchedTab(service.id);
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  setTouchedTab(null);
+                  setActiveTab(service.id);
+                }}
+                onTouchCancel={() => setTouchedTab(null)}
+                onClick={(e) => e.preventDefault()}
+              >
+                <div
+                  className={`
+                    p-3 rounded-xl cursor-pointer transition-all duration-300
+                    ${isActive 
+                      ? 'bg-blue-50 text-blue-600' 
+                      : 'text-gray-400 hover:text-blue-500 hover:bg-blue-50/50'
+                    }
+                  `}
+                >
+                  <Icon className="w-5 h-5" />
+                </div>
+                
+                <AnimatePresence>
+                  {touchedTab === service.id && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 5 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-14 px-3 py-1.5
+                               bg-gray-900 text-white text-xs font-medium 
+                               rounded-lg whitespace-nowrap z-50"
+                    >
+                      {service.title}
+                      <div className="absolute -top-1 left-1/2 -translate-x-1/2 
+                                    w-2 h-2 bg-gray-900 rotate-45" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };
-
 const services = [
   {
     id: 'product-profiles',

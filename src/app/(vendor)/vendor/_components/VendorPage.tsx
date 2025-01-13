@@ -55,7 +55,8 @@ function VendorPage() {
 
   return (
     <div>
-      <VendorDashboardPage verified={verified} />
+      {/* <VendorDashboardPage verified={verified} /> */}
+      hii
     </div>
   );
 }

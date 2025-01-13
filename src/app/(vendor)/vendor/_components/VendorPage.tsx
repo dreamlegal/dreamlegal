@@ -11,10 +11,10 @@ function VendorPage() {
   const [vendorId, setVendorId] = useState("");
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const getVendorId =
-    typeof window !== "undefined" ? localStorage.getItem("vendorId") : null;
-
   useEffect(() => {
+    const getVendorId =
+      typeof window !== "undefined" ? localStorage.getItem("vendorId") : null;
+
     if (searchParams) {
       const search = Boolean(searchParams.get("verified"));
       setVerified(search);
@@ -28,6 +28,8 @@ function VendorPage() {
 
     setLoading(false);
   }, [searchParams, router]);
+
+  
 
   useEffect(() => {
     if (vendorId) {

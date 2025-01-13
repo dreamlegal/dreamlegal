@@ -207,21 +207,26 @@ function VendorDashboardPage({ verified }) {
   const [showNotifications, setShowNotifications] = useState(false);
   const [getVendorId, setGetVendorId] = useState(null);
  
-    useEffect(() => {
-      setGetVendorId(localStorage.getItem("vendorId"));
-    }, []);
+
+
   useEffect(() => {
     if (verified) {
       setSelectedMenu("Profile");
     } else {
       setSelectedMenu("All Products");
-      setVendorId(localStorage.getItem("vendorId"));
     }
   }, [verified]);
+  
+  // Separate useEffect for localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setVendorId(localStorage.getItem("vendorId"));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
-      const storedVendorId = vendorId || localStorage.getItem("vendorId");
+      const storedVendorId = vendorId || getVendorId;
       if (storedVendorId) {
         try {
           const profileResponse = await fetch(`/api/company-info?id=${storedVendorId}`);
@@ -258,8 +263,10 @@ function VendorDashboardPage({ verified }) {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("vendorId");
-    window.location.href = "/sign-in";
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("vendorId");
+      window.location.href = "/sign-in";
+    }
   };
 
   const fetchNotifications = async () => {

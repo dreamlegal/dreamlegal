@@ -25,7 +25,9 @@ export default function RootLayout({
       <body className={`${ClarityCity.variable}`}>
         <SessionProvider>
         <AuthProvider>
-        <MainLayout children={children}/>
+        <MainLayout>
+  {children}
+</MainLayout>
         </AuthProvider>
           <Toaster />
         </SessionProvider>

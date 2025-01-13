@@ -458,3 +458,5 @@ const VendorReviews = () => {
     </div>
   );
 };
+
+export default VendorReviews;

@@ -205,10 +205,11 @@ function VendorDashboardPage({ verified }) {
   const [products, setProducts] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
-
-  const getVendorId =
-    typeof window !== "undefined" ? localStorage.getItem("vendorId") : null;
-
+  const [getVendorId, setGetVendorId] = useState(null);
+ 
+    useEffect(() => {
+      setGetVendorId(localStorage.getItem("vendorId"));
+    }, []);
   useEffect(() => {
     if (verified) {
       setSelectedMenu("Profile");

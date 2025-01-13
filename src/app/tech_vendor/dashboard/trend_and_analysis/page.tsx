@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import VendorDashborad from '@/components/VendorDashborad'
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/authContext';
 const page = () => {
     
     // const vendorId = localStorage.getItem("vendorId");

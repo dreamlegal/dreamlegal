@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { RefreshCw,RotateCw, Box, ClipboardCheck, AlertTriangle, Building2, Users, Settings, Clock, Wallet2, CheckCircle2, XCircle, ChevronDown } from "lucide-react";
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/authContext';
 // Custom Card Component instead of shadcn
 const CustomCard = ({ children, className = "" }) => {
   return (

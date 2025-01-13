@@ -363,7 +363,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/authContext';
 import { Building2, Users, Star, Calendar, RefreshCw, Globe, Mail, Phone, MapPin, Award } from 'lucide-react';
 
 const VendorProfile = ({ verified, getProfile }) => {

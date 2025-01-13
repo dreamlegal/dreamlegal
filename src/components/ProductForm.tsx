@@ -21,7 +21,7 @@ interface ProductFormWithProgressProps {
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useToast } from "./ui/use-toast";
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/authContext';
 // const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
 // const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing }) => {
 const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing, product }) => {

@@ -8,7 +8,7 @@ import Navbar from "@/pages/homePageComponents/Navbar";
 import Footer from "@/components/Footer";
 import { ClarityCity } from "@/utils/customFont";
 import MainLayout from "@/components/MainLayout";
-import { AuthProvider } from '@/context/AuthContext'
+import { AuthProvider } from '@/context/authContext'
 
 export const metadata: Metadata = {
   title: "DreamLegal",

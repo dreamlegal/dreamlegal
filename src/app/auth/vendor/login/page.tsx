@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import { Mail, Lock, Eye } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/authContext';
 import { useRouter } from 'next/navigation';
 
 const VendorLoginPage = () => {

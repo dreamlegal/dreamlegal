@@ -6,7 +6,7 @@ import { MdOutlineAddShoppingCart, MdRateReview, MdCall, MdTrendingUp, MdPeople,
 import { RiProfileLine } from "react-icons/ri";
 import Link from "next/link";
 import { useRouter, usePathname } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/authContext';
 
 const SupportInfo = () => (
   <div className="p-4 bg-white rounded-xl shadow-md shadow-blue-500/10 border border-blue-100">

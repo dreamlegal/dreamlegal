@@ -90,7 +90,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { UserCircle2, Package, RefreshCw, AlertCircle, Search, Grid, List } from "lucide-react";
 import VendorProductCard from "../VendorProductCard";
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/authContext';
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -1399,7 +1399,7 @@ import {
   ArrowRight,
   FileText
 } from "lucide-react";
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/authContext';
 // Star Rating Component
 const StarRating = ({ value, size = "md", showValue = true }) => {
   const starSizes = {

@@ -55,6 +55,13 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
     maintenance, reqForChange, trainingReq, dataMigration,
     images, attachments, instagramUrl, videoUrl, linkedinUrl, twitterUrl, youtubeUrl,
     userCategory ,industry, practiceAreas, teamSize,features,
+
+    companyName,
+    headquarters,
+    foundersNames,
+    setCompanyName,
+    setHeadquarters,
+    setFoundersNames,
   } = ProductInfo();
 
   const {
@@ -540,6 +547,10 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
           linkedinUrl: linkedinUrl,  // Mapped from global state
           twitterUrl: twitterUrl,  // Mapped from global state
           youtubeUrl: youtubeUrl,  // Mapped from global state
+
+          companyName: companyName,
+          headquarters: headquarters,
+          foundersNames: foundersNames,
 
         
           active: "draft",  // Default value

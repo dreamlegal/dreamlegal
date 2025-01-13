@@ -205,6 +205,9 @@ model Product {
   SaveProduct             SaveProduct[] @relation("ProductToSaveProduct")
   isVendorVerified        Boolean       @default(true) 
   completionRate          Int           @default(0) 
+  CompanyName             String? @default("abc")
+  Headquarters            String? @default("India")
+  FoundersNames           String[] @default([])
 }
 
 model Review {
@@ -399,4 +402,11 @@ model workflowResponse {
   updatedAt          DateTime @updatedAt
 
  
+}
+
+model OtpVerification {
+  email     String   @id
+  otp       String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }

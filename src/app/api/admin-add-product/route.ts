@@ -82,6 +82,13 @@ export async function POST(request: Request) {
         twitterUrl: formData.twitterUrl || null,
         instagramUrl: formData.instagramUrl || null,
         attachments: formData.attachmentUrl || null,
+
+      
+
+        CompanyName:formData.companyName || '',         
+  Headquarters :formData.headquarters || '',         
+  FoundersNames:formData.foundersNames || '',          
+
         featured: false
       };
   

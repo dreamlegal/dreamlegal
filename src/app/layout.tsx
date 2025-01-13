@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import { ClarityCity } from "@/utils/customFont";
 import MainLayout from "@/components/MainLayout";
 import { AuthProvider } from '@/context/AuthContext'
+
 export const metadata: Metadata = {
   title: "DreamLegal",
   description: "Your only legal directory for Legal solutions",

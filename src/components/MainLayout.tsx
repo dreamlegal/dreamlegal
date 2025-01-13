@@ -57,7 +57,7 @@
 'use client'
 
 import { usePathname } from "next/navigation"
-import Navbar from "@/pages/homePageComponents/Navbar"
+import Navbar from "@/components/Navbar"
 import Footer from "./Footer"
 import { useAuth } from '@/context/authContext'
 

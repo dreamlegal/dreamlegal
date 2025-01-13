@@ -40,7 +40,7 @@
 
 import { Metadata } from "next";
 import { ClarityCity } from "@/utils/customFont";
-import Navbar from "@/pages/homePageComponents/Navbar";
+import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {

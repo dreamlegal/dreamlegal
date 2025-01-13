@@ -43,7 +43,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ClarityCity } from "@/utils/customFont";
 import MainLayout from "@/components/MainLayout";
-
+import { Providers } from "@/app/providers";
 export const metadata: Metadata = {
   title: "DreamLegal",
   description: "Your only legal directory for Legal solutions",

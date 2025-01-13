@@ -1,9 +1,10 @@
+"use client"
 import React from 'react'
 import VendorReview from '@/components/VendorReview'
-const page = () => {
+const Page = () => {
   return (
 <VendorReview />
   )
 }
 
-export default page
+export default Page

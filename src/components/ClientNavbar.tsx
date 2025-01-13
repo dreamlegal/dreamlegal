@@ -1,7 +1,7 @@
 'use client'; // Mark this component as client-side
 
 import { usePathname } from "next/navigation";
-import Navbar from "@/pages/homePageComponents/Navbar";
+import Navbar from "@/components/Navbar";
 
 export default function ClientNavbar() {
   const pathname = usePathname();

@@ -1,7 +1,7 @@
 
 "use client";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+
 import { RefreshCw, ClipboardList } from "lucide-react";
 import LeadCard from "./LeadCard"; // Make sure LeadCard can handle all fields like bookingTime
 const VendorLeads = ({ userId }: { userId: string }) => {
@@ -9,8 +9,8 @@ const VendorLeads = ({ userId }: { userId: string }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const searchParams = useSearchParams();
-  const verify = searchParams.get('verified') ? true : false;
+
+
 
   const fetchLeads = async () => {
     try {
@@ -49,21 +49,7 @@ const VendorLeads = ({ userId }: { userId: string }) => {
     await fetchLeads();
   };
 
-  if (verify) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] p-8">
-        <div className="w-20 h-20 mb-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center">
-          <ClipboardList className="w-10 h-10 text-white" />
-        </div>
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent text-center mb-4">
-          Complete Your Profile
-        </h1>
-        <p className="text-gray-600 text-center max-w-md">
-          Please complete your profile information to access leads. Click on the profile link to get started.
-        </p>
-      </div>
-    );
-  }
+ 
 
   return (
     <div className="min-h-screen p-6 overflow-hidden">

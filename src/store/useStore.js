@@ -20,6 +20,14 @@ logoPreview: null,
 setLogoFile: (file) => set({ logoFile: file }),
 setLogoPreview: (preview) => set({ logoPreview: preview }),
 
+  companyName: '',
+  setCompanyName: (name) => set({ companyName: name }),
+  headquarters: '',
+  setHeadquarters: (hq) => set({ headquarters: hq }),
+  foundersNames: [],
+  // setFoundersNames: (name) => set({ foundersNames: name }),
+  setFoundersNames: (names) => set({ foundersNames: names }),  // Correct
+
   productName: '',
   logoUrl: '',
   category: [],

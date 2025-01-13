@@ -526,103 +526,7 @@ function PageComponent({ data }: any) {
     setShowRfpForm(false);
   };
 
-  //compatibilty test
-  // const [isOpen, setIsOpen] = useState(false);
-  // const [results, setResults] = useState(null);
 
-
-  // const [error, setError] = useState(null);
-
-//   const formatDataForCompatibility = (productData, userData) => {
-//     // Format industry data from product
-//     const formattedIndustry = productData.industry.map(ind => {
-//       const [industry, percentage, available] = ind.split('|');
-//       return {
-//         industry,
-//         percentage: parseInt(percentage),
-//         available: available === 'true'
-//       };
-//     });
-  
-//     // Format team size data from product
-//     const formattedTeamSize = productData.teamSize.map(size => {
-//       const [sizeRange, percentage, available] = size.split('|');
-//       return {
-//         size: sizeRange,
-//         percentage: parseInt(percentage),
-//         available: available === 'true'
-//       };
-//     });
-  
-//     // Format user category data from product
-//     const formattedUserCategory = productData.userCategory.map(cat => {
-//       const [category, percentage, available] = cat.split('|');
-//       return {
-//         category,
-//         percentage: parseInt(percentage),
-//         available: available === 'true'
-//       };
-//     });
-  
-//     // Structure the data in the required format
-//     const formattedData = {
-//       product_profile: {
-//         focusCountries: productData.focusCountries,
-//         languages: productData.languages,
-//         userCategory: formattedUserCategory,
-//         industry: formattedIndustry,
-//         teamSize: formattedTeamSize
-//       },
-//       user_profile: {
-//         Location: userData.Location,
-//         CompanyType: userData.CompanyType,
-//         PrimaryLanguage: userData.PrimaryLanguage,
-//         Industry: userData.Industry,
-//         TeamSize: userData.TeamSize,
-//         Goals: userData.Goals
-//       }
-//     };
-  
-//     return formattedData;
-//   };
-
-//  // In your CompatibilityChecker component:
-// const checkCompatibility = async () => {
-//   try {
-//     setError(null);
-//     const formattedData = formatDataForCompatibility(product, userData);
-    
-//     const response = await fetch('http://localhost:8000/compatibility/', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(formattedData),
-//     });
-
-//     if (!response.ok) {
-//       throw new Error('Failed to check compatibility');
-//     }
-
-//     const data = await response.json();
-//     setResults(data);
-//     setIsOpen(true);
-//   } catch (err) {
-//     setError(err instanceof Error ? err.message : 'An error occurred');
-//   }
-// };
-
-//   const getMatchColor = (isMatch) => {
-//     return isMatch ? 'bg-green-100' : 'bg-red-100';
-//   };
-
-//   const getMatchIcon = (isMatch) => {
-//     return isMatch ? (
-//       <Check className="h-5 w-5 text-green-600" />
-//     ) : (
-//       <X className="h-5 w-5 text-red-600" />
-//     );
-//   };
 
 const formatDataForCompatibility = (productData, userData) => {
   // Format industry data from product
@@ -1084,9 +988,10 @@ const formatDataForCompatibility = (productData, userData) => {
       {company?.companyName ? (
         <p className="text-sm text-slate-500">{company.companyName}</p>
       ) : (
-        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
-          Tech Solutions Inc.
-        </p>
+        // <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+        //   Tech Solutions Inc.
+        // </p>
+        <p className="text-sm text-slate-500">{product.CompanyName}</p>
       )}
     </div>
     <div>
@@ -1097,6 +1002,7 @@ const formatDataForCompatibility = (productData, userData) => {
         <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
           2015
         </p>
+        
       )}
     </div>
     <div>
@@ -1118,9 +1024,10 @@ const formatDataForCompatibility = (productData, userData) => {
       {company?.headQuaters ? (
         <p className="text-sm text-slate-500">{company.headQuaters}</p>
       ) : (
-        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
-          San Francisco, CA
-        </p>
+        // <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+        //   San Francisco, CA
+        // </p>
+        <p className="text-sm text-slate-500">{product.Headquarters}</p>
       )}
     </div>
     <div>
@@ -1128,9 +1035,13 @@ const formatDataForCompatibility = (productData, userData) => {
       {company?.NameOfFounders ? (
         <p className="text-sm text-slate-500">{company.NameOfFounders}</p>
       ) : (
-        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
-          John Smith, Sarah Johnson
-        </p>
+     
+        <p className="text-sm text-slate-500">
+        {Array.isArray(product.FoundersNames) 
+          ? product.FoundersNames.join(', ') 
+          : product.FoundersNames}
+      </p>
+      
       )}
     </div>
     <div>

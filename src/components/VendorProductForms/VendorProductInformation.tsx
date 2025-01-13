@@ -32,56 +32,11 @@ import {
 } from "../ui/select";
 import { Switch } from "../ui/switch"
 import { useToast } from "../ui/use-toast";;
-
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 interface Integrations {
   [category: string]: string[];
 }
 
-// // Define schema for both fields
-// const productSchema = z.object({
-//   productName: z
-//     .string()
-//     .min(3, "Product name must be at least 3 characters"),
-//   category: z.array(z.string()).min(1, "Please select at least one category"),
-//   deployment: z
-//     .array(z.string())
-//     .min(1, "Please select at least one deployment option"),
-  
-  
-//   focusCountries: z
-//     .array(z.string())
-//     .max(5, "You can select up to 5 countries")
-//     .min(1, "Please select at least one language"),
-//   languages: z.array(z.string()).min(1, "Please select at least one language"),
-//   securityCertificate: z.string().optional().refine(value => {
-//     if (value === undefined || value.trim() === '') return true; // Skip validation for undefined or empty values
-//     return wordCount(value, 50); // Ensure this function is correctly defined
-//   }, {
-//     message: "Max word limit of 50 words exceeded",
-//   }),
-//   websiteUrl: z.string().url("Invalid Website URL").optional().nullable(),
-//   adoptionPeriod: z
-//   .number({
-//     required_error: "Adoption period is required",
-//     invalid_type_error: "Adoption period must be a number",
-//   }),  adoptionPeriodUnit: z.enum(["days", "months", "years"], {
-//     invalid_type_error: "Please select a valid period unit",
-//   }),
-  
-//     mobileAvailable: z.enum(["Yes", "No"], {
-//       required_error: "Choose this please", // Error when the field is not provided
-//       invalid_type_error: "Choose this please", // Error when the value is null or any other type
-//     }),
-
-//     logoPreview: z.any().refine(value => value !== null, {
-//       message: "Logo preview is required",
-//   }),
-
-  
-// });
-// const wordCount = (value: string, maxWords: number): boolean => {
-//   return value.trim().split(/\s+/).length <= maxWords;
-// };
 
 const ProductInformation = () => {
   const {
@@ -106,7 +61,13 @@ const ProductInformation = () => {
     securityCertificate,
     setSecurityCertificate,
     setWebsiteUrl,
-    websiteUrl
+    websiteUrl,
+    companyName,
+    headquarters,
+    foundersNames,
+    setCompanyName,
+    setHeadquarters,
+    setFoundersNames,
   } = ProductInfo();
 
   const [inputValue, setInputValue] = useState(productName);
@@ -358,30 +319,7 @@ const ProductInformation = () => {
   ];
 
   const { toast } = useToast();
-  // Validate a single field
-  // const validateField = (name: string, value: any) => {
-  //   const tempValues = {
-  //     productName: name === "productName" ? value : inputValue,
-  //     category: name === "category" ? value : category,
-  //     deployment: name === "deployment" ? value : deployment,
-  //     adoptionPeriod: name === "adoptionPeriod" ? value : adoptionPeriod,
-  //     adoptionPeriodUnit:
-  //       name === "adoptionPeriodUnit" ? value : adoptionPeriodUnit,
-  //     focusCountries: name === "focusCountries" ? value : focusCountries,
-  //     languages: name === "languages" ? value : languages,
-  //     securityCertificate: name === "securityCertificate"? value : securityValue,
-  //     websiteUrl: websiteUrl || undefined,
-  //     logoPreview:logoPreview,
-  //   };
-
-  //   const result = productSchema.safeParse(tempValues);
-
-  //   if (!result.success) {
-  //     const error = result.error.errors.find((err) => err.path[0] === name);
-  //     return error ? error.message : "";
-  //   }
-  //   return "";
-  // };
+  
   const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const sanitizedValue = value.trim() === "" ? null : value.trim();
@@ -391,50 +329,7 @@ const ProductInformation = () => {
     }
   };
   
-  // const validateFieldAdopt = (name: string, value: any) => {
-  //   const tempValues = {
-  //    adoptionPeriod: name === 'adoptionPeriod' ? Number(value) : adoptionPeriod,
-  //     adoptionPeriodUnit: name === 'adoptionPeriodUnit' ? value : adoptionPeriodUnit,
-  //   };
-
-  //   const result = productSchema.safeParse(tempValues);
-
-  //   if (!result.success) {
-  //     const error = result.error.errors.find((err) => err.path[0] === name);
-  //     return error ? error.message : "";
-  //   }
-  //   return "";
-  // }; 
-
-  // const handleAdoptionPeriodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.target;
-  //   const errorMessage = validateFieldAdopt(name, value);
-  //   setErrors(prevErrors => ({
-  //     ...prevErrors,
-  //     [name]: errorMessage
-  //   }));
-
-  //   if (!errorMessage) {
-  //     setAdoptionPeriod(Number(value));
-  //   }
-  // };
-
-
-
-  // const handleAdoptionPeriodUnitChange = (value: string) => {
-  //   const name = 'adoptionPeriodUnit';
-  //   const errorMessage = validateFieldAdopt(name, value);
-  //   setErrors(prevErrors => ({
-  //     ...prevErrors,
-  //     [name]: errorMessage
-  //   }));
-
-  //   if (!errorMessage) {
-  //     setAdoptionPeriodUnit(value);
-  //   }
-  // };
-
-
+ 
   const handleAdoptionPeriodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setAdoptionPeriod(Number(value));
@@ -445,132 +340,7 @@ const ProductInformation = () => {
   };
   
 
-  // Function to validate all fields
-  // const validateAllFields = () => {
-  //   const result = productSchema.safeParse({
-  //     productName: inputValue,
-  //     category,
-  //     deployment,
-  //     adoptionPeriod,
-  //     adoptionPeriodUnit,
-  //     focusCountries,
-  //     languages,
-  //     mobileAvailable,
-  //     securityCertificate: securityValue,
-  //     websiteUrl: websiteUrl || undefined,
-  //     logoPreview: logoPreview || undefined,
-  //   });
-
-  //   if (!result.success) {
-  //     const validationErrors: Record<string, string> = {};
-  //     result.error.errors.forEach((error) => {
-  //       validationErrors[error.path[0]] = error.message;
-  //     });
-  //     setErrors(validationErrors);
-  //     return false;
-  //   }
-
-  //   setErrors({});
-  //   return true;
-  // };
-
-  // const handleAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-  //   const { name, value } = e.target;
-   
-  //   if (name === "securityCertificate") {
-  //     setSecurityValue(value);
-  //     const errorMessage = validateField(name, value);
-  //     setErrors((prevErrors) => ({
-  //       ...prevErrors,
-  //       [name]: errorMessage,
-  //     }));
-  //   } 
-  // };
-
-  // // Handle change events and update state
-  // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value, checked } = e.target;
-
-  //   if (name === "productName") {
-  //     setInputValue(value);
-
-  //     // Validate the productName field
-  //     const errorMessage = validateField(name, value);
-  //     setErrors((prevErrors) => ({
-  //       ...prevErrors,
-  //       [name]: errorMessage,
-  //     }));
-
-  //   }else if (name === "category") {
-  //     let updatedCategories = category;
-
-  //     if (checked) {
-  //       updatedCategories = [...category, value];
-  //     } else {
-  //       updatedCategories = category.filter((cat: any) => cat !== value);
-  //     }
-
-  //     setCategory(updatedCategories);
-
-  //     const errorMessage = validateField(name, updatedCategories);
-  //     setErrors((prevErrors) => ({
-  //       ...prevErrors,
-  //       [name]: errorMessage,
-  //     }));
-  //   } else if (name === "deployment") {
-  //     let updatedDeployment = deployment;
-
-  //     if (checked) {
-  //       updatedDeployment = [...deployment, value];
-  //     } else {
-  //       updatedDeployment = deployment.filter((dep: any) => dep !== value);
-  //     }
-
-  //     setDeployment(updatedDeployment);
-
-  //     const errorMessage = validateField(name, updatedDeployment);
-  //     setErrors((prevErrors) => ({
-  //       ...prevErrors,
-  //       [name]: errorMessage,
-  //     }));
-  //   }
-  // };
-
- 
-  // // Handle countries change
-  // const handleCountriesChange = (selectedCountries: string[]) => {
-  //   setFocusCountries(selectedCountries);
-  //   const errorMessage = validateField("focusCountries", selectedCountries);
-  //   setErrors((prevErrors) => ({
-  //     ...prevErrors,
-  //     ["focusCountries"]: errorMessage,
-  //   }));
-  // };
-
-  // // Handle languages change
-  // const handleLanguagesChange = (selectedLanguages: string[]) => {
-  //   setLanguages(selectedLanguages);
-  //   const errorMessage = validateField("languages", selectedLanguages);
-  //   setErrors((prevErrors) => ({
-  //     ...prevErrors,
-  //     ["languages"]: errorMessage,
-  //   }));
-  // };
-
-
-
   
-
-  // const validateForm = () => {
-  //   const result = productSchema.safeParse({ logoUrl });
-  //   if (!result.success) {
-  //     const errors = result.error.errors.reduce((acc, error) => {
-  //       acc[error.path[0]] = error.message;
-  //       return acc;
-  //     }, {});
-  //     setErrors(errors);
-  //   }
-  // };
 
   const handleAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -611,12 +381,7 @@ const ProductInformation = () => {
     setLanguages(selectedLanguages);
   };
   
-  // If you still need the form validation function but without schema:
-  const validateForm = () => {
-    // You can either remove this completely or keep it as a placeholder
-    // if you plan to add different validation later
-  };
- 
+  
  
 
 const integrations: Integrations = {
@@ -925,90 +690,11 @@ const handleFileChange = (event) => {
   }
 };
 
-//   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-  
-//     let hasErrors = false;
-  
-//     if (!validateAllFields()) {
-//       console.log("Validation failed");
-//       hasErrors = true;
-//       toast({
-//         title: "Validation Failed",
-//         description: "Please check the form for errors",
-//         variant: "error",
-//       });
-//     }
-  
-//     // Validate integrations
-//     try {
-//       integrationsSchema.parse({ integrations: selectedIntegrations });
-//     } catch (error) {
-//       if (error instanceof z.ZodError) {
-//         setErrors(prevErrors => ({
-//           ...prevErrors,
-//           integrations: error.errors[0].message
-//         }));
-//         hasErrors = true;
-//       }
-//     }
-  
-//     if (hasErrors) {
-//       console.log("Form has errors. Please correct them before submitting.");
-//       return; // Stop form submission if there are validation errors
-//     }
-  
 
-//     if (logoFile) {
-//       try {
-//         const uploadedLogoUrl = await uploadFile(logoFile, "logos");
-//         console.log("Logo uploaded:", uploadedLogoUrl);
-//         setLogoUrl(uploadedLogoUrl); // Update global state with the new URL
-//       } catch (error) {
-//         console.error("Error uploading logo:", error);
-//         setErrors(prevErrors => ({ ...prevErrors, logo: "Failed to upload logo" }));
-//       }
-//     } else {
-      
-//       console.log("No logo file selected");
-//     }
+// const [companyName, setCompanyName] = useState("");
+// const [Headquarters, setHeadquarters] = useState("");
+// const [FoundersNames, setFoundersNames] = useState([]);
 
-//     if (logoPreview === "" || logoPreview === null || logoPreview === undefined) {
-//       toast({
-//         title: "Missing Fields",
-//         description: "Fill All Details And Upload Logo Please",
-//         variant: "error",
-//       });
-//     }else {
-//       toast({
-//         title: "Saved",
-//         description: "Product Information  Saved ... Move to the next form",
-//         variant: "success",
-//       });
-//     }
-    
-// setProductName(inputValue);
-// setSecurityCertificate(securityValue);
-
-
-// // Prepare form data for submission
-// const formData = {
-//   productName: inputValue,
-//   category,
-//   deployment,
-//   adoptionPeriod,
-//   adoptionPeriodUnit,
-//   focusCountries,
-//   languages,
-//   securityCertificate: securityValue,
-//   logoUrl,
-//   integrations: selectedIntegrations,
-//   mobileAccessibility: mobileAvailable,
-// };
-
-// console.log("Form submitted with:", formData);
-    
-//   };
 
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
@@ -1055,6 +741,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     logoUrl,
     integrations: selectedIntegrations,
     mobileAccessibility: mobileAvailable,
+    companyName,
+    headquarters,
+    foundersNames,
+    // Add more fields as needed
   };
 
   console.log("Form submitted with:", formData);
@@ -1102,6 +792,77 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             </div>
           )}
         </div>
+
+      
+       
+        <div className="space-y-6">
+          {/* Company Name */}
+          <div className="space-y-2">
+            <Label htmlFor="companyName">Company Name</Label>
+            <Input
+              id="companyName"
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              placeholder="Enter company name"
+              className="w-full"
+            />
+          </div>
+
+          {/* Headquarters */}
+          <div className="space-y-2">
+            <Label htmlFor="headquarters">Headquarters</Label>
+            <Input
+              id="headquarters"
+              value={headquarters}
+              onChange={(e) => setHeadquarters(e.target.value)}
+              placeholder="Enter headquarters location"
+              className="w-full"
+            />
+          </div>
+
+          {/* Founders Names */}
+          <div className="space-y-2">
+            <Label>Founders</Label>
+            {foundersNames.map((founder, index) => (
+              <div key={index} className="flex gap-2 mt-2">
+                <Input
+                  value={founder}
+                  onChange={(e) => {
+                    const newFounders = [...foundersNames];
+                    newFounders[index] = e.target.value;
+                    setFoundersNames(newFounders);
+                  }}
+                  placeholder={`Founder ${index + 1}`}
+                  className="flex-1"
+                />
+                {foundersNames.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={() => {
+                      const newFounders = foundersNames.filter((_, i) => i !== index);
+                      setFoundersNames(newFounders);
+                    }}
+                    className="px-3"
+                  >
+                    Remove
+                  </Button>
+                )}
+              </div>
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setFoundersNames([...foundersNames, ''])}
+              className="mt-2"
+            >
+              Add Founder
+            </Button>
+          </div>
+        </div>
+      
+
+
         {/* logo */}
         {/* <div className="w-full mt-2">
           <Label htmlFor="logo">Logo</Label>

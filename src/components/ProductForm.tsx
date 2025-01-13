@@ -11,7 +11,7 @@ import ProductLifeCycle from './ProductForms/ProductLifeCycle';
 import ProductReference from './ProductForms/ProductReference';
 import ProductPostImplementationService from './ProductForms/ProductPostImplementationService';
 import { Button } from "./ui/button";
-import { ChevronDown, ChevronUp, ArrowRight ,Check} from 'lucide-react';
+import { ChevronDown, ChevronUp, ArrowRight ,Check,RefreshCw} from 'lucide-react';
 import CheckUpload from './ProductForms/CheckUpload';
 import { z } from 'zod';
 interface ProductFormWithProgressProps {
@@ -21,7 +21,7 @@ interface ProductFormWithProgressProps {
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useToast } from "./ui/use-toast";
-
+import { useAuth } from '@/context/AuthContext';
 // const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
 // const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing }) => {
 const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing, product }) => {
@@ -444,7 +444,7 @@ setStorage(storage);
 
   // form submission 
 
-
+  const { vendorId, userType } = useAuth();
   const handleSubmit = async () => {
 
     toast({
@@ -474,7 +474,9 @@ setStorage(storage);
     }
     if (editing === false) {
       // const wordsArray = pricingParams.split(/\s+/)
-      const userId = localStorage.getItem("vendorId");
+      // const userId = localStorage.getItem("vendorId");
+     
+    const userId= vendorId
       if (!userId) {
           console.log({
             title: "Error",
@@ -796,64 +798,197 @@ setStorage(storage);
 
   return (
     
-    <div className="relative">
+    // <div className="relative">
      
      
      
-      <div className="hidden md:flex absolute left-0 top-0 bottom-0 w-16 flex-col items-center">
-        {steps.map((step, index) => (
-          <React.Fragment key={index}>
-            <div 
-              className={`w-8 h-8 rounded-full flex items-center justify-center cursor-pointer ${
-                completedSteps[step.key] ? 'bg-green-500 text-white' : 'bg-gray-300'
-              }`}
-              onClick={() => handleStepClick(index)}
-            >
-              {completedSteps[step.key] ? <Check size={16} /> : index + 1}
-            </div>
-            {index < steps.length - 1 && (
-              <div className={`w-1 flex-grow ${
-                completedSteps[step.key] && completedSteps[steps[index + 1].key]
-                  ? 'bg-green-500' : 'bg-gray-300'
-              }`} />
-            )}
-          </React.Fragment>
-        ))}
-      </div>
-      <div className="md:pl-20">
-        {steps.map((step, index) => (
-          <div key={index} className="mb-4">
-            <button
-              className={`w-full text-left p-4 font-semibold flex justify-between items-center ${
-                index === activeStep ? 'bg-blue-100' : 'bg-gray-100'
-              } hover:bg-gray-200 rounded-lg`}
-              onClick={() => handleStepClick(index)}
-            >
-              {step.title}
-              {index === activeStep ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-            </button>
-            {index === activeStep && (
-              <div className="mt-4">
-                <step.component />
-                {index < steps.length - 1 && (
-                  <Button 
-                    className="mt-4 flex items-center"
-                    onClick={handleNextStep}
-                  >
-                    Next <ArrowRight className="ml-2" size={16} />
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
+    //   <div className="hidden md:flex absolute left-0 top-0 bottom-0 w-16 flex-col items-center">
+    //     {steps.map((step, index) => (
+    //       <React.Fragment key={index}>
+    //         <div 
+    //           className={`w-8 h-8 rounded-full flex items-center justify-center cursor-pointer ${
+    //             completedSteps[step.key] ? 'bg-green-500 text-white' : 'bg-gray-300'
+    //           }`}
+    //           onClick={() => handleStepClick(index)}
+    //         >
+    //           {completedSteps[step.key] ? <Check size={16} /> : index + 1}
+    //         </div>
+    //         {index < steps.length - 1 && (
+    //           <div className={`w-1 flex-grow ${
+    //             completedSteps[step.key] && completedSteps[steps[index + 1].key]
+    //               ? 'bg-green-500' : 'bg-gray-300'
+    //           }`} />
+    //         )}
+    //       </React.Fragment>
+    //     ))}
+    //   </div>
+    //   <div className="md:pl-20">
+    //     {steps.map((step, index) => (
+    //       <div key={index} className="mb-4">
+    //         <button
+    //           className={`w-full text-left p-4 font-semibold flex justify-between items-center ${
+    //             index === activeStep ? 'bg-blue-100' : 'bg-gray-100'
+    //           } hover:bg-gray-200 rounded-lg`}
+    //           onClick={() => handleStepClick(index)}
+    //         >
+    //           {step.title}
+    //           {index === activeStep ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+    //         </button>
+    //         {index === activeStep && (
+    //           <div className="mt-4">
+    //             <step.component />
+    //             {index < steps.length - 1 && (
+    //               <Button 
+    //                 className="mt-4 flex items-center"
+    //                 onClick={handleNextStep}
+    //               >
+    //                 Next <ArrowRight className="ml-2" size={16} />
+    //               </Button>
+    //             )}
+    //           </div>
+    //         )}
+    //       </div>
+    //     ))}
 
-        <Button className="mt-4 flex items-center" onClick={handleSubmit}>Submit here </Button>
-      </div>
+    //     <Button className="mt-4 flex items-center" onClick={handleSubmit}>Submit here </Button>
+    //   </div>
 
      
+    // </div>
+
+
+  // In your existing component, replace the form section with:
+<div className="relative">
+  {/* Header with Refresh */}
+  <div className="mb-8 flex items-center justify-between">
+    <div>
+      <h2 className="text-2xl font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        Add a New Product
+      </h2>
+      <p className="text-gray-500 mt-1">Follow the steps below</p>
     </div>
+    <button 
+      onClick={() => window.location.reload()}
+      className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium
+                text-indigo-600 transition-all duration-200 hover:border-indigo-200 hover:bg-indigo-50
+                hover:shadow-md active:scale-95 group"
+    >
+      <RefreshCw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
+      Refresh
+    </button>
+  </div>
+
+  <div className="flex gap-8">
+    
+<div className="hidden lg:block w-24 relative">
+
+  <div className="absolute inset-y-0 left-8 w-0.5 bg-gray-200" />
+  
+  
+  <div className="overflow-y-auto h-screen fixed scrollbar-thin scrollbar-thumb-indigo-500 scrollbar-track-gray-100">
+    {steps.map((step, index) => (
+      <div key={index} className="relative mb-24">
+        <div
+          onClick={() => handleStepClick(index)}
+          className={`relative z-10 w-12 h-12 rounded-xl flex items-center justify-center cursor-pointer
+            transition-all duration-300 transform hover:scale-110 shadow-lg
+            ${
+              completedSteps[step.key]
+                ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
+                : index === activeStep
+                ? 'bg-white border-2 border-indigo-500 text-indigo-600'
+                : 'bg-white border-2 border-gray-200 hover:border-indigo-300'
+            }`}
+        >
+          {completedSteps[step.key] ? (
+            <Check className="w-6 h-6" />
+          ) : (
+            <span className="text-lg font-medium">{index + 1}</span>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+
+    {/* Main Content */}
+    <div className="flex-1 max-w-3xl">
+      {steps.map((step, index) => (
+        <div key={index} className="mb-4">
+          <button
+            onClick={() => handleStepClick(index)}
+            className={`w-full transition-all duration-300 ${
+              index === activeStep 
+                ? 'bg-gradient-to-r from-indigo-50 to-purple-50 border-l-4 border-indigo-500'
+                : 'bg-white hover:bg-gray-50'
+            } rounded-xl shadow-sm hover:shadow-md`}
+          >
+            <div className="p-6 flex justify-between items-center">
+              <div className="flex items-center gap-4">
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                  completedSteps[step.key]
+                    ? 'bg-green-100 text-green-600'
+                    : index === activeStep
+                    ? 'bg-indigo-100 text-indigo-600'
+                    : 'bg-gray-100 text-gray-500'
+                }`}>
+                  {completedSteps[step.key] ? (
+                    <Check className="w-5 h-5" />
+                  ) : (
+                    <span className="font-medium">{index + 1}</span>
+                  )}
+                </div>
+                <div className="text-left">
+                  <h3 className="font-medium text-gray-900">{step.title}</h3>
+                </div>
+              </div>
+              {index === activeStep ? (
+                <ChevronUp className="w-5 h-5 text-indigo-500" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-gray-400" />
+              )}
+            </div>
+          </button>
+
+          {index === activeStep && (
+            <div className="mt-4 transform transition-all duration-300">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <step.component />
+                
+                <div className="mt-6 flex justify-end gap-4">
+                  {index < steps.length - 1 ? (
+                    <button 
+                      onClick={handleNextStep}
+                      className="rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-2.5
+                               text-white text-sm font-medium shadow-lg shadow-indigo-200 transition-all duration-200
+                               hover:shadow-xl hover:shadow-indigo-300 active:scale-95
+                               flex items-center gap-2"
+                    >
+                      Continue <ArrowRight className="w-4 h-4" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleSubmit}
+                      className="rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-2.5
+                               text-white text-sm font-medium shadow-lg shadow-indigo-200 transition-all duration-200
+                               hover:shadow-xl hover:shadow-indigo-300 active:scale-95"
+                    >
+                      Submit
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
   );
 };
 
 export default ProductFormWithProgress;
+
+

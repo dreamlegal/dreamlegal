@@ -1,1026 +1,741 @@
-"use client";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import { useEffect, useState } from "react";
-import { CiLogout } from "react-icons/ci";
-import { FaRegUserCircle } from "react-icons/fa";
-import { FaStar } from "react-icons/fa6";
-import { HiOutlinePencil } from "react-icons/hi";
-import { IoIosArrowDown } from "react-icons/io";
-import { MdEdit, MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { TbListDetails } from "react-icons/tb";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
-import { ScrollArea } from "./ui/scroll-area";
-import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
+// import React, { useState, useEffect } from 'react';
+// import { useRouter } from "next/navigation";
+// import { useAuth } from '@/context/AuthContext';
+// import { Building2, Users, Star, Calendar, RefreshCw, Globe, Mail, Phone, MapPin, Award } from 'lucide-react';
+
+// const VendorProfile = ({ verified, getProfile }) => {
+//   const [isEditing, setIsEditing] = useState(false);
+//   const [profile, setProfile] = useState(getProfile);
+//   const [loading, setLoading] = useState(true);
+//   const [isRefreshing, setIsRefreshing] = useState(false);
+//   const router = useRouter();
+//   const { vendorId, userType } = useAuth();
+
+//   useEffect(() => {
+//     if (vendorId) {
+//       fetchProfile();
+//     }
+//   }, [vendorId]);
+
+//   const fetchProfile = async () => {
+//     try {
+//       const response = await fetch(`/api/company-info?id=${vendorId}`);
+//       const data = await response.json();
+//       setProfile(data.profile);
+//       setFormData({
+//         companyName: data.profile?.companyName || "",
+//         website: data.profile?.website || "",
+//         yearFounded: data.profile?.yearFounded || "",
+//         headQuaters: data.profile?.headQuaters || "",
+//         NameOfFounders: data.profile?.NameOfFounders || "",
+//         contact: data.profile?.contact || "",
+//         TeamSize: data.profile?.TeamSize || "",
+//         Awards: data.profile?.Awards || "",
+//         PointOfContactName: data.profile?.PointOfContactName || "",
+//         PointOfContactPhone: data.profile?.PointOfContactPhone || "",
+//         PointOfContactDesignation: data.profile?.PointOfContactDesignation || "",
+//       });
+//       setLoading(false);
+//     } catch (error) {
+//       console.error("Error fetching profile:", error);
+//       setLoading(false);
+//     }
+//   };
+
+//   const [formData, setFormData] = useState({
+//     companyName: profile?.companyName || "",
+//     website: profile?.website || "",
+//     yearFounded: profile?.yearFounded || "",
+//     headQuaters: profile?.headQuaters || "",
+//     NameOfFounders: profile?.NameOfFounders || "",
+//     contact: profile?.contact || "",
+//     TeamSize: profile?.TeamSize || "",
+//     Awards: profile?.Awards || "",
+//     PointOfContactName: profile?.PointOfContactName || "",
+//     PointOfContactPhone: profile?.PointOfContactPhone || "",
+//     PointOfContactDesignation: profile?.PointOfContactDesignation || "",
+//   });
+
+//   const handleRefresh = async () => {
+//     setIsRefreshing(true);
+//     await fetchProfile();
+//     setTimeout(() => setIsRefreshing(false), 500);
+//   };
+
+//   const handleEditSubmit = async (e) => {
+//     e.preventDefault();
+//     if (!vendorId) return;
+
+//     try {
+//       const response = await fetch("/api/edit-company", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ ...formData, vendorId }),
+//       });
+      
+//       const result = await response.json();
+//       if (result.success) {
+//         setProfile(result.profile);
+//         setFormData(result.profile);
+//         setIsEditing(false);
+//       }
+//     } catch (error) {
+//       console.error("Error updating profile:", error);
+//     }
+//   };
+//   const InfoCard = ({ icon: Icon, label, value }) => (
+//     <div className="bg-gradient-to-r from-white to-gray-50 rounded-xl p-4 border border-gray-100 
+//                   hover:shadow-md transition-all duration-200 group">
+//       <div className="flex items-center gap-3">
+//         <div className="p-2 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 
+//                       group-hover:from-blue-100 group-hover:to-indigo-100 transition-colors duration-200">
+//           <Icon className="w-4 h-4 text-blue-600" />
+//         </div>
+//         <div>
+//           <p className="text-xs text-gray-500">{label}</p>
+//           <p className="text-sm font-medium text-gray-900 mt-1">{value || "Not specified"}</p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+
+//   const InputField = ({ label, id, type = "text", value, onChange }) => (
+//     <div className="relative group">
+//       <label 
+//         className="absolute -top-2 left-3 bg-white px-1 text-xs font-medium text-blue-500 z-10" 
+//         htmlFor={id}
+//       >
+//         {label}
+//       </label>
+//       <input
+//         id={id}
+//         type={type}
+//         value={value}
+//         onChange={onChange}
+//         className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm transition-all duration-200
+//                  focus:border-blue-400 focus:ring-2 focus:ring-blue-50 outline-none
+//                  group-hover:border-blue-200"
+//       />
+//     </div>
+//   );
+
+//   if (loading) {
+//     return (
+//       <div className="rounded-xl bg-white p-6 shadow-sm space-y-4 animate-pulse">
+//         <div className="h-8 bg-gray-200 rounded w-1/3"></div>
+//         <div className="grid grid-cols-2 gap-4">
+//           {[...Array(6)].map((_, i) => (
+//             <div key={i} className="h-24 bg-gray-100 rounded-xl"></div>
+//           ))}
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="h-full rounded-xl bg-white shadow-sm overflow-hidden">
+//       {/* Header */}
+//       <div className="px-6 py-4 bg-gradient-to-r from-blue-50/80 to-indigo-50/80 border-b border-gray-100">
+//         <div className="flex justify-between items-center">
+//           <div className="flex items-center gap-4">
+//             <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 
+//                           flex items-center justify-center text-white shadow-lg">
+//               {profile?.companyName?.[0] || <Building2 className="w-6 h-6" />}
+//             </div>
+//             <div>
+//               <h1 className="text-lg font-semibold text-gray-900">{profile?.companyName}</h1>
+//               <div className="flex items-center gap-2 mt-1">
+//                 <Globe className="w-4 h-4 text-gray-400" />
+//                 <a href={profile?.website} 
+//                    className="text-sm text-gray-500 hover:text-blue-500 transition-colors"
+//                 >
+//                   {profile?.website || "Website not specified"}
+//                 </a>
+//               </div>
+//             </div>
+//           </div>
+//           <div className="flex items-center gap-3">
+//             <button
+//               onClick={handleRefresh}
+//               disabled={loading || isRefreshing}
+//               className="p-2 text-gray-500 hover:text-blue-600 rounded-lg hover:bg-white/80 
+//                        transition-all duration-200 disabled:opacity-50"
+//             >
+//               <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} />
+//             </button>
+//             <button
+//               onClick={() => setIsEditing(!isEditing)}
+//               className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200
+//                        bg-white border border-gray-200 text-gray-700 hover:border-blue-500 hover:text-blue-600
+//                        hover:shadow-md hover:shadow-blue-100 active:scale-98"
+//             >
+//               {isEditing ? 'Cancel' : 'Edit Profile'}
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//       <div className="p-6">
+//         {!isEditing ? (
+//           <div className="grid grid-cols-2 gap-8">
+//             {/* Company Information */}
+//             <div className="space-y-6">
+//               <div>
+//                 <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2 mb-4">
+//                   <Building2 className="w-4 h-4 text-blue-500" />
+//                   Company Information
+//                 </h3>
+//                 <div className="grid gap-3">
+//                   {[
+//                     { icon: Building2, label: "Company Name", value: profile?.companyName },
+//                     { icon: Globe, label: "Website", value: profile?.website },
+//                     { icon: Calendar, label: "Founded", value: profile?.yearFounded },
+//                     { icon: MapPin, label: "Location", value: profile?.headQuaters },
+//                     { icon: Phone, label: "Contact", value: profile?.contact },
+//                     { icon: Users, label: "Founders", value: profile?.NameOfFounders },
+//                   ].map((item, index) => (
+//                     <InfoCard key={index} {...item} />
+//                   ))}
+//                 </div>
+//               </div>
+
+            
+//             </div>
+
+//             {/* Point of Contact */}
+//             <div>
+//             <div>
+//                 <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2 mb-4">
+//                   <Award className="w-4 h-4 text-blue-500" />
+//                   Company Achievements
+//                 </h3>
+//                 <div className="grid gap-3">
+//                   <InfoCard 
+//                     icon={Users} 
+//                     label="Team Size" 
+//                     value={profile?.TeamSize} 
+//                   />
+//                   <InfoCard 
+//                     icon={Star} 
+//                     label="Awards & Recognition" 
+//                     value={profile?.Awards} 
+//                   />
+//                 </div>
+//               </div>
+//               <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2 mb-4">
+//                 <Users className="w-4 h-4 text-blue-500" />
+//                 Point of Contact
+//               </h3>
+//               <div className="space-y-3">
+//                 <div className="p-4 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100">
+//                   <div className="flex items-center gap-4">
+//                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 
+//                                   flex items-center justify-center text-white font-medium">
+//                       {profile?.PointOfContactName?.[0] || "C"}
+//                     </div>
+//                     <div>
+//                       <h4 className="text-sm font-medium text-gray-900">
+//                         {profile?.PointOfContactName || "Contact Name"}
+//                       </h4>
+//                       <p className="text-sm text-gray-500 mt-0.5">
+//                         {profile?.PointOfContactDesignation || "Designation"}
+//                       </p>
+//                     </div>
+//                   </div>
+//                   <div className="mt-4 pt-4 border-t border-blue-200">
+//                     <div className="flex items-center gap-2">
+//                       <Phone className="w-4 h-4 text-blue-500" />
+//                       <span className="text-sm text-gray-600">
+//                         {profile?.PointOfContactPhone || "Phone Number"}
+//                       </span>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         ) : (
+//           <form onSubmit={handleEditSubmit} className="grid grid-cols-2 gap-x-8 gap-y-6">
+//             {/* Company Details Form */}
+//             <div className="space-y-6">
+//               <div className="space-y-4">
+//                 <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2">
+//                   <Building2 className="w-4 h-4 text-blue-500" />
+//                   Company Details
+//                 </h3>
+//                 <div className="space-y-4">
+//                   {[
+//                     { label: "Company Name", id: "companyName" },
+//                     { label: "Website", id: "website", type: "url" },
+//                     { label: "Year Founded", id: "yearFounded" },
+//                     { label: "Location", id: "headQuaters" },
+//                     { label: "Contact", id: "contact" },
+//                     { label: "Founders", id: "NameOfFounders" },
+//                   ].map((field) => (
+//                     <InputField
+//                       key={field.id}
+//                       {...field}
+//                       value={formData[field.id]}
+//                       onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
+//                     />
+//                   ))}
+//                 </div>
+//               </div>
+
+//               <div className="space-y-4">
+//                 <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2">
+//                   <Award className="w-4 h-4 text-blue-500" />
+//                   Achievements
+//                 </h3>
+//                 <div className="space-y-4">
+//                   <InputField
+//                     label="Team Size"
+//                     id="TeamSize"
+//                     value={formData.TeamSize}
+//                     onChange={(e) => setFormData({ ...formData, TeamSize: e.target.value })}
+//                   />
+//                   <InputField
+//                     label="Awards"
+//                     id="Awards"
+//                     value={formData.Awards}
+//                     onChange={(e) => setFormData({ ...formData, Awards: e.target.value })}
+//                   />
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Point of Contact Form */}
+//             <div className="space-y-6">
+//               <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2">
+//                 <Users className="w-4 h-4 text-blue-500" />
+//                 Point of Contact
+//               </h3>
+//               <div className="space-y-4">
+//                 <InputField
+//                   label="Contact Person"
+//                   id="PointOfContactName"
+//                   value={formData.PointOfContactName}
+//                   onChange={(e) => setFormData({ ...formData, PointOfContactName: e.target.value })}
+//                 />
+//                 <InputField
+//                   label="Phone Number"
+//                   id="PointOfContactPhone"
+//                   type="tel"
+//                   value={formData.PointOfContactPhone}
+//                   onChange={(e) => setFormData({ ...formData, PointOfContactPhone: e.target.value })}
+//                 />
+//                 <InputField
+//                   label="Designation"
+//                   id="PointOfContactDesignation"
+//                   value={formData.PointOfContactDesignation}
+//                   onChange={(e) => setFormData({ ...formData, PointOfContactDesignation: e.target.value })}
+//                 />
+//               </div>
+
+//               <div className="flex justify-end gap-3 mt-8">
+//                 <button
+//                   type="button"
+//                   onClick={() => setIsEditing(false)}
+//                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 
+//                            rounded-lg hover:bg-gray-50 transition-all duration-200"
+//                 >
+//                   Cancel
+//                 </button>
+//                 <button
+//                   type="submit"
+//                   className="px-6 py-2 text-sm font-medium text-white rounded-lg
+//                          bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 
+//                          hover:to-indigo-600 shadow-sm hover:shadow-md transition-all duration-200"
+//                 >
+//                   Save Changes
+//                 </button>
+//               </div>
+//             </div>
+//           </form>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default VendorProfile;
+
+
+import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { useAuth } from '@/context/AuthContext';
+import { Building2, Users, Star, Calendar, RefreshCw, Globe, Mail, Phone, MapPin, Award } from 'lucide-react';
 
-const countries = [
-  "Afghanistan",
-  "Albania",
-  "Algeria",
-  "Andorra",
-  "Angola",
-  "Antigua and Barbuda",
-  "Argentina",
-  "Armenia",
-  "Australia",
-  "Austria",
-  "Azerbaijan",
-  "Bahamas",
-  "Bahrain",
-  "Bangladesh",
-  "Barbados",
-  "Belarus",
-  "Belgium",
-  "Belize",
-  "Benin",
-  "Bhutan",
-  "Bolivia",
-  "Bosnia and Herzegovina",
-  "Botswana",
-  "Brazil",
-  "Brunei",
-  "Bulgaria",
-  "Burkina Faso",
-  "Burundi",
-  "Cabo Verde",
-  "Cambodia",
-  "Cameroon",
-  "Canada",
-  "Central African Republic",
-  "Chad",
-  "Chile",
-  "China",
-  "Colombia",
-  "Comoros",
-  "Congo (Congo-Brazzaville)",
-  "Costa Rica",
-  "Croatia",
-  "Cuba",
-  "Cyprus",
-  "Czechia (Czech Republic)",
-  "Democratic Republic of the Congo",
-  "Denmark",
-  "Djibouti",
-  "Dominica",
-  "Dominican Republic",
-  "Ecuador",
-  "Egypt",
-  "El Salvador",
-  "Equatorial Guinea",
-  "Eritrea",
-  "Estonia",
-  "Eswatini",
-  "Ethiopia",
-  "Fiji",
-  "Finland",
-  "France",
-  "Gabon",
-  "Gambia",
-  "Georgia",
-  "Germany",
-  "Ghana",
-  "Greece",
-  "Grenada",
-  "Guatemala",
-  "Guinea",
-  "Guinea-Bissau",
-  "Guyana",
-  "Haiti",
-  "Honduras",
-  "Hungary",
-  "Iceland",
-  "India",
-  "Indonesia",
-  "Iran",
-  "Iraq",
-  "Ireland",
-  "Israel",
-  "Italy",
-  "Jamaica",
-  "Japan",
-  "Jordan",
-  "Kazakhstan",
-  "Kenya",
-  "Kiribati",
-  "Kuwait",
-  "Kyrgyzstan",
-  "Laos",
-  "Latvia",
-  "Lebanon",
-  "Lesotho",
-  "Liberia",
-  "Libya",
-  "Liechtenstein",
-  "Lithuania",
-  "Luxembourg",
-  "Madagascar",
-  "Malawi",
-  "Malaysia",
-  "Maldives",
-  "Mali",
-  "Malta",
-  "Marshall Islands",
-  "Mauritania",
-  "Mauritius",
-  "Mexico",
-  "Micronesia",
-  "Moldova",
-  "Monaco",
-  "Mongolia",
-  "Montenegro",
-  "Morocco",
-  "Mozambique",
-  "Myanmar (formerly Burma)",
-  "Namibia",
-  "Nauru",
-  "Nepal",
-  "Netherlands",
-  "New Zealand",
-  "Nicaragua",
-  "Niger",
-  "Nigeria",
-  "North Korea",
-  "North Macedonia",
-  "Norway",
-  "Oman",
-  "Pakistan",
-  "Palau",
-  "Palestine State",
-  "Panama",
-  "Papua New Guinea",
-  "Paraguay",
-  "Peru",
-  "Philippines",
-  "Poland",
-  "Portugal",
-  "Qatar",
-  "Romania",
-  "Russia",
-  "Rwanda",
-  "Saint Kitts and Nevis",
-  "Saint Lucia",
-  "Saint Vincent and the Grenadines",
-  "Samoa",
-  "San Marino",
-  "Sao Tome and Principe",
-  "Saudi Arabia",
-  "Senegal",
-  "Serbia",
-  "Seychelles",
-  "Sierra Leone",
-  "Singapore",
-  "Slovakia",
-  "Slovenia",
-  "Solomon Islands",
-  "Somalia",
-  "South Africa",
-  "South Korea",
-  "South Sudan",
-  "Spain",
-  "Sri Lanka",
-  "Sudan",
-  "Suriname",
-  "Sweden",
-  "Switzerland",
-  "Syria",
-  "Taiwan",
-  "Tajikistan",
-  "Tanzania",
-  "Thailand",
-  "Timor-Leste",
-  "Togo",
-  "Tonga",
-  "Trinidad and Tobago",
-  "Tunisia",
-  "Turkey",
-  "Turkmenistan",
-  "Tuvalu",
-  "Uganda",
-  "Ukraine",
-  "United Arab Emirates",
-  "United Kingdom",
-  "United States of America",
-  "Uruguay",
-  "Uzbekistan",
-  "Vanuatu",
-  "Vatican City",
-  "Venezuela",
-  "Vietnam",
-  "Yemen",
-  "Zambia",
-  "Zimbabwe",
-];
-
-interface Profile {
-  companyName: string;
-  website: string;
-  yearFounded: string;
-  headQuaters: string;
-  NameOfFounders: string;
-  contact: string;
-  founderVision: string;
-  regionServed: string;
-  TeamSize: string;
-  Awards: string;
-  PointOfContactName: string;
-  PointOfContactPhone: string;
-  PointOfContactDesignation: string;
-  overview: string;
-}
-
-import { z } from "zod";
-
-const profileSchema = z.object({
-  companyName: z.string().min(1, "Company Name is required"),
-  website: z.string().url("Invalid website URL"),
-  yearFounded: z.string().length(4, "Year Founded must be 4 digits"),
-  NameOfFounders: z.string().min(1, "Name of Founders is required"),
-  contact: z.string().regex(/^\d{10}$/, "Contact must be a 10-digit number"),
-  Awards: z.string().optional(),
-  PointOfContactName: z.string().min(1, "Point of Contact Name is required"),
-  PointOfContactPhone: z
-    .string()
-    .regex(/^\d{10}$/, "Phone must be a 10-digit number"),
-  PointOfContactDesignation: z.string().min(1, "Designation is required"),
-});
-
-function VendorProfile({
-  verified,
-  getProfile,
-}: {
-  verified: boolean;
-  getProfile: any;
-}) {
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const [details, setDetails] = useState(true);
-  const [CompDetails, setCompDetails] = useState(true);
-  const [Account, setAccount] = useState(false);
-  const [verify, setVerified] = useState(verified);
-  const [open, setOpen] = useState(verified ? true : false);
-  const [vendorId, setVendorId] = useState<string | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(getProfile);
+const VendorProfile = ({ verified, getProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [profile, setProfile] = useState(getProfile);
+  const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const router = useRouter();
-  useEffect(() => {
-    const storedVendorId = localStorage.getItem("vendorId");
-    if (storedVendorId) {
-      setVendorId(storedVendorId);
-    }
-  }, []);
+  const { vendorId, userType } = useAuth();
 
   useEffect(() => {
     if (vendorId) {
-      const fetchProfile = async () => {
-        try {
-          const response = await fetch(`/api/company-info?id=${vendorId}`);
-          const data = await response.json();
-          setProfile(data.profile);
-        } catch (error) {
-          console.error("Error fetching profile:", error);
-        }
-      };
-
-      fetchProfile();
-    } else {
-      const storedVendorId = localStorage.getItem("vendorId");
-      const fetchProfile = async () => {
-        try {
-          const response = await fetch(
-            `/api/company-info?id=${storedVendorId}`
-          );
-          const data = await response.json();
-          setProfile(data.profile);
-        } catch (error) {
-          console.error("Error fetching profile:", error);
-        }
-      };
       fetchProfile();
     }
   }, [vendorId]);
 
-  useEffect(() => {
-    if (profile) {
+  const fetchProfile = async () => {
+    try {
+      const response = await fetch(`/api/company-info?id=${vendorId}`);
+      const data = await response.json();
+      setProfile(data.profile);
       setFormData({
-        companyName: profile.companyName,
-        website: profile.website,
-        yearFounded: profile.yearFounded,
-        headQuaters: profile.headQuaters,
-        NameOfFounders: profile.NameOfFounders,
-        contact: profile.contact,
-        founderVision: profile.founderVision,
-        regionServed: profile.regionServed,
-        TeamSize: profile.TeamSize,
-        Awards: profile.Awards,
-        overview: profile.overview,
-        PointOfContactName: profile.PointOfContactName,
-        PointOfContactPhone: profile.PointOfContactPhone,
-        PointOfContactDesignation: profile.PointOfContactDesignation,
+        companyName: data.profile?.companyName || "",
+        website: data.profile?.website || "",
+        yearFounded: data.profile?.yearFounded || "",
+        headQuaters: data.profile?.headQuaters || "",
+        NameOfFounders: data.profile?.NameOfFounders || "",
+        contact: data.profile?.contact || "",
+        TeamSize: data.profile?.TeamSize || "",
+        Awards: data.profile?.Awards || "",
+        PointOfContactName: data.profile?.PointOfContactName || "",
+        PointOfContactPhone: data.profile?.PointOfContactPhone || "",
+        PointOfContactDesignation: data.profile?.PointOfContactDesignation || "",
       });
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+      setLoading(false);
     }
-  }, [profile]);
+  };
 
   const [formData, setFormData] = useState({
-    companyName: "",
-    website: "",
-    yearFounded: "",
-    headQuaters: "",
-    NameOfFounders: "",
-    contact: "",
-    founderVision: "",
-    regionServed: "",
-    TeamSize: "",
-    Awards: "",
-    overview: "",
-    PointOfContactName: "",
-    PointOfContactPhone: "",
-    PointOfContactDesignation: "",
+    companyName: profile?.companyName || "",
+    website: profile?.website || "",
+    yearFounded: profile?.yearFounded || "",
+    headQuaters: profile?.headQuaters || "",
+    NameOfFounders: profile?.NameOfFounders || "",
+    contact: profile?.contact || "",
+    TeamSize: profile?.TeamSize || "",
+    Awards: profile?.Awards || "",
+    PointOfContactName: profile?.PointOfContactName || "",
+    PointOfContactPhone: profile?.PointOfContactPhone || "",
+    PointOfContactDesignation: profile?.PointOfContactDesignation || "",
   });
 
-  const handleChange = (e: any) => {
-    const { id, value } = e.target;
-
-    // Restrict length for contact, yearFounded, and Point Of Contact Phone
-    if (id === "contact" && value.length > 10) {
-      return; // Prevent further input
-    }
-    if (id === "yearFounded" && value.length > 4) {
-      return; // Prevent further input
-    }
-    if (id === "PointOfContactPhone" && value.length > 10) {
-      return; // Prevent further input
-    }
-
-    setFormData({ ...formData, [id]: value });
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchProfile();
+    setTimeout(() => setIsRefreshing(false), 500);
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleEditSubmit = async (e) => {
     e.preventDefault();
-    if (!vendorId) {
-      console.error("Vendor ID is missing.");
-      return;
-    }
-
-    // Validate form data against the profileSchema
-    const validationResult = profileSchema.safeParse(formData);
-    if (!validationResult.success) {
-      const errors = validationResult.error.errors.reduce((acc, error) => {
-        acc[error.path[0]] = error.message;
-        return acc;
-      }, {} as Record<string, string>);
-      setErrors(errors);
-      console.error("Validation errors:", errors);
-      return; // Stop submission if validation fails
-    }
+    if (!vendorId) return;
 
     try {
-      const res = await fetch("/api/company-info", {
+      const response = await fetch("/api/edit-company", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, vendorId }),
       });
-
-      const result = await res.json();
+      
+      const result = await response.json();
       if (result.success) {
-        console.log("Form data submitted:", result.profile);
-        setOpen(false);
-
-        // Redirect to a success page or handle success
-        window.location.href = "/vendor";
-      } else {
-        console.error("Error:", result.msg);
-        setOpen(false);
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setOpen(false);
-    }
-  };
-
-  const handleEditSubmit = async (e: any) => {
-    e.preventDefault();
-    if (!vendorId) {
-      console.error("Vendor ID is missing.");
-      return;
-    }
-
-    try {
-      const res = await fetch("/api/edit-company", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...formData, vendorId }),
-      });
-
-      const result = await res.json();
-      if (result.success) {
-        console.log("Form data submitted:", result.profile);
-        setOpen(false);
-        // Redirect to a success page or handle success
         setProfile(result.profile);
-
-        // Optionally, reset the form data to the updated profile data
         setFormData(result.profile);
         setIsEditing(false);
-      } else {
-        console.error("Error:", result.msg);
-        setOpen(false);
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
-      setOpen(false);
+      console.error("Error updating profile:", error);
     }
   };
 
-  const handleSelectChange = (value: any) => {
-    setFormData({ ...formData, TeamSize: value });
-  };
 
-  const handlelogout = () => {
-    localStorage.removeItem("vendorId");
-    router.push("/");
-  };
+  if (loading) {
+    return (
+      <div className="rounded-xl bg-white p-6 shadow-sm space-y-4 animate-pulse">
+        <div className="h-8 bg-gray-200 rounded w-1/3"></div>
+        <div className="grid grid-cols-2 gap-4">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="h-24 bg-gray-100 rounded-xl"></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
-  const handleChangeSelect = (e: any) => {
-    const { name, value, type, checked, files } = e.target;
-    if (type === "file") {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: files[0],
-      }));
-    } else if (type === "checkbox") {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: checked,
-      }));
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
-  };
+  // ... (keep all the existing state management and data fetching logic)
+
+  const InfoCard = ({ icon: Icon, label, value }) => (
+    <div className="bg-gradient-to-r from-white to-gray-50 rounded-xl p-3 sm:p-4 border border-gray-100 
+                  hover:shadow-md transition-all duration-200 group">
+      <div className="flex items-center gap-2 sm:gap-3">
+        <div className="p-2 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 
+                      group-hover:from-blue-100 group-hover:to-indigo-100 transition-colors duration-200">
+          <Icon className="w-4 h-4 text-blue-600" />
+        </div>
+        <div>
+          <p className="text-xs text-gray-500">{label}</p>
+          <p className="text-sm font-medium text-gray-900 mt-1">{value || "Not specified"}</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  const InputField = ({ label, id, type = "text", value, onChange }) => (
+    <div className="relative group">
+      <label 
+        className="absolute -top-2 left-3 bg-white px-1 text-xs font-medium text-blue-500 z-10" 
+        htmlFor={id}
+      >
+        {label}
+      </label>
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={onChange}
+        className="w-full px-3 sm:px-4 py-3 rounded-xl border border-gray-200 text-sm transition-all duration-200
+                 focus:border-blue-400 focus:ring-2 focus:ring-blue-50 outline-none
+                 group-hover:border-blue-200"
+      />
+    </div>
+  );
+
+  if (loading) {
+    return (
+      <div className="rounded-xl bg-white p-4 sm:p-6 shadow-sm space-y-4 animate-pulse">
+        <div className="h-8 bg-gray-200 rounded w-1/3"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="h-24 bg-gray-100 rounded-xl"></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <>
-      {profile && open === false && isEditing === false ? (
-        <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <>
-              <div className="font-clarity border rounded-md shadow  md:block">
-                <div className=" py-6 px-6 ">
-                  <div className="py-5">
-                    <div className=" flex justify-between items-center">
-                      <h3
-                        onClick={() => setDetails(!details)}
-                        className=" text-sm font-bold text-gray-900 flex gap-2 pr-5 items-center hover:cursor-pointer"
-                      >
-                        <MdOutlineKeyboardArrowDown />
-                        Company Details
-                      </h3>
-                      <button
-                        onClick={() => setIsEditing(!isEditing)}
-                        className="text-primary1 text-sm flex gap-2 pr-5"
-                      >
-                        <HiOutlinePencil />
-                        Edit{" "}
-                      </button>
+    <div className="h-full rounded-xl bg-white shadow-sm overflow-hidden">
+      {/* Header */}
+      <div className="px-4 sm:px-6 py-4 bg-gradient-to-r from-blue-50/80 to-indigo-50/80 border-b border-gray-100">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 
+                          flex items-center justify-center text-white shadow-lg">
+              {profile?.companyName?.[0] || <Building2 className="w-6 h-6" />}
+            </div>
+            <div>
+              <h1 className="text-lg font-semibold text-gray-900">{profile?.companyName}</h1>
+              <div className="flex items-center gap-2 mt-1">
+                <Globe className="w-4 h-4 text-gray-400" />
+                <a href={profile?.website} 
+                   className="text-sm text-gray-500 hover:text-blue-500 transition-colors truncate max-w-[200px] sm:max-w-none"
+                >
+                  {profile?.website || "Website not specified"}
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleRefresh}
+              disabled={loading || isRefreshing}
+              className="p-2 text-gray-500 hover:text-blue-600 rounded-lg hover:bg-white/80 
+                       transition-all duration-200 disabled:opacity-50"
+            >
+              <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} />
+            </button>
+            <button
+              onClick={() => setIsEditing(!isEditing)}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200
+                       bg-white border border-gray-200 text-gray-700 hover:border-blue-500 hover:text-blue-600
+                       hover:shadow-md hover:shadow-blue-100 active:scale-98"
+            >
+              {isEditing ? 'Cancel' : 'Edit Profile'}
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div className="p-4 sm:p-6">
+        {!isEditing ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+            {/* Company Information */}
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2 mb-4">
+                  <Building2 className="w-4 h-4 text-blue-500" />
+                  Company Information
+                </h3>
+                <div className="grid gap-3">
+                  {[
+                    { icon: Building2, label: "Company Name", value: profile?.companyName },
+                    { icon: Globe, label: "Website", value: profile?.website },
+                    { icon: Calendar, label: "Founded", value: profile?.yearFounded },
+                    { icon: MapPin, label: "Location", value: profile?.headQuaters },
+                    { icon: Phone, label: "Contact", value: profile?.contact },
+                    { icon: Users, label: "Founders", value: profile?.NameOfFounders },
+                  ].map((item, index) => (
+                    <InfoCard key={index} {...item} />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Point of Contact */}
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2 mb-4">
+                  <Award className="w-4 h-4 text-blue-500" />
+                  Company Achievements
+                </h3>
+                <div className="grid gap-3">
+                  <InfoCard 
+                    icon={Users} 
+                    label="Team Size" 
+                    value={profile?.TeamSize} 
+                  />
+                  <InfoCard 
+                    icon={Star} 
+                    label="Awards & Recognition" 
+                    value={profile?.Awards} 
+                  />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2 mb-4">
+                  <Users className="w-4 h-4 text-blue-500" />
+                  Point of Contact
+                </h3>
+                <div className="space-y-3">
+                  <div className="p-4 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 
+                                    flex items-center justify-center text-white font-medium">
+                        {profile?.PointOfContactName?.[0] || "C"}
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-medium text-gray-900">
+                          {profile?.PointOfContactName || "Contact Name"}
+                        </h4>
+                        <p className="text-sm text-gray-500 mt-0.5">
+                          {profile?.PointOfContactDesignation || "Designation"}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <ul
-                        className={`mt-2 space-y-2 transition-all duration-200 ${
-                          !details ? "hidden" : ""
-                        }`}
-                      >
-                        <li className="grid grid-cols-2 pr-5">
-                          {/* <MdAlternateEmail className="text-primary1" /> */}
-                          <p className=" text-sm text-slate-500">
-                            Company Name
-                          </p>
-                          <p className=" text-sm text-gray-900">
-                            {profile.companyName}
-                          </p>
-                        </li>
-                        <li className="grid grid-cols-2 pr-5">
-                          {/* <MdAlternateEmail className="text-primary1" /> */}
-                          <p className=" text-sm text-slate-500">Website</p>
-                          <p className=" text-sm text-gray-900">
-                            {profile.website}
-                          </p>
-                        </li>
-
-                        <li className="grid grid-cols-2 pr-5">
-                          {/* <TiWorldOutline className="text-primary1" /> */}
-                          <p className=" text-sm text-slate-500">Location</p>
-                          <p className=" text-sm text-gray-900">
-                            {profile.headQuaters}
-                          </p>
-                        </li>
-
-                        <li className="grid grid-cols-2 pr-5">
-                          {/* <GoOrganization className="text-primary1" /> */}
-                          <p className=" text-sm text-slate-500">
-                            Year Founded
-                          </p>
-                          <p className=" text-sm text-gray-900">
-                            {profile.yearFounded}
-                          </p>
-                        </li>
-
-                        <li className="grid grid-cols-2 pr-5">
-                          {/* <GoOrganization className="text-primary1" /> */}
-                          <p className=" text-sm text-slate-500">Contact</p>
-                          <p className=" text-sm text-gray-900">
-                            {profile.contact}
-                          </p>
-                        </li>
-
-                        <li className="grid grid-cols-2 pr-5">
-                          {/* <GoOrganization className="text-primary1" /> */}
-                          <p className=" text-sm text-slate-500">
-                            Name of Founders
-                          </p>
-                          <p className=" text-sm text-gray-900">
-                            {profile.NameOfFounders}
-                          </p>
-                        </li>
-
-                        <li className="grid grid-cols-2 pr-5">
-                          {/* <GoOrganization className="text-primary1" /> */}
-                          <p className=" text-sm text-slate-500">Team</p>
-                          <p className=" text-sm text-gray-900">
-                            {profile.TeamSize}
-                          </p>
-                        </li>
-                        <li className="grid grid-cols-2 pr-5">
-                          {/* <GoOrganization className="text-primary1" /> */}
-                          <p className=" text-sm text-slate-500">Awards </p>
-                          <p className=" text-sm text-gray-900">
-                            {profile.Awards}
-                          </p>
-                        </li>
-                        <li className="hover:cursor-pointer pr-5">
-                          {/* <GoOrganization className="text-primary1" /> */}
-
-                          <p className=" text-sm text-primary1">
-                            Change password
-                          </p>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="py-5">
-                    <div className=" flex justify-between items-center">
-                      <h3
-                        onClick={() => setCompDetails(!CompDetails)}
-                        className=" text-sm font-bold text-gray-900 flex gap-2 pr-5 items-center hover:cursor-pointer"
-                      >
-                        <MdOutlineKeyboardArrowDown />
-                        Point of Contact
-                      </h3>
-                      <button
-                        onClick={() => setIsEditing(!isEditing)}
-                        className="text-primary1 text-sm grid grid-cols-2 pr-5"
-                      >
-                        <HiOutlinePencil />
-                        Edit{" "}
-                      </button>
-                    </div>
-                    <div>
-                      <ul
-                        className={`mt-2 space-y-2 transition-all duration-200 ${
-                          !CompDetails ? "hidden" : ""
-                        }`}
-                      >
-                        <li className="grid grid-cols-2 pr-5">
-                          {/* <MdAlternateEmail className="text-primary1" /> */}
-                          <p className=" text-sm text-slate-500">Name</p>
-                          <p className=" text-sm text-gray-900">
-                            {profile.PointOfContactName}
-                          </p>
-                        </li>
-
-                        <li className="grid grid-cols-2 pr-5">
-                          {/* <MdAlternateEmail className="text-primary1" /> */}
-                          <p className=" text-sm text-slate-500">Phone</p>
-                          <p className=" text-sm text-gray-900">
-                            {profile.PointOfContactPhone}
-                          </p>
-                        </li>
-
-                        <li className="grid grid-cols-2 pr-5">
-                          {/* <MdAlternateEmail className="text-primary1" /> */}
-                          <p className=" text-sm text-slate-500">Designation</p>
-                          <p className=" text-sm text-gray-900">
-                            {profile.PointOfContactDesignation}
-                          </p>
-                        </li>
-
-                        <li></li>
-                        <li>
-                          <button
-                            onClick={handlelogout}
-                            className=" flex w-full gap-2 rounded-lg  px-4 py-2 bg-primary1 text-sm font-medium text-white items-center"
-                          >
-                            <CiLogout />
-                            Logout
-                          </button>
-                        </li>
-                      </ul>
+                    <div className="mt-4 pt-4 border-t border-blue-200">
+                      <div className="flex items-center gap-2">
+                        <Phone className="w-4 h-4 text-blue-500" />
+                        <span className="text-sm text-gray-600">
+                          {profile?.PointOfContactPhone || "Phone Number"}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </>
-          </div>
-        </div>
-      ) : null}
-
-      {open ? (
-        <>
-          <div className="font-clarity">
-            <h2 className=" text-lg font-bold flex gap-4 items-center">
-              <span className="text-primary1 text-xl">
-                <TbListDetails />
-              </span>
-              Complete your Vendor Profile
-            </h2>
-            <span className=" text-sm text-gray-500">
-              Please fill the following details to Complete your Vendor Profile
-            </span>
-            <div className=" px-5 py-4  rounded-md border shadow-sm w-full md:w-2/3">
-              <form onSubmit={handleSubmit} className=" w-full px-4 ">
-                <div className=" mt-4">
-                  <Label className=" text-slate-600" htmlFor="companyName">
-                    Company Name <span className="text-red-500">*</span>
-                  </Label>
-                  <Input
-                    id="companyName"
-                    value={formData.companyName}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label className=" text-slate-600" htmlFor="website">
-                    Website
-                  </Label>
-                  <Input
-                    id="website"
-                    type="url"
-                    value={formData.website}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label className=" text-slate-600" htmlFor="yearFounded">
-                    Year Founded
-                  </Label>
-                  <Input
-                    type="number"
-                    id="yearFounded"
-                    value={formData.yearFounded}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label className=" text-slate-600" htmlFor="headQuaters">
-                    Headquarters
-                  </Label>
-                  <select
-                    name="headQuaters"
-                    value={formData.headQuaters}
-                    onChange={handleChangeSelect}
-                    className="w-full p-2 border border-gray-300 rounded text-gray-600"
-                  >
-                    <option value="" className="text-gray-400">
-                      Select Country
-                    </option>
-                    {countries.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <Label className=" text-slate-600" htmlFor="NameOfFounders">
-                    Name Of Founders
-                  </Label>
-                  <Input
-                    id="NameOfFounders"
-                    value={formData.NameOfFounders}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label className=" text-slate-600" htmlFor="contact">
-                    Contact
-                  </Label>
-                  <Input
-                    id="contact"
-                    type="number"
-                    value={formData.contact}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label className=" text-slate-600" htmlFor="TeamSize">
-                    Team Size
-                  </Label>
-                  <Select onValueChange={handleSelectChange} required>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select Team Size" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Team Size</SelectLabel>
-                        <SelectItem value="1">1</SelectItem>
-                        <SelectItem value="1-20">1-20</SelectItem>
-                        <SelectItem value="20-50">20-50</SelectItem>
-                        <SelectItem value="50-200">50-200</SelectItem>
-                        <SelectItem value="200-500">200-500</SelectItem>
-                        <SelectItem value="500+">500+</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label className=" text-slate-600" htmlFor="Awards">
-                    Awards
-                  </Label>
-                  <Input
-                    id="Awards"
-                    value={formData.Awards}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <hr className="my-4" />
-                <h3 className="text-lg font-bold text-gray-900">
-                  Point Of Contact
-                </h3>
-                <div>
-                  <Label
-                    className=" text-slate-600"
-                    htmlFor="PointOfContactName"
-                  >
-                    Point Of Contact Name
-                  </Label>
-                  <Input
-                    id="PointOfContactName"
-                    value={formData.PointOfContactName}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <Label
-                    className=" text-slate-600"
-                    htmlFor="PointOfContactPhone"
-                  >
-                    Point Of Contact Phone
-                  </Label>
-                  <Input
-                    id="PointOfContactPhone"
-                    value={formData.PointOfContactPhone}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <Label
-                    className=" text-slate-600"
-                    htmlFor="PointOfContactDesignation"
-                  >
-                    Point Of Contact Designation
-                  </Label>
-                  <Input
-                    id="PointOfContactDesignation"
-                    value={formData.PointOfContactDesignation}
-                    onChange={handleChange}
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  className="my-4 w-2/3 rounded-lg bg-primary1"
-                >
-                  Save
-                </Button>
-              </form>
             </div>
           </div>
-        </>
-      ) : null}
-
-      {isEditing && (
-        <>
-          <div className=" font-clarity">
-            <h2 className=" text-lg font-bold flex gap-4 items-center mb-4">
-              <span className="text-primary1 text-xl">
-                <MdEdit />
-              </span>
-              Edit Profile
-            </h2>
-            <div className=" px-5 py-4  rounded-md border shadow-sm w-full md:w-2/3">
-              <form className="px-4" onSubmit={handleEditSubmit}>
-                <h3 className=" font-bold text-gray-700 mt-2">
-                  Edit Company Details
+        ) : (
+          <form onSubmit={handleEditSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+            {/* Company Details Form */}
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-blue-500" />
+                  Company Details
                 </h3>
+                <div className="space-y-4">
+                  {[
+                    { label: "Company Name", id: "companyName" },
+                    { label: "Website", id: "website", type: "url" },
+                    { label: "Year Founded", id: "yearFounded" },
+                    { label: "Location", id: "headQuaters" },
+                    { label: "Contact", id: "contact" },
+                    { label: "Founders", id: "NameOfFounders" },
+                  ].map((field) => (
+                    <InputField
+                      key={field.id}
+                      {...field}
+                      value={formData[field.id]}
+                      onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
+                    />
+                  ))}
+                </div>
+              </div>
 
-                <div>
-                  <Label className=" text-slate-600" htmlFor="companyName">
-                    Company Name
-                  </Label>
-                  <Input
-                    id="companyName"
-                    value={formData.companyName}
-                    onChange={handleChange}
-                    required
+              <div className="space-y-4">
+                <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2">
+                  <Award className="w-4 h-4 text-blue-500" />
+                  Achievements
+                </h3>
+                <div className="space-y-4">
+                  <InputField
+                    label="Team Size"
+                    id="TeamSize"
+                    value={formData.TeamSize}
+                    onChange={(e) => setFormData({ ...formData, TeamSize: e.target.value })}
                   />
-                </div>
-                <div>
-                  <Label className=" text-slate-600" htmlFor="website">
-                    Website
-                  </Label>
-                  <Input
-                    id="website"
-                    value={formData.website}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label className=" text-slate-600" htmlFor="yearFounded">
-                    Year Founded
-                  </Label>
-                  <Input
-                    type="number"
-                    id="yearFounded"
-                    value={formData.yearFounded}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label className=" text-slate-600" htmlFor="headQuaters">
-                    Headquarters
-                  </Label>
-                  <select
-                    name="headQuaters"
-                    value={formData.headQuaters}
-                    onChange={handleChangeSelect}
-                    className="w-full p-2 border border-gray-300 rounded text-gray-600"
-                  >
-                    <option value="" className="text-gray-400">
-                      Select Country
-                    </option>
-                    {countries.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <Label className=" text-slate-600" htmlFor="NameOfFounders">
-                    Name Of Founders
-                  </Label>
-                  <Input
-                    id="NameOfFounders"
-                    value={formData.NameOfFounders}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label className=" text-slate-600" htmlFor="contact">
-                    Contact
-                  </Label>
-                  <Input
-                    id="contact"
-                    value={formData.contact}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label className=" text-slate-600" htmlFor="TeamSize">
-                    Team Size
-                  </Label>
-                  <Select onValueChange={handleSelectChange} required>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select Team Size" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Team Size</SelectLabel>
-                        <SelectItem value="1">1</SelectItem>
-                        <SelectItem value="1-20">1-20</SelectItem>
-                        <SelectItem value="20-50">20-50</SelectItem>
-                        <SelectItem value="50-200">50-200</SelectItem>
-                        <SelectItem value="200-500">200-500</SelectItem>
-                        <SelectItem value="500+">500+</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label className=" text-slate-600" htmlFor="Awards">
-                    Awards
-                  </Label>
-                  <Input
+                  <InputField
+                    label="Awards"
                     id="Awards"
                     value={formData.Awards}
-                    onChange={handleChange}
-                    required
+                    onChange={(e) => setFormData({ ...formData, Awards: e.target.value })}
                   />
                 </div>
-                <hr className="my-4" />
-                <h3 className=" font-bold text-gray-700 mt-4">
-                  Point Of Contact
-                </h3>
-                <div>
-                  <Label
-                    className=" text-slate-600"
-                    htmlFor="PointOfContactName"
-                  >
-                    Point Of Contact Name
-                  </Label>
-                  <Input
-                    id="PointOfContactName"
-                    value={formData.PointOfContactName}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <Label
-                    className=" text-slate-600"
-                    htmlFor="PointOfContactPhone"
-                  >
-                    Point Of Contact Phone
-                  </Label>
-                  <Input
-                    id="PointOfContactPhone"
-                    value={formData.PointOfContactPhone}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <Label
-                    className=" text-slate-600"
-                    htmlFor="PointOfContactDesignation"
-                  >
-                    Point Of Contact Designation
-                  </Label>
-                  <Input
-                    id="PointOfContactDesignation"
-                    value={formData.PointOfContactDesignation}
-                    onChange={handleChange}
-                  />
-                </div>
+              </div>
+            </div>
+
+            {/* Point of Contact Form */}
+            <div className="space-y-6">
+              <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2">
+                <Users className="w-4 h-4 text-blue-500" />
+                Point of Contact
+              </h3>
+              <div className="space-y-4">
+                <InputField
+                  label="Contact Person"
+                  id="PointOfContactName"
+                  value={formData.PointOfContactName}
+                  onChange={(e) => setFormData({ ...formData, PointOfContactName: e.target.value })}
+                />
+                <InputField
+                  label="Phone Number"
+                  id="PointOfContactPhone"
+                  type="tel"
+                  value={formData.PointOfContactPhone}
+                  onChange={(e) => setFormData({ ...formData, PointOfContactPhone: e.target.value })}
+                />
+                <InputField
+                  label="Designation"
+                  id="PointOfContactDesignation"
+                  value={formData.PointOfContactDesignation}
+                  onChange={(e) => setFormData({ ...formData, PointOfContactDesignation: e.target.value })}
+                />
+              </div>
+
+              <div className="flex justify-end gap-3 mt-8">
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(false)}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 
+                           rounded-lg hover:bg-gray-50 transition-all duration-200"
+                >
+                  Cancel
+                </button>
                 <button
                   type="submit"
-                  onClick={handleEditSubmit}
-                  className="my-4 bg-primary1 w-2/3 text-white rounded-lg py-2 px-4"
+                  className="px-6 py-2 text-sm font-medium text-white rounded-lg
+                         bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 
+                         hover:to-indigo-600 shadow-sm hover:shadow-md transition-all duration-200"
                 >
-                  Save Edit
+                  Save Changes
                 </button>
-              </form>
+              </div>
             </div>
-          </div>
-        </>
-      )}
-    </>
+          </form>
+        )}
+      </div>
+    </div>
   );
-}
+};
 
 export default VendorProfile;

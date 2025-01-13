@@ -1,32 +1,64 @@
-import type { Metadata } from "next";
+
+
+// import type { Metadata } from "next";
+// import { ClarityCity } from "@/utils/customFont";
+// // import "../../../globals.css";
+//  import "../../app/globals.css";
+// import { Header } from "@/components/Header";
+// import { Footer } from "@/components/Footer";
+// import { SessionProvider } from "next-auth/react";
+// import { Toaster } from "@/components/ui/toaster";
+// import ClientNavbar from "@/components/ClientNavbar";
+
+// export const metadata: Metadata = {
+//   title: "DreamLegal",
+//   description: "Your only legal directory for Legal solutions",
+// };
+
+// export default function RootLayout({
+//   children,
+// }: Readonly<{
+//   children: React.ReactNode;
+// }>) {
+//   return (
+//     <html lang="en">
+//       <head></head>
+//       <body className={`${ClarityCity.variable} `}>
+//         <SessionProvider>
+//           <ClientNavbar /> {/* Render ClientNavbar component here */}
+//           {/* <Header /> */}
+//           {children}
+//           <Footer />
+//           <Toaster />
+//         </SessionProvider>
+//       </body>
+//     </html>
+//   );
+// }
+
+
+
+import { Metadata } from "next";
 import { ClarityCity } from "@/utils/customFont";
-import "../../app/globals.css";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { SessionProvider } from "next-auth/react";
-import { Toaster } from "@/components/ui/toaster";
 import Navbar from "@/pages/homePageComponents/Navbar";
+import Footer from "@/components/Footer";
+
 export const metadata: Metadata = {
-  title: "DreamLegal",
-  description: "Your only legal directory for Legal solutions",
+  title: "Tech  Vendor",
+  description: "Welcome to the Tech Vendor section.",
 };
 
-export default function RootLayout({
+export default function TechVendorLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={`${ClarityCity.variable} `}>
-        <SessionProvider>
-          {/* <Header /> */}
-<Navbar></Navbar>
-          {children}
-          <Footer />
-          <Toaster />
-        </SessionProvider>
-      </body>
-    </html>
+    <div className={`${ClarityCity.variable}`}>
+      {/* <Navbar /> */}
+      {children}
+      {/* <Footer /> */}
+    </div>
   );
 }
+

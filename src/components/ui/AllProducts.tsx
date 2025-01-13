@@ -179,32 +179,8 @@ useEffect(() => {
   fetchProducts();
 }, [vendorId]); // Add vendorId as dependency
 
-  const searchParams = useSearchParams();
-  const verify = searchParams.get('verified') ? true : false;
-
-  if (verify) {
-    return (
-      <div className="min-h-[400px] flex flex-col items-center justify-center p-8 text-center">
-        <div className="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center mb-6">
-          <UserCircle2 className="w-8 h-8 text-indigo-500" />
-        </div>
-        <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
-          Complete Your Profile
-        </h2>
-        <p className="text-gray-600 max-w-md mb-6">
-          Please complete your profile information to continue. This helps us provide a better experience.
-        </p>
-        <button
-          onClick={() => window.location.href = '/profile'}
-          className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white 
-                   font-medium shadow-lg shadow-indigo-200 hover:shadow-xl hover:shadow-indigo-300 
-                   transition-all duration-200 hover:from-indigo-600 hover:to-purple-600 active:scale-95"
-        >
-          Go to Profile
-        </button>
-      </div>
-    );
-  }
+ 
+ 
 
   if (loading) {
     return (

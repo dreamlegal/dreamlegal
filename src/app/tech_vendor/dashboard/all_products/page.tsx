@@ -1,6 +1,7 @@
+"use client"
 import React from 'react'
 import AllProducts from '@/components/ui/AllProducts'
-const page = () => {
+const Page = () => {
   return (
     <>
     <AllProducts  />
@@ -9,4 +10,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

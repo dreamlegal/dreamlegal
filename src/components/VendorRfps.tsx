@@ -47,7 +47,6 @@ function VendorRfps() {
   const [selectedLead, setSelectedLead] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const searchParams = useSearchParams();
-  const verify = searchParams.get("verified") ? true : false;
 
   const fetchRfpLeads = async () => {
     setRefreshing(true);
@@ -149,21 +148,6 @@ function VendorRfps() {
     }
   };
 
-  if (verify) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <CustomCard className="max-w-lg w-full p-8 text-center">
-          <AlertTriangle className="mx-auto h-12 w-12 text-yellow-500 mb-4" />
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Profile Verification Required
-          </h1>
-          <p className="text-gray-600">
-            Please complete your profile by clicking on the profile link to access RFP features.
-          </p>
-        </CustomCard>
-      </div>
-    );
-  }
 
   if (loading) {
     return (

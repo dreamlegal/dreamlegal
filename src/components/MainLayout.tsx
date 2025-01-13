@@ -1,27 +1,55 @@
 
-"use client";
+// "use client";
 
-import { usePathname } from "next/navigation";
-import Navbar from "@/pages/homePageComponents/Navbar";
-import Footer from "./Footer";
+// import { usePathname } from "next/navigation";
+// import Navbar from "@/pages/homePageComponents/Navbar";
+// import Footer from "./Footer";
+// import "../app/globals.css"
+// interface MainLayoutProps {
+//   children: React.ReactNode;
+// }
+
+// const MainLayout = ({ children }: MainLayoutProps) => {
+//   const pathname = usePathname();
+
+//   const showNavbarAndFooter = !pathname.startsWith("/tech_vendor/dashboard") && 
+//                              !pathname.startsWith("/web-admin");
+
+//   return (
+//     <main>
+//       {showNavbarAndFooter && <Navbar />}
+//       {children}
+//       {showNavbarAndFooter && <Footer />}
+//     </main>
+//   );
+// };
+
+// export default MainLayout;
+'use client'
+
+import { usePathname } from "next/navigation"
+import Navbar from "@/pages/homePageComponents/Navbar"
+import Footer from "./Footer"
 import "../app/globals.css"
+
 interface MainLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
+  // URLs where we don't want to show navbar and footer
   const showNavbarAndFooter = !pathname.startsWith("/tech_vendor/dashboard") && 
-                             !pathname.startsWith("/web-admin");
+                             !pathname.startsWith("/web-admin")
 
   return (
-    <main>
+    <div className="flex min-h-screen flex-col">
       {showNavbarAndFooter && <Navbar />}
-      {children}
+      <main className="flex-1">{children}</main>
       {showNavbarAndFooter && <Footer />}
-    </main>
-  );
-};
+    </div>
+  )
+}
 
-export default MainLayout;
+export default MainLayout

@@ -9,7 +9,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-
+  const { isLoading, userType } = useAuth()
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -18,6 +18,19 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Show a minimal loading state
+  if (isLoading) {
+    return (
+      <div className="fixed top-0 left-0 right-0 w-full pt-6 px-4 z-[9999]">
+        <div className={`
+          relative max-w-6xl mx-auto h-16
+          rounded-2xl
+          bg-white/70 backdrop-blur-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)]
+        `} />
+      </div>
+    )
+  }
 
   const navItems = [
     {
@@ -68,7 +81,7 @@ const Navbar = () => {
       }
     }
   };
-  const { userId,vendorId, userType } = useAuth();
+  // const { userId,vendorId, userType } = useAuth();
 
   return (
     <>

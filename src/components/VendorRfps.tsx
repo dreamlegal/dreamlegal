@@ -46,7 +46,6 @@ function VendorRfps() {
   const [responses, setResponses] = useState({});
   const [selectedLead, setSelectedLead] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
-  const searchParams = useSearchParams();
 
   const fetchRfpLeads = async () => {
     setRefreshing(true);

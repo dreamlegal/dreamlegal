@@ -1,4 +1,5 @@
 // app/api/check-auth/route.js
+export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 

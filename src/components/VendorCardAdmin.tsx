@@ -24,7 +24,7 @@ function VendorCardAdmin({ vendor, onEdit, onDelete }: VendorCardAdminProps) {
         <div className="flex gap-3">
           <Link
             className="text-sm bg-primary1 px-3 py-3 rounded-sm text-white"
-            href={`/web-admin/vendor/${vendor.id}`}
+            href={`/web-admin/edit-product/${vendor.id}`}
           >
             Edit
           </Link>

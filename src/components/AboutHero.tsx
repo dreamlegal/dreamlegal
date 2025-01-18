@@ -585,9 +585,54 @@ const AboutHero = () => {
             ))}
           </div>
         </div>
+        <FeaturedSection/>
       </div>
     </div>
   );
 };
 
 export default AboutHero;
+
+
+
+const FeaturedSection = () => {
+  return (
+    <div className="mt-32 relative">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="text-center mb-16"
+      >
+        <span className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 
+                      rounded-full text-sm font-medium">
+          <span className="w-2 h-2 bg-blue-600 rounded-full" />
+          Incubated At 
+        </span>
+        {/* <h2 className="mt-6 text-3xl font-bold text-gray-900">
+          Our Latest Innovation
+        </h2> */}
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        whileHover={{ y: -5 }}
+        className="max-w-2xl mx-auto group relative bg-white rounded-xl p-8 shadow-lg 
+                  hover:shadow-xl transition-all duration-200"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent 
+                     opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+        <div className="relative">
+          <img
+            src="/logos/NSRCEL.png"
+            alt="Featured Project"
+           className="h-20 md:h-24 w-auto mx-auto transition-all duration-200 
+                             group-hover:scale-105"
+          />
+        </div>
+      </motion.div>
+    </div>
+  );
+};

@@ -167,6 +167,6 @@ export async function middleware(request) {
 export const config = {
   matcher: [
     '/tech_vendor/dashboard/:path*',
-    '/legal_proffesionals/dashboard/:path*'
+    // '/legal_proffesionals/dashboard/:path*'
   ]
 };

@@ -17,7 +17,7 @@ const MainHomePage: React.FC = () => {
       <ProblemSection />
       <Achievements/>
 
-      <PremiumTestimonials />
+      {/* <PremiumTestimonials /> */}
       <FinalCTA/>
     </>
   );

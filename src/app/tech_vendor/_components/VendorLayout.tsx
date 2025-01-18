@@ -141,41 +141,7 @@ const VendorLayout = ({ children }) => {
             </Sheet>
           </div>
 
-          {/* <div className="relative ml-auto">
-            <button
-              onClick={handleBellClick}
-              className="h-8 w-8 flex items-center justify-center rounded-lg bg-blue-50 text-blue-500 hover:bg-blue-100 transition-colors"
-            >
-              <IoIosNotificationsOutline className="text-xl" />
-            </button>
-            {showNotifications && (
-           
-
-      <div className="absolute right-0 mt-2 w-72 bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl shadow-blue-500/10 border border-blue-100/80 overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-50/50 to-white/90 backdrop-blur-sm border-b border-blue-100/80">
-          <h3 className="font-medium px-4 py-3 text-blue-600">Notifications</h3>
-        </div>
-        <div className="max-h-72 overflow-y-auto">
-          {notifications.length > 0 ? (
-            notifications.map((notification, index) => (
-              <div
-                key={index}
-                className="px-4 py-3 border-b border-blue-50/80 hover:bg-blue-50/30 transition-all duration-200 ease-in-out group"
-              >
-                <p className="text-gray-600 group-hover:text-blue-600 transition-colors">
-                  {notification.message}
-                </p>
-              </div>
-            ))
-          ) : (
-            <div className="p-4 text-blue-400">No notifications</div>
-          )}
-        </div>
-      </div>
-
-            )}
-          </div> */}
-          {/* Notification Button and Dropdown */}
+         
 <div className="relative ml-auto">
   <button
     onClick={handleBellClick}

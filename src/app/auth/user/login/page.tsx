@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import { Mail, Lock, Eye } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const UserLoginPage = () => {
   const [formData, setFormData] = useState({
@@ -12,33 +13,68 @@ const UserLoginPage = () => {
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [alert, setAlert] = useState({ show: false, title: '', message: '' });
+  const router = useRouter();
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await fetch("/api/user-login", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
+
+  //     if (response.ok) {
+  //       showAlert("Success","redirecting to dash");
+  //       const data = await response.json();
+  //       if (data.user?.id) {
+  //         localStorage.setItem("userId", data.user.id);
+  //         window.location.href = `/user/${data.user.id}`;
+  //       }
+  //     } else {
+  //       showAlert('Error', 'Failed to sign in. Please try again.');
+  //     }
+  //   } catch (error) {
+  //     showAlert('Error', 'An unexpected error occurred.');
+  //   }
+  // };
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    
     try {
-      const response = await fetch("/api/user-login", {
+      const response = await fetch("/api/common-login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify(formData),
       });
-
-      if (response.ok) {
-        showAlert("Success","redirecting to dash");
-        const data = await response.json();
-        if (data.user?.id) {
-          localStorage.setItem("userId", data.user.id);
-          window.location.href = `/user/${data.user.id}`;
-        }
+  
+      const data = await response.json();
+      console.log('Login API response:', data);
+  
+      
+      if (data?.success) {
+        showAlert("Success", "Redirecting to dashboard");
+        
+        setTimeout(() => {
+          if (data.type === "user") {
+            router.push('/legal_proffesionals/dashboard');
+          } else {
+            router.push('/');
+          }
+        }, 1500);
       } else {
-        showAlert('Error', 'Failed to sign in. Please try again.');
+        showAlert('Error', data?.error || 'Failed to sign in');
       }
     } catch (error) {
-      showAlert('Error', 'An unexpected error occurred.');
+      console.error('Login handler error:', error);
+      showAlert('Error', 'An unexpected error occurred during login');
     }
   };
-
   const handleResetPassword = async (e) => {
     e.preventDefault();
     try {

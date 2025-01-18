@@ -42,7 +42,7 @@ import { Metadata } from "next";
 import { ClarityCity } from "@/utils/customFont";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
+import "@/app/globals.css"
 export const metadata: Metadata = {
   title: "Legal Proffesionals",
   description: "Welcome to the Legal Proffesionals section.",

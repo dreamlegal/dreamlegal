@@ -6,7 +6,7 @@ import Features from "./Features"
 import ProblemSection from "./ProblemSection"
 import Achievements from "./Achievements"
 import PremiumTestimonials from "./Testimonial"
-
+import "@/app/globals.css"
 import FinalCTA from "./FinalCta"
 
 
@@ -21,7 +21,7 @@ const MainHomePage: React.FC = () => {
       <ProblemSection />
       <Achievements/>
 
-      <PremiumTestimonials />
+      {/* <PremiumTestimonials /> */}
       <FinalCTA/>
     </>
   );

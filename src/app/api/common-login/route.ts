@@ -172,7 +172,7 @@ export async function POST(request) {
         domain: process.env.COOKIE_DOMAIN || undefined // Add if needed
       });
 
-      console.log('Login successful for email:', email);
+      console.log('Login successful for email:', email, 'with type:', user.type);
       
       return NextResponse.json({
         success: true,

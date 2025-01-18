@@ -68,6 +68,12 @@ function NewProductAdminCard({ product } : any) {
                   >
                     <span className='text-white'>View</span>
                   </Link>
+                  <Link
+                    href={`/web-admin/product/${product.id}`}
+                    className="flex gap-2 rounded-full bg-primary1 font-bold px-6 py-3 text-xs transition-all w-fit items-center hover:gap-4"
+                  >
+                    <span className='text-white'>edit</span>
+                  </Link>
                   <button
                     onClick={handlePublishClick}
                     disabled={isPublishing}
@@ -76,24 +82,7 @@ function NewProductAdminCard({ product } : any) {
                     {isPublishing ? 'Publishing...' : 'Approve'}
                     <FaCheck className="text-xl" />
                   </button>
-                  {/* <Dialog>
-                    <DialogTrigger>
-                      {" "}
-                      <button className="flex gap-2 rounded-full bg-red-500 text-white font-bold px-6 py-3 text-xs transition-all w-fit items-center hover:bg-gray-900 hover:gap-4">
-                        <FaRegTrashAlt className="text-xl" />
-                        Delete
-                      </button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Are you absolutely sure?</DialogTitle>
-                        <DialogDescription>
-                          This action cannot be undone. This will permanently delete your account and remove your data from our servers.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <Button variant={"destructive"}>Delete Permanently</Button>
-                    </DialogContent>
-                  </Dialog> */}
+               
                 </div>
               </div>
             </div>

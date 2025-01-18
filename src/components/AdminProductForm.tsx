@@ -27,7 +27,7 @@ interface ProductFormWithProgressProps {
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useToast } from "./ui/use-toast";
-
+import { useParams } from 'next/navigation';
 // const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
 // const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing }) => {
 const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing, product }) => {
@@ -64,6 +64,8 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
     setFoundersNames,
   } = ProductInfo();
 
+
+  console.log("AdminProductForm received product:", product);
   const {
     // painPointAddressed,
     // setPainPointAddressed,
@@ -129,6 +131,7 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
 
 //   useEffect(() => {
 //     if (editing === true) {
+      
 //       console.log("Setting product info because editing is true");
 
 //       console.log("Product Name:", product.prname);
@@ -253,11 +256,11 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
 //       console.log("Training:", product.training);
 //       setTraining(product.training);
 
-//       // console.log("File Size:", [product.fileSize]);
-//       // setFileSize([product.fileSize]);
+//       console.log("File Size:", [product.fileSize]);
+//       setFileSize([product.fileSize]);
 
-//       // console.log("Storage:", [product.storage]);
-//       // setStorage([product.storage]);
+//       console.log("Storage:", [product.storage]);
+//       setStorage([product.storage]);
  
 
 //       const fileSize = Array.isArray(product.fileSize) ? product.fileSize[0] || '' : product.fileSize || '';
@@ -318,8 +321,118 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
 //       setAttachmentsUrl(product.attachments);
 //     }
 //   }, [editing]);
+useEffect(() => {
+  if (editing === true && product) {
+    // Helper function to safely set state only if value exists
+    const safeSetState = (value, setter, defaultValue = '') => {
+      if (value !== undefined && value !== null) {
+        setter(value);
+      } else if (defaultValue !== '') {
+        setter(defaultValue);
+      }
+    };
+
+    // Helper function to safely handle arrays
+    const safeSetArray = (value, setter) => {
+      if (Array.isArray(value)) {
+        setter(value);
+      } else if (value) {
+        setter([value]);
+      } else {
+        setter([]);
+      }
+    };
+
+    console.log("Setting product info because editing is true");
+
+    safeSetState(product.name, setProductName);
+    safeSetState(product.painPointAddressed, setPainPointAddressed);
+    safeSetState(product.websiteUrl, setWebsiteUrl);
+    safeSetState(product.logoUrl, setLogoUrl);
+    safeSetState(product.category, setCategory);
+    safeSetState(product.deployment, setDeployment);
+    safeSetState(product.mobileAccessibility, setMobileAvailable);
+    safeSetState(product.focusCountries, setFocusCountries);
+    safeSetState(Number(product.adoptionPeriod) || 0, setAdoptionPeriod);
+    safeSetState(product.adoptionPeriodUnit, setAdoptionPeriodUnit);
+    safeSetState(product.languages, setLanguages);
+    safeSetState(product.securityCertificate, setSecurityCertificate);
+    
+    // Handle integrations array
+    safeSetArray(product.integrations, setIntegrations);
+
+    safeSetState(product.description, setDescription);
+    safeSetState(product.usp, setUSP);
+    safeSetState(product.upcomingUpdates, setUpcomingUpdates);
+    safeSetState(product.userCategory, setUserCategory);
+    safeSetState(product.industry, setIndustry);
+    safeSetState(product.practiceAreas, setPracticeAreas);
+    safeSetState(product.teamSize, setTeamSize);
+    
+    safeSetState(product.CompanyName, setCompanyName);
+    safeSetState(product.Headquarters, setHeadquarters);
+    safeSetState(product.FoundersNames, setFoundersNames);
+
+ 
+    // Handle process lifecycle object
+    if (product.processLifecycle && typeof product.processLifecycle === 'object') {
+      Object.entries(product.processLifecycle).forEach(([category, values]) => {
+        const valueArray = Array.isArray(values) ? values : values ? [values] : [];
+        setProcessLifecycle(category, valueArray);
+      });
+    }
+
+    // Handle features object with nested structure
+    if (product.features && typeof product.features === 'object') {
+      Object.entries(product.features).forEach(([category, subCategories]) => {
+        if (typeof subCategories === 'object' && subCategories !== null) {
+          const updatedCategory = Object.entries(subCategories).reduce((acc, [subCategory, values]) => {
+            acc[subCategory] = Array.isArray(values) ? values : values ? [values] : [];
+            return acc;
+          }, {});
+          setFeatures(category, updatedCategory);
+        }
+      });
+    }
+
+    safeSetState(product.freeTrial, setFreeTrial);
+    safeSetState(product.timePeriod, setTimePeriod);
+    safeSetState(product.pricingModel, setPricingModel);
+    safeSetState(product.contractPeriod, setContractPeriod);
+    
+    // Handle pricing params
+    const pricingParams = Array.isArray(product.pricingParams) 
+      ? product.pricingParams.filter(param => param).join(', ') 
+      : product.pricingParams || '';
+    safeSetState(pricingParams, setPricingParams);
+
+    safeSetState(product.freeVersion, setFreeVersion);
+    safeSetState(product.Demo, setDemo);
+    safeSetState(product.support, setSupport);
+    safeSetState(product.training, setTraining);
+    
+    // Handle file size and storage
+    safeSetState(Array.isArray(product.fileSize) ? product.fileSize[0] : product.fileSize, setFileSize);
+    safeSetState(Array.isArray(product.storage) ? product.storage[0] : product.storage, setStorage);
+
+    safeSetState(product.maintenance, setMaintenance);
+    safeSetState(product.validity, setValidity);
+    safeSetState(product.nameofPlan, setNameofPlan);
+    safeSetState(product.price, setPrice);
+    safeSetState(product.reqForChange, setReqForChange);
+    safeSetState(product.dataMigration, setDataMigration);
+    safeSetState(product.trainingReq, setTrainingReq);
+    safeSetState(product.Images, setImagesUrl);
+    safeSetState(product.videoUrl, setVideoUrl);
+    safeSetState(product.youtubeUrl, setYoutubeUrl);
+    safeSetState(product.linkedinUrl, setLinkedinUrl);
+    safeSetState(product.twitterUrl, setTwitterUrl);
+    safeSetState(product.instagramUrl, setInstagramUrl);
+    safeSetState(product.attachments, setAttachmentsUrl);
+  }
+}, [editing, product]);
   
-  // console.log("check me:",features)
+  console.log("check me:",features)
 
 
   const [submissionStatus, setSubmissionStatus] = useState("");
@@ -458,6 +571,8 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
 
   // form submission 
 
+  const params = useParams();
+  const productId =params.id || null;
 
   const handleSubmit = async () => {
 
@@ -621,11 +736,12 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
       // const productId = product.id;
      
      
+     
       try {
 
         const FormValues = {
 
-          // id: productId,
+          id: productId,
           // userId: userId,  // From global state
           prname: productName,  // Mapped to productName
           logoUrl :logoUrl,
@@ -688,6 +804,10 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
           linkedinUrl: linkedinUrl,  // Mapped from global state
           twitterUrl: twitterUrl,  // Mapped from global state
           youtubeUrl: youtubeUrl,  // Mapped from global state
+          companyName: companyName,
+          headquarters: headquarters,
+          foundersNames: foundersNames,
+
 
         
           // active: "active",  // Default value
@@ -700,7 +820,7 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
 
      
       
-      const response = await fetch("/api/edit-product", {
+      const response = await fetch("/api/admin-product-edit", {
         method: "POST",
         body: JSON.stringify(FormValues),
         headers: {

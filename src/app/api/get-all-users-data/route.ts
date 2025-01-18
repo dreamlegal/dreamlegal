@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma'; // Make sure you have Prisma instance setup
 export async function POST(req: NextRequest) {
   try {
     // Fetch all users from the 'userAccount' table, sorted by 'id' in descending order
-    const users = await prisma.userAccount.findMany({
+    const users = await prisma.user.findMany({
       orderBy: {
         id: 'desc', // Order by 'id' in descending order (latest first)
       },

@@ -65,9 +65,9 @@ export default function Page({ params }: { params: { userid: string } }) {
     console.log(data)
     // return <div>hello ji</div>;
     // return <ProfilePage data={data}  userId={params.userid} />
-    // return <NotificationsPage   userId={params.userid} />
+    return <NotificationsPage   userId={params.userid} />
     // return <BookmarksPage   userId={params.userid} />
-    return <ReviewsPage   userId={params.userid} />
+    // return <ReviewsPage   userId={params.userid} />
   }
 
   return <div>no no </div>;

@@ -115,12 +115,13 @@ const Sidebar = ({ isOpen, setIsOpen, isMobile }) => {
     { 
       icon: Star, 
       text: 'Saved Resources',
-      subItems: ['Bookmarks', 'Reviews', 'Reports', 'Rfps'],
+      subItems: ['Bookmarks', 'Reviews', 'WorkFlow Reports', 'Rfps','Book My Calls'],
       subItemPaths: [
         '/legal_professionals/dashboard/bookmarks',
         '/legal_professionals/dashboard/reviews',
-        '/legal_professionals/dashboard/reports',
-        '/legal_professionals/dashboard/rfps'
+        '/legal_professionals/dashboard/workflow_reports',
+        '/legal_professionals/dashboard/rfps',
+        '/legal_professionals/dashboard/book_my_calls'
       ]
     },
     { icon: UserCircle, text: 'Profile', path: '/legal_professionals/dashboard/profile' },

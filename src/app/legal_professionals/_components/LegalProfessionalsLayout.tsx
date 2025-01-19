@@ -5,13 +5,16 @@ import React, { useState, useEffect } from 'react';
 import { Menu } from 'lucide-react';
 import { IoIosNotificationsOutline } from "react-icons/io";
 import Sidebar from './Sidebar';
+import { useAuth } from '@/context/authContext';
 
 const LegalProfessionalsLayout = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
+  const { userId, userType } = useAuth();
+  console.log(userId, userType)
+  
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -32,17 +35,31 @@ const LegalProfessionalsLayout = ({ children }) => {
     }
   };
 
+  // const fetchNotifications = async () => {
+  //   try {
+  //     const response = await fetch('/api/notifications');
+  //     const data = await response.json();
+  //     if (data.success) {
+  //       setNotifications(data.notifications);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching notifications:", error);
+  //   }
+  // };
+
   const fetchNotifications = async () => {
+    
     try {
-      const response = await fetch('/api/notifications');
+      const response = await fetch(`/api/get-user-notifications?userId=${userId}`);
       const data = await response.json();
-      if (data.success) {
-        setNotifications(data.notifications);
-      }
+      setNotifications(data.notifications);
     } catch (error) {
-      console.error("Error fetching notifications:", error);
-    }
+      console.error("Error:", error);
+    } 
   };
+
+  
+  
 
   useEffect(() => {
     const handleClickOutside = (event) => {

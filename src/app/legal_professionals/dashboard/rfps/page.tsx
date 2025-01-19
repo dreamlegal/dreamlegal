@@ -2,12 +2,22 @@
 import React from 'react'
 import RfpPage from '../../_components/RfpPage'
 import { useAuth } from '@/context/authContext';
-const page = () => {
-   const { userId, userType } = useAuth();
-    console.log(userId, userType)
+// const page = () => {
+//    const { userId, userType } = useAuth();
+//     console.log(userId, userType)
+//   return (
+//     <RfpPage userId={userId}/>
+//   )
+// }
+
+// export default page
+const Page = () => {
+  const { userId, userType } = useAuth();
+  console.log(userId, userType)
+  
   return (
-    <RfpPage userId={userId}/>
+   <RfpPage userId={userId}/>
   )
 }
 
-export default page
+export default Page

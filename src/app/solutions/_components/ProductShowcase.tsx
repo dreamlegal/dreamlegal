@@ -1302,10 +1302,11 @@ const ProductsShowcase = () => {
         {
           header: null,
           icon: BarChart2,
+          description: "The Fastest & Easiest way to optimize your legal workflow is here",
           products: [{
             title: "Workflow Analysis",
             subtitle: "Analyze your legal workflows for efficiency",
-            description: "Find, Compare & Evaluate 1,000+ Legal Tech Products",
+            
             features: [
               "Identify red flags in operational processes",
               "Discover automation opportunities to save time and reduce errors",
@@ -1321,10 +1322,11 @@ const ProductsShowcase = () => {
         {
           header: "Find, Compare & Evaluate 1,000+ Legal Tech Products",
           icon: Search,
+          description: "Find, Compare & Evaluate 1,000+ Legal Tech Products",
           products: [{
             title: "Directory",
             subtitle: "Software Discovery Made Easy",
-            description: "Find, Compare & Evaluate 1,000+ Legal Tech Products",
+            
             features: [
               "Identify your legal team's unique needs efficiently",
               "Build a customized feature list for ideal solutions",
@@ -1340,10 +1342,11 @@ const ProductsShowcase = () => {
         {
           header: "Legal ops case studies, Tech adoption guides & comprehensive reports",
           icon: BookOpen,
+          description: "Legal ops case studies, Tech adoption guides & comprehensive reports",
           products: [{
             title: "Learning",
             subtitle: "Legal Technology Learning Simplified",
-            description: "Legal ops case studies, Tech adoption guides & comprehensive reports",
+            
             features: [
               "Utilize grids and matrices to identify the best legal tech solutions",
               "Access comprehensive guides on industry best practices",
@@ -1359,10 +1362,11 @@ const ProductsShowcase = () => {
         {
           header: "Increase business profitability & Revenue through KPI Analysis",
           icon: TrendingUp,
+          description: "Increase business profitability & Revenue through KPI Analysis",
           products: [{
             title: "KPI Analysis",
             subtitle: "Legal operations metrics for business growth",
-            description: "Increase business profitability & Revenue through KPI Analysis",
+           
             features: [
               "Monitor key legal operations KPIs effectively",
               "Assess the overall health of your legal operations",
@@ -1378,10 +1382,11 @@ const ProductsShowcase = () => {
         {
           header: "Smooth Data migration, employee training, clear roadmap and integrations",
           icon: Settings,
+          description: "Smooth Data migration, employee training, clear roadmap and integrations",
           products: [{
             title: "Change Management",
             subtitle: "Process based Change Management",
-            description: "Smooth Data migration, employee training, clear roadmap and integrations",
+           
             features: [
               "Seamlessly onboard technology with roadmap",
               "Measure impact with clear metrics and actionable insights",
@@ -1413,46 +1418,49 @@ const ProductsShowcase = () => {
         </p>
       </div>
 
-      <div className="relative mb-12 md:mb-24">
-        <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-blue-800 rounded-3xl blur-xl opacity-20"></div>
-        <div className="relative bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl p-6 md:p-10 shadow-2xl overflow-hidden">
-          <div className="absolute top-0 right-0 w-48 md:w-96 h-48 md:h-96 bg-blue-500/20 rounded-full transform translate-x-1/2 -translate-y-1/2" />
-          <div className="absolute bottom-0 left-0 w-48 md:w-96 h-48 md:h-96 bg-blue-400/20 rounded-full transform -translate-x-1/2 translate-y-1/2" />
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.1)_1px,_transparent_1px)] bg-[length:20px_20px]" />
-
-          <div className="relative flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
-            <div className="flex-1 space-y-4 md:space-y-6 text-center md:text-left">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight">
-                The Fastest & Easiest way to optimize your legal workflow is here
-              </h2>
-              <p className="text-blue-100 text-base md:text-lg">
-                Start for free today or reach out to learn more.
-              </p>
-            </div>
-            <div className="flex-shrink-0">
-              <button className="group relative px-6 md:px-8 py-3 md:py-4 bg-white rounded-xl font-semibold text-blue-600 hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl">
-                <span className="relative z-10 flex items-center gap-2 text-sm md:text-base">
-                  Contact Us
-                  <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-blue-600" />
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-100 to-blue-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+     
 
       <div className="relative mx-auto py-8 md:py-12 my-8 md:my-12 rounded-2xl shadow-2xl overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:14px_14px] rounded-2xl" />
         
         <div className="relative">
+
+        
           <div className="space-y-12 md:space-y-24">
             {sections.map((section, sectionIndex) => (
               <div key={sectionIndex} className="space-y-6">
-                {section.header && (
-                  <SectionHeader title={section.header} icon={section.icon} />
+
+                {section.description && (
+                   
+                   <div className="relative mb-8 md:mb-16">
+                   {/* Outer blur effect */}
+                   <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl blur-lg opacity-20"></div>
+                   
+                   {/* Main card container */}
+                   <div className="relative bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-4 md:p-8 shadow-xl overflow-hidden">
+                     {/* Decorative circles */}
+                     <div className="absolute top-0 right-0 w-32 md:w-64 h-32 md:h-64 bg-blue-500/20 rounded-full transform translate-x-1/2 -translate-y-1/2" />
+                     <div className="absolute bottom-0 left-0 w-32 md:w-64 h-32 md:h-64 bg-blue-400/20 rounded-full transform -translate-x-1/2 translate-y-1/2" />
+                     
+                     {/* Dot pattern overlay */}
+                     <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.1)_1px,_transparent_1px)] bg-[length:16px_16px]" />
+             
+                     {/* Content container */}
+                     <div className="relative flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
+                       <div className="flex-1 space-y-3 md:space-y-4 text-center md:text-left">
+                         <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-white leading-snug">
+                           {section.description}
+                         </h2>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
                 )}
+
+                {/* {section.header && (
+                  <SectionHeader title={section.header} icon={section.icon} />
+                )} */}
                 {section.products.map((product, productIndex) => (
                   <ProductCard 
                     key={productIndex} 

@@ -94,7 +94,14 @@ const LandingPage = () => {
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-800 tracking-tight mb-6 
                leading-[1.1] lg:leading-[1.1] bg-clip-text text-transparent 
                bg-gradient-to-r from-gray-900 to-gray-700">
-    Maximize the impact of legal operations on business growth
+    Maximize the Impact of 
+    
+    
+    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
+                {" "}Legal Operations{" "}
+              </span>
+    
+    on Business Growth
 </h1>
           <p className="text-lg sm:text-xl text-gray-500 mb-10 max-w-xl font-medium leading-relaxed">
             Optimize legal workflows, implement right legal tech and improve business KPIs through legal ops intelligence platform
@@ -163,38 +170,7 @@ const LandingPage = () => {
 
 
      
-<div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-visible">
-  <svg className="w-full h-full" viewBox="0 0 1400 600" preserveAspectRatio="xMidYMid meet">
-    <path
-      d="M 700,280 C 700,340 700,440 700,500"
-      stroke="#93C5FD"
-      strokeWidth="2"
-      fill="none"
-      strokeDasharray="6,6"
-    />
-    <path
-      d="M 350,400 C 500,460 600,340 700,400"
-      stroke="#93C5FD"
-      strokeWidth="2"
-      fill="none"
-      strokeDasharray="6,6"
-    />
-    <path
-      d="M 700,400 C 700,400 700,400 700,400"
-      stroke="#93C5FD"
-      strokeWidth="2"
-      fill="none"
-      strokeDasharray="6,6"
-    />
-    <path
-      d="M 1050,400 C 900,460 800,340 700,400"
-      stroke="#93C5FD"
-      strokeWidth="2"
-      fill="none"
-      strokeDasharray="6,6"
-    />
-  </svg>
-</div>
+
       {/* Animated Background Elements */}
       <div className="absolute left-0 top-1/3 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-20 animate-pulse" />
       <div className="absolute right-0 bottom-1/4 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-20 animate-pulse delay-700" />
@@ -322,8 +298,10 @@ const LandingPage = () => {
         ))}
       </div>
     </div>
+      
+      <LegalProblemsSection/>
       <FinalSection/>
-
+      <DownloadBox/>
       {/* Additional Floating Elements */}
       <FloatingElement 
         delay={0.6}
@@ -377,8 +355,17 @@ import { Building2, Briefcase,  } from 'lucide-react';
 import { X, ArrowRight, Sparkles } from 'lucide-react';
 
 
-import { useRef, } from 'react';
-import { Cpu,  MousePointerClick, ChevronRight } from 'lucide-react';
+
+
+
+
+
+
+
+
+
+import { useRef,  } from 'react';
+import { Cpu, MousePointerClick,  FileText,  } from 'lucide-react';
 
 const useIntersectionObserver = (options = {}) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
@@ -404,29 +391,31 @@ const useIntersectionObserver = (options = {}) => {
   return [targetRef, isIntersecting];
 };
 
-
 const FinalSection = () => {
   const [sectionRef, isInView] = useIntersectionObserver();
-  const [isChoicesVisible, setIsChoicesVisible] = useState(false);
-  const [hoveredOption, setHoveredOption] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const options = [
     { 
-      title: "Law Firm",
+      title: "Analyse legal processes",
       icon: Building2,
       gradient: "from-blue-600 to-indigo-600"
     },
     { 
-      title: "Inhouse Legal Team",
+      title: "Discover technology requirement",
       icon: Users,
       gradient: "from-blue-600 to-cyan-600"
     },
     { 
-      title: "Legal Tech Company",
+      title: "Align legal ops with business goals",
       icon: Cpu,
       gradient: "from-indigo-600 to-purple-600"
+    },
+    { 
+      title: "Let us help you from scratch",
+      icon: FileText,
+      gradient: "from-purple-600 to-pink-600"
     }
   ];
 
@@ -441,87 +430,49 @@ const FinalSection = () => {
         <div className={`bg-white/90 rounded-xl md:rounded-2xl shadow-lg border border-gray-100/50 overflow-hidden backdrop-blur-sm
                       transform transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            {/* Left Content Side */}
-            <div className="relative p-4 sm:p-6 md:p-8 bg-gradient-to-br from-blue-50/50 to-indigo-50/50">
-              <div className="space-y-4 md:space-y-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-gradient-to-r from-blue-100/50 to-indigo-100/50 border border-blue-200/50 shadow-sm">
-                  <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-blue-600" />
-                  <span className="text-xs md:text-sm font-semibold text-blue-600 tracking-wide">GET STARTED</span>
-                </div>
-                
-                <h2 className="text-xl md:text-2xl font-bold text-gray-900 leading-tight">
-                  What Describes You{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
-                    Best?
-                  </span>
-                </h2>
-                
-                {/* Initial Choose Button */}
-                {!isChoicesVisible && (
-                  <div className="relative">
-                    <button
-                      onClick={() => setIsChoicesVisible(true)}
-                      className="group relative w-full inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-4 rounded-lg md:rounded-xl
-                               bg-gradient-to-r from-blue-600 to-indigo-600 shadow-lg 
-                               ring-2 ring-blue-100 ring-offset-2
-                               transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
-                    >
+          <div className="p-4 sm:p-6 md:p-8">
+            {/* Header Section */}
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-gradient-to-r from-blue-100/50 to-indigo-100/50 border border-blue-200/50 shadow-sm mb-4">
+                <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-blue-600" />
+                <span className="text-xs md:text-sm font-semibold text-blue-600 tracking-wide">GET STARTED</span>
+              </div>
+              
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900 leading-tight">
+                Here is how you can get started with {' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+                  DreamLegal
+                </span>
+              </h2>
+            </div>
+
+            {/* Options Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              {options.map((option, index) => {
+                const Icon = option.icon;
+                return (
+                  <button
+                    key={index}
+                    className="transform transition-all duration-500"
+                    onClick={() => handleCategorySelect(option.title)}
+                  >
+                    <div className={`group w-full inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-4 rounded-lg md:rounded-xl
+                                 bg-gradient-to-r ${option.gradient} shadow-lg transition-all duration-300 
+                                 hover:-translate-y-0.5 hover:shadow-xl
+                                 ${selectedCategory === option.title 
+                                   ? 'ring-2 ring-blue-200 ring-offset-2' 
+                                   : 'hover:ring-2 hover:ring-blue-100 hover:ring-offset-2'}`}>
+                     
+                      <span className="flex-1 text-left text-sm md:text-base font-medium text-white">
+                        {option.title}
+                      </span>
                       <div className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg bg-white/20">
                         <MousePointerClick className="w-4 h-4 md:w-5 md:h-5 text-white" />
                       </div>
-                      <div className="flex-1 text-left">
-                        <span className="block text-base md:text-lg font-semibold text-white mb-0.5">Choose Your Category</span>
-                        <span className="text-xs md:text-sm text-white/70">Click to explore options</span>
-                      </div>
-                      <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-white/70" />
-                    </button>
-                  </div>
-                )}
-              </div>
-              
-              {/* Decorative Bottom Corner */}
-              <div className="absolute bottom-0 right-0 w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-blue-100/20 to-indigo-100/20 rounded-tl-3xl" />
-            </div>
-
-            {/* Right Options Side */}
-            <div className={`relative p-4 sm:p-6 md:p-8 transition-all duration-500
-                         ${isChoicesVisible ? 'opacity-100' : 'opacity-0'}`}>
-              <div className="space-y-2 md:space-y-3">
-                {options.map((option, index) => {
-                  const Icon = option.icon;
-                  return (
-                    <button
-                      key={index}
-                      className="w-full transform transition-all duration-500"
-                      style={{ 
-                        transitionDelay: isChoicesVisible ? `${index * 100}ms` : '0ms',
-                        opacity: isChoicesVisible ? 1 : 0,
-                        transform: isChoicesVisible ? 'translateX(0)' : 'translateX(100px)'
-                      }}
-                      onClick={() => handleCategorySelect(option.title)}
-                    >
-                      <div className={`group w-full inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-4 rounded-lg md:rounded-xl
-                                   bg-gradient-to-r ${option.gradient} shadow-lg transition-all duration-300 
-                                   hover:-translate-y-0.5 hover:shadow-xl
-                                   ${selectedCategory === option.title 
-                                     ? 'ring-2 ring-blue-200 ring-offset-2' 
-                                     : 'hover:ring-2 hover:ring-blue-100 hover:ring-offset-2'}`}>
-                        <div className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg 
-                                     bg-white/20 transition-transform duration-300">
-                          <Icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
-                        </div>
-                        <span className="flex-1 text-left text-sm md:text-base font-medium text-white">
-                          {option.title}
-                        </span>
-                        <div className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg bg-white/20">
-                          <MousePointerClick className="w-4 h-4 md:w-5 md:h-5 text-white" />
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
           
@@ -545,7 +496,7 @@ import { InlineWidget } from 'react-calendly';
 
 const FormModal = ({ isOpen, onClose, selectedCategory }) => {
   const [formData, setFormData] = useState({
-    name: '',
+    role: '',
     email: '',
     organization: ''
   });
@@ -612,7 +563,7 @@ const FormModal = ({ isOpen, onClose, selectedCategory }) => {
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {[
-                    { name: 'name', label: 'Name', type: 'text', placeholder: 'Enter your name' },
+                    { name: 'role', label: 'Role', type: 'text', placeholder: 'Enter your role' },
                     { name: 'email', label: 'Email', type: 'email', placeholder: 'Enter your email' },
                     { name: 'organization', label: 'Organization', type: 'text', placeholder: 'Enter your organization' }
                   ].map((field) => (
@@ -685,209 +636,195 @@ const FormModal = ({ isOpen, onClose, selectedCategory }) => {
 
 import { motion } from 'framer-motion';
 
+import { Scale, Banknote, Clock, Laptop } from 'lucide-react';
 
-const MinimalHero = () => {
-  const [email, setEmail] = useState('');
-  const [isInputFocused, setIsInputFocused] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [status, setStatus] = useState({ type: '', message: '' });
 
-  const FloatingElement = ({ children, className, delay = 0 }) => (
-    <div className={className}>
-      {children}
+
+
+
+
+
+const LegalProblemsSection = () => {
+  const [sectionRef, isInView] = useIntersectionObserver();
+
+  const problems = [
+    {
+      icon: Banknote,
+      title: "Legal as a Cost Centre"
+    },
+    {
+      icon: Scale,
+      title: "Misaligned Priorities of Legal and Business Functions"
+    },
+    {
+      icon: Clock,
+      title: "No Yield of Legal Ops on Revenue and Profit"
+    },
+    {
+      icon: Laptop,
+      title: "Conventional Legal Teams with No Tech"
+    }
+  ];
+
+  return (
+    <div ref={sectionRef} className="w-full pt-16 pb-12 relative overflow-hidden flex justify-center">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
+        {/* Enhanced Header Section with better mobile spacing */}
+        <div className={`mb-8 sm:mb-16 text-center relative transition-all duration-1000 transform
+                      ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="inline-block relative">
+            <div className="absolute -inset-4 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 rounded-xl blur-2xl"></div>
+            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
+            
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-blue-800 to-gray-900 mb-4 relative inline-block leading-tight sm:leading-normal px-2">
+              Why Legal Function is a
+              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"> Pain </span>
+              for Enterprises?
+              <div className={`absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-400 
+                           transform origin-left transition-transform duration-1000 
+                           ${isInView ? 'scale-x-100' : 'scale-x-0'}`} />
+            </h2>
+          </div>
+        </div>
+
+        {/* Responsive card layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-2">
+          {problems.map((problem, index) => {
+            const Icon = problem.icon;
+            return (
+              <div
+                key={index}
+                className={`relative group transition-all duration-700 transform
+                           ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
+                <div className="relative rounded-2xl overflow-hidden h-full border border-gray-200 bg-white 
+                             shadow-[0_8px_30px_rgb(0,0,0,0.12)] backdrop-blur-sm
+                             transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-2xl">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white via-white/80 to-blue-50/50" />
+                  
+                  <div className="relative p-6 h-full flex flex-col items-center justify-center text-center">
+                    <div className="mb-6 relative">
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-full blur-xl transform group-hover:scale-110 transition-transform duration-500" />
+                      <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-500 to-blue-500 
+                                  flex items-center justify-center shadow-lg shadow-blue-500/30
+                                  transform group-hover:-translate-y-1 transition-all duration-300">
+                        <Icon className="w-8 h-8 text-white" />
+                      </div>
+                    </div>
+
+                    <h3 className="text-lg font-bold text-gray-900 transition-all duration-300 group-hover:text-blue-600 leading-relaxed pb-4">
+                      {problem.title}
+                    </h3>
+
+                    <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-500/20 rounded-2xl transition-all duration-300" />
+                    
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-500 
+                                transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
+};
 
-  const validateEmail = (email) => {
-    return email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-  };
 
-  const handleSubmit = async () => {
-    // Reset status
-    setStatus({ type: '', message: '' });
+import { Download, Mail } from 'lucide-react';
 
-    // Validate email
-    if (!validateEmail(email)) {
-      setStatus({ 
-        type: 'error', 
-        message: 'Please enter a valid email address' 
-      });
-      return;
-    }
+const DownloadBox = () => {
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
+  const handleDownload = (e) => {
+    e.preventDefault();
     setIsLoading(true);
-    console.log('Email:', email);
-    setIsLoading(false);
-
-    // try {
-    //   const response = await fetch('/api/subscribe', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ email }),
-    //   });
-
-    //   const data = await response.json();
-
-    //   if (!response.ok) {
-    //     throw new Error(data.message || 'Something went wrong');
-    //   }
-
-    //   setStatus({
-    //     type: 'success',
-    //     message: 'Thanks for subscribing!'
-    //   });
-    //   setEmail('');
-      
-    // } catch (error) {
-    //   setStatus({
-    //     type: 'error',
-    //     message: error.message || 'Failed to submit email'
-    //   });
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    setTimeout(() => setIsLoading(false), 1500);
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 overflow-hidden">
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#60A5FA20_0%,transparent_50%)]" />
-      
-      {/* Floating UI Elements */}
-      <FloatingElement 
-        delay={0.2} 
-        className="absolute hidden md:block top-20 left-10 w-32 h-40 rounded-xl bg-white/80 backdrop-blur-sm shadow-lg transform -rotate-12 border border-blue-100"
-      >
-        <div className="p-4">
-          <div className="w-full h-4 bg-blue-100 rounded-md mb-2" />
-          <div className="w-3/4 h-4 bg-blue-100 rounded-md mb-2" />
-          <div className="w-1/2 h-4 bg-blue-100 rounded-md" />
-        </div>
-      </FloatingElement>
+    <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-1">
+      {/* Main container - adjusted padding for mobile */}
+      <div className="w-full max-w-5xl h-auto min-h-[16rem] relative group">
+        <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-900/95 to-blue-800/90 backdrop-blur-xl shadow-2xl 
+                    border border-blue-700/20 overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
+          
+          {/* Background Effects */}
+          <div className="absolute inset-0">
+            {/* Grid Pattern */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#60a5fa05_1px,transparent_1px),linear-gradient(to_bottom,#60a5fa05_1px,transparent_1px)] 
+                        bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_85%)]" />
+            
+            {/* Gradient Orbs - adjusted for mobile */}
+            <div className="absolute -top-16 -left-16 sm:-top-24 sm:-left-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl opacity-70 
+                        animate-pulse mix-blend-overlay group-hover:opacity-85 duration-1000" />
+            <div className="absolute -bottom-16 -right-16 sm:-bottom-24 sm:-right-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-l from-blue-400/20 to-indigo-500/20 rounded-full blur-3xl opacity-70 
+                        animate-pulse delay-300 mix-blend-overlay group-hover:opacity-85 duration-1000" />
+          </div>
 
-      <FloatingElement 
-        delay={0.4}
-        className="absolute hidden md:block top-40 right-16 w-12 h-12 rounded-full bg-blue-500 shadow-lg"
-      />
-       <FloatingElement 
-        delay={0.3}
-        className="absolute hidden md:block bottom-32 left-24 w-16 h-16 rounded-full bg-blue-400/20 backdrop-blur-sm shadow-lg"
-      />
+          {/* Content Container - made responsive */}
+          <div className="relative h-full flex flex-col items-center justify-center px-4 sm:px-8 py-8 gap-6 sm:gap-8">
+            {/* Heading - responsive text size */}
+            <div className="text-center space-y-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white px-2">
+                100 CLM CASE STUDY REPORT
+              </h2>
+              <div className="flex justify-center space-x-2">
+                <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-transparent via-blue-400/50 to-blue-400/50 rounded-full" />
+                <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-blue-400/50 to-cyan-400/50 rounded-full" />
+                <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-cyan-400/50 to-transparent rounded-full" />
+              </div>
+            </div>
 
-      <FloatingElement 
-        delay={0.5}
-        className="absolute hidden lg:block top-60 right-32 w-40 h-32 rounded-xl bg-white/80 backdrop-blur-sm shadow-lg transform rotate-6 border border-blue-100"
-      >
-        <div className="p-4">
-          <div className="w-full h-3 bg-blue-100 rounded-md mb-2" />
-          <div className="w-2/3 h-3 bg-blue-100 rounded-md" />
-        </div>
-      </FloatingElement>
-
-
-      {/* Main Content */}
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-32 pb-20">
-        <div className="text-center">
-          {/* Logo */}
-          <FloatingElement delay={0.1} className="inline-block mb-8 sm:mb-12">
-            <div className="text-2xl font-bold text-blue-600">Your Logo</div>
-          </FloatingElement>
-
-          {/* Headline */}
-          <FloatingElement delay={0.2}>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 max-w-4xl mx-auto leading-tight">
-              The easiest way to manage your business finances
-            </h1>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-              Streamline your financial operations with our powerful platform
-            </p>
-          </FloatingElement>
-
-          {/* Email Capture Form */}
-          <FloatingElement delay={0.3} className="max-w-xl mx-auto mt-8 sm:mt-12 px-4">
-            <div 
-              className={`flex flex-col sm:flex-row gap-3 transition-all duration-200 
-                         ${isInputFocused ? 'transform -translate-y-1' : ''}`}
-            >
-              <div className="relative flex-1">
+            {/* Input and Button Group - stack on mobile */}
+            <div className="flex flex-col sm:flex-row items-stretch gap-4 w-full sm:w-auto 
+                          bg-blue-900/50 p-2 rounded-xl backdrop-blur-sm border border-blue-700/30 
+                          shadow-xl shadow-blue-950/20 group-hover:shadow-2xl group-hover:shadow-blue-950/30 
+                          transition-all duration-300">
+              {/* Input - full width on mobile */}
+              <div className="relative flex-1 sm:flex-initial">
+                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                  <Mail className="h-4 w-4 text-blue-300/80" />
+                </div>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  onFocus={() => setIsInputFocused(true)}
-                  onBlur={() => setIsInputFocused(false)}
-                  placeholder="Enter your work email"
-                  className={`w-full px-6 py-4 bg-white rounded-xl text-gray-700 placeholder-gray-400
-                           border-2 ${status.type === 'error' ? 'border-red-300' : 'border-blue-100'} 
-                           focus:border-blue-400 outline-none
-                           shadow-sm hover:shadow-md focus:shadow-lg
-                           transition-all duration-200`}
+                  placeholder="Enter your email"
+                  className="w-full sm:w-72 pl-10 pr-4 py-3 rounded-lg bg-blue-950/50 border-0 
+                         placeholder-blue-300/50 text-blue-100
+                         focus:ring-2 focus:ring-blue-400/30 focus:outline-none
+                         transition-all duration-300"
                 />
-                {isInputFocused && (
-                  <div className="absolute -bottom-2 left-6 text-xs text-blue-600 bg-white px-2">
-                    Work email address
-                  </div>
-                )}
               </div>
-              <button 
-                onClick={handleSubmit}
+              
+              {/* Button - full width on mobile */}
+              <button
+                onClick={handleDownload}
                 disabled={isLoading}
-                className={`group relative px-8 py-4 bg-blue-600 text-white rounded-xl font-medium
-                         ${isLoading ? 'opacity-75 cursor-not-allowed' : 'hover:bg-blue-700'}
-                         shadow-sm hover:shadow-md
-                         transition-all duration-200 flex items-center justify-center gap-2`}
+                className={`w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-white relative overflow-hidden
+                         transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105
+                         ${isLoading 
+                           ? 'bg-blue-800/50 cursor-not-allowed' 
+                           : 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:shadow-lg hover:shadow-blue-500/20'
+                         }`}
               >
                 {isLoading ? (
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
-                  />
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
-                  <>
-                    Get started
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </>
+                  <div className="flex items-center justify-center gap-2">
+                    <Download className="w-4 h-4" />
+                    <span>Download</span>
+                  </div>
                 )}
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-400 to-blue-300 
-                             opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-sm" />
               </button>
             </div>
-
-            {/* Status Message */}
-            {status.message && (
-              <div className={`mt-3 text-sm ${
-                  status.type === 'error' ? 'text-red-500' : 'text-green-500'
-                }`}
-              >
-                {status.message}
-              </div>
-            )}
-          </FloatingElement>
-
-          {/* Trust Badges */}
-          <FloatingElement delay={0.4} className="mt-12">
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
-              <span>🛡️ Enterprise-ready</span>
-              <span>⚡ Lightning fast</span>
-              <span>🔒 Bank-grade security</span>
-            </div>
-          </FloatingElement>
+          </div>
         </div>
       </div>
-
-      {/* Additional Floating Elements */}
-      <FloatingElement 
-        delay={0.6}
-        className="absolute hidden md:block bottom-20 right-10 w-24 h-24 rounded-xl bg-blue-100/50 backdrop-blur-sm shadow-lg transform -rotate-6"
-      />
-      
-      <FloatingElement 
-        delay={0.7}
-        className="absolute hidden md:block bottom-40 left-16 w-10 h-10 rounded-full bg-blue-300/30 backdrop-blur-sm shadow-lg"
-      />
     </div>
   );
 };

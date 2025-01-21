@@ -53,39 +53,7 @@ const LandingPage = () => {
         <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white via-white/90 to-transparent" />
       </div>
 
-      {/* Hero Section Floating Elements */}
-      {/* <FloatingElement 
-        delay={0.2} 
-        className="absolute hidden md:block top-20 left-10 w-32 h-40 rounded-xl bg-white/80 backdrop-blur-sm shadow-lg transform -rotate-12 border border-blue-100"
-      >
-        <div className="p-4">
-          <div className="w-full h-4 bg-blue-100 rounded-md mb-2" />
-          <div className="w-3/4 h-4 bg-blue-100 rounded-md mb-2" />
-          <div className="w-1/2 h-4 bg-blue-100 rounded-md" />
-        </div>
-      </FloatingElement>
-
-      <FloatingElement 
-        delay={0.4}
-        className="absolute hidden md:block top-40 right-16 w-12 h-12 rounded-full bg-blue-500 shadow-lg"
-      />
-
-      <FloatingElement 
-        delay={0.3}
-        className="absolute hidden md:block bottom-32 left-24 w-16 h-16 rounded-full bg-blue-400/20 backdrop-blur-sm shadow-lg"
-      />
-
-      <FloatingElement 
-        delay={0.5}
-        className="absolute hidden lg:block top-60 right-32 w-40 h-32 rounded-xl bg-white/80 backdrop-blur-sm shadow-lg transform rotate-6 border border-blue-100"
-      >
-        <div className="p-4">
-          <div className="w-full h-3 bg-blue-100 rounded-md mb-2" />
-          <div className="w-2/3 h-3 bg-blue-100 rounded-md" />
-        </div>
-      </FloatingElement> */}
-
-      {/* Hero Section */}
+     
     
   <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 lg:pt-40 pb-20">
       <div className="grid lg:grid-cols-2 gap-8 lg:gap-20 items-start">
@@ -246,36 +214,34 @@ const LandingPage = () => {
       </div>
 
       {/* Connection Lines */}
-      <div className="relative flex justify-center mb-2">
-        <svg className="w-full h-full" viewBox="0 0 1400 200" preserveAspectRatio="xMidYMid meet">
-          {/* Continuous central vertical line from top to bottom */}
-          <path
-            d="M 700,0 L 700,200"
-            stroke="#93C5FD"
-            strokeWidth="2"
-            fill="none"
-            strokeDasharray="6,6"
-          />
-          
-          {/* Original left curve */}
-          <path
-            d="M 200,130 C 400,60 500,200 700,80"
-            stroke="#93C5FD"
-            strokeWidth="2"
-            fill="none"
-            strokeDasharray="6,6"
-          />
-          
-          {/* Original right curve */}
-          <path
-            d="M 1200,130 C 1000,60 900,200 700,80"
-            stroke="#93C5FD"
-            strokeWidth="2"
-            fill="none"
-            strokeDasharray="6,6"
-          />
-        </svg>
-      </div>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 200" preserveAspectRatio="xMidYMid meet">
+  {/* Continuous central vertical line from top to bottom */}
+  <path
+    d="M 700,0 L 700,200"
+    stroke="#93C5FD"
+    strokeWidth="2"
+    fill="none"
+    strokeDasharray="6,6"
+  />
+  
+  {/* Modified left curve with even lower endpoint */}
+  <path
+    d="M 200,190 C 400,60 500,200 700,80"
+    stroke="#93C5FD"
+    strokeWidth="2"
+    fill="none"
+    strokeDasharray="6,6"
+  />
+  
+  {/* Modified right curve with even lower endpoint */}
+  <path
+    d="M 1200,190 C 1000,60 900,200 700,80"
+    stroke="#93C5FD"
+    strokeWidth="2"
+    fill="none"
+    strokeDasharray="6,6"
+  />
+</svg>
 
       {/* Bottom Features */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
@@ -735,6 +701,295 @@ const LegalProblemsSection = () => {
 
 import { Download, Mail } from 'lucide-react';
 
+// const DownloadBox = () => {
+//   const [email, setEmail] = useState('');
+//   const [isLoading, setIsLoading] = useState(false);
+
+//   const handleDownload = (e) => {
+//     e.preventDefault();
+//     setIsLoading(true);
+//     setTimeout(() => setIsLoading(false), 1500);
+//   };
+
+//   return (
+//     <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-1">
+//       {/* Main container - adjusted padding for mobile */}
+//       <div className="w-full max-w-5xl h-auto min-h-[16rem] relative group">
+//         <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-900/95 to-blue-800/90 backdrop-blur-xl shadow-2xl 
+//                     border border-blue-700/20 overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
+          
+//           {/* Background Effects */}
+//           <div className="absolute inset-0">
+//             {/* Grid Pattern */}
+//             <div className="absolute inset-0 bg-[linear-gradient(to_right,#60a5fa05_1px,transparent_1px),linear-gradient(to_bottom,#60a5fa05_1px,transparent_1px)] 
+//                         bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_85%)]" />
+            
+//             {/* Gradient Orbs - adjusted for mobile */}
+//             <div className="absolute -top-16 -left-16 sm:-top-24 sm:-left-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl opacity-70 
+//                         animate-pulse mix-blend-overlay group-hover:opacity-85 duration-1000" />
+//             <div className="absolute -bottom-16 -right-16 sm:-bottom-24 sm:-right-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-l from-blue-400/20 to-indigo-500/20 rounded-full blur-3xl opacity-70 
+//                         animate-pulse delay-300 mix-blend-overlay group-hover:opacity-85 duration-1000" />
+//           </div>
+
+//           {/* Content Container - made responsive */}
+//           <div className="relative h-full flex flex-col items-center justify-center px-4 sm:px-8 py-8 gap-6 sm:gap-8">
+//             {/* Heading - responsive text size */}
+//             <div className="text-center space-y-3">
+//               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white px-2">
+//                 100 CLM CASE STUDY REPORT
+//               </h2>
+//               <div className="flex justify-center space-x-2">
+//                 <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-transparent via-blue-400/50 to-blue-400/50 rounded-full" />
+//                 <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-blue-400/50 to-cyan-400/50 rounded-full" />
+//                 <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-cyan-400/50 to-transparent rounded-full" />
+//               </div>
+//             </div>
+
+//             {/* Input and Button Group - stack on mobile */}
+//             <div className="flex flex-col sm:flex-row items-stretch gap-4 w-full sm:w-auto 
+//                           bg-blue-900/50 p-2 rounded-xl backdrop-blur-sm border border-blue-700/30 
+//                           shadow-xl shadow-blue-950/20 group-hover:shadow-2xl group-hover:shadow-blue-950/30 
+//                           transition-all duration-300">
+//               {/* Input - full width on mobile */}
+//               <div className="relative flex-1 sm:flex-initial">
+//                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+//                   <Mail className="h-4 w-4 text-blue-300/80" />
+//                 </div>
+//                 <input
+//                   type="email"
+//                   value={email}
+//                   onChange={(e) => setEmail(e.target.value)}
+//                   placeholder="Enter your email"
+//                   className="w-full sm:w-72 pl-10 pr-4 py-3 rounded-lg bg-blue-950/50 border-0 
+//                          placeholder-blue-300/50 text-blue-100
+//                          focus:ring-2 focus:ring-blue-400/30 focus:outline-none
+//                          transition-all duration-300"
+//                 />
+//               </div>
+              
+//               {/* Button - full width on mobile */}
+//               <button
+//                 onClick={handleDownload}
+//                 disabled={isLoading}
+//                 className={`w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-white relative overflow-hidden
+//                          transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105
+//                          ${isLoading 
+//                            ? 'bg-blue-800/50 cursor-not-allowed' 
+//                            : 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:shadow-lg hover:shadow-blue-500/20'
+//                          }`}
+//               >
+//                 {isLoading ? (
+//                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+//                 ) : (
+//                   <div className="flex items-center justify-center gap-2">
+//                     <Download className="w-4 h-4" />
+//                     <span>Download</span>
+//                   </div>
+//                 )}
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+
+// const DownloadBox = () => {
+//   const [email, setEmail] = useState('');
+//   const [isLoading, setIsLoading] = useState(false);
+
+//   const handleDownload = (e) => {
+//     e.preventDefault();
+//     setIsLoading(true);
+//     setTimeout(() => setIsLoading(false), 1500);
+//   };
+
+//   return (
+//     <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-1">
+//       {/* Main container */}
+//       <div className="w-full max-w-5xl h-auto min-h-[16rem] relative group">
+//         <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-50/95 to-blue-100/90 backdrop-blur-xl shadow-2xl 
+//                     border border-blue-200 overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
+          
+//           {/* Background Effects */}
+//           <div className="absolute inset-0">
+//             {/* Grid Pattern */}
+//             <div className="absolute inset-0 bg-[linear-gradient(to_right,#60a5fa15_1px,transparent_1px),linear-gradient(to_bottom,#60a5fa15_1px,transparent_1px)] 
+//                         bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_85%)]" />
+            
+//             {/* Gradient Orbs */}
+//             <div className="absolute -top-16 -left-16 sm:-top-24 sm:-left-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-r from-blue-200/40 to-cyan-200/40 rounded-full blur-3xl opacity-70 
+//                         animate-pulse mix-blend-overlay group-hover:opacity-85 duration-1000" />
+//             <div className="absolute -bottom-16 -right-16 sm:-bottom-24 sm:-right-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-l from-blue-200/40 to-indigo-200/40 rounded-full blur-3xl opacity-70 
+//                         animate-pulse delay-300 mix-blend-overlay group-hover:opacity-85 duration-1000" />
+//           </div>
+
+//           {/* Content Container */}
+//           <div className="relative h-full flex flex-col items-center justify-center px-4 sm:px-8 py-8 gap-6 sm:gap-8">
+//             {/* Heading */}
+//             <div className="text-center space-y-3">
+//               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-950 px-2">
+//                 100 CLM CASE STUDY REPORT
+//               </h2>
+//               <div className="flex justify-center space-x-2">
+//                 <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-transparent via-blue-400 to-blue-400 rounded-full" />
+//                 <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full" />
+//                 <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-cyan-400 to-transparent rounded-full" />
+//               </div>
+//             </div>
+
+//             {/* Input and Button Group */}
+//             <div className="flex flex-col sm:flex-row items-stretch gap-4 w-full sm:w-auto 
+//                           bg-white/50 p-2 rounded-xl backdrop-blur-sm border border-blue-200 
+//                           shadow-xl shadow-blue-100 group-hover:shadow-2xl group-hover:shadow-blue-200 
+//                           transition-all duration-300">
+//               {/* Input */}
+//               <div className="relative flex-1 sm:flex-initial">
+//                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+//                   <Mail className="h-4 w-4 text-blue-400" />
+//                 </div>
+//                 <input
+//                   type="email"
+//                   value={email}
+//                   onChange={(e) => setEmail(e.target.value)}
+//                   placeholder="Enter your email"
+//                   className="w-full sm:w-72 pl-10 pr-4 py-3 rounded-lg bg-white/80 border-0 
+//                          placeholder-blue-300 text-blue-950
+//                          focus:ring-2 focus:ring-blue-200 focus:outline-none
+//                          transition-all duration-300"
+//                 />
+//               </div>
+              
+//               {/* Button */}
+//               <button
+//                 onClick={handleDownload}
+//                 disabled={isLoading}
+//                 className={`w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-white relative overflow-hidden
+//                          transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105
+//                          ${isLoading 
+//                            ? 'bg-blue-200 cursor-not-allowed' 
+//                            : 'bg-gradient-to-r from-blue-500 to-cyan-500 hover:shadow-lg hover:shadow-blue-200'
+//                          }`}
+//               >
+//                 {isLoading ? (
+//                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+//                 ) : (
+//                   <div className="flex items-center justify-center gap-2">
+//                     <Download className="w-4 h-4" />
+//                     <span>Download</span>
+//                   </div>
+//                 )}
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+// const DownloadBox = () => {
+//   const [email, setEmail] = useState('');
+//   const [isLoading, setIsLoading] = useState(false);
+
+//   const handleDownload = (e) => {
+//     e.preventDefault();
+//     setIsLoading(true);
+//     setTimeout(() => setIsLoading(false), 1500);
+//   };
+
+//   return (
+//     <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-1">
+//       <div className="w-full max-w-5xl h-auto min-h-[16rem] relative group">
+//         <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#4285f4]/95 to-[#4285f4]/90 backdrop-blur-xl shadow-2xl 
+//                     border border-[#4285f4] overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
+          
+//           {/* Background Effects */}
+//           <div className="absolute inset-0">
+//             {/* Grid Pattern */}
+//             <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] 
+//                         bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_85%)]" />
+            
+//             {/* Decorative Shapes */}
+//             <div className="absolute top-4 right-8 w-12 h-12 border-4 border-white/20 rounded-full rotate-45" />
+//             <div className="absolute bottom-8 left-12 w-8 h-8 bg-white/10 rounded-lg" />
+//             <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-white/15 rotate-12 transform" />
+            
+//             {/* Gradient Orbs */}
+//             <div className="absolute -top-16 -left-16 sm:-top-24 sm:-left-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-r from-[#4285f4]/40 to-[#4285f4]/40 rounded-full blur-3xl opacity-70 
+//                         animate-pulse mix-blend-overlay group-hover:opacity-85 duration-1000" />
+//             <div className="absolute -bottom-16 -right-16 sm:-bottom-24 sm:-right-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-l from-[#4285f4]/40 to-[#4285f4]/40 rounded-full blur-3xl opacity-70 
+//                         animate-pulse delay-300 mix-blend-overlay group-hover:opacity-85 duration-1000" />
+//           </div>
+
+//           {/* Content Container */}
+//           <div className="relative h-full flex flex-col items-center justify-center px-4 sm:px-8 py-8 gap-6 sm:gap-8">
+//             {/* Heading */}
+//             <div className="text-center space-y-3">
+//               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white px-2">
+//               100 CLM CASE STUDY REPORT
+//               </h2>
+//               <div className="flex justify-center space-x-2">
+//                 <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-transparent via-white to-white rounded-full" />
+//                 <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-white to-white/80 rounded-full" />
+//                 <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-white/80 to-transparent rounded-full" />
+//               </div>
+//             </div>
+
+//             {/* Input and Button Group */}
+//             <div className="flex flex-col sm:flex-row items-stretch gap-4 w-full sm:w-auto 
+//                           bg-white/10 p-2 rounded-xl backdrop-blur-sm border border-white/20 
+//                           shadow-xl shadow-[#4285f4]/20 group-hover:shadow-2xl group-hover:shadow-[#4285f4]/30 
+//                           transition-all duration-300">
+//               <div className="relative flex-1 sm:flex-initial">
+//                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+//                   <Mail className="h-4 w-4 text-white/70" />
+//                 </div>
+//                 <input
+//                   type="email"
+//                   value={email}
+//                   onChange={(e) => setEmail(e.target.value)}
+//                   placeholder="Enter your email"
+//                   className="w-full sm:w-72 pl-10 pr-4 py-3 rounded-lg bg-white/20 border-0 
+//                          placeholder-white/50 text-white
+//                          focus:ring-2 focus:ring-white/30 focus:outline-none
+//                          transition-all duration-300"
+//                 />
+//               </div>
+              
+//               <button
+//                 onClick={handleDownload}
+//                 disabled={isLoading}
+//                 className={`w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-[#4285f4] relative overflow-hidden
+//                          transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105
+//                          ${isLoading 
+//                            ? 'bg-white/50 cursor-not-allowed' 
+//                            : 'bg-white hover:shadow-lg hover:shadow-white/20'
+//                          }`}
+//               >
+//                 {isLoading ? (
+//                   <div className="w-5 h-5 border-2 border-[#4285f4]/30 border-t-[#4285f4] rounded-full animate-spin" />
+//                 ) : (
+//                   <div className="flex items-center justify-center gap-2">
+//                     <Download className="w-4 h-4" />
+//                     <span>Download</span>
+//                   </div>
+//                 )}
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+
 const DownloadBox = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -746,74 +1001,76 @@ const DownloadBox = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-1">
-      {/* Main container - adjusted padding for mobile */}
+    <div className="w-full flex items-center justify-center p-8">
       <div className="w-full max-w-5xl h-auto min-h-[16rem] relative group">
-        <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-900/95 to-blue-800/90 backdrop-blur-xl shadow-2xl 
-                    border border-blue-700/20 overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
+        <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#4285f4]/95 to-[#4285f4]/90 backdrop-blur-xl shadow-2xl 
+                    border border-[#4285f4] overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
           
           {/* Background Effects */}
           <div className="absolute inset-0">
             {/* Grid Pattern */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#60a5fa05_1px,transparent_1px),linear-gradient(to_bottom,#60a5fa05_1px,transparent_1px)] 
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] 
                         bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_85%)]" />
             
-            {/* Gradient Orbs - adjusted for mobile */}
-            <div className="absolute -top-16 -left-16 sm:-top-24 sm:-left-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl opacity-70 
+            {/* Decorative Shapes */}
+            <div className="absolute top-4 right-8 w-12 h-12 border-4 border-white/20 rounded-full rotate-45" />
+            <div className="absolute bottom-8 left-12 w-8 h-8 bg-white/10 rounded-lg" />
+            <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-white/15 rotate-12 transform" />
+            
+            {/* Gradient Orbs */}
+            <div className="absolute -top-16 -left-16 sm:-top-24 sm:-left-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-r from-[#4285f4]/40 to-[#4285f4]/40 rounded-full blur-3xl opacity-70 
                         animate-pulse mix-blend-overlay group-hover:opacity-85 duration-1000" />
-            <div className="absolute -bottom-16 -right-16 sm:-bottom-24 sm:-right-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-l from-blue-400/20 to-indigo-500/20 rounded-full blur-3xl opacity-70 
+            <div className="absolute -bottom-16 -right-16 sm:-bottom-24 sm:-right-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-l from-[#4285f4]/40 to-[#4285f4]/40 rounded-full blur-3xl opacity-70 
                         animate-pulse delay-300 mix-blend-overlay group-hover:opacity-85 duration-1000" />
           </div>
 
-          {/* Content Container - made responsive */}
+          {/* Content Container */}
           <div className="relative h-full flex flex-col items-center justify-center px-4 sm:px-8 py-8 gap-6 sm:gap-8">
-            {/* Heading - responsive text size */}
+            {/* Heading */}
             <div className="text-center space-y-3">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white px-2">
-                100 CLM CASE STUDY REPORT
+              100 CLM CASE STUDY REPORT
               </h2>
               <div className="flex justify-center space-x-2">
-                <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-transparent via-blue-400/50 to-blue-400/50 rounded-full" />
-                <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-blue-400/50 to-cyan-400/50 rounded-full" />
-                <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-cyan-400/50 to-transparent rounded-full" />
+                <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-transparent via-white to-white rounded-full" />
+                <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-white to-white/80 rounded-full" />
+                <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-white/80 to-transparent rounded-full" />
               </div>
             </div>
 
-            {/* Input and Button Group - stack on mobile */}
+            {/* Input and Button Group */}
             <div className="flex flex-col sm:flex-row items-stretch gap-4 w-full sm:w-auto 
-                          bg-blue-900/50 p-2 rounded-xl backdrop-blur-sm border border-blue-700/30 
-                          shadow-xl shadow-blue-950/20 group-hover:shadow-2xl group-hover:shadow-blue-950/30 
+                          bg-white/10 p-2 rounded-xl backdrop-blur-sm border border-white/20 
+                          shadow-xl shadow-[#4285f4]/20 group-hover:shadow-2xl group-hover:shadow-[#4285f4]/30 
                           transition-all duration-300">
-              {/* Input - full width on mobile */}
               <div className="relative flex-1 sm:flex-initial">
                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <Mail className="h-4 w-4 text-blue-300/80" />
+                  <Mail className="h-4 w-4 text-white/70" />
                 </div>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="w-full sm:w-72 pl-10 pr-4 py-3 rounded-lg bg-blue-950/50 border-0 
-                         placeholder-blue-300/50 text-blue-100
-                         focus:ring-2 focus:ring-blue-400/30 focus:outline-none
+                  className="w-full sm:w-72 pl-10 pr-4 py-3 rounded-lg bg-white/20 border-0 
+                         placeholder-white/50 text-white
+                         focus:ring-2 focus:ring-white/30 focus:outline-none
                          transition-all duration-300"
                 />
               </div>
               
-              {/* Button - full width on mobile */}
               <button
                 onClick={handleDownload}
                 disabled={isLoading}
-                className={`w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-white relative overflow-hidden
+                className={`w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-[#4285f4] relative overflow-hidden
                          transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105
                          ${isLoading 
-                           ? 'bg-blue-800/50 cursor-not-allowed' 
-                           : 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:shadow-lg hover:shadow-blue-500/20'
+                           ? 'bg-white/50 cursor-not-allowed' 
+                           : 'bg-white hover:shadow-lg hover:shadow-white/20'
                          }`}
               >
                 {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-[#4285f4]/30 border-t-[#4285f4] rounded-full animate-spin" />
                 ) : (
                   <div className="flex items-center justify-center gap-2">
                     <Download className="w-4 h-4" />
@@ -828,3 +1085,6 @@ const DownloadBox = () => {
     </div>
   );
 };
+
+
+

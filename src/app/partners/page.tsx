@@ -6,7 +6,7 @@ import BenefitsSection from './_components/BenefitsSection';
 
 import "@/app/globals.css"
 import FinalCTA from "./_components/FinalCTA"
-
+import Layout from "./_components/Layout"
 
 const PartnersPage: React.FC = () => {
   return (
@@ -17,6 +17,7 @@ const PartnersPage: React.FC = () => {
       {/* <TrustedClients />
       <Features />
       <ProblemSection /> */}
+      <Layout />
       <BenefitsSection />
       
 

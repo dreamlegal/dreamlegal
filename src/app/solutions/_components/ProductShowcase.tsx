@@ -266,7 +266,7 @@ const ProductSuite = () => {
   ];
 
   return (
-    <div className="w-full py-24 bg-gradient-to-b from-blue-50 via-white to-blue-50 relative overflow-hidden">
+    <div className="w-full py-8 bg-gradient-to-b from-blue-50 via-white to-blue-50 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#3B82F61A_1px,transparent_1px),linear-gradient(to_bottom,#3B82F61A_1px,transparent_1px)] bg-[size:24px_24px]" />
@@ -1272,26 +1272,54 @@ const ProductCard = ({ title, subtitle, description, features, buttonText, image
           </button>
         </div>
 
-        <div className="w-full lg:w-1/2">
+        {/* <div className="w-full lg:w-1/2">
           <div className="relative">
             <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
             
             <div className="relative bg-white p-3 md:p-6 rounded-2xl shadow-xl transform group-hover:scale-[1.02] transition-all duration-500 border border-gray-100">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl opacity-50"></div>
-              <img
-                src={imagePath || "/api/placeholder/600/400"}
-                alt={imageAlt}
-                className="relative z-10 w-full h-auto object-cover rounded-xl shadow-lg"
-              />
+                <img
+                  src={imagePath || "/api/placeholder/600/400"}
+                  alt={imageAlt}
+                  className="relative z-10 w-full h-auto object-cover rounded-xl shadow-lg"
+                />
               
-              {isComingSoon && (
-                <div className="absolute inset-0 bg-gray-900/50 rounded-xl z-20 flex items-center justify-center">
-                  <div className="text-white text-lg md:text-2xl font-bold">Coming Soon</div>
-                </div>
-              )}
+                {isComingSoon && (
+                  <div className="absolute h-100 w-100 inset-0 bg-gray-900/50 rounded-xl z-20 flex items-center justify-center">
+                    <div className="text-white text-lg md:text-2xl font-bold">Coming Soon</div>
+                  </div>
+                )}
             </div>
           </div>
+        </div> */}
+        <div className="w-full lg:w-1/2">
+  <div className="relative">
+    <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+    
+    <div className="relative bg-white p-3 md:p-6 rounded-2xl shadow-xl transform group-hover:scale-[1.02] transition-all duration-500 border border-gray-100">
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl opacity-50"></div>
+      
+      {imagePath ? (
+        <img
+          src={imagePath}
+          alt={imageAlt}
+          className="relative z-10 w-full h-auto object-cover rounded-xl shadow-lg"
+        />
+      ) : (
+        <div className="relative z-10 w-full rounded-xl shadow-lg bg-gray-100">
+          {/* 16:9 aspect ratio placeholder */}
+          <div className="pb-[56.25%]"></div>
         </div>
+      )}
+      
+      {isComingSoon && (
+        <div className="absolute h-100 w-100 inset-0  rounded-xl z-20 flex items-center justify-center">
+          <div className="text-gray text-lg md:text-2xl font-bold">Coming Soon</div>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
       </div>
     </div>
   );
@@ -1374,7 +1402,7 @@ const ProductsShowcase = () => {
               "Detect and address changes in legal workflows proactively"
             ],
             buttonText: "Coming Soon",
-            imagePath: "images/coming-soon.webp",
+            imagePath: '',
             icon: TrendingUp,
             isComingSoon: true
           }]
@@ -1394,7 +1422,7 @@ const ProductsShowcase = () => {
               "Manage data and access securely for optimal efficiency"
             ],
             buttonText: "Coming Soon",
-            imagePath: "images/coming-soon.webp",
+            imagePath: '',
             icon: Settings,
             isComingSoon: true
           }]

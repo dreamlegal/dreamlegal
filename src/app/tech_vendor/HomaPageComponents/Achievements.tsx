@@ -143,8 +143,7 @@ const AnimatedAchievements = () => {
                            ${isInView ? 'scale-x-100' : 'scale-x-0'}`} />
             </h2>
             <p className="text-sm sm:text-base text-gray-600 mt-4 max-w-xl mx-auto px-4 sm:px-0">
-            Transforming legal ops with cutting-edge solutions and measurable results
-            s
+            Transforming your client journey with cutting-edge solutions & measurable results
             </p>
           </div>
         </div>

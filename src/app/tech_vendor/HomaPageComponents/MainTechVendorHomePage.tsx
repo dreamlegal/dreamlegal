@@ -16,7 +16,7 @@ const MainHomePage: React.FC = () => {
     
       <Hero/>
     
-      <TrustedClients />
+      {/* <TrustedClients /> */}
       <Features />
       <ProblemSection />
       <Achievements/>

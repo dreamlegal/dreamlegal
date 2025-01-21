@@ -67,93 +67,6 @@ const ServiceTab = ({ service, isActive, onClick, index, isInView }) => {
   );
 };
 
-// const MobileTabSelector = ({ services, activeTab, setActiveTab }) => {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const dropdownRef = useRef(null);
-  
-//   const activeService = services.find(service => service.id === activeTab);
-
-//   useEffect(() => {
-//     const handleClickOutside = (event) => {
-//       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-//         setIsOpen(false);
-//       }
-//     };
-
-//     document.addEventListener('mousedown', handleClickOutside);
-//     return () => document.removeEventListener('mousedown', handleClickOutside);
-//   }, []);
-
-//   const dropdownVariants = {
-//     hidden: {
-//       opacity: 0,
-//       y: -10,
-//       transition: { duration: 0.2 }
-//     },
-//     visible: {
-//       opacity: 1,
-//       y: 0,
-//       transition: { duration: 0.2 }
-//     },
-//     exit: {
-//       opacity: 0,
-//       y: -10,
-//       transition: { duration: 0.2 }
-//     }
-//   };
-
-//   return (
-//     <div className="relative md:hidden px-4 z-50" ref={dropdownRef}>
-//       <button
-//         onClick={() => setIsOpen(!isOpen)}
-//         className="w-full px-6 py-3 bg-white/70 backdrop-blur-lg
-//                  rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)]
-//                  border border-gray-100
-//                  text-left relative
-//                  transition-all duration-200
-//                  hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
-//       >
-//         <span className="text-gray-600 font-medium text-sm">{activeService?.title}</span>
-//         <div className={`absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
-//           <ChevronDown className="w-5 h-5" />
-//         </div>
-//       </button>
-
-//       <AnimatePresence>
-//         {isOpen && (
-//           <motion.div
-//             initial="hidden"
-//             animate="visible"
-//             exit="exit"
-//             variants={dropdownVariants}
-//             className="absolute top-full left-4 right-4 mt-2"
-//           >
-//             <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 overflow-hidden">
-//               <div className="py-1">
-//                 {services.map((service) => (
-//                   <button
-//                     key={service.id}
-//                     onClick={() => {
-//                       setActiveTab(service.id);
-//                       setIsOpen(false);
-//                     }}
-//                     className={`w-full px-6 py-3 text-left text-sm transition-colors duration-200
-//                               ${service.id === activeTab 
-//                                 ? 'bg-gray-50/80 text-gray-900 font-medium' 
-//                                 : 'text-gray-600 hover:bg-gray-50/50 hover:text-gray-900'
-//                               }`}
-//                   >
-//                     {service.title}
-//                   </button>
-//                 ))}
-//               </div>
-//             </div>
-//           </motion.div>
-//         )}
-//       </AnimatePresence>
-//     </div>
-//   );
-// };
 
 const MobileTabSelector = ({ services, activeTab, setActiveTab }) => {
   const [touchedTab, setTouchedTab] = useState(null);
@@ -232,7 +145,11 @@ const services = [
         'Highlight features and functionalities effectively',
         'Build trust with social proof and testimonials',
         'Provide reviews and insights to reinforce value'
-      ]
+      ],
+      buttonText: "Create Product Profile",
+      imagePath: "/tech_vendor/directory.png",
+      imageAlt: "Product Profiles",
+      href: "/solutions/product-profiles"
     }
   },
   {
@@ -247,7 +164,11 @@ const services = [
         'Opportunities to create impactful POCs',
         'Pre-requirements available for thorough preparation',
         'Insights to tailor and optimize your outreach'
-      ]
+      ],
+      buttonText: "Manage RFPs",
+      imagePath: "/tech_vendor/RFP.png",
+      imageAlt: "RFP Management",
+      href: "/solutions/rfp-management"
     }
   },
   {
@@ -262,22 +183,11 @@ const services = [
         'Sector-specific insights into industry preferences',
         'Contemporary goals and priorities of legal teams',
         'Technology and innovation strategies of legal professionals'
-      ]
-    }
-  },
-  {
-    id: 'competitor-analysis',
-    icon: BarChart2,
-    title: 'Competitor Analysis',
-    content: {
-      title: 'Competitor Analysis',
-      description: 'Outsmart your competitors with analysis and comparison',
-      features: [
-        'Process lifecycle coverage for comprehensive evaluation',
-        'Detailed feature-by-feature comparison',
-        'Client base analysis to gauge market reach',
-        'Support and service benchmarks for creating edge'
-      ]
+      ],
+      buttonText: "Explore Trends",
+      imagePath: "/tech_vendor/analytics.png",
+      imageAlt: "Market Trends",
+      href: "/solutions/market-trends"
     }
   },
   {
@@ -292,7 +202,11 @@ const services = [
         'Insights on top sector beneficiaries',
         'Recommendations for related feature sets to offer',
         'Identification of impact areas for maximum value'
-      ]
+      ],
+      buttonText: "Validate Features",
+      imagePath: "/tech_vendor/Ai market research.png",
+      imageAlt: "Feature Validation",
+      href: "/solutions/feature-validation"
     }
   },
   {
@@ -307,7 +221,31 @@ const services = [
         'Sector-specific problem and solution highlights',
         'Curated best feature sets from your product',
         'Impact stories to effectively convince prospects'
-      ]
+      ],
+      buttonText: "Generate Proposal",
+      imagePath: "/tech_vendor/client prospecting.png",
+      imageAlt: "Custom Proposal",
+    
+      href: "/solutions/custom-proposals"
+    }
+  },
+  {
+    id: 'competitor-analysis',
+    icon: BarChart2,
+    title: 'Competitor Analysis',
+    content: {
+      title: 'Competitor Analysis',
+      description: 'Outsmart your competitors with analysis and comparison',
+      features: [
+        'Process lifecycle coverage for comprehensive evaluation',
+        'Detailed feature-by-feature comparison',
+        'Client base analysis to gauge market reach',
+        'Support and service benchmarks for creating edge'
+      ],
+      buttonText: "Analyze Competition",
+      imagePath: "",
+      imageAlt: "Competitor Analysis",
+      href: "/solutions/competitor-analysis"
     }
   }
 ];
@@ -348,7 +286,7 @@ const LegalTechDashboard = () => {
   />
 </h2>
             <p className="text-gray-600 mt-4 max-w-xl mx-auto">
-              Transform your legal ops strategy with data-driven insights and powerful tools
+            Optimized product profiles & shorter sale cycles for your next client
             </p>
           </div>
         </div>
@@ -396,25 +334,54 @@ const LegalTechDashboard = () => {
                 ))}
               </div>
 
-              <button className="group px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-500 
-                               rounded-lg text-white font-medium relative overflow-hidden">
-                <span className="relative z-10">Try {activeService.content.title}</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-blue-600 
-                               opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </button>
+              <button 
+  className="group px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-500 
+             rounded-lg text-white font-medium relative overflow-hidden"
+  onClick={() => window.location.href = activeService.content.href}
+>
+  <span className="relative z-10">{activeService.content.buttonText}</span>
+  <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-blue-600 
+                 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+</button>
             </div>
 
-            <div className={`relative rounded-xl overflow-hidden transition-all duration-700 delay-500 transform
-                          ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-blue-400/5" />
-              <img
-                src="/api/placeholder/800/600"
-                alt="Legal Tech Solution"
-                className="w-full h-full object-cover rounded-xl"
-              />
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-transparent" />
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-blue-600/20 to-transparent" />
-            </div>
+            {/* <div className="relative rounded-xl overflow-hidden transition-all duration-700 delay-500 transform
+                ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}">
+  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-blue-400/5" />
+          <img
+            src={activeService.content.imagePath}
+            alt={`${activeService.content.title} illustration`}
+            className="w-full h-full object-cover rounded-xl"
+          />
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-transparent" />
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-blue-600/20 to-transparent" />
+        </div> */}
+
+<div className="w-full ">
+  <div className="relative">
+    <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+    
+    <div className="relative bg-white p-3 md:p-6 rounded-2xl shadow-xl transform group-hover:scale-[1.02] transition-all duration-500 border border-gray-100">
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl opacity-50"></div>
+      
+      {activeService.content.imagePath ? (
+        <img
+          src={activeService.content.imagePath}
+          alt={activeService.content.imageAlt}
+          className="relative z-10 w-full h-auto object-cover rounded-xl shadow-lg"
+        />
+      ) : (
+        <div className="relative z-10 w-full rounded-xl shadow-lg bg-gray-100 flex items-center justify-center">
+          {/* 16:9 aspect ratio placeholder */}
+          <div className="pb-[56.25%]"></div>
+          <span className="absolute text-gray-500 text-lg font-medium">Coming Soon</span>
+        </div>
+      )}
+      
+     
+    </div>
+  </div>
+</div>
           </div>
         </div>
       </div>

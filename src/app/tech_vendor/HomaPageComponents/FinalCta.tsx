@@ -54,11 +54,11 @@ const FinalCTA = () => {
                 <span className={`inline-block text-sm font-semibold text-blue-600 tracking-wider
                               transition-all duration-700 delay-300
                               ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                  GET STARTED TODAY
+                  Create Your 
                 </span>
                 <h2 className={`text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 transition-all duration-700 delay-500
                              ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                  Transform Your Legal Operations {' '}
+                  Product Profile  {' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
                   With Us
                   </span>

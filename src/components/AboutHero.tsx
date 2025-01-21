@@ -541,7 +541,7 @@ const AboutHero = () => {
             </div>
           </motion.div>
         </div>
-
+        <FeaturedSection/>
         {/* Achievement Section */}
         <div className="mt-32 relative">
           <motion.div
@@ -585,7 +585,7 @@ const AboutHero = () => {
             ))}
           </div>
         </div>
-        <FeaturedSection/>
+        
       </div>
     </div>
   );

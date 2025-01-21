@@ -32,6 +32,7 @@ const Navbar = () => {
     )
   }
 
+
   const navItems = [
     {
       title: 'Home',
@@ -39,14 +40,9 @@ const Navbar = () => {
       href: '/'
     },
     {
-      title: 'Legal Professionals',
+      title: 'Solutions',
       hasDropdown: false,
-      href: '/legal_professionals'
-    },
-    {
-      title: 'Tech Vendors',
-      hasDropdown: false,
-      href: '/tech_vendor'
+      href: '/solutions'
     },
     {
       title: 'Blog',
@@ -54,15 +50,25 @@ const Navbar = () => {
       href: 'https://blog.dreamlegal.in/'
     },
     {
+      title: 'Directory',
+      hasDropdown: false,
+      href: 'directory'
+    },
+    {
+      title: 'Partners',
+      hasDropdown: false,
+      href: '/partners'
+    },
+    {
       title: 'About us',
       hasDropdown: false,
       href: '/about'
     },
-    {
-      title: 'Contact us',
-      hasDropdown: false,
-      href: '/contact'
-    },
+    // {
+    //   title: 'Contact us',
+    //   hasDropdown: false,
+    //   href: '/contact'
+    // },
   ];
 
   const mobileMenuVariants = {
@@ -142,11 +148,11 @@ const Navbar = () => {
 
               {/* CTA Buttons */}
               <div className="hidden md:flex items-center space-x-3">
-              <a href="/signup" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-black transition-colors duration-200">
-                    Sign Up
+              <a href="/contact" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-black transition-colors duration-200">
+                  Contact Us
                   </a>
 
-                {userType === 'vendor' ? (
+                {/* {userType === 'vendor' ? (
                   <a href="/tech_vendor/dashboard" className="px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded-xl hover:bg-blue-800 transition-colors duration-200">
                     Dashboard
                   </a>
@@ -159,7 +165,38 @@ const Navbar = () => {
                  <a href="/login" className="px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded-xl hover:bg-blue-800 transition-colors duration-200">
                  Log in
                </a>
-                )}
+                )} */}
+                {/* For logged in users */}
+{userType && (
+  <>
+    {userType === 'vendor' && (
+      <a 
+        href="/tech_vendor/dashboard" 
+        className="px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded-xl hover:bg-blue-800 transition-colors duration-200"
+      >
+        Dashboard
+      </a>
+    )}
+    {userType === 'user' && (
+      <a 
+        href="/legal_professional/dashboard" 
+        className="px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded-xl hover:bg-blue-800 transition-colors duration-200"
+      >
+        Dashboard
+      </a>
+    )}
+  </>
+)}
+
+{/* For logged out users */}
+{!userType && (
+  <a 
+    href={window.location.pathname === '/tech_vendor' ? '/auth/vendor/login' : '/auth/user/login'}
+    className="px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded-xl hover:bg-blue-800 transition-colors duration-200"
+  >
+    Log in
+  </a>
+)}
                
               </div>
 
@@ -226,8 +263,8 @@ const Navbar = () => {
                   <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-4" />
 
                   <div className="space-y-2">
-                    <a href="/signup" className="block w-full p-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200">
-                      Sign Up
+                    <a href="/contact" className="block w-full p-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200">
+                     Contact Us
                     </a>
                     <a href="/login" className="block w-full p-2 text-sm font-medium bg-blue-500 text-white rounded-lg hover:bg-blue-800 transition-colors duration-200">
                       Log in

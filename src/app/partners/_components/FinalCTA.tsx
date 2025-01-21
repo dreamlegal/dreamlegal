@@ -414,11 +414,11 @@ const FinalCTA = () => {
 
   return (
     <section className="w-full py-4 relative overflow-hidden bg-white">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#3B82F61A_1px,transparent_1px),linear-gradient(to_bottom,#3B82F61A_1px,transparent_1px)] bg-[size:24px_24px]" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white via-white/95 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white via-white/95 to-transparent" />
-      </div>
+    <div className="absolute inset-0">
+  <div className="absolute inset-0 bg-[linear-gradient(to_right,#3B82F61A_1px,transparent_1px),linear-gradient(to_bottom,#3B82F61A_1px,transparent_1px)] bg-[size:24px_24px]" />
+  <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white via-white/95 to-transparent" />
+  {/* <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white via-white/95 to-transparent" /> */}
+</div>
       
       <div className="absolute inset-0">
         {[...Array(5)].map((_, i) => (

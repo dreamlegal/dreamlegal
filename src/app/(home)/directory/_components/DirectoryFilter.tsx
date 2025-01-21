@@ -1,0 +1,841 @@
+
+// import React, { useState } from 'react';
+// import { IoArrowForward } from "react-icons/io5";
+// import { MdOutlineBusinessCenter } from "react-icons/md";
+
+// // Filter options arrays
+// const languages = [
+//   "English", "Spanish", "French", "German", "Italian", "Portuguese", "Chinese", 
+//   "Japanese", "Korean", "Russian", "Arabic", "Hindi", "Dutch", "Swedish"
+// ];
+
+// const countries = [
+//   "United States", "United Kingdom", "Canada", "Australia", "Germany", "France", 
+//   "India", "Singapore", "Netherlands", "Switzerland", "Japan", "Brazil", "Spain"
+// ];
+
+// const industries = [
+//   "Legal Services", "Financial Services", "Healthcare", "Real Estate", "Technology",
+//   "Manufacturing", "Retail", "Government", "Education", "Non-profit", "Energy",
+//   "Transportation", "Construction", "Telecommunications"
+// ];
+
+// const practiceAreas = [
+//   "Corporate Law", "Intellectual Property", "Litigation", "Real Estate Law",
+//   "Employment Law", "Tax Law", "Criminal Law", "Family Law", "Immigration Law",
+//   "Environmental Law", "Banking & Finance", "Mergers & Acquisitions"
+// ];
+
+// const categories = [
+//   "Client Relationship Management",
+//   "Contract Lifecycle Management",
+//   "E-Signature",
+//   "Document Management System",
+//   "E-billing and Invoicing",
+//   "E-discovery",
+//   "Legal Research",
+//   "Practice Management",
+//   "Legal Analytics"
+// ];
+
+// const userCategories = [
+//   "Individual Practitioner",
+//   "Law firms",
+//   "Government departments",
+//   "Startups",
+//   "Enterprises",
+//   "Judiciary",
+//   "In-House Counsels"
+// ];
+
+// const DirectoryFilter = ({
+//   selectedFilters,
+//   handleFilterChange,
+//   setSelectedFilters,
+// }) => {
+//   // Search states for filterable sections
+//   const [searchQueries, setSearchQueries] = useState({
+//     language: "",
+//     country: "",
+//     industry: "",
+//     practice: "",
+//     category: "",
+//     userCategory: ""
+//   });
+
+//   // Section open/close state
+//   const [openSections, setOpenSections] = useState({
+//     category: true,
+//     customer: false,
+//     price: false,
+//     language: false,
+//     country: false,
+//     industry: false,
+//     practice: false,
+//     mobile: false
+//   });
+
+//   // Toggle section visibility
+//   const toggleSection = (section) => {
+//     setOpenSections(prev => ({
+//       ...prev,
+//       [section]: !prev[section]
+//     }));
+//   };
+
+//   // Filter section component
+//   const FilterSection = ({ 
+//     title, 
+//     section, 
+//     options, 
+//     filterKey,
+//     searchable = false,
+//     searchPlaceholder = "" 
+//   }) => {
+//     const filteredOptions = searchable 
+//       ? options.filter(option => 
+//           option.toLowerCase().includes((searchQueries[filterKey] || "").toLowerCase())
+//         )
+//       : options;
+
+//     return (
+//       <div className="border-b border-gray-200 last:border-b-0">
+//         <div
+//           onClick={() => toggleSection(section)}
+//           className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50
+//                    transition-colors duration-200"
+//         >
+//           <div className="flex items-center gap-2">
+//             <div className="bg-purple-100 p-1.5 rounded-lg">
+//               <MdOutlineBusinessCenter className="text-purple-600 w-4 h-4" />
+//             </div>
+//             <span className="font-medium text-gray-900">{title}</span>
+//           </div>
+//           <IoArrowForward 
+//             className={`transform transition-transform duration-200 text-gray-400
+//                      ${openSections[section] ? 'rotate-90' : ''}`} 
+//           />
+//         </div>
+
+//         {openSections[section] && (
+//           <div className="p-4 bg-gray-50">
+//             {searchable && (
+//               <div className="relative group mb-3">
+//                 <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500/20 to-pink-500/20 
+//                              rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-200" />
+//                 <input
+//                   type="text"
+//                   className="relative w-full p-2 rounded-lg border border-gray-200 
+//                          focus:ring-2 focus:ring-purple-500 focus:border-transparent
+//                          bg-white"
+//                   placeholder={searchPlaceholder}
+//                   value={searchQueries[filterKey] || ""}
+//                   onChange={(e) => setSearchQueries(prev => ({
+//                     ...prev,
+//                     [filterKey]: e.target.value
+//                   }))}
+//                 />
+//               </div>
+//             )}
+            
+//             <div className="space-y-2 max-h-60 overflow-y-auto">
+//               {filteredOptions.map((option) => (
+//                 <label 
+//                   key={option} 
+//                   className="flex items-center gap-2 p-2 rounded-lg hover:bg-white 
+//                          cursor-pointer transition-colors duration-200"
+//                 >
+//                   <input
+//                     type="checkbox"
+//                     checked={selectedFilters[filterKey].includes(option)}
+//                     onChange={() => handleFilterChange(filterKey, option)}
+//                     className="rounded border-gray-300 text-purple-600 focus:ring-purple-500
+//                            transition-colors duration-200"
+//                   />
+//                   <span className="text-sm text-gray-700">{option}</span>
+//                 </label>
+//               ))}
+//             </div>
+//           </div>
+//         )}
+//       </div>
+//     );
+//   };
+
+//   // Reset filters function
+//   const handleReset = () => {
+//     setSelectedFilters({
+//       categories: [],
+//       userCategory: [],
+//       language: [],
+//       country: [],
+//       industry: [],
+//       practiceAreas: [],
+//       mobileAvailable: [],
+//       price: []
+//     });
+//     setSearchQueries({
+//       language: "",
+//       country: "",
+//       industry: "",
+//       practice: "",
+//       category: "",
+//       userCategory: ""
+//     });
+//   };
+
+//   return (
+//     <div>
+//       {/* Filter Header */}
+//       <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-pink-50">
+//         <h2 className="text-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+//           Filters
+//         </h2>
+//       </div>
+
+//       {/* Filter Sections */}
+//       <FilterSection
+//         title="Category"
+//         section="category"
+//         options={categories}
+//         filterKey="categories"
+//         searchable
+//         searchPlaceholder="Search categories..."
+//       />
+
+//       <FilterSection
+//         title="User Category"
+//         section="customer"
+//         options={userCategories}
+//         filterKey="userCategory"
+//       />
+
+//       <FilterSection
+//         title="Language"
+//         section="language"
+//         options={languages}
+//         filterKey="language"
+//         searchable
+//         searchPlaceholder="Search languages..."
+//       />
+
+//       <FilterSection
+//         title="Headquarter"
+//         section="country"
+//         options={countries}
+//         filterKey="country"
+//         searchable
+//         searchPlaceholder="Search countries..."
+//       />
+
+//       <FilterSection
+//         title="Industry"
+//         section="industry"
+//         options={industries}
+//         filterKey="industry"
+//         searchable
+//         searchPlaceholder="Search industries..."
+//       />
+
+//       <FilterSection
+//         title="Practice Area"
+//         section="practice"
+//         options={practiceAreas}
+//         filterKey="practiceAreas"
+//         searchable
+//         searchPlaceholder="Search practice areas..."
+//       />
+
+//       <FilterSection
+//         title="Price"
+//         section="price"
+//         options={["Fixed", "Custom", "Both"]}
+//         filterKey="price"
+//       />
+
+//       <FilterSection
+//         title="Mobile Available"
+//         section="mobile"
+//         options={["Yes", "No"]}
+//         filterKey="mobileAvailable"
+//       />
+
+//       {/* Reset Button */}
+//       <div className="p-4 border-t border-gray-200 bg-gray-50">
+//         <button
+//           onClick={handleReset}
+//           className="w-full py-2.5 px-4 bg-gradient-to-r from-purple-500 to-pink-500 
+//                    text-white rounded-lg hover:from-purple-600 hover:to-pink-600
+//                    transition-all duration-200 transform hover:scale-[1.02]
+//                    focus:ring-2 focus:ring-purple-500 focus:ring-offset-2
+//                    font-medium shadow-lg"
+//         >
+//           Reset Filters
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default DirectoryFilter;
+// import React, { useState } from 'react';
+// import { IoArrowForward } from "react-icons/io5";
+// import { MdOutlineBusinessCenter } from "react-icons/md";
+
+// // Filter options arrays
+// const languages = [
+//   "English", "Spanish", "French", "German", "Italian", "Portuguese", "Chinese", 
+//   "Japanese", "Korean", "Russian", "Arabic", "Hindi", "Dutch", "Swedish"
+// ];
+
+// const countries = [
+//   "United States", "United Kingdom", "Canada", "Australia", "Germany", "France", 
+//   "India", "Singapore", "Netherlands", "Switzerland", "Japan", "Brazil", "Spain"
+// ];
+
+// const industries = [
+//   "Legal Services", "Financial Services", "Healthcare", "Real Estate", "Technology",
+//   "Manufacturing", "Retail", "Government", "Education", "Non-profit", "Energy",
+//   "Transportation", "Construction", "Telecommunications"
+// ];
+
+// const practiceAreas = [
+//   "Corporate Law", "Intellectual Property", "Litigation", "Real Estate Law",
+//   "Employment Law", "Tax Law", "Criminal Law", "Family Law", "Immigration Law",
+//   "Environmental Law", "Banking & Finance", "Mergers & Acquisitions"
+// ];
+
+// const categories = [
+//   "Client Relationship Management",
+//   "Contract Lifecycle Management",
+//   "E-Signature",
+//   "Document Management System",
+//   "E-billing and Invoicing",
+//   "E-discovery",
+//   "Legal Research",
+//   "Practice Management",
+//   "Legal Analytics"
+// ];
+
+// const userCategories = [
+//   "Individual Practitioner",
+//   "Law firms",
+//   "Government departments",
+//   "Startups",
+//   "Enterprises",
+//   "Judiciary",
+//   "In-House Counsels"
+// ];
+
+// const DirectoryFilter = ({
+//   selectedFilters,
+//   handleFilterChange,
+//   setSelectedFilters,
+// }) => {
+//   // Search states for filterable sections
+//   const [searchQueries, setSearchQueries] = useState({
+//     language: "",
+//     country: "",
+//     industry: "",
+//     practice: "",
+//     category: "",
+//     userCategory: ""
+//   });
+
+//   // Section open/close state
+//   const [openSections, setOpenSections] = useState({
+//     category: true,
+//     customer: false,
+//     price: false,
+//     language: false,
+//     country: false,
+//     industry: false,
+//     practice: false,
+//     mobile: false
+//   });
+
+//   // Toggle section visibility
+//   const toggleSection = (section) => {
+//     setOpenSections(prev => ({
+//       ...prev,
+//       [section]: !prev[section]
+//     }));
+//   };
+
+//   // Filter section component
+//   const FilterSection = ({ 
+//     title, 
+//     section, 
+//     options, 
+//     filterKey,
+//     searchable = false,
+//     searchPlaceholder = "" 
+//   }) => {
+//     const filteredOptions = searchable 
+//       ? options.filter(option => 
+//           option.toLowerCase().includes((searchQueries[filterKey] || "").toLowerCase())
+//         )
+//       : options;
+
+//     return (
+//       <div className="border-b border-gray-200 last:border-b-0">
+//         <div
+//           onClick={() => toggleSection(section)}
+//           className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50
+//                    transition-colors duration-200"
+//         >
+//           <div className="flex items-center gap-2">
+//             <div className="bg-blue-100 p-1.5 rounded-lg">
+//               <MdOutlineBusinessCenter className="text-blue-600 w-4 h-4" />
+//             </div>
+//             <span className="font-medium text-gray-900">{title}</span>
+//           </div>
+//           <IoArrowForward 
+//             className={`transform transition-transform duration-200 text-gray-400
+//                      ${openSections[section] ? 'rotate-90' : ''}`} 
+//           />
+//         </div>
+
+//         {openSections[section] && (
+//           <div className="p-4 bg-gray-50">
+//             {searchable && (
+//               <div className="relative group mb-3">
+//                 <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 to-sky-500/20 
+//                              rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-200" />
+//                 <input
+//                   type="text"
+//                   className="relative w-full p-2 rounded-lg border border-gray-200 
+//                          focus:ring-2 focus:ring-blue-500 focus:border-transparent
+//                          bg-white"
+//                   placeholder={searchPlaceholder}
+//                   value={searchQueries[filterKey] || ""}
+//                   onChange={(e) => setSearchQueries(prev => ({
+//                     ...prev,
+//                     [filterKey]: e.target.value
+//                   }))}
+//                 />
+//               </div>
+//             )}
+            
+//             <div className="space-y-2 max-h-60 overflow-y-auto">
+//               {filteredOptions.map((option) => (
+//                 <label 
+//                   key={option} 
+//                   className="flex items-center gap-2 p-2 rounded-lg hover:bg-white 
+//                          cursor-pointer transition-colors duration-200"
+//                 >
+//                   <input
+//                     type="checkbox"
+//                     checked={selectedFilters[filterKey].includes(option)}
+//                     onChange={() => handleFilterChange(filterKey, option)}
+//                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500
+//                            transition-colors duration-200"
+//                   />
+//                   <span className="text-sm text-gray-700">{option}</span>
+//                 </label>
+//               ))}
+//             </div>
+//           </div>
+//         )}
+//       </div>
+//     );
+//   };
+
+//   // Reset filters function
+//   const handleReset = () => {
+//     setSelectedFilters({
+//       categories: [],
+//       userCategory: [],
+//       language: [],
+//       country: [],
+//       industry: [],
+//       practiceAreas: [],
+//       mobileAvailable: [],
+//       price: []
+//     });
+//     setSearchQueries({
+//       language: "",
+//       country: "",
+//       industry: "",
+//       practice: "",
+//       category: "",
+//       userCategory: ""
+//     });
+//   };
+
+//   return (
+//     <div>
+//       {/* Filter Header */}
+//       <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-sky-50">
+//         <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-sky-600 bg-clip-text text-transparent">
+//           Filters
+//         </h2>
+//       </div>
+
+//       {/* Filter Sections */}
+//       <FilterSection
+//         title="Category"
+//         section="category"
+//         options={categories}
+//         filterKey="categories"
+//         searchable
+//         searchPlaceholder="Search categories..."
+//       />
+
+//       <FilterSection
+//         title="User Category"
+//         section="customer"
+//         options={userCategories}
+//         filterKey="userCategory"
+//       />
+
+//       <FilterSection
+//         title="Language"
+//         section="language"
+//         options={languages}
+//         filterKey="language"
+//         searchable
+//         searchPlaceholder="Search languages..."
+//       />
+
+//       <FilterSection
+//         title="Headquarter"
+//         section="country"
+//         options={countries}
+//         filterKey="country"
+//         searchable
+//         searchPlaceholder="Search countries..."
+//       />
+
+//       <FilterSection
+//         title="Industry"
+//         section="industry"
+//         options={industries}
+//         filterKey="industry"
+//         searchable
+//         searchPlaceholder="Search industries..."
+//       />
+
+//       <FilterSection
+//         title="Practice Area"
+//         section="practice"
+//         options={practiceAreas}
+//         filterKey="practiceAreas"
+//         searchable
+//         searchPlaceholder="Search practice areas..."
+//       />
+
+//       <FilterSection
+//         title="Price"
+//         section="price"
+//         options={["Fixed", "Custom", "Both"]}
+//         filterKey="price"
+//       />
+
+//       <FilterSection
+//         title="Mobile Available"
+//         section="mobile"
+//         options={["Yes", "No"]}
+//         filterKey="mobileAvailable"
+//       />
+
+//       {/* Reset Button */}
+//       <div className="p-4 border-t border-gray-200 bg-gray-50">
+//         <button
+//           onClick={handleReset}
+//           className="w-full py-2.5 px-4 bg-gradient-to-r from-blue-500 to-sky-500 
+//                    text-white rounded-lg hover:from-blue-600 hover:to-sky-600
+//                    transition-all duration-200 transform hover:scale-[1.02]
+//                    focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+//                    font-medium shadow-lg"
+//         >
+//           Reset Filters
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default DirectoryFilter;
+import React, { useState } from 'react';
+import { IoArrowForward } from "react-icons/io5";
+import { MdOutlineBusinessCenter } from "react-icons/md";
+
+// Filter options arrays
+const languages = [
+  "English", "Spanish", "French", "German", "Italian", "Portuguese", "Chinese", 
+  "Japanese", "Korean", "Russian", "Arabic", "Hindi", "Dutch", "Swedish"
+];
+
+const countries = [
+  "United States", "United Kingdom", "Canada", "Australia", "Germany", "France", 
+  "India", "Singapore", "Netherlands", "Switzerland", "Japan", "Brazil", "Spain"
+];
+
+const industries = [
+  "Legal Services", "Financial Services", "Healthcare", "Real Estate", "Technology",
+  "Manufacturing", "Retail", "Government", "Education", "Non-profit", "Energy",
+  "Transportation", "Construction", "Telecommunications"
+];
+
+const practiceAreas = [
+  "Corporate Law", "Intellectual Property", "Litigation", "Real Estate Law",
+  "Employment Law", "Tax Law", "Criminal Law", "Family Law", "Immigration Law",
+  "Environmental Law", "Banking & Finance", "Mergers & Acquisitions"
+];
+
+const categories = [
+  "Client Relationship Management",
+  "Contract Lifecycle Management",
+  "E-Signature",
+  "Document Management System",
+  "E-billing and Invoicing",
+  "E-discovery",
+  "Legal Research",
+  "Practice Management",
+  "Legal Analytics"
+];
+
+const userCategories = [
+  "Individual Practitioner",
+  "Law firms",
+  "Government departments",
+  "Startups",
+  "Enterprises",
+  "Judiciary",
+  "In-House Counsels"
+];
+
+const DirectoryFilter = ({
+  selectedFilters,
+  handleFilterChange,
+  setSelectedFilters,
+  isMobileView = false
+}) => {
+  // Search states for filterable sections
+  const [searchQueries, setSearchQueries] = useState({
+    language: "",
+    country: "",
+    industry: "",
+    practice: "",
+    category: "",
+    userCategory: ""
+  });
+
+  // Section open/close state
+  const [openSections, setOpenSections] = useState({
+    category: true,
+    customer: false,
+    price: false,
+    language: false,
+    country: false,
+    industry: false,
+    practice: false,
+    mobile: false
+  });
+
+  // Toggle section visibility
+  const toggleSection = (section) => {
+    setOpenSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  // Filter section component with responsive design
+  const FilterSection = ({ 
+    title, 
+    section, 
+    options, 
+    filterKey,
+    searchable = false,
+    searchPlaceholder = "" 
+  }) => {
+    const filteredOptions = searchable 
+      ? options.filter(option => 
+          option.toLowerCase().includes((searchQueries[filterKey] || "").toLowerCase())
+        )
+      : options;
+
+    return (
+      <div className="border-b border-gray-200 last:border-b-0">
+        <div
+          onClick={() => toggleSection(section)}
+          className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50
+                   transition-colors duration-200"
+        >
+          <div className="flex items-center gap-2">
+            <div className="bg-blue-100 p-1.5 rounded-lg">
+              <MdOutlineBusinessCenter className="text-blue-600 w-4 h-4" />
+            </div>
+            <span className="font-medium text-gray-900">{title}</span>
+          </div>
+          <IoArrowForward 
+            className={`transform transition-transform duration-200 text-gray-400
+                     ${openSections[section] ? 'rotate-90' : ''}`} 
+          />
+        </div>
+
+        {openSections[section] && (
+          <div className="p-4 bg-gray-50">
+            {searchable && (
+              <div className="relative group mb-3">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 to-sky-500/20 
+                             rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-200" />
+                <input
+                  type="text"
+                  className="relative w-full p-2 rounded-lg border border-gray-200 
+                         focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                         bg-white"
+                  placeholder={searchPlaceholder}
+                  value={searchQueries[filterKey] || ""}
+                  onChange={(e) => setSearchQueries(prev => ({
+                    ...prev,
+                    [filterKey]: e.target.value
+                  }))}
+                />
+              </div>
+            )}
+            
+            <div className={`space-y-2 overflow-y-auto ${isMobileView ? 'max-h-40' : 'max-h-60'}`}>
+              {filteredOptions.map((option) => (
+                <label 
+                  key={option} 
+                  className="flex items-center gap-2 p-2 rounded-lg hover:bg-white 
+                         cursor-pointer transition-colors duration-200"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedFilters[filterKey].includes(option)}
+                    onChange={() => handleFilterChange(filterKey, option)}
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500
+                           transition-colors duration-200 w-4 h-4"
+                  />
+                  <span className="text-sm text-gray-700 select-none">{option}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Reset filters function
+  const handleReset = () => {
+    setSelectedFilters({
+      categories: [],
+      userCategory: [],
+      language: [],
+      country: [],
+      industry: [],
+      practiceAreas: [],
+      mobileAvailable: [],
+      price: []
+    });
+    setSearchQueries({
+      language: "",
+      country: "",
+      industry: "",
+      practice: "",
+      category: "",
+      userCategory: ""
+    });
+  };
+
+  return (
+    <div className="flex flex-col h-full">
+      {/* Filter Header */}
+      <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-sky-50">
+        <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-sky-600 bg-clip-text text-transparent">
+          Filters
+        </h2>
+      </div>
+
+      {/* Scrollable Filter Sections */}
+      <div className="flex-1 overflow-y-auto">
+        <FilterSection
+          title="Category"
+          section="category"
+          options={categories}
+          filterKey="categories"
+          searchable
+          searchPlaceholder="Search categories..."
+        />
+
+        <FilterSection
+          title="User Category"
+          section="customer"
+          options={userCategories}
+          filterKey="userCategory"
+        />
+
+        <FilterSection
+          title="Language"
+          section="language"
+          options={languages}
+          filterKey="language"
+          searchable
+          searchPlaceholder="Search languages..."
+        />
+
+        <FilterSection
+          title="Headquarter"
+          section="country"
+          options={countries}
+          filterKey="country"
+          searchable
+          searchPlaceholder="Search countries..."
+        />
+
+        <FilterSection
+          title="Industry"
+          section="industry"
+          options={industries}
+          filterKey="industry"
+          searchable
+          searchPlaceholder="Search industries..."
+        />
+
+        <FilterSection
+          title="Practice Area"
+          section="practice"
+          options={practiceAreas}
+          filterKey="practiceAreas"
+          searchable
+          searchPlaceholder="Search practice areas..."
+        />
+
+        <FilterSection
+          title="Price"
+          section="price"
+          options={["Fixed", "Custom", "Both"]}
+          filterKey="price"
+        />
+
+        <FilterSection
+          title="Mobile Available"
+          section="mobile"
+          options={["Yes", "No"]}
+          filterKey="mobileAvailable"
+        />
+      </div>
+
+      {/* Reset Button - Fixed at bottom */}
+      <div className="p-4 border-t border-gray-200 bg-gray-50 mt-auto">
+        <button
+          onClick={handleReset}
+          className="w-full py-2.5 px-4 bg-gradient-to-r from-blue-500 to-sky-500 
+                   text-white rounded-lg hover:from-blue-600 hover:to-sky-600
+                   transition-all duration-200 transform hover:scale-[1.02]
+                   focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                   font-medium shadow-lg"
+        >
+          Reset Filters
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default DirectoryFilter;

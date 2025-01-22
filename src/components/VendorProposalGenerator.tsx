@@ -83,7 +83,7 @@ const VendorProposalGenerator = () => {
     setProductsLoading(true);
     try {
       const vendorId = localStorage.getItem("vendorId");
-      const response = await fetch('http://localhost:3000/api/get-all-product-by-vendor', {
+      const response = await fetch('/api/get-all-product-by-vendor', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

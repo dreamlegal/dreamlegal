@@ -266,9 +266,36 @@ const Navbar = () => {
                     <a href="/contact" className="block w-full p-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200">
                      Contact Us
                     </a>
-                    <a href="/login" className="block w-full p-2 text-sm font-medium bg-blue-500 text-white rounded-lg hover:bg-blue-800 transition-colors duration-200">
-                      Log in
-                    </a>
+                    {userType && (
+  <>
+    {userType === 'vendor' && (
+      <a 
+        href="/tech_vendor/dashboard" 
+        className="px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded-xl hover:bg-blue-800 transition-colors duration-200"
+      >
+        Dashboard
+      </a>
+    )}
+    {userType === 'user' && (
+      <a 
+        href="/legal_professionals/dashboard" 
+        className="px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded-xl hover:bg-blue-800 transition-colors duration-200"
+      >
+        Dashboard
+      </a>
+    )}
+  </>
+)}
+
+{/* For logged out users */}
+{!userType && (
+  <a 
+    href={window.location.pathname === '/tech_vendor' ? '/auth/vendor/login' : '/auth/user/login'}
+    className="px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded-xl hover:bg-blue-800 transition-colors duration-200"
+  >
+    Log in
+  </a>
+)}
                   </div>
                 </div>
               </div>

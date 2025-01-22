@@ -451,6 +451,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Shield, BarChart2, Zap, Globe } from "lucide-react";
+import Alert from '@/components/Alert';
 
 const ResponsiveHero = () => {
   const [email, setEmail] = useState('');
@@ -502,30 +503,62 @@ const ResponsiveHero = () => {
       delay: 3
     }
   ];
+  
+  const [alert, setAlert] = useState({
+    show: false,
+    message: '',
+    type: 'success' as 'success' | 'error'
+  });
 
-  const validateEmail = (email) => {
-    return email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
-  const handleSubmit = async () => {
-    setStatus({ type: '', message: '' });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     
     if (!validateEmail(email)) {
-      setStatus({ 
-        type: 'error', 
-        message: 'Please enter a valid email address' 
+      setAlert({
+        show: true,
+        message: 'Please enter a valid email address',
+        type: 'error'
       });
       return;
     }
 
     setIsLoading(true);
+
     try {
-      // Add your email submission logic here
-      console.log('Email submitted:', email);
+      const response = await fetch('/api/save-demo-leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit email');
+      }
+
+      setAlert({
+        show: true,
+        message: 'Thank you for your interest! We\'ll be in touch soon.',
+        type: 'success'
+      });
+
+      // Clear form after successful submission
+      setEmail('');
+
     } catch (error) {
-      setStatus({
-        type: 'error',
-        message: 'Failed to submit email. Please try again.'
+      console.error('Submission error:', error);
+      setAlert({
+        show: true,
+        message: error instanceof Error ? error.message : 'Failed to submit email',
+        type: 'error'
       });
     } finally {
       setIsLoading(false);
@@ -534,6 +567,13 @@ const ResponsiveHero = () => {
 
   return (
     <section className="w-full min-h-screen pt-20 sm:pt-24 relative overflow-hidden bg-gradient-to-br from-blue-50 to-white">
+      {alert.show && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert({ ...alert, show: false })}
+        />
+      )}
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-white" />
       <div className="absolute inset-0 opacity-30 bg-[radial-gradient(at_top_right,#60A5FA_0%,transparent_50%)]" />

@@ -153,10 +153,13 @@
 // };
 
 // export default BenefitsSection;
-import React from 'react';
+"use client"
+import React, { useState } from 'react';
 import { Sparkles, ArrowRight, Building2, Scale, FileText, Search, Zap, Users } from 'lucide-react';
 
+import Modal from "./Modal"
 const BenefitsSection = () => {
+   const [showModal, setShowModal] = useState(false);
   const benefits = [
     {
       title: "For Legal Tech Companies",
@@ -182,7 +185,7 @@ const BenefitsSection = () => {
       ],
       buttonText: "Learn More",
       imagePath: "/partners/legal_Service.png",
-      href: "/legal-services-benefits"
+      href: ""
     },
     {
       title: "For Legal Ops/Legal Tech Consulting Companies",
@@ -195,7 +198,7 @@ const BenefitsSection = () => {
       ],
       buttonText: "Explore Solutions",
       imagePath: "/partners/legal_consulting.png",
-      href: "/legal-consulting-benefits"
+      href: ""
     }
   ];
 
@@ -268,15 +271,27 @@ const BenefitsSection = () => {
                         ))}
                       </div>
 
-                      <a 
-                        href={benefit.href}
-                        className="mt-6 group inline-flex items-center gap-2 px-6 py-3 
-                                 bg-gradient-to-r from-blue-600 to-blue-500 
-                                 text-white rounded-xl font-medium shadow-lg 
-                                 hover:shadow-xl transition-all duration-300">
-                        {benefit.buttonText}
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </a>
+                        {benefit.href ? (
+                        <a 
+                          href={benefit.href}
+                          className="mt-6 group inline-flex items-center gap-2 px-6 py-3 
+                               bg-gradient-to-r from-blue-600 to-blue-500 
+                               text-white rounded-xl font-medium shadow-lg 
+                               hover:shadow-xl transition-all duration-300">
+                          {benefit.buttonText}
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </a>
+                        ) : (
+                        <button 
+                          onClick={() => setShowModal(true)}
+                          className="mt-6 group inline-flex items-center gap-2 px-6 py-3 
+                               bg-gradient-to-r from-blue-600 to-blue-500 
+                               text-white rounded-xl font-medium shadow-lg 
+                               hover:shadow-xl transition-all duration-300">
+                          {benefit.buttonText}
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </button>
+                        )}
                     </div>
                   </div>
 
@@ -306,6 +321,7 @@ const BenefitsSection = () => {
           })}
         </div>
       </div>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 };

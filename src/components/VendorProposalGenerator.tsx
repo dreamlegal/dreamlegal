@@ -15,13 +15,14 @@ import {
   Star
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-
+import { useAuth } from '@/context/authContext';
 const VendorProposalGenerator = () => {
   const [products, setProducts] = useState([]);
   const [productsLoading, setProductsLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   const [proposalResponse, setProposalResponse] = useState(null);
+   const { vendorId, userType } = useAuth()
   
   // Client Profile State
   const [clientSector, setClientSector] = useState('');
@@ -54,6 +55,29 @@ const VendorProposalGenerator = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
+  const [credits, setCredits] = useState(null);
+  
+    // Fetch credits on component mount
+    useEffect(() => {
+      fetchCredits();
+    }, [vendorId]);
+  
+    const fetchCredits = async () => {
+      try {
+        const response = await fetch('/api/get-vendor-credits', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ vendorId })
+        });
+        const data = await response.json();
+        setCredits(data);
+      } catch (error) {
+        console.error('Error fetching credits:', error);
+      }
+    };
+  
 
   const fetchProducts = async () => {
     setProductsLoading(true);
@@ -79,34 +103,127 @@ const VendorProposalGenerator = () => {
     }
   };
 
-  const handleGenerateProposal = async () => {
-    if (!selectedProduct || !clientSector || !clientTeamSize || !clientCategory) return;
+  // const handleGenerateProposal = async () => {
+  //   if (!selectedProduct || !clientSector || !clientTeamSize || !clientCategory) return;
     
-    setLoading(true);
-    try {
-      const response = await fetch('https://ai-backend-y6mq.onrender.com/proposal/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          product_profile: selectedProduct,
-          client_profile: {
-            Sector: clientSector,
-            "Team Size": parseInt(clientTeamSize),
-            Category: clientCategory
-          }
-        }),
-      });
+  //   setLoading(true);
+  //   try {
+  //     const response = await fetch('https://ai-backend-y6mq.onrender.com/proposal/', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         product_profile: selectedProduct,
+  //         client_profile: {
+  //           Sector: clientSector,
+  //           "Team Size": parseInt(clientTeamSize),
+  //           Category: clientCategory
+  //         }
+  //       }),
+  //     });
       
-      const data = await response.json();
-      setProposalResponse(data);
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
+  //     const data = await response.json();
+  //     setProposalResponse(data);
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+// Frontend component update
+// const handleGenerateProposal = async () => {
+//   if (!selectedProduct || !clientSector || !clientTeamSize || !clientCategory) return;
+  
+//   setLoading(true);
+//   try {
+//     const response = await fetch('/api/create-custom-proposal', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         product_profile: selectedProduct,
+//         client_profile: {
+//           Sector: clientSector,
+//           "Team Size": parseInt(clientTeamSize),
+//           Category: clientCategory
+//         },
+//         vendorId
+//       }),
+//     });
+    
+//     const data = await response.json();
+    
+//     if (response.ok) {
+//       setProposalResponse(data.proposal);
+//       setCredits(prev => ({
+//         ...prev,
+//         proposalCredits: data.remainingCredits
+//       }));
+//     } else {
+//       alert(data.error);
+//     }
+//   } catch (error) {
+//     console.error('Error:', error);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+// Proposal Generation Handler
+const handleGenerateProposal = async () => {
+  if (!selectedProduct || !clientSector || !clientTeamSize || !clientCategory) return;
+  if (!credits?.proposalCredits) {
+    alert('You have no proposal credits remaining');
+    return;
+  }
+  
+  setLoading(true);
+  try {
+    const response = await fetch('/api/generate-proposal', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        product_profile: selectedProduct,
+        client_profile: {
+          Sector: clientSector,
+          "Team Size": parseInt(clientTeamSize),
+          Category: clientCategory
+        },
+        vendorId
+      }),
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      setProposalResponse(data.proposal);
+      // Update credits immediately
+      setCredits(prev => ({
+        ...prev,
+        proposalCredits: data.remainingCredits
+      }));
+    } else {
+      alert(data.error);
+      // Update credits even on error to stay in sync
+      if (data.remainingCredits !== undefined) {
+        setCredits(prev => ({
+          ...prev,
+          proposalCredits: data.remainingCredits
+        }));
+      }
     }
-  };
+  } catch (error) {
+    console.error('Error:', error);
+    alert('An error occurred during proposal generation');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen p-6">
@@ -124,6 +241,11 @@ const VendorProposalGenerator = () => {
           <p className="text-gray-600 text-lg max-w-xl mx-auto">
             Generate tailored proposals by selecting your product and client details
           </p>
+          <div className="mb-4">
+        <p className="text-sm font-medium">
+          Remaining Proposal Credits: {credits?.proposalCredits ?? 'Loading...'}
+        </p>
+      </div>
         </div>
 
         {/* Main Input Section */}

@@ -191,7 +191,8 @@ import {
   BookOpen, 
   TrendingUp,
   Users,
-  BarChart3,Sparkles
+  BarChart3,Sparkles,
+  Router
 } from 'lucide-react';
 
 const ProductSuite = () => {
@@ -1202,6 +1203,7 @@ export default ProductSuite;
 // };
 
 import { ChevronRight, BarChart2, Settings, Shield, Clock, Zap, CheckCircle, } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const SectionHeader = ({ title, icon: Icon }) => (
   <div className="relative w-full mb-6 md:mb-10">
@@ -1226,8 +1228,12 @@ const FeatureIcon = ({ index }) => {
   return <Icon className="w-4 h-4" />;
 };
 
-const ProductCard = ({ title, subtitle, description, features, buttonText, imagePath, imageAlt, index, icon: Icon, isComingSoon }) => {
+const ProductCard = ({ title, subtitle, description, features,href, buttonText, imagePath, imageAlt, index, icon: Icon, isComingSoon }) => {
+  const router = useRouter();
+
   const isEven = index % 2 === 0;
+ 
+
   
   return (
     <div className="relative group">
@@ -1264,6 +1270,7 @@ const ProductCard = ({ title, subtitle, description, features, buttonText, image
           <button 
             className="w-full px-3 md:px-4 py-2 bg-blue-600 text-white rounded-lg text-xs md:text-sm font-medium hover:bg-blue-700 disabled:bg-gray-500 disabled:hover:bg-gray-500"
             disabled={isComingSoon}
+            onClick={() => router.push(href)}
           >
             <span className="flex items-center justify-center gap-1">
               {buttonText}
@@ -1342,6 +1349,7 @@ const ProductsShowcase = () => {
               "Highlight potential wins to maximize productivity and ROI"
             ],
             buttonText: "Try Workflow Analysis",
+            href: "/workflow-analysis",
             imagePath: "images/workflow dashboard.png", 
             icon: BarChart2,
             isComingSoon: false
@@ -1362,6 +1370,7 @@ const ProductsShowcase = () => {
               "Kickstart direct conversations with vendors"
             ],
             buttonText: "Try Directory",
+            href:"/directory",
             imagePath: "images/directory.png",
             icon: Search,
             isComingSoon: false
@@ -1382,6 +1391,7 @@ const ProductsShowcase = () => {
               "Leverage learning resources to make the most of your chosen solutions"
             ],
             buttonText: "Try Learning",
+            href:"https://blog.dreamlegal.in/",
             imagePath: "images/blog.png",
             icon: BookOpen,
             isComingSoon: false
@@ -1401,6 +1411,7 @@ const ProductsShowcase = () => {
               "Enhance operations to drive business growth",
               "Detect and address changes in legal workflows proactively"
             ],
+            href:"/",
             buttonText: "Coming Soon",
             imagePath: '',
             icon: TrendingUp,
@@ -1421,6 +1432,7 @@ const ProductsShowcase = () => {
               "Ensure team readiness for smooth adoption and integration",
               "Manage data and access securely for optimal efficiency"
             ],
+            href:"/",
             buttonText: "Coming Soon",
             imagePath: '',
             icon: Settings,
@@ -1428,6 +1440,7 @@ const ProductsShowcase = () => {
           }]
         }
       ];
+     
 
   return (
     <div className="max-w-6xl mx-auto px-4">
@@ -1491,6 +1504,7 @@ const ProductsShowcase = () => {
                 )} */}
                 {section.products.map((product, productIndex) => (
                   <ProductCard 
+                  
                     key={productIndex} 
                     {...product} 
                     index={sectionIndex} 

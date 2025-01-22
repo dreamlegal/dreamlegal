@@ -507,7 +507,7 @@ const UserSignupPage = () => {
       if (data.success) {
         showAlert('Account created successfully!', 'success');
         setTimeout(() => {
-          router.push('/legal_proffesionals/dashboard');
+          router.push('/legal_professionals/dashboard');
         }, 1500);
       } else {
         showAlert(data.error || 'Invalid OTP or failed to create account', 'error');

@@ -62,7 +62,7 @@ const UserLoginPage = () => {
         
         setTimeout(() => {
           if (data.type === "user") {
-            router.push('/legal_proffesionals/dashboard');
+            router.push('/legal_professionals/dashboard');
           } else {
             router.push('/');
           }

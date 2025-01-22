@@ -88,7 +88,7 @@ import { NextResponse } from 'next/server';
 // Define protected paths and their allowed types
 const protectedPaths = {
   '/tech_vendor/dashboard': ['vendor'],
-  '/legal_proffesionals/dashboard': ['user']
+  '/legal_professionals/dashboard': ['user']
 };
 
 export async function middleware(request) {
@@ -100,6 +100,10 @@ export async function middleware(request) {
     if (path === '/tech_vendor/dashboard') {
       // Redirect to `/tech_vendor/dashboard/all_products`
       return NextResponse.redirect(new URL('/tech_vendor/dashboard/all_products', request.url));
+    }
+    if (path === '/legal_professionals/dashboard') {
+      // Redirect to `/tech_vendor/dashboard/all_products`
+      return NextResponse.redirect(new URL('/legal_professionals/dashboard/tech_directory', request.url));
     }
 
     // Check if this path needs protection
@@ -167,6 +171,6 @@ export async function middleware(request) {
 export const config = {
   matcher: [
     '/tech_vendor/dashboard/:path*',
-    // '/legal_proffesionals/dashboard/:path*'
+    '/legal_professionals/dashboard/:path*'
   ]
 };

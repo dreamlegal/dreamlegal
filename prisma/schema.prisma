@@ -313,6 +313,7 @@ model Booking {
 
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
+  userId           String?
 }
 
 model ProductView {
@@ -409,4 +410,60 @@ model OtpVerification {
   otp       String
   expiresAt DateTime
   createdAt DateTime @default(now())
+}
+
+model VendorCredits {
+  id                String    @id @default(uuid())
+  vendorId          String    
+  proposalCredits   Int       @default(10)
+  validationCredits Int       @default(10)
+  lastRenewalDate   DateTime  @default(now())
+  nextRenewalDate   DateTime  
+
+  @@index([vendorId])
+}
+
+model PartnersLeads {
+  id        String   @id @default(uuid())
+  name      String?
+  category  String?
+  email     String?
+  createdAt DateTime @default(now())
+}
+
+model PotentialLeadDetailed {
+  id           String   @id @default(uuid())
+  role         String?
+  email        String?
+  organisation String?
+  createdAt    DateTime @default(now())
+}
+
+model ContentEmailLists {
+  id          String   @id @default(uuid())
+  email       String?
+  contentType String?
+  contentName String?
+  createdAt   DateTime @default(now())
+}
+
+model DemoLeads {
+  id        String   @id @default(uuid())
+  email     String?
+  createdAt DateTime @default(now())
+}
+
+model PotentialLead {
+  id          String   @id @default(uuid())
+  email       String?
+  typeOfLead  String?
+  createdAt   DateTime @default(now())
+}
+
+model VendorLeads {
+  id            String   @id @default(uuid())
+  companyName   String?
+  email         String?
+  message       String?
+  createdAt     DateTime @default(now())
 }

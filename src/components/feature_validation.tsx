@@ -1,7 +1,7 @@
 
 "use client"
 // export default FeatureAnalysisDashboard;
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Search, 
   Activity, 
@@ -16,12 +16,13 @@ import {
   Sparkles
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-
+import { useAuth } from '@/context/authContext';
 const FeatureAnalysisDashboard = () => {
   const [featureName, setFeatureName] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [analysisResult, setAnalysisResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { vendorId, userType } = useAuth()
 
    const categories = [
     "Client Relationship Management",
@@ -37,31 +38,140 @@ const FeatureAnalysisDashboard = () => {
     "Legal Research",
   ];
 
-  const handleAnalyze = async () => {
-    if (!featureName || !selectedCategory) return;
+  // const handleAnalyze = async () => {
+  //   if (!featureName || !selectedCategory) return;
     
-    setLoading(true);
+  //   setLoading(true);
+  //   try {
+  //     const response = await fetch('https://ai-backend-y6mq.onrender.com/feature_analysis/', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         feature_name: featureName,
+  //         category: selectedCategory
+  //       }),
+  //     });
+      
+  //     const data = await response.json();
+  //     setAnalysisResult(data.response);
+  //     console.log('API Response:', data); 
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
+  const [credits, setCredits] = useState(null);
+
+  // Fetch credits on component mount
+  useEffect(() => {
+    fetchCredits();
+  }, [vendorId]);
+
+  const fetchCredits = async () => {
     try {
-      const response = await fetch('https://ai-backend-y6mq.onrender.com/feature_analysis/', {
+      const response = await fetch('/api/get-vendor-credits', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          feature_name: featureName,
-          category: selectedCategory
-        }),
+        body: JSON.stringify({ vendorId })
       });
-      
       const data = await response.json();
-      setAnalysisResult(data.response);
-      console.log('API Response:', data); 
+      setCredits(data);
     } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
+      console.error('Error fetching credits:', error);
     }
   };
+
+  // const handleAnalyze = async () => {
+  //   if (!featureName || !selectedCategory) return;
+    
+  //   setLoading(true);
+  //   try {
+  //     const response = await fetch('/api/analyse-feature', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         feature_name: featureName,
+  //         category: selectedCategory,
+  //         vendorId
+  //       }),
+  //     });
+      
+  //     const data = await response.json();
+      
+  //     if (response.ok) {
+  //       setAnalysisResult(data.analysis);
+  //       setCredits(prev => ({
+  //         ...prev,
+  //         validationCredits: data.remainingCredits
+  //       }));
+  //     } else {
+  //       alert(data.error);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+// Feature Validation Handler
+const handleAnalyze = async () => {
+  if (!featureName || !selectedCategory) return;
+  if (!credits?.validationCredits) {
+    alert('You have no validation credits remaining');
+    return;
+  }
+  
+  setLoading(true);
+  try {
+    const response = await fetch('/api/analyze-feature', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        feature_name: featureName,
+        category: selectedCategory,
+        vendorId
+      }),
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      setAnalysisResult(data.analysis);
+      // Update credits immediately
+      setCredits(prev => ({
+        ...prev,
+        validationCredits: data.remainingCredits
+      }));
+    } else {
+      alert(data.error);
+      // Update credits even on error to stay in sync
+      if (data.remainingCredits !== undefined) {
+        setCredits(prev => ({
+          ...prev,
+          validationCredits: data.remainingCredits
+        }));
+      }
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('An error occurred during analysis');
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   const safeArray = (data, path) => {
     return data && data[path] ? 
@@ -87,6 +197,11 @@ const FeatureAnalysisDashboard = () => {
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Discover market insights for any legal tech feature
           </p>
+          <div className="mb-4">
+        <p className="text-sm font-medium">
+          Remaining Validation Credits: {credits?.validationCredits ?? 'Loading...'}
+        </p>
+      </div>
         </div>
 
         {/* Main Content Section with Overlapping Input */}
@@ -186,6 +301,18 @@ const FeatureAnalysisDashboard = () => {
 };
 
 export default FeatureAnalysisDashboard;
+
+
+
+
+
+
+
+
+
+
+
+
 
 import { 
   TrendingDown, 

@@ -8,6 +8,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, Code, LineChart, Workflow } from 'lucide-react';
 import VideoPlayer from "./VideoPlayer";
+import Alert from '@/components/Alert';
 
 const ResponsiveHero = () => {
   // Animation variant for floating elements
@@ -79,56 +80,68 @@ const ResponsiveHero = () => {
         </div>
       );
     
-      const validateEmail = (email) => {
-        return email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+      const [alert, setAlert] = useState({
+        show: false,
+        message: '',
+        type: 'success' as 'success' | 'error'
+      });
+    
+      const validateEmail = (email: string): boolean => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
       };
     
-      const handleSubmit = async () => {
-        // Reset status
-        setStatus({ type: '', message: '' });
-    
-        // Validate email
+      const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
         if (!validateEmail(email)) {
-          setStatus({ 
-            type: 'error', 
-            message: 'Please enter a valid email address' 
+          setAlert({
+            show: true,
+            message: 'Please enter a valid email address',
+            type: 'error'
           });
           return;
         }
     
         setIsLoading(true);
-        console.log('Email:', email);
-        setIsLoading(false);
     
-        // try {
-        //   const response = await fetch('/api/subscribe', {
-        //     method: 'POST',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({ email }),
-        //   });
+        try {
+          const response = await fetch('/api/save-potential-lead', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email,
+              typeOfLead: 'vendor'
+            }),
+          });
     
-        //   const data = await response.json();
+          const data = await response.json();
     
-        //   if (!response.ok) {
-        //     throw new Error(data.message || 'Something went wrong');
-        //   }
+          if (!response.ok) {
+            throw new Error(data.error || 'Failed to register email');
+          }
     
-        //   setStatus({
-        //     type: 'success',
-        //     message: 'Thanks for subscribing!'
-        //   });
-        //   setEmail('');
-          
-        // } catch (error) {
-        //   setStatus({
-        //     type: 'error',
-        //     message: error.message || 'Failed to submit email'
-        //   });
-        // } finally {
-        //   setIsLoading(false);
-        // }
+          setAlert({
+            show: true,
+            message: 'Thank you for your interest! We\'ll be in touch soon.',
+            type: 'success'
+          });
+    
+          // Clear the form
+          setEmail('');
+    
+        } catch (error) {
+          console.error('Submission error:', error);
+          setAlert({
+            show: true,
+            message: error instanceof Error ? error.message : 'Failed to submit email',
+            type: 'error'
+          });
+        } finally {
+          setIsLoading(false);
+        }
       };
 
 
@@ -136,6 +149,13 @@ const ResponsiveHero = () => {
     <>
       {/* Hero Section with navbar spacing */}
       <section className="w-full min-h-screen pt-20 sm:pt-24 relative overflow-hidden bg-gradient-to-br from-blue-50 to-white">
+      {alert.show && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert({ ...alert, show: false })}
+        />
+      )}
         {/* Background Elements */}
         <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-white" />
         <div className="absolute inset-0 opacity-30 bg-[radial-gradient(at_top_right,#60A5FA_0%,transparent_50%)]" />

@@ -149,7 +149,7 @@ const services = [
       buttonText: "Create Product Profile",
       imagePath: "/tech_vendor/directory.png",
       imageAlt: "Product Profiles",
-      href: "/solutions/product-profiles"
+      href: "/directory"
     }
   },
   {
@@ -168,7 +168,7 @@ const services = [
       buttonText: "Manage RFPs",
       imagePath: "/tech_vendor/RFP.png",
       imageAlt: "RFP Management",
-      href: "/solutions/rfp-management"
+      href: "/auth/vendor/login"
     }
   },
   {
@@ -187,7 +187,7 @@ const services = [
       buttonText: "Explore Trends",
       imagePath: "/tech_vendor/analytics.png",
       imageAlt: "Market Trends",
-      href: "/solutions/market-trends"
+      href: "/auth/vendor/login"
     }
   },
   {
@@ -206,7 +206,7 @@ const services = [
       buttonText: "Validate Features",
       imagePath: "/tech_vendor/Ai market research.png",
       imageAlt: "Feature Validation",
-      href: "/solutions/feature-validation"
+      href: "/auth/vendor/login"
     }
   },
   {
@@ -226,7 +226,7 @@ const services = [
       imagePath: "/tech_vendor/client prospecting.png",
       imageAlt: "Custom Proposal",
     
-      href: "/solutions/custom-proposals"
+      href: "/auth/vendor/login"
     }
   },
   {
@@ -245,7 +245,7 @@ const services = [
       buttonText: "Analyze Competition",
       imagePath: "",
       imageAlt: "Competitor Analysis",
-      href: "/solutions/competitor-analysis"
+      href: "/auth/vendor/login"
     }
   }
 ];
@@ -345,17 +345,7 @@ const LegalTechDashboard = () => {
 </button>
             </div>
 
-            {/* <div className="relative rounded-xl overflow-hidden transition-all duration-700 delay-500 transform
-                ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}">
-  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-blue-400/5" />
-          <img
-            src={activeService.content.imagePath}
-            alt={`${activeService.content.title} illustration`}
-            className="w-full h-full object-cover rounded-xl"
-          />
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-transparent" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-blue-600/20 to-transparent" />
-        </div> */}
+          
 
 <div className="w-full ">
   <div className="relative">

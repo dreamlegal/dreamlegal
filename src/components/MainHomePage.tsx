@@ -19,24 +19,68 @@ const LandingPage = () => {
     </div>
   );
 
-  const validateEmail = (email) => {
-    return email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+  const [alert, setAlert] = useState({
+    show: false,
+    message: '',
+    type: 'success' as 'success' | 'error'
+  });
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
-  const handleSubmit = async () => {
-    setStatus({ type: '', message: '' });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     
     if (!validateEmail(email)) {
-      setStatus({ 
-        type: 'error', 
-        message: 'Please enter a valid email address' 
+      setAlert({
+        show: true,
+        message: 'Please enter a valid email address',
+        type: 'error'
       });
       return;
     }
 
     setIsLoading(true);
-    console.log('Email:', email);
-    setIsLoading(false);
+
+    try {
+      const response = await fetch('/api/save-potential-lead', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          typeOfLead: 'user'
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to register email');
+      }
+
+      setAlert({
+        show: true,
+        message: 'Thank you for your interest! We\'ll be in touch soon.',
+        type: 'success'
+      });
+
+      // Clear the form
+      setEmail('');
+
+    } catch (error) {
+      console.error('Submission error:', error);
+      setAlert({
+        show: true,
+        message: error instanceof Error ? error.message : 'Failed to submit email',
+        type: 'error'
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -52,7 +96,13 @@ const LandingPage = () => {
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white via-white/90 to-transparent" />
         <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white via-white/90 to-transparent" />
       </div>
-
+      {alert.show && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert({ ...alert, show: false })}
+        />
+      )}
      
     
   <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 lg:pt-40 pb-20">
@@ -460,41 +510,94 @@ const FinalSection = () => {
 
 import { InlineWidget } from 'react-calendly';
 
-const FormModal = ({ isOpen, onClose, selectedCategory }) => {
+
+
+
+interface FormModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  selectedCategory: string;
+}
+
+const FormModal: React.FC<FormModalProps> = ({ isOpen, onClose, selectedCategory }) => {
   const [formData, setFormData] = useState({
     role: '',
     email: '',
     organization: ''
   });
   const [showCalendly, setShowCalendly] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [alert, setAlert] = useState({
+    show: false,
+    message: '',
+    type: 'success' as 'success' | 'error'
+  });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form Data:', {
-      category: selectedCategory,
-      ...formData
-    });
-    setShowCalendly(true);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/save-potential-lead-detailed', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          role: formData.role,
+          email: formData.email,
+          organisation: formData.organization, // Note the spelling change for the API
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit form');
+      }
+
+      setAlert({
+        show: true,
+        message: 'Information submitted successfully',
+        type: 'success'
+      });
+
+      setShowCalendly(true);
+
+    } catch (error) {
+      console.error('Submission error:', error);
+      setAlert({
+        show: true,
+        message: error instanceof Error ? error.message : 'Failed to submit form',
+        type: 'error'
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
-      {/* Backdrop with enhanced blur */}
+      {alert.show && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert({ ...alert, show: false })}
+        />
+      )}
+      
       <div 
         className="fixed inset-0 bg-blue-50/30 backdrop-blur-md transition-all duration-300"
         onClick={onClose}
       />
       
-      {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
         <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl max-w-md w-full shadow-2xl 
                      transform transition-all duration-500 scale-100 overflow-hidden">
 
-          {/* Content container */}
           <div className="relative p-8">
-            {/* Close button */}
             <button
               onClick={onClose}
               className="absolute right-6 top-6 p-2 rounded-full hover:bg-blue-50/50 
@@ -506,7 +609,6 @@ const FormModal = ({ isOpen, onClose, selectedCategory }) => {
 
             {!showCalendly ? (
               <>
-                {/* Header */}
                 <div className="mb-8">
                   <div className="flex items-center gap-2 mb-2">
                     <Sparkles className="w-5 h-5 text-blue-600 animate-pulse" />
@@ -526,7 +628,6 @@ const FormModal = ({ isOpen, onClose, selectedCategory }) => {
                   </div>
                 </div>
 
-                {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {[
                     { name: 'role', label: 'Role', type: 'text', placeholder: 'Enter your role' },
@@ -553,18 +654,21 @@ const FormModal = ({ isOpen, onClose, selectedCategory }) => {
 
                   <button
                     type="submit"
+                    disabled={isLoading}
                     className="group relative w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 to-blue-500 
                            hover:from-blue-700 hover:to-blue-600 text-white font-medium
                            rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-xl
                            hover:shadow-blue-500/30 transition-all duration-300
                            focus:ring-2 focus:ring-blue-200 focus:ring-offset-2
-                           overflow-hidden"
+                           overflow-hidden disabled:opacity-70 disabled:cursor-not-allowed"
                   >
                     <div className="relative flex items-center justify-center gap-2">
                       <span className="transform group-hover:translate-x-[-4px] transition-transform duration-300">
-                        Continue to Schedule
+                        {isLoading ? 'Submitting...' : 'Continue to Schedule'}
                       </span>
-                      <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" />
+                      {!isLoading && (
+                        <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" />
+                      )}
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-300 
                                  opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
@@ -576,7 +680,7 @@ const FormModal = ({ isOpen, onClose, selectedCategory }) => {
                 <InlineWidget 
                   url="https://calendly.com/rohanvkumarv"
                   prefill={{
-                    name: formData.name,
+                    name: formData.role,
                     email: formData.email,
                     customAnswers: {
                       organization: formData.organization
@@ -595,8 +699,6 @@ const FormModal = ({ isOpen, onClose, selectedCategory }) => {
     </div>
   );
 };
-
-
 
 
 
@@ -699,7 +801,7 @@ const LegalProblemsSection = () => {
 };
 
 
-import { Download, Mail } from 'lucide-react';
+// import { Download, Mail } from 'lucide-react';
 
 // const DownloadBox = () => {
 //   const [email, setEmail] = useState('');
@@ -712,198 +814,7 @@ import { Download, Mail } from 'lucide-react';
 //   };
 
 //   return (
-//     <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-1">
-//       {/* Main container - adjusted padding for mobile */}
-//       <div className="w-full max-w-5xl h-auto min-h-[16rem] relative group">
-//         <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-900/95 to-blue-800/90 backdrop-blur-xl shadow-2xl 
-//                     border border-blue-700/20 overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
-          
-//           {/* Background Effects */}
-//           <div className="absolute inset-0">
-//             {/* Grid Pattern */}
-//             <div className="absolute inset-0 bg-[linear-gradient(to_right,#60a5fa05_1px,transparent_1px),linear-gradient(to_bottom,#60a5fa05_1px,transparent_1px)] 
-//                         bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_85%)]" />
-            
-//             {/* Gradient Orbs - adjusted for mobile */}
-//             <div className="absolute -top-16 -left-16 sm:-top-24 sm:-left-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl opacity-70 
-//                         animate-pulse mix-blend-overlay group-hover:opacity-85 duration-1000" />
-//             <div className="absolute -bottom-16 -right-16 sm:-bottom-24 sm:-right-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-l from-blue-400/20 to-indigo-500/20 rounded-full blur-3xl opacity-70 
-//                         animate-pulse delay-300 mix-blend-overlay group-hover:opacity-85 duration-1000" />
-//           </div>
-
-//           {/* Content Container - made responsive */}
-//           <div className="relative h-full flex flex-col items-center justify-center px-4 sm:px-8 py-8 gap-6 sm:gap-8">
-//             {/* Heading - responsive text size */}
-//             <div className="text-center space-y-3">
-//               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white px-2">
-//                 100 CLM CASE STUDY REPORT
-//               </h2>
-//               <div className="flex justify-center space-x-2">
-//                 <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-transparent via-blue-400/50 to-blue-400/50 rounded-full" />
-//                 <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-blue-400/50 to-cyan-400/50 rounded-full" />
-//                 <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-cyan-400/50 to-transparent rounded-full" />
-//               </div>
-//             </div>
-
-//             {/* Input and Button Group - stack on mobile */}
-//             <div className="flex flex-col sm:flex-row items-stretch gap-4 w-full sm:w-auto 
-//                           bg-blue-900/50 p-2 rounded-xl backdrop-blur-sm border border-blue-700/30 
-//                           shadow-xl shadow-blue-950/20 group-hover:shadow-2xl group-hover:shadow-blue-950/30 
-//                           transition-all duration-300">
-//               {/* Input - full width on mobile */}
-//               <div className="relative flex-1 sm:flex-initial">
-//                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-//                   <Mail className="h-4 w-4 text-blue-300/80" />
-//                 </div>
-//                 <input
-//                   type="email"
-//                   value={email}
-//                   onChange={(e) => setEmail(e.target.value)}
-//                   placeholder="Enter your email"
-//                   className="w-full sm:w-72 pl-10 pr-4 py-3 rounded-lg bg-blue-950/50 border-0 
-//                          placeholder-blue-300/50 text-blue-100
-//                          focus:ring-2 focus:ring-blue-400/30 focus:outline-none
-//                          transition-all duration-300"
-//                 />
-//               </div>
-              
-//               {/* Button - full width on mobile */}
-//               <button
-//                 onClick={handleDownload}
-//                 disabled={isLoading}
-//                 className={`w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-white relative overflow-hidden
-//                          transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105
-//                          ${isLoading 
-//                            ? 'bg-blue-800/50 cursor-not-allowed' 
-//                            : 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:shadow-lg hover:shadow-blue-500/20'
-//                          }`}
-//               >
-//                 {isLoading ? (
-//                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-//                 ) : (
-//                   <div className="flex items-center justify-center gap-2">
-//                     <Download className="w-4 h-4" />
-//                     <span>Download</span>
-//                   </div>
-//                 )}
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-
-
-// const DownloadBox = () => {
-//   const [email, setEmail] = useState('');
-//   const [isLoading, setIsLoading] = useState(false);
-
-//   const handleDownload = (e) => {
-//     e.preventDefault();
-//     setIsLoading(true);
-//     setTimeout(() => setIsLoading(false), 1500);
-//   };
-
-//   return (
-//     <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-1">
-//       {/* Main container */}
-//       <div className="w-full max-w-5xl h-auto min-h-[16rem] relative group">
-//         <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-50/95 to-blue-100/90 backdrop-blur-xl shadow-2xl 
-//                     border border-blue-200 overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
-          
-//           {/* Background Effects */}
-//           <div className="absolute inset-0">
-//             {/* Grid Pattern */}
-//             <div className="absolute inset-0 bg-[linear-gradient(to_right,#60a5fa15_1px,transparent_1px),linear-gradient(to_bottom,#60a5fa15_1px,transparent_1px)] 
-//                         bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_85%)]" />
-            
-//             {/* Gradient Orbs */}
-//             <div className="absolute -top-16 -left-16 sm:-top-24 sm:-left-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-r from-blue-200/40 to-cyan-200/40 rounded-full blur-3xl opacity-70 
-//                         animate-pulse mix-blend-overlay group-hover:opacity-85 duration-1000" />
-//             <div className="absolute -bottom-16 -right-16 sm:-bottom-24 sm:-right-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-l from-blue-200/40 to-indigo-200/40 rounded-full blur-3xl opacity-70 
-//                         animate-pulse delay-300 mix-blend-overlay group-hover:opacity-85 duration-1000" />
-//           </div>
-
-//           {/* Content Container */}
-//           <div className="relative h-full flex flex-col items-center justify-center px-4 sm:px-8 py-8 gap-6 sm:gap-8">
-//             {/* Heading */}
-//             <div className="text-center space-y-3">
-//               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-950 px-2">
-//                 100 CLM CASE STUDY REPORT
-//               </h2>
-//               <div className="flex justify-center space-x-2">
-//                 <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-transparent via-blue-400 to-blue-400 rounded-full" />
-//                 <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full" />
-//                 <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-cyan-400 to-transparent rounded-full" />
-//               </div>
-//             </div>
-
-//             {/* Input and Button Group */}
-//             <div className="flex flex-col sm:flex-row items-stretch gap-4 w-full sm:w-auto 
-//                           bg-white/50 p-2 rounded-xl backdrop-blur-sm border border-blue-200 
-//                           shadow-xl shadow-blue-100 group-hover:shadow-2xl group-hover:shadow-blue-200 
-//                           transition-all duration-300">
-//               {/* Input */}
-//               <div className="relative flex-1 sm:flex-initial">
-//                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-//                   <Mail className="h-4 w-4 text-blue-400" />
-//                 </div>
-//                 <input
-//                   type="email"
-//                   value={email}
-//                   onChange={(e) => setEmail(e.target.value)}
-//                   placeholder="Enter your email"
-//                   className="w-full sm:w-72 pl-10 pr-4 py-3 rounded-lg bg-white/80 border-0 
-//                          placeholder-blue-300 text-blue-950
-//                          focus:ring-2 focus:ring-blue-200 focus:outline-none
-//                          transition-all duration-300"
-//                 />
-//               </div>
-              
-//               {/* Button */}
-//               <button
-//                 onClick={handleDownload}
-//                 disabled={isLoading}
-//                 className={`w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-white relative overflow-hidden
-//                          transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105
-//                          ${isLoading 
-//                            ? 'bg-blue-200 cursor-not-allowed' 
-//                            : 'bg-gradient-to-r from-blue-500 to-cyan-500 hover:shadow-lg hover:shadow-blue-200'
-//                          }`}
-//               >
-//                 {isLoading ? (
-//                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-//                 ) : (
-//                   <div className="flex items-center justify-center gap-2">
-//                     <Download className="w-4 h-4" />
-//                     <span>Download</span>
-//                   </div>
-//                 )}
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-
-// const DownloadBox = () => {
-//   const [email, setEmail] = useState('');
-//   const [isLoading, setIsLoading] = useState(false);
-
-//   const handleDownload = (e) => {
-//     e.preventDefault();
-//     setIsLoading(true);
-//     setTimeout(() => setIsLoading(false), 1500);
-//   };
-
-//   return (
-//     <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-1">
+//     <div className="w-full flex items-center justify-center p-8">
 //       <div className="w-full max-w-5xl h-auto min-h-[16rem] relative group">
 //         <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#4285f4]/95 to-[#4285f4]/90 backdrop-blur-xl shadow-2xl 
 //                     border border-[#4285f4] overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
@@ -988,103 +899,177 @@ import { Download, Mail } from 'lucide-react';
 //   );
 // };
 
+import { Download, Mail } from 'lucide-react';
 
+import Alert from '@/components/Alert';
 
 const DownloadBox = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [alert, setAlert] = useState({
+    show: false,
+    message: '',
+    type: 'success'
+  });
 
-  const handleDownload = (e) => {
+  const handleDownload = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!email) {
+      setAlert({
+        show: true,
+        message: "Please enter your email address",
+        type: 'error'
+      });
+      return;
+    }
+
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1500);
+
+    try {
+      const response = await fetch('/api/saving-contentEmail-leadLists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          contentType: 'pdf',
+          contentName: '100 CLM CASE STUDY REPORT',
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to register email');
+      }
+
+      // Show success message
+      setAlert({
+        show: true,
+        message: "Download link has been sent to your email",
+        type: 'success'
+      });
+
+      // Optional: Trigger actual file download
+      const fileUrl = '/download/CLM - 100 customer case study.pdf'; // Replace with actual file path
+      const link = document.createElement('a');
+      link.href = fileUrl;
+      link.download = '100-CLM-Case-Study.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+    } catch (error) {
+      console.error('Download error:', error);
+      setAlert({
+        show: true,
+        message: error instanceof Error ? error.message : "Failed to process download",
+        type: 'error'
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="w-full flex items-center justify-center p-8">
-      <div className="w-full max-w-5xl h-auto min-h-[16rem] relative group">
-        <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#4285f4]/95 to-[#4285f4]/90 backdrop-blur-xl shadow-2xl 
-                    border border-[#4285f4] overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
-          
-          {/* Background Effects */}
-          <div className="absolute inset-0">
-            {/* Grid Pattern */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] 
-                        bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_85%)]" />
+    <>
+      {alert.show && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert({ ...alert, show: false })}
+        />
+      )}
+      
+      <div className="w-full flex items-center justify-center p-8">
+        <div className="w-full max-w-5xl h-auto min-h-[16rem] relative group">
+          <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#4285f4]/95 to-[#4285f4]/90 backdrop-blur-xl shadow-2xl 
+                      border border-[#4285f4] overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
             
-            {/* Decorative Shapes */}
-            <div className="absolute top-4 right-8 w-12 h-12 border-4 border-white/20 rounded-full rotate-45" />
-            <div className="absolute bottom-8 left-12 w-8 h-8 bg-white/10 rounded-lg" />
-            <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-white/15 rotate-12 transform" />
-            
-            {/* Gradient Orbs */}
-            <div className="absolute -top-16 -left-16 sm:-top-24 sm:-left-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-r from-[#4285f4]/40 to-[#4285f4]/40 rounded-full blur-3xl opacity-70 
-                        animate-pulse mix-blend-overlay group-hover:opacity-85 duration-1000" />
-            <div className="absolute -bottom-16 -right-16 sm:-bottom-24 sm:-right-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-l from-[#4285f4]/40 to-[#4285f4]/40 rounded-full blur-3xl opacity-70 
-                        animate-pulse delay-300 mix-blend-overlay group-hover:opacity-85 duration-1000" />
-          </div>
-
-          {/* Content Container */}
-          <div className="relative h-full flex flex-col items-center justify-center px-4 sm:px-8 py-8 gap-6 sm:gap-8">
-            {/* Heading */}
-            <div className="text-center space-y-3">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white px-2">
-              100 CLM CASE STUDY REPORT
-              </h2>
-              <div className="flex justify-center space-x-2">
-                <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-transparent via-white to-white rounded-full" />
-                <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-white to-white/80 rounded-full" />
-                <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-white/80 to-transparent rounded-full" />
-              </div>
-            </div>
-
-            {/* Input and Button Group */}
-            <div className="flex flex-col sm:flex-row items-stretch gap-4 w-full sm:w-auto 
-                          bg-white/10 p-2 rounded-xl backdrop-blur-sm border border-white/20 
-                          shadow-xl shadow-[#4285f4]/20 group-hover:shadow-2xl group-hover:shadow-[#4285f4]/30 
-                          transition-all duration-300">
-              <div className="relative flex-1 sm:flex-initial">
-                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <Mail className="h-4 w-4 text-white/70" />
-                </div>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="w-full sm:w-72 pl-10 pr-4 py-3 rounded-lg bg-white/20 border-0 
-                         placeholder-white/50 text-white
-                         focus:ring-2 focus:ring-white/30 focus:outline-none
-                         transition-all duration-300"
-                />
-              </div>
+            {/* Background Effects */}
+            <div className="absolute inset-0">
+              {/* Grid Pattern */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] 
+                          bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_85%)]" />
               
-              <button
-                onClick={handleDownload}
-                disabled={isLoading}
-                className={`w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-[#4285f4] relative overflow-hidden
-                         transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105
-                         ${isLoading 
-                           ? 'bg-white/50 cursor-not-allowed' 
-                           : 'bg-white hover:shadow-lg hover:shadow-white/20'
-                         }`}
-              >
-                {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-[#4285f4]/30 border-t-[#4285f4] rounded-full animate-spin" />
-                ) : (
-                  <div className="flex items-center justify-center gap-2">
-                    <Download className="w-4 h-4" />
-                    <span>Download</span>
-                  </div>
-                )}
-              </button>
+              {/* Decorative Shapes */}
+              <div className="absolute top-4 right-8 w-12 h-12 border-4 border-white/20 rounded-full rotate-45" />
+              <div className="absolute bottom-8 left-12 w-8 h-8 bg-white/10 rounded-lg" />
+              <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-white/15 rotate-12 transform" />
+              
+              {/* Gradient Orbs */}
+              <div className="absolute -top-16 -left-16 sm:-top-24 sm:-left-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-r from-[#4285f4]/40 to-[#4285f4]/40 rounded-full blur-3xl opacity-70 
+                          animate-pulse mix-blend-overlay group-hover:opacity-85 duration-1000" />
+              <div className="absolute -bottom-16 -right-16 sm:-bottom-24 sm:-right-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-l from-[#4285f4]/40 to-[#4285f4]/40 rounded-full blur-3xl opacity-70 
+                          animate-pulse delay-300 mix-blend-overlay group-hover:opacity-85 duration-1000" />
             </div>
+
+            {/* Content Container */}
+            <form onSubmit={handleDownload} className="relative h-full flex flex-col items-center justify-center px-4 sm:px-8 py-8 gap-6 sm:gap-8">
+              {/* Heading */}
+              <div className="text-center space-y-3">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white px-2">
+                  100 CLM CASE STUDY REPORT
+                </h2>
+                <div className="flex justify-center space-x-2">
+                  <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-transparent via-white to-white rounded-full" />
+                  <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-white to-white/80 rounded-full" />
+                  <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-white/80 to-transparent rounded-full" />
+                </div>
+              </div>
+
+              {/* Input and Button Group */}
+              <div className="flex flex-col sm:flex-row items-stretch gap-4 w-full sm:w-auto 
+                            bg-white/10 p-2 rounded-xl backdrop-blur-sm border border-white/20 
+                            shadow-xl shadow-[#4285f4]/20 group-hover:shadow-2xl group-hover:shadow-[#4285f4]/30 
+                            transition-all duration-300">
+                <div className="relative flex-1 sm:flex-initial">
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                    <Mail className="h-4 w-4 text-white/70" />
+                  </div>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="w-full sm:w-72 pl-10 pr-4 py-3 rounded-lg bg-white/20 border-0 
+                           placeholder-white/50 text-white
+                           focus:ring-2 focus:ring-white/30 focus:outline-none
+                           transition-all duration-300"
+                    required
+                  />
+                </div>
+                
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className={`w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-[#4285f4] relative overflow-hidden
+                           transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105
+                           ${isLoading 
+                             ? 'bg-white/50 cursor-not-allowed' 
+                             : 'bg-white hover:shadow-lg hover:shadow-white/20'
+                           }`}
+                >
+                  {isLoading ? (
+                    <div className="w-5 h-5 border-2 border-[#4285f4]/30 border-t-[#4285f4] rounded-full animate-spin" />
+                  ) : (
+                    <div className="flex items-center justify-center gap-2">
+                      <Download className="w-4 h-4" />
+                      <span>Download</span>
+                    </div>
+                  )}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
+
 
 
 

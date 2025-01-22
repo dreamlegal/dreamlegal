@@ -1,7 +1,7 @@
 "use client"
 import React, { useRef, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-
+import FormModal from './FormModal';
 const useIntersectionObserver = (options = {}) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const targetRef = useRef(null);
@@ -27,6 +27,8 @@ const useIntersectionObserver = (options = {}) => {
 };
 
 const FinalCTA = () => {
+
+const [showModal, setShowModal] = useState(false);
   const [sectionRef, isInView] = useIntersectionObserver();
 
   return (
@@ -34,6 +36,7 @@ const FinalCTA = () => {
  <div ref={sectionRef} className="w-full bg-gradient-to-t from-blue-50 to-white pb-24 pt-4 relative">
 
       <div className="max-w-7xl mx-auto px-4">
+        
         <div className={`transition-all duration-700 transform
                       ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           
@@ -76,7 +79,10 @@ const FinalCTA = () => {
               {/* Right side with button */}
               <div className={`transition-all duration-700 delay-1000
                            ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
-                <button className="group relative px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-2xl 
+                <button 
+                onClick={() => setShowModal(true)}
+                
+                className="group relative px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-2xl 
                                 text-white font-semibold text-lg transition-all duration-300
                                 hover:shadow-lg hover:shadow-blue-500/25">
                   <span className="relative z-10 flex items-center gap-2">
@@ -91,6 +97,8 @@ const FinalCTA = () => {
           </div>
         </div>
       </div>
+      <FormModal isOpen={showModal} onClose={() => setShowModal(false)} />
+  
     </div>
   );
 };

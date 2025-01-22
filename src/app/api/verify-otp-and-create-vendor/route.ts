@@ -62,6 +62,7 @@ export async function POST(request) {
 
     // Set single auth cookie with all necessary info
     const cookieStore = cookies();
+    cookieStore.delete('auth');
     cookieStore.set('auth', JSON.stringify({
       id: user.id,
       type: "vendor",

@@ -79,6 +79,7 @@ export async function POST(request: Request) {
 
     // Set cookie with authentication info
     const cookieStore = cookies();
+    cookieStore.delete('auth');
     cookieStore.set('auth', JSON.stringify({
       id: user.id,
       type: 'user',

@@ -1,7 +1,7 @@
 
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Menu } from 'lucide-react';
 import { IoIosNotificationsOutline } from "react-icons/io";
 import Sidebar from './Sidebar';
@@ -35,18 +35,6 @@ const LegalProfessionalsLayout = ({ children }) => {
     }
   };
 
-  // const fetchNotifications = async () => {
-  //   try {
-  //     const response = await fetch('/api/notifications');
-  //     const data = await response.json();
-  //     if (data.success) {
-  //       setNotifications(data.notifications);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching notifications:", error);
-  //   }
-  // };
-
   const fetchNotifications = async () => {
     
     try {
@@ -61,16 +49,31 @@ const LegalProfessionalsLayout = ({ children }) => {
   
   
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (showNotifications && !event.target.closest('[data-notifications]')) {
-        setShowNotifications(false);
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (showNotifications && !event.target.closest('[data-notifications]')) {
+  //       setShowNotifications(false);
+  //     }
+  //   };
 
+  //   document.addEventListener('mousedown', handleClickOutside);
+  //   return () => document.removeEventListener('mousedown', handleClickOutside);
+  // }, [showNotifications]);
+
+  const notificationRef = useRef(null);
+
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+      setShowNotifications(false);
+    }
+  };
+
+  if (showNotifications) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showNotifications]);
+  }
+}, [showNotifications]);
 
   const NotificationButton = () => (
     <div className="relative" data-notifications>

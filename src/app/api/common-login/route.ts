@@ -157,6 +157,7 @@ export async function POST(request) {
     try {
       const expirationTime = Date.now() + 30 * 24 * 60 * 60 * 1000;
       const cookieStore = cookies();
+      cookieStore.delete('auth');
       
       cookieStore.set('auth', JSON.stringify({
         id: user.id,

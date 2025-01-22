@@ -179,7 +179,7 @@ const Navbar = () => {
     )}
     {userType === 'user' && (
       <a 
-        href="/legal_professional/dashboard" 
+        href="/legal_professionals/dashboard" 
         className="px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded-xl hover:bg-blue-800 transition-colors duration-200"
       >
         Dashboard

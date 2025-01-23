@@ -82,7 +82,7 @@ const VendorProposalGenerator = () => {
   const fetchProducts = async () => {
     setProductsLoading(true);
     try {
-      const vendorId = localStorage.getItem("vendorId");
+      // const vendorId = localStorage.getItem("vendorId");
       const response = await fetch('/api/get-all-product-by-vendor', {
         method: 'POST',
         headers: {
@@ -182,7 +182,7 @@ const handleGenerateProposal = async () => {
   
   setLoading(true);
   try {
-    const response = await fetch('/api/generate-proposal', {
+    const response = await fetch('/api/create-custom-proposal', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -61,10 +61,10 @@ const UserLoginPage = () => {
         showAlert("Success", "Redirecting to dashboard");
         
         setTimeout(() => {
-          if (data.type === "user") {
+          if (data.type === 'user') {
             router.push('/legal_professionals/dashboard');
           } else {
-            router.push('/');
+            router.push('/tech_vendor/dashboard');
           }
         }, 1500);
       } else {

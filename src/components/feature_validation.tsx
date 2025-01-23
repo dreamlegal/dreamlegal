@@ -132,7 +132,7 @@ const handleAnalyze = async () => {
   
   setLoading(true);
   try {
-    const response = await fetch('/api/analyze-feature', {
+    const response = await fetch('/api/analyse-feature', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -199,7 +199,7 @@ const handleAnalyze = async () => {
           </p>
           <div className="mb-4">
         <p className="text-sm font-medium">
-          Remaining Validation Credits: {credits?.validationCredits ?? 'Loading...'}
+          Remaining Feature Analysis Credits: {credits?.validationCredits ?? 'Loading...'}
         </p>
       </div>
         </div>

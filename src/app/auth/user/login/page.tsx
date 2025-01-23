@@ -106,7 +106,8 @@ const UserLoginPage = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className='pt-8'>
+   <div className="max-w-2xl mx-auto pt-24 pb-16">
       {alert.show && (
         <div className="fixed top-4 right-4 bg-white p-4 rounded-lg shadow-lg border z-50">
           <h4 className="font-bold">{alert.title}</h4>
@@ -217,6 +218,7 @@ const UserLoginPage = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };

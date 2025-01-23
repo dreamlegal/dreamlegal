@@ -820,7 +820,8 @@ const UserSignupPage = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+
+       <div className="max-w-2xl mx-auto mt-8 pt-8">
       {alert && (
         <Alert
           message={alert.message}

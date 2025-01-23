@@ -571,7 +571,7 @@ import DirectoryFilter from "./DirectoryFilter";
 function DirectoryProduct() {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [viewMode, setViewMode] = useState('grid');
+    const [viewMode, setViewMode] = useState('list');
     const [compareProducts, setCompareProducts] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);

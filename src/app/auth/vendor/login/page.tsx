@@ -126,7 +126,7 @@ const handleLogin = async (e) => {
           if (data.type === 'vendor') {
             router.push('/tech_vendor/dashboard');
           } else {
-            router.push('/legal_proffesionals/dashboard');
+            router.push('/legal_professionals/dashboard');
           }
         }, 1500);
       } else {

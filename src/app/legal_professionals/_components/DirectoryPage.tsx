@@ -435,7 +435,7 @@ function DirectoryProduct() {
 
 
 
-  const [viewMode, setViewMode] = useState('grid');
+  const [viewMode, setViewMode] = useState('list');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
  

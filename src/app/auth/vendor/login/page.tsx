@@ -172,7 +172,7 @@ const handleLogin = async (e) => {
     <div className='pt-8'>
     <div className="max-w-2xl mx-auto pt-24 pb-16">
       {alert.show && (
-        <div className="fixed top-4 right-4 bg-white p-4 rounded-lg shadow-lg border z-50">
+        <div className="fixed top-4 right-4 bg-white p-4 rounded-lg shadow-lg border z-[9999]">
           <h4 className="font-bold">{alert.title}</h4>
           <p>{alert.message}</p>
         </div>

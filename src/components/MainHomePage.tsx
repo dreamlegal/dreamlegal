@@ -801,103 +801,6 @@ const LegalProblemsSection = () => {
 };
 
 
-// import { Download, Mail } from 'lucide-react';
-
-// const DownloadBox = () => {
-//   const [email, setEmail] = useState('');
-//   const [isLoading, setIsLoading] = useState(false);
-
-//   const handleDownload = (e) => {
-//     e.preventDefault();
-//     setIsLoading(true);
-//     setTimeout(() => setIsLoading(false), 1500);
-//   };
-
-//   return (
-//     <div className="w-full flex items-center justify-center p-8">
-//       <div className="w-full max-w-5xl h-auto min-h-[16rem] relative group">
-//         <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#4285f4]/95 to-[#4285f4]/90 backdrop-blur-xl shadow-2xl 
-//                     border border-[#4285f4] overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
-          
-//           {/* Background Effects */}
-//           <div className="absolute inset-0">
-//             {/* Grid Pattern */}
-//             <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] 
-//                         bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_85%)]" />
-            
-//             {/* Decorative Shapes */}
-//             <div className="absolute top-4 right-8 w-12 h-12 border-4 border-white/20 rounded-full rotate-45" />
-//             <div className="absolute bottom-8 left-12 w-8 h-8 bg-white/10 rounded-lg" />
-//             <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-white/15 rotate-12 transform" />
-            
-//             {/* Gradient Orbs */}
-//             <div className="absolute -top-16 -left-16 sm:-top-24 sm:-left-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-r from-[#4285f4]/40 to-[#4285f4]/40 rounded-full blur-3xl opacity-70 
-//                         animate-pulse mix-blend-overlay group-hover:opacity-85 duration-1000" />
-//             <div className="absolute -bottom-16 -right-16 sm:-bottom-24 sm:-right-24 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-l from-[#4285f4]/40 to-[#4285f4]/40 rounded-full blur-3xl opacity-70 
-//                         animate-pulse delay-300 mix-blend-overlay group-hover:opacity-85 duration-1000" />
-//           </div>
-
-//           {/* Content Container */}
-//           <div className="relative h-full flex flex-col items-center justify-center px-4 sm:px-8 py-8 gap-6 sm:gap-8">
-//             {/* Heading */}
-//             <div className="text-center space-y-3">
-//               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white px-2">
-//               100 CLM CASE STUDY REPORT
-//               </h2>
-//               <div className="flex justify-center space-x-2">
-//                 <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-transparent via-white to-white rounded-full" />
-//                 <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-white to-white/80 rounded-full" />
-//                 <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-white/80 to-transparent rounded-full" />
-//               </div>
-//             </div>
-
-//             {/* Input and Button Group */}
-//             <div className="flex flex-col sm:flex-row items-stretch gap-4 w-full sm:w-auto 
-//                           bg-white/10 p-2 rounded-xl backdrop-blur-sm border border-white/20 
-//                           shadow-xl shadow-[#4285f4]/20 group-hover:shadow-2xl group-hover:shadow-[#4285f4]/30 
-//                           transition-all duration-300">
-//               <div className="relative flex-1 sm:flex-initial">
-//                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-//                   <Mail className="h-4 w-4 text-white/70" />
-//                 </div>
-//                 <input
-//                   type="email"
-//                   value={email}
-//                   onChange={(e) => setEmail(e.target.value)}
-//                   placeholder="Enter your email"
-//                   className="w-full sm:w-72 pl-10 pr-4 py-3 rounded-lg bg-white/20 border-0 
-//                          placeholder-white/50 text-white
-//                          focus:ring-2 focus:ring-white/30 focus:outline-none
-//                          transition-all duration-300"
-//                 />
-//               </div>
-              
-//               <button
-//                 onClick={handleDownload}
-//                 disabled={isLoading}
-//                 className={`w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-[#4285f4] relative overflow-hidden
-//                          transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105
-//                          ${isLoading 
-//                            ? 'bg-white/50 cursor-not-allowed' 
-//                            : 'bg-white hover:shadow-lg hover:shadow-white/20'
-//                          }`}
-//               >
-//                 {isLoading ? (
-//                   <div className="w-5 h-5 border-2 border-[#4285f4]/30 border-t-[#4285f4] rounded-full animate-spin" />
-//                 ) : (
-//                   <div className="flex items-center justify-center gap-2">
-//                     <Download className="w-4 h-4" />
-//                     <span>Download</span>
-//                   </div>
-//                 )}
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
 
 import { Download, Mail } from 'lucide-react';
 
@@ -935,7 +838,7 @@ const DownloadBox = () => {
         body: JSON.stringify({
           email,
           contentType: 'pdf',
-          contentName: '100 CLM CASE STUDY REPORT',
+          contentName: 'Legal Tech Predictions Report 2025',
         }),
       });
 
@@ -948,15 +851,15 @@ const DownloadBox = () => {
       // Show success message
       setAlert({
         show: true,
-        message: "Download link has been sent to your email",
+        message: "Successfully Downloaded File",
         type: 'success'
       });
 
       // Optional: Trigger actual file download
-      const fileUrl = '/download/CLM - 100 customer case study.pdf'; // Replace with actual file path
+      const fileUrl = '/download/Legal Tech Predictions Report 2025.pdf'; // Replace with actual file path
       const link = document.createElement('a');
       link.href = fileUrl;
-      link.download = '100-CLM-Case-Study.pdf';
+      link.download = 'Legal Tech Predictions Report 2025.pdf';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -983,7 +886,7 @@ const DownloadBox = () => {
         />
       )}
       
-      <div className="w-full flex items-center justify-center p-8">
+      <div className="w-full flex items-center justify-center p-8" id='DownloadReport'>
         <div className="w-full max-w-5xl h-auto min-h-[16rem] relative group">
           <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#4285f4]/95 to-[#4285f4]/90 backdrop-blur-xl shadow-2xl 
                       border border-[#4285f4] overflow-hidden transform transition-all duration-500 group-hover:scale-[1.01]">
@@ -1011,7 +914,7 @@ const DownloadBox = () => {
               {/* Heading */}
               <div className="text-center space-y-3">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white px-2">
-                  100 CLM CASE STUDY REPORT
+                Legal Tech Predictions Report 2025.pdf
                 </h2>
                 <div className="flex justify-center space-x-2">
                   <div className="h-1 w-6 sm:w-8 bg-gradient-to-r from-transparent via-white to-white rounded-full" />

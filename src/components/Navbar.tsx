@@ -44,11 +44,7 @@ const Navbar = () => {
       hasDropdown: false,
       href: '/solutions'
     },
-    {
-      title: 'Blog',
-      hasDropdown: false,
-      href: 'https://blog.dreamlegal.in/'
-    },
+   
     {
       title: 'Directory',
       hasDropdown: false,
@@ -58,6 +54,11 @@ const Navbar = () => {
       title: 'Partners',
       hasDropdown: false,
       href: '/partners'
+    },
+    {
+      title: 'Blog',
+      hasDropdown: false,
+      href: 'https://blog.dreamlegal.in/'
     },
     {
       title: 'About us',

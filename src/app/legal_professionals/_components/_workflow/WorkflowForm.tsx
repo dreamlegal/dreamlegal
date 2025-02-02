@@ -3690,22 +3690,46 @@ const WorkflowForm = () => {
     setFormData((prev) => ({ ...prev, steps: newSteps }));
   };
   
-  // For adding a new stage (either from predefined or custom)
-  const handleAddStep = (step) => {
-    if (!formData.steps.find((s) => s.step === step)) {
-      const newStep = {
-        step,
-        repetitiveness: 3,
-        exhaustionScale: 3,
-        selectedSteps: [], // Initialize empty array for substeps
-        teamRoles: []
-      };
-      setFormData((prev) => ({
-        ...prev,
-        steps: [...prev.steps, newStep],
-      }));
-    }
-  };
+  
+
+  
+    // For adding a new stage (either from predefined or custom)
+    const handleAddStep = (step) => {
+      if (!formData.steps.find((s) => s.step === step)) {
+        const newStep = {
+          step,
+          repetitiveness: 3,
+          exhaustionScale: 3,
+          selectedSteps: [], // Initialize empty array for substeps
+          teamRoles: []
+        };
+        setFormData((prev) => ({
+          ...prev,
+          steps: [...prev.steps, newStep],
+        }));
+      }
+    };
+    
+  
+    const [customStepInput, setCustomStepInput] = useState("");
+    const handleAddCustomStep = (customStep) => {
+      const trimmedStep = customStep.trim();
+      if (trimmedStep && !formData.steps.find((s) => s.step === trimmedStep)) {
+        const newStep = {
+          step: trimmedStep,
+          repetitiveness: 3,
+          exhaustionScale: 3,
+          selectedSteps: [],
+          teamRoles: []
+        };
+        setFormData((prev) => ({
+          ...prev,
+          steps: [...prev.steps, newStep],
+        }));
+        setCustomStepInput(""); // Clear input after adding
+      }
+    };
+    
 
 
 
@@ -4294,24 +4318,32 @@ const WorkflowForm = () => {
 
 
                     <div className="flex space-x-2">
-                      <Input
-                        placeholder="Add custom role"
-                        value={customRoleInput}
-                        onChange={(e) => setCustomRoleInput(e.target.value)}
-                        onKeyPress={(e) => {
-                          if (e.key === "Enter") {
-                            handleCustomRoleAdd();
-                          }
-                        }}
-                      />
-                      <Button
-                        type="button"
-                        onClick={handleCustomRoleAdd}
-                        className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-                      >
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </div>
+                                         <Input
+                                           placeholder="Add custom role"
+                                           value={customRoleInput}
+                                           onChange={(e) => setCustomRoleInput(e.target.value)}
+                                           onKeyDown={(e) => {
+                                             if (e.key === "Enter") {
+                                               e.preventDefault();
+                                               if (customRoleInput.trim()) {
+                                                 handleCustomRoleAdd();
+                                               }
+                                             }
+                                           }}
+                                         />
+                                         <Button
+                                           type="button"
+                                           onClick={(e) => {
+                                             e.preventDefault();
+                                             if (customRoleInput.trim()) {
+                                               handleCustomRoleAdd();
+                                             }
+                                           }}
+                                           className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+                                         >
+                                           <Plus className="h-4 w-4" />
+                                         </Button>
+                                       </div>
                   </div>
                 )}
               </Card>
@@ -4471,7 +4503,7 @@ const WorkflowForm = () => {
                       })}
                     </div>
 
-                    <div className="flex space-x-2">
+                    {/* <div className="flex space-x-2">
                       <Input
                         placeholder="Add custom tool"
                         value={customToolInput}
@@ -4489,7 +4521,34 @@ const WorkflowForm = () => {
                       >
                         <Plus className="h-4 w-4" />
                       </Button>
-                    </div>
+                    </div> */}
+                     <div className="flex space-x-2">
+                                          <Input
+                                            placeholder="Add custom tool"
+                                            value={customToolInput}
+                                            onChange={(e) => setCustomToolInput(e.target.value)}
+                                            onKeyDown={(e) => {
+                                              if (e.key === "Enter") {
+                                                e.preventDefault();
+                                                if (customToolInput.trim()) {
+                                                  handleCustomToolAdd();
+                                                }
+                                              }
+                                            }}
+                                          />
+                                          <Button
+                                            type="button"
+                                            onClick={(e) => {
+                                              e.preventDefault();
+                                              if (customToolInput.trim()) {
+                                                handleCustomToolAdd();
+                                              }
+                                            }}
+                                            className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+                                          >
+                                            <Plus className="h-4 w-4" />
+                                          </Button>
+                                        </div>
                   </div>
                 )}
               </Card>
@@ -4604,7 +4663,12 @@ const WorkflowForm = () => {
         Workflow Steps
       </CardTitle>
       <div className="grid grid-cols-1 gap-2">
-        {stepsMap[formData.catOfWorkFlow]?.stages?.map((step) => {
+      {[
+          ...(stepsMap[formData.catOfWorkFlow]?.stages || []),
+          ...formData.steps
+            .filter(step => !stepsMap[formData.catOfWorkFlow]?.stages?.includes(step.step))
+            .map(step => step.step)
+        ].map((step) => {
           const isSelected = formData.steps.some(
             (s) => s.step === step
           );
@@ -4627,7 +4691,7 @@ const WorkflowForm = () => {
         })}
       </div>
 
-      <div className="flex space-x-2">
+      {/* <div className="flex space-x-2">
         <Input
           placeholder="Add custom step"
           onKeyPress={(e) => {
@@ -4650,8 +4714,30 @@ const WorkflowForm = () => {
         >
           <Plus className="h-4 w-4" />
         </Button>
+      </div> */}
+<div className="flex space-x-2">
+        <Input
+          placeholder="Add custom step"
+          value={customStepInput}
+          onChange={(e) => setCustomStepInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleAddCustomStep(customStepInput);
+            }
+          }}
+        />
+        <Button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            handleAddCustomStep(customStepInput);
+          }}
+          className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          <Plus className="h-4 w-4" />
+        </Button>
       </div>
-
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}

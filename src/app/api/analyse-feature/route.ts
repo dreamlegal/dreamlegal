@@ -142,6 +142,7 @@ export async function POST(request) {
     });
 
     const analysisData = await analysisResponse.json();
+    console.log(analysisData);
 
     // Update credits using the id we got from findFirst
     const updatedCredits = await prisma.vendorCredits.update({

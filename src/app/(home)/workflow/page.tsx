@@ -13,9 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { ChevronUp, ChevronDown, X, Plus, GripVertical } from "lucide-react";
-// import { useRouter } from "next/router";
 
-// import { useRouter } from 'next/router';
 import { useRouter } from "next/navigation";
 import {
   DndContext,
@@ -62,314 +60,6 @@ import {
 
 import WorkflowReportModal from "./_components/WorkflowReportModal";
 
-
-// const SortableStep = ({
-//   step,
-//   index,
-//   onRemove,
-//   onUpdateStep,
-//   categoryName,
-//   teamRoles,
-//   stepsMap
-// }) => {
-//   const {
-//     attributes,
-//     listeners,
-//     setNodeRef,
-//     transform,
-//     transition,
-//     isDragging,
-//   } = useSortable({ id: step.step });
-
-//   const style = {
-//     transform: CSS.Transform.toString(transform),
-//     transition,
-//     opacity: isDragging ? 0.5 : 1,
-//   };
-
-//   const toggleTeamRole = (role) => {
-//     const currentRoles = step.teamRoles || [];
-//     const newRoles = currentRoles.includes(role)
-//       ? currentRoles.filter((r) => r !== role)
-//       : [...currentRoles, role];
-
-//     onUpdateStep(index, { ...step, teamRoles: newRoles });
-//   };
-
-//   const toggleSubstep = (substep) => {
-//     const currentSubsteps = step.selectedSteps || [];
-//     const newSubsteps = currentSubsteps.includes(substep)
-//       ? currentSubsteps.filter((s) => s !== substep)
-//       : [...currentSubsteps, substep];
-  
-//     onUpdateStep(index, {
-//       ...step,
-//       selectedSteps: newSubsteps
-//     });
-//   };
- 
-//   const handleAddCustomSubstep = (customSubstep) => {
-//     const trimmedStep = customSubstep.trim();
-//     if (trimmedStep) {
-//       const currentSubsteps = step.selectedSteps || [];
-//       if (!currentSubsteps.includes(trimmedStep)) {
-//         onUpdateStep(index, {
-//           ...step,
-//           selectedSteps: [...currentSubsteps, trimmedStep]
-//         });
-//       }
-//     }
-//   };
-
-//   const generateMarkers = (min, max, type) => {
-//     return [...Array(max - min + 1)].map((_, i) => {
-//       const isSelected =
-//         (type === "Repetitiveness" && i <= step.repetitiveness) ||
-//         (type === "Exhaustion" && i <= step.exhaustionScale);
-
-//       return (
-//         <div
-//           key={i}
-//           className={`absolute w-3 h-3 rounded-full border-2 ${
-//             isSelected
-//               ? "border-primary bg-primary/20"
-//               : "border-gray-300 bg-white"
-//           } transition-colors duration-200`}
-//           style={{
-//             left: `${(i / (max - min)) * 92}%`,
-//             transform: "translateX(-50%)",
-//             top: "48%",
-//             zIndex: 10,
-//           }}
-//         />
-//       );
-//     });
-//   };
-
-//   // Get substeps for the current stage
-//   const currentStageSubsteps = stepsMap[categoryName]?.substeps[step.step] || [];
-
-//   return (
-//     <div
-//       ref={setNodeRef}
-//       style={style}
-//       className="bg-secondary p-6 rounded-lg space-y-6 mb-3 shadow-sm"
-//     >
-//       <div className="flex items-center space-x-4">
-//         <div
-//           {...attributes}
-//           {...listeners}
-//           className="cursor-move hover:opacity-70 transition-opacity"
-//         >
-//           <GripVertical className="h-5 w-5 text-gray-500" />
-//         </div>
-//         <span className="w-8 h-8 flex items-center justify-center bg-primary text-primary-foreground rounded-full font-medium">
-//           {index + 1}
-//         </span>
-//         <span className="flex-1 font-medium text-foreground">{step.step}</span>
-//         <Button
-//           type="button"
-//           variant="ghost"
-//           size="sm"
-//           className="hover:bg-destructive/10 hover:text-destructive transition-colors"
-//           onClick={() => onRemove(index)}
-//         >
-//           <X className="h-4 w-4" />
-//         </Button>
-//       </div>
-
-//       <div className="space-y-8">
-//         {/* Repetitiveness Slider */}
-//         <div className="space-y-3 relative">
-//           <Label className="text-sm font-medium">Repetitiveness (0-5)</Label>
-//           <div className="flex items-center">
-//             {generateMarkers(0, 5, "Repetitiveness")}
-//             <Slider
-//               value={[step.repetitiveness]}
-//               onValueChange={(value) =>
-//                 onUpdateStep(index, { ...step, repetitiveness: value[0] })
-//               }
-//               max={5}
-//               min={0}
-//               step={1}
-//               className="flex-1"
-//               aria-label="Repetitiveness Slider"
-//             />
-//             <span className="ml-4 text-gray-500 min-w-[2.5rem] text-right">
-//               {step.repetitiveness.toFixed(1)}
-//             </span>
-//           </div>
-//           <div className="flex justify-between text-xs text-gray-500">
-//             <span>Low</span>
-//             <span>High</span>
-//           </div>
-//         </div>
-
-//         {/* Exhaustion Rate Slider */}
-//         <div className="space-y-3 relative">
-//           <Label className="text-sm font-medium">Exhaustion Rate (0-5)</Label>
-//           <div className="flex items-center">
-//             {generateMarkers(0, 5, "Exhaustion")}
-//             <Slider
-//               value={[step.exhaustionScale]}
-//               onValueChange={(value) =>
-//                 onUpdateStep(index, { ...step, exhaustionScale: value[0] })
-//               }
-//               max={5}
-//               min={0}
-//               step={1}
-//               className="flex-1"
-//               aria-label="Exhaustion Rate Slider"
-//             />
-//             <span className="ml-4 text-gray-500 min-w-[2.5rem] text-right">
-//               {step.exhaustionScale.toFixed(1)}
-//             </span>
-//           </div>
-//           <div className="flex justify-between text-xs text-gray-500">
-//             <span>Low</span>
-//             <span>High</span>
-//           </div>
-//         </div>
-
-//         {/* Team Roles Section */}
-//         <div className="space-y-2">
-//           <Label className="text-sm font-medium">Team Roles</Label>
-//           <div className="flex flex-wrap gap-2">
-//             {teamRoles.map((role) => {
-//               const isSelected = (step.teamRoles || []).includes(role);
-//               return (
-//                 <Button
-//                   key={role}
-//                   type="button"
-//                   variant={isSelected ? "default" : "outline"}
-//                   size="sm"
-//                   onClick={() => toggleTeamRole(role)}
-//                   className={`relative group ${
-//                     isSelected
-//                       ? "bg-blue-600 text-white hover:bg-blue-700"
-//                       : "hover:bg-gray-100"
-//                   }`}
-//                 >
-//                   {role}
-//                   {isSelected && (
-//                     <button
-//                       onClick={(e) => {
-//                         e.stopPropagation();
-//                         toggleTeamRole(role);
-//                       }}
-//                       className="absolute -right-1 -top-1 w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-//                     >
-//                       <X className="w-3 h-3" />
-//                     </button>
-//                   )}
-//                 </Button>
-//               );
-//             })}
-//           </div>
-//         </div>
-
-      
-// <div className="space-y-2">
-//   {/* <Label className="text-sm font-medium">Action Items for {step.step} steps</Label> */}
-//   <Label className="text-sm font-medium">Steps </Label>
-//   {/* Available Substeps */}
-//   <div className="flex flex-wrap gap-2">
-//     {currentStageSubsteps.map((substep) => {
-//       const isSelected = (step.selectedSteps || []).includes(substep);
-//       return (
-//         <Button
-//           key={substep}
-//           type="button"
-//           variant={isSelected ? "default" : "outline"}
-//           size="sm"
-//           onClick={() => toggleSubstep(substep)}
-//           className={`relative group ${
-//             isSelected
-//               ? "bg-blue-600 text-white hover:bg-blue-700"
-//               : "hover:bg-gray-100"
-//           }`}
-//         >
-//           {substep}
-//           {isSelected && (
-//             <button
-//               onClick={(e) => {
-//                 e.stopPropagation();
-//                 toggleSubstep(substep);
-//               }}
-//               className="absolute -right-1 -top-1 w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-//             >
-//               <X className="w-3 h-3" />
-//             </button>
-//           )}
-//         </Button>
-//       );
-//     })}
-//   </div>
-
-//   {/* Selected Custom Steps */}
-//   {step.selectedSteps?.filter(substep => !currentStageSubsteps.includes(substep)).length > 0 && (
-//     <div className="mt-2">
-//       <Label className="text-sm font-medium">Custom Action Items</Label>
-//       <div className="flex flex-wrap gap-2 mt-1">
-//         {step.selectedSteps
-//           .filter(substep => !currentStageSubsteps.includes(substep))
-//           .map((substep) => (
-//             <Button
-//               key={substep}
-//               type="button"
-//               variant="default"
-//               size="sm"
-//               className="relative group bg-blue-600 text-white hover:bg-blue-700"
-//             >
-//               {substep}
-//               <button
-//                 onClick={(e) => {
-//                   e.stopPropagation();
-//                   toggleSubstep(substep);
-//                 }}
-//                 className="absolute -right-1 -top-1 w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-//               >
-//                 <X className="w-3 h-3" />
-//               </button>
-//             </Button>
-//           ))}
-//       </div>
-//     </div>
-//   )}
-  
-  
-// {/* Custom substep input */}
-// <div className="flex space-x-2 mt-2">
-//   <Input
-//     id={`custom-input-${step.step}`} // Add unique ID for each stage
-//     placeholder="Add custom action item"
-//     onKeyDown={(e) => {
-//       if (e.key === "Enter" && e.target.value.trim()) {
-//         e.preventDefault();
-//         handleAddCustomSubstep(e.target.value);
-//         e.target.value = "";
-//       }
-//     }}
-//   />
-//   <Button
-//     type="button"
-//     onClick={() => {
-//       const input = document.getElementById(`custom-input-${step.step}`); // Use getElementById with unique ID
-//       if (input && input.value.trim()) {
-//         handleAddCustomSubstep(input.value);
-//         input.value = "";
-//       }
-//     }}
-//     className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-//   >
-//     <Plus className="h-4 w-4" />
-//   </Button>
-// </div>
-// </div>
-//       </div>
-//     </div>
-//   );
-// };
 
 const CustomSlider = ({ value, onChange, label, min = 0, max = 5 }) => {
   // Enhanced gradient function with smoother color transition
@@ -866,143 +556,7 @@ const WorkflowLoading: React.FC<LoadingProps> = ({ isLoading, category }) => {
   );
 };
 
-// import { Loader2 } from 'lucide-react';
 
-// interface LoadingOverlayProps {
-//   isLoading: boolean;
-//   currentPhase: 'workflow' | 'report' | 'save' | null;
-// }
-
-// const phaseMessages = {
-//   workflow: [
-//     "Starting workflow submission...",
-//     "Processing your team data...",
-//     "Validating workflow structure..."
-//   ],
-//   report: [
-//     "Generating AI insights...",
-//     "Analyzing workflow patterns...",
-//     "Building recommendations...",
-//     "Processing workflow metrics..."
-//   ],
-//   save: [
-//     "Saving your customized report...",
-//     "Finalizing workflow analysis...",
-//     "Preparing your dashboard view...",
-//     "Setting up your results..."
-//   ]
-// };
-
-// const phaseProgress = {
-//   workflow: { start: 0, end: 33 },
-//   report: { start: 34, end: 66 },
-//   save: { start: 67, end: 100 }
-// };
-
-// const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ isLoading, currentPhase }) => {
-//   const [progress, setProgress] = useState(0);
-//   const [message, setMessage] = useState('');
-//   const [lastMessage, setLastMessage] = useState('');
-
-//   useEffect(() => {
-//     if (!isLoading || !currentPhase) {
-//       setProgress(0);
-//       setMessage('');
-//       return;
-//     }
-
-//     const { start, end } = phaseProgress[currentPhase];
-//     let currentProgress = start;
-
-//     // Progress interval
-//     const progressInterval = setInterval(() => {
-//       if (currentProgress < end) {
-//         setProgress(currentProgress);
-//         currentProgress += 1;
-//       }
-//     }, 100);
-
-//     // Message interval
-//     const messageInterval = setInterval(() => {
-//       const messages = phaseMessages[currentPhase];
-//       let newMessage;
-//       do {
-//         const randomIndex = Math.floor(Math.random() * messages.length);
-//         newMessage = messages[randomIndex];
-//       } while (newMessage === lastMessage && messages.length > 1);
-      
-//       setLastMessage(message);
-//       setMessage(newMessage);
-//     }, 2500);
-
-//     return () => {
-//       clearInterval(progressInterval);
-//       clearInterval(messageInterval);
-//     };
-//   }, [isLoading, currentPhase, lastMessage, message]);
-
-//   return (
-//     <AnimatePresence>
-//       {isLoading && (
-//         <motion.div
-//           initial={{ y: 20, opacity: 0 }}
-//           animate={{ y: 0, opacity: 1 }}
-//           exit={{ y: 20, opacity: 0 }}
-//           className="fixed bottom-6 right-6 max-w-sm w-96 bg-white rounded-xl shadow-2xl p-6 z-50 border border-gray-100"
-//         >
-//           <div className="flex items-start gap-4">
-//             <div className="mt-1">
-//               <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />
-//             </div>
-//             <div className="flex-1 min-w-[200px]">
-//               <AnimatePresence mode="wait">
-//                 <motion.div
-//                   key={message}
-//                   initial={{ opacity: 0, y: 10 }}
-//                   animate={{ opacity: 1, y: 0 }}
-//                   exit={{ opacity: 0, y: -10 }}
-//                   transition={{ duration: 0.2 }}
-//                   className="text-sm text-gray-600 mb-3"
-//                 >
-//                   {message}
-//                 </motion.div>
-//               </AnimatePresence>
-              
-//               <div className="flex justify-between text-xs text-gray-500 mb-2">
-//                 <span className="font-medium">Progress</span>
-//                 <span className="font-semibold">{progress}%</span>
-//               </div>
-              
-//               <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-//                 <motion.div
-//                   className="h-full bg-blue-500 rounded-full"
-//                   initial={{ width: 0 }}
-//                   animate={{ width: `${progress}%` }}
-//                   transition={{ duration: 0.3 }}
-//                 />
-//               </div>
-
-//               <div className="flex justify-between mt-3">
-//                 <div className="flex items-center gap-1.5">
-//                   <div className={`w-2 h-2 rounded-full ${currentPhase === 'workflow' ? 'bg-blue-500' : 'bg-gray-200'}`} />
-//                   <span className="text-xs text-gray-500">Workflow</span>
-//                 </div>
-//                 <div className="flex items-center gap-1.5">
-//                   <div className={`w-2 h-2 rounded-full ${currentPhase === 'report' ? 'bg-blue-500' : 'bg-gray-200'}`} />
-//                   <span className="text-xs text-gray-500">Report</span>
-//                 </div>
-//                 <div className="flex items-center gap-1.5">
-//                   <div className={`w-2 h-2 rounded-full ${currentPhase === 'save' ? 'bg-blue-500' : 'bg-gray-200'}`} />
-//                   <span className="text-xs text-gray-500">Save</span>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </motion.div>
-//       )}
-//     </AnimatePresence>
-//   );
-// };
 
 
 
@@ -1803,15 +1357,25 @@ const WorkflowForm = () => {
     }
   };
   
-  // For adding custom stage
-  // const handleAddCustomStep = (customStep) => {
-  //   if (
-  //     customStep.trim() &&
-  //     !formData.steps.find((s) => s.step === customStep.trim())
-  //   ) {
-  //     handleAddStep(customStep.trim());
-  //   }
-  // };
+
+  const [customStepInput, setCustomStepInput] = useState("");
+  const handleAddCustomStep = (customStep) => {
+    const trimmedStep = customStep.trim();
+    if (trimmedStep && !formData.steps.find((s) => s.step === trimmedStep)) {
+      const newStep = {
+        step: trimmedStep,
+        repetitiveness: 3,
+        exhaustionScale: 3,
+        selectedSteps: [],
+        teamRoles: []
+      };
+      setFormData((prev) => ({
+        ...prev,
+        steps: [...prev.steps, newStep],
+      }));
+      setCustomStepInput(""); // Clear input after adding
+    }
+  };
   
 
 
@@ -1820,82 +1384,6 @@ const WorkflowForm = () => {
   const [isReportModalOpen, setIsReportModalOpen] = useState(true);
   const [reportData, setReportData] = useState(null);
 
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     // First API call
-  //     const requestBody = {
-  //       // userID: CustomerUserId,
-  //       userOrgType: formData.userOrgType,
-  //       userTeamSize: formData.userTeamSize,
-  //       categoryOfWorkflow: formData.catOfWorkFlow,
-  //       teamRoles: formData.teamRoles,
-  //       toolsUsed: formData.toolsUsed,
-  //       workFlowSteps: formData.steps,
-  //     };
-
-  //     const response = await fetch("/api/submit-workFlowData", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(requestBody),
-  //     });
-
-  //     const result = await response.json();
-
-  //     if (response.ok) {
-  //       // Second API call for workflow report
-  //       const reportRequestBody = {
-  //         workflow_report: {
-  //           userOrgType: formData.userOrgType,
-  //           userTeamSize: formData.userTeamSize,
-  //           catOfWorkFlow: formData.catOfWorkFlow,
-  //           teamRoles: formData.teamRoles,
-  //           toolsUsed: formData.toolsUsed,
-  //           steps: formData.steps,
-  //         },
-  //       };
-
-  //       const reportResponse = await fetch(
-  //         "https://ai-backend-y6mq.onrender.com/workflow_report/",
-  //         // "http://127.0.0.1:8000/workflow_report/",
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify(reportRequestBody),
-  //         }
-  //       );
-
-  //       const reportResult = await reportResponse.json();
-
-  //       if (reportResponse.ok) {
-  //         setReportData(reportResult);
-  //         setIsReportModalOpen(true);
-  //         toast({
-  //           title: "Success",
-  //           description: "Form submitted successfully!",
-  //           variant: "success",
-  //         });
-  //       } else {
-  //         throw new Error("Failed to fetch report");
-  //       }
-  //     } else {
-  //       throw new Error(result.message || "Failed to submit form");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     toast({
-  //       title: "Error",
-  //       description:
-  //         error.message || "An error occurred while submitting the form.",
-  //       variant: "destructive",
-  //     });
-  //   }
-  // };
 
   const [step, setStep] = useState(1);
 
@@ -2102,7 +1590,7 @@ const WorkflowForm = () => {
         // name: `Report_${Date.now()}`, // Randomly generate a name
         // isSaved: false,
         categoryOfAnalysis:  formData.catOfWorkFlow, // Update if needed
-        userId: CustomerUserId, // Replace with your actual user ID variable
+        userId: "cm6nhfvhc00017yrghnecaewm", // Replace with your actual user ID variable
       };
   
       const saveReportResponse = await fetch("/api/saveWorkflowResponse", {
@@ -2127,19 +1615,9 @@ const WorkflowForm = () => {
         message: "Workflow and report submitted successfully!"
       });
   
-      // toast({
-      //   title: "Success",
-      //   description: "Workflow and report submitted successfully!",
-      //   variant: "success",
-      // });
+     
     } catch (error: any) {
-      // console.error("Error:", error);
-      // toast({
-      //   title: "Error",
-      //   description:
-      //     error.message || "An error occurred while submitting the workflow.",
-      //   variant: "destructive",
-      // });
+     
         setIsLoading(false);
       setNotification({
         success: false,
@@ -2147,211 +1625,6 @@ const WorkflowForm = () => {
       });
     }
   };
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [currentPhase, setCurrentPhase] = useState<'workflow' | 'report' | 'save' | null>(null);
-  // const [notification, setNotification] = useState<{
-  //   success: boolean;
-  //   message: string;
-  // } | null>(null);
-
-
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //   setCurrentPhase('workflow');
-    
-  //   try {
-  //     // First API call
-  //     setProgress(0);
-  //     const workflowRequestBody = {
-  //       userOrgType: formData.userOrgType,
-  //       userTeamSize: formData.userTeamSize,
-  //       categoryOfWorkflow: formData.catOfWorkFlow,
-  //       teamRoles: formData.teamRoles,
-  //       toolsUsed: formData.toolsUsed,
-  //       workFlowSteps: formData.steps,
-  //     };
-  
-  //     const workflowResponse = await fetch("/api/submit-workFlowData", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(workflowRequestBody),
-  //     });
-  
-  //     const workflowResult = await workflowResponse.json();
-  //     if (!workflowResponse.ok) {
-  //       throw new Error(workflowResult.message || "Failed to submit workflow data");
-  //     }
-      
-  //     // Update progress to report phase
-  //     setCurrentPhase('report');
-  //     const formId = workflowResult.id;
-  
-  //     // Second API call
-  //     const reportRequestBody = {
-  //       workflow_report: {
-  //         userOrgType: formData.userOrgType,
-  //         userTeamSize: formData.userTeamSize,
-  //         categoryOfWorkflow: formData.catOfWorkFlow,
-  //         teamRoles: formData.teamRoles,
-  //         toolsUsed: formData.toolsUsed,
-  //         steps: formData.steps,
-  //       },
-  //     };
-  
-  //     const reportResponse = await fetch("https://ai-backend-y6mq.onrender.com/workflow_report/", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(reportRequestBody),
-  //     });
-  
-  //     const reportResult = await reportResponse.json();
-  //     if (!reportResponse.ok) {
-  //       throw new Error("Failed to generate the workflow report");
-  //     }
-  
-  //     // Update progress to save phase
-  //     setCurrentPhase('save');
-  
-  //     // Third API call
-  //     const saveReportRequestBody = {
-  //       formId,
-  //       data: reportResult.response,
-  //       categoryOfAnalysis: formData.catOfWorkFlow,
-  //       userId: CustomerUserId,
-  //     };
-  
-  //     const saveReportResponse = await fetch("/api/saveWorkflowResponse", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(saveReportRequestBody),
-  //     });
-  
-  //     const saveReportResult = await saveReportResponse.json();
-  //     if (!saveReportResponse.ok) {
-  //       throw new Error("Failed to save the workflow response");
-  //     }
-  
-  //     setIsLoading(false);
-  //     router.push(`/workflow/report/${formId}`);
-  //     setNotification({
-  //       success: true,
-  //       message: "Workflow and report submitted successfully!"
-  //     });
-  
-  //   } catch (error: any) {
-  //     setIsLoading(false);
-  //     setNotification({
-  //       success: false,
-  //       message: error.message || "An error occurred while submitting the workflow."
-  //     });
-  //   }
-  // };
-  
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //   setCurrentPhase('workflow');
-    
-  //   try {
-  //     // First API call - Workflow Submission
-  //     setCurrentPhase('workflow');
-  //     const workflowRequestBody = {
-  //       userOrgType: formData.userOrgType,
-  //       userTeamSize: formData.userTeamSize,
-  //       categoryOfWorkflow: formData.catOfWorkFlow,
-  //       teamRoles: formData.teamRoles,
-  //       toolsUsed: formData.toolsUsed,
-  //       workFlowSteps: formData.steps,
-  //     };
-
-  //     const workflowResponse = await fetch("/api/submit-workFlowData", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(workflowRequestBody),
-  //     });
-
-  //     const workflowResult = await workflowResponse.json();
-  //     if (!workflowResponse.ok) {
-  //       throw new Error(workflowResult.message || "Failed to submit workflow data");
-  //     }
-
-  //     // Second API call - Report Generation
-  //     setCurrentPhase('report');
-  //     const formId = workflowResult.id;
-      
-  //     const reportRequestBody = {
-  //       workflow_report: {
-  //         userOrgType: formData.userOrgType,
-  //         userTeamSize: formData.userTeamSize,
-  //         categoryOfWorkflow: formData.catOfWorkFlow,
-  //         teamRoles: formData.teamRoles,
-  //         toolsUsed: formData.toolsUsed,
-  //         steps: formData.steps,
-  //       },
-  //     };
-
-  //     const reportResponse = await fetch("https://ai-backend-y6mq.onrender.com/workflow_report/", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(reportRequestBody),
-  //     });
-
-  //     const reportResult = await reportResponse.json();
-  //     if (!reportResponse.ok) {
-  //       throw new Error("Failed to generate the workflow report");
-  //     }
-
-  //     // Third API call - Save Report
-  //     setCurrentPhase('save');
-  //     const saveReportRequestBody = {
-  //       formId,
-  //       data: reportResult.response,
-  //       categoryOfAnalysis: formData.catOfWorkFlow,
-  //       userId: CustomerUserId,
-  //     };
-
-  //     const saveReportResponse = await fetch("/api/saveWorkflowResponse", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(saveReportRequestBody),
-  //     });
-
-  //     if (!saveReportResponse.ok) {
-  //       throw new Error("Failed to save the workflow response");
-  //     }
-
-  //     // Success handling
-  //     setIsLoading(false);
-  //     setCurrentPhase(null);
-  //     router.push(`/workflow/report/${formId}`);
-  //     setNotification({
-  //       success: true,
-  //       message: "Workflow and report submitted successfully!"
-  //     });
-
-  //   } catch (error: any) {
-  //     // Error handling
-  //     setIsLoading(false);
-  //     setCurrentPhase(null);
-  //     setNotification({
-  //       success: false,
-  //       message: error.message || "An error occurred while submitting the workflow."
-  //     });
-  //   }
-  // };
 
  
   return (
@@ -2362,11 +1635,7 @@ const WorkflowForm = () => {
         category={formData.catOfWorkFlow}
       />
       <CustomNotification notification={notification} position="bottom-right" />
-      {/* <LoadingOverlay 
-        isLoading={isLoading} 
-        currentPhase={currentPhase}
-      /> */}
-
+      
 
       <WorkflowReportModal
         isOpen={isReportModalOpen}
@@ -2601,7 +1870,7 @@ const WorkflowForm = () => {
                       })}
                     </div>
 
-                    <div className="flex space-x-2">
+                    {/* <div className="flex space-x-2">
                       <Input
                         placeholder="Add custom role"
                         value={customRoleInput}
@@ -2615,6 +1884,33 @@ const WorkflowForm = () => {
                       <Button
                         type="button"
                         onClick={handleCustomRoleAdd}
+                        className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </div> */}
+                    <div className="flex space-x-2">
+                      <Input
+                        placeholder="Add custom role"
+                        value={customRoleInput}
+                        onChange={(e) => setCustomRoleInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            if (customRoleInput.trim()) {
+                              handleCustomRoleAdd();
+                            }
+                          }
+                        }}
+                      />
+                      <Button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (customRoleInput.trim()) {
+                            handleCustomRoleAdd();
+                          }
+                        }}
                         className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
                       >
                         <Plus className="h-4 w-4" />
@@ -2655,7 +1951,10 @@ const WorkflowForm = () => {
                                   type="button"
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => handleRemoveTool(tool)}
+                                  onClick={(e) => {
+                                  e.preventDefault();
+                                  handleRemoveTool(tool);
+                                  }}
                                   className="shrink-0 text-white hover:text-white/80 hover:bg-blue-700"
                                 >
                                   <X className="h-4 w-4" />
@@ -2667,7 +1966,7 @@ const WorkflowForm = () => {
                       })}
                     </div>
 
-                    <div className="flex space-x-2">
+                    {/* <div className="flex space-x-2">
                       <Input
                         placeholder="Add custom tool"
                         value={customToolInput}
@@ -2685,6 +1984,33 @@ const WorkflowForm = () => {
                       >
                         <Plus className="h-4 w-4" />
                       </Button>
+                    </div> */}
+                    <div className="flex space-x-2">
+                      <Input
+                        placeholder="Add custom tool"
+                        value={customToolInput}
+                        onChange={(e) => setCustomToolInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            if (customToolInput.trim()) {
+                              handleCustomToolAdd();
+                            }
+                          }
+                        }}
+                      />
+                      <Button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (customToolInput.trim()) {
+                            handleCustomToolAdd();
+                          }
+                        }}
+                        className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
                 )}
@@ -2693,102 +2019,7 @@ const WorkflowForm = () => {
 
                       {/* {stepsMap[formData.catOfWorkFlow]?.map((step) => { */}
                       
-              {/* <Card className="p-6 mb-4">
-                {formData.catOfWorkFlow && (
-                  <div className="space-y-4">
-                    <CardTitle className="text-2xl font-bold">
-                      Workflow Steps
-                    </CardTitle>
-                    <div className="grid grid-cols-1 gap-2">{stepsMap[formData.catOfWorkFlow]?.stages?.map((step) => {
-                      
-                        const isSelected = formData.steps.some(
-                          (s) => s.step === step
-                        );
-                        return (
-                          <Button
-                            type="button"
-                            key={step}
-                            variant={isSelected ? "default" : "outline"}
-                            onClick={() => handleAddStep(step)}
-                            className={`w-full text-left justify-start break-words ${
-                              isSelected
-                                ? "bg-blue-600 hover:bg-blue-700 text-white"
-                                : ""
-                            }`}
-                            disabled={isSelected}
-                          >
-                            {step}
-                          </Button>
-                        );
-                      })}
-                    </div>
-
-                    <div className="flex space-x-2">
-                      <Input
-                        placeholder="Add custom step"
-                        onKeyPress={(e) => {
-                          if (e.key === "Enter") {
-                            handleAddCustomStep(e.target.value);
-                            e.target.value = "";
-                          }
-                        }}
-                      />
-                      <Button
-                        type="button"
-                        onClick={() => {
-                          const input = document.querySelector(
-                            'input[placeholder="Add custom step"]'
-                          );
-                          handleAddCustomStep(input.value);
-                          input.value = "";
-                        }}
-                        className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
-                      >
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </div>
-
-                    <DndContext
-                      sensors={sensors}
-                      collisionDetection={closestCenter}
-                      onDragEnd={handleDragEnd}
-                    >
-                      <SortableContext
-                        items={formData.steps.map((step) => step.step)}
-                        strategy={verticalListSortingStrategy}
-                      >
-                        {formData.steps.map((step, index) => (
-                          <SortableStep
-                            key={step.step}
-                            step={step}
-                            index={index}
-                            onRemove={(index) => {
-                              const newSteps = formData.steps.filter(
-                                (_, i) => i !== index
-                              );
-                              setFormData((prev) => ({
-                                ...prev,
-                                steps: newSteps,
-                              }));
-                            }}
-                            onUpdateStep={handleUpdateStep}
-                            categoryName={formData.userOrgType}
-                            teamRoles={teamRoleNames}
-                          />
-                        ))}
-                      </SortableContext>
-                    </DndContext>
-                    {formData.steps.length > 1 && (
-                      <div className="display flex">
-                        <p className="text-sm text-gray-500 ml-2">
-                          <i>Drag to reorder using &nbsp; </i>
-                        </p>
-                        <GripVertical className="h-5 w-5 text-gray-500" />
-                      </div>
-                    )}
-                  </div>
-                )}
-              </Card> */}
+              
               <Card className="p-6 mb-4">
   {formData.catOfWorkFlow && (
     <div className="space-y-4">
@@ -2796,7 +2027,12 @@ const WorkflowForm = () => {
         Workflow Steps
       </CardTitle>
       <div className="grid grid-cols-1 gap-2">
-        {stepsMap[formData.catOfWorkFlow]?.stages?.map((step) => {
+      {[
+          ...(stepsMap[formData.catOfWorkFlow]?.stages || []),
+          ...formData.steps
+            .filter(step => !stepsMap[formData.catOfWorkFlow]?.stages?.includes(step.step))
+            .map(step => step.step)
+        ].map((step) => {
           const isSelected = formData.steps.some(
             (s) => s.step === step
           );
@@ -2819,7 +2055,7 @@ const WorkflowForm = () => {
         })}
       </div>
 
-      <div className="flex space-x-2">
+      {/* <div className="flex space-x-2">
         <Input
           placeholder="Add custom step"
           onKeyPress={(e) => {
@@ -2837,6 +2073,29 @@ const WorkflowForm = () => {
             );
             handleAddCustomStep(input.value);
             input.value = "";
+          }}
+          className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          <Plus className="h-4 w-4" />
+        </Button>
+      </div> */}
+<div className="flex space-x-2">
+        <Input
+          placeholder="Add custom step"
+          value={customStepInput}
+          onChange={(e) => setCustomStepInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleAddCustomStep(customStepInput);
+            }
+          }}
+        />
+        <Button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            handleAddCustomStep(customStepInput);
           }}
           className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white"
         >

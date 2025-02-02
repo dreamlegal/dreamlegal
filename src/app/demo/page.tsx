@@ -1,120 +1,11 @@
-// "use client"
-// import useGeoLocation from "react-ipgeolocation"
-// // console.log(location.country);
+
 
 // import React from 'react'
-// const countryNames: { [key: string]: string } = {
-//   US: "United States of America",
-//   IN: "India",
-//   CA: "Canada",
-//   GB: "United Kingdom",
-//   AU: "Australia",
-//   FR: "France",
-//   DE: "Germany",
-//   JP: "Japan",
-//   CN: "China",
-//   BR: "Brazil",
-//   RU: "Russia",
-//   ZA: "South Africa",
-//   IT: "Italy",
-//   ES: "Spain",
-//   MX: "Mexico",
-//   KR: "South Korea",
-//   NG: "Nigeria",
-//   AR: "Argentina",
-//   SA: "Saudi Arabia",
-//   TR: "Turkey",
-//   SE: "Sweden",
-//   NO: "Norway",
-//   FI: "Finland",
-//   DK: "Denmark",
-//   NL: "Netherlands",
-//   BE: "Belgium",
-//   CH: "Switzerland",
-//   AT: "Austria",
-//   IE: "Ireland",
-//   NZ: "New Zealand",
-//   SG: "Singapore",
-//   MY: "Malaysia",
-//   TH: "Thailand",
-//   ID: "Indonesia",
-//   PH: "Philippines",
-//   VN: "Vietnam",
-//   EG: "Egypt",
-//   KE: "Kenya",
-//   GH: "Ghana",
-//   PK: "Pakistan",
-//   BD: "Bangladesh",
-//   LK: "Sri Lanka",
-//   IR: "Iran",
-//   IQ: "Iraq",
-//   IL: "Israel",
-//   AE: "United Arab Emirates",
-//   QA: "Qatar",
-//   KW: "Kuwait",
-//   OM: "Oman",
-//   BH: "Bahrain",
-//   JO: "Jordan",
-//   LB: "Lebanon",
-//   SY: "Syria",
-//   YE: "Yemen",
-//   MA: "Morocco",
-//   DZ: "Algeria",
-//   TN: "Tunisia",
-//   LY: "Libya",
-//   SD: "Sudan",
-//   ET: "Ethiopia",
-//   UG: "Uganda",
-//   TZ: "Tanzania",
-//   ZM: "Zambia",
-//   MZ: "Mozambique",
-//   AO: "Angola",
-//   CM: "Cameroon",
-//   SN: "Senegal",
-//   CI: "Ivory Coast",
-  
-//   NE: "Niger",
-//   BF: "Burkina Faso",
-//   ML: "Mali",
-//   MR: "Mauritania",
-//   GM: "Gambia",
-//   GN: "Guinea",
-//   SL: "Sierra Leone",
-//   LR: "Liberia",
-//   TG: "Togo",
-//   BJ: "Benin",
-//   NA: "Namibia",
-//   BW: "Botswana",
-//   SZ: "Eswatini",
-//   LS: "Lesotho",
-//   MW: "Malawi",
-//   RW: "Rwanda",
-//   BI: "Burundi",
-//   SO: "Somalia",
-//   DJ: "Djibouti",
-//   ER: "Eritrea",
-//   GQ: "Equatorial Guinea",
-//   GA: "Gabon",
-//   CG: "Republic of the Congo",
-//   CD: "Democratic Republic of the Congo",
-//   ST: "Sao Tome and Principe",
-//   CV: "Cape Verde",
-//   GW: "Guinea-Bissau",
-//   KM: "Comoros",
-//   SC: "Seychelles",
-//   MU: "Mauritius",
-//   MG: "Madagascar",
-//   RE: "Reunion",
-//   YT: "Mayotte",
-// };
-
 
 // function page() {
-//   const location = useGeoLocation();
-//   const countryName = countryNames[location.country] || "Unknown Country";
 //   return (
 //     <div>
-//       {countryName}
+//       Rahul Santra
 //     </div>
 //   )
 // }
@@ -122,15 +13,56 @@
 // export default page
 
 
-import React from 'react'
+'use client';
+import React from 'react';
+import { useRouter } from 'next/navigation';
 
-function page() {
+const Page = () => {
+  const router = useRouter();
+
+  const handleWorkflowClick = () => {
+    router.push('/workflow');
+  };
+
+  const handleProposalClick = () => {
+    router.push('/custom_proposal');
+  };
+
   return (
-    <div>
-      Rahul Santra
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <div className="text-center p-12 rounded-2xl bg-white/90 backdrop-blur-sm shadow-xl border border-gray-100 max-w-lg w-full mx-4 transform hover:scale-105 transition-all duration-300">
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-8">
+          Try Out Our Features
+        </h1>
+        
+        <div className="space-y-6">
+          <button
+            onClick={handleWorkflowClick}
+            className="group w-full px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 ease-out"
+          >
+            <div className="flex items-center justify-center space-x-2">
+              <span>Workflow Analysis</span>
+              <span className="opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all duration-300">→</span>
+            </div>
+          </button>
+          
+          <button
+            onClick={handleProposalClick}
+            className="group w-full px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-purple-700 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 ease-out"
+          >
+            <div className="flex items-center justify-center space-x-2">
+              <span>Custom Proposal</span>
+              <span className="opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all duration-300">→</span>
+            </div>
+          </button>
+        </div>
+        
+        <div className="mt-8 text-sm text-gray-500">
+          Explore our powerful tools designed for your success
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default page
-
+export default Page;

@@ -21,12 +21,13 @@ const Page = () => {
   const router = useRouter();
 
   const handleWorkflowClick = () => {
-    router.push('/workflow');
+    window.location.href = '/workflow';
   };
-
+  
   const handleProposalClick = () => {
-    router.push('/custom_proposal');
+    window.location.href = '/custom_proposal';
   };
+  
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">

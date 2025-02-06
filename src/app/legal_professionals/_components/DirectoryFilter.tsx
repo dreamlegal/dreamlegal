@@ -1,10 +1,16 @@
 
 const categories = [
-  'Legal Tech',
-  'Document Management',
-  'Contract Management',
-  'E-Discovery',
-  'Legal Research',
+  "Client Relationship Management",
+  "Contract Lifecycle Management",
+  "E-Signature",
+  "Document Management System",
+  "E-billing and Invoicing",
+  "E-discovery",
+   "Governance, Risk and Compliance",
+    "Intellectual Property Management",
+    "Legal Research",
+    "Legal Workflow Automation",
+     "Litigation Management and Analytics"
 ];
 
 const priceOptions = [
@@ -285,66 +291,80 @@ const Industries = [
 
 const practiseArea = [
   "Appellate Law",
-  "Antitrust Law",
-  "Alternative Dispute Resolution",
-  "Aviation",
-  "Banking & Finance",
-  "Business Law",
-  "Civil Law",
-  "Company",
-  "Contract",
-  "Consumer Protection",
-  "Competition/Anti-Trust Law",
-  "Construction",
-  "Corporate Law",
-  "Cybersecurity and Privacy Law",
-  "Mergers and Acquisitions (M&A)",
-  "Defense Law",
-  "Dispute Resolution",
-  "Election Law",
-  "Education Law",
-  "Energy and Natural Resources",
-  "Environmental Law",
-  "Labour and Employment Law",
-  "Franchise Law",
-  "Foreign Exchange Law",
-  "Family and Succession",
-  "Food and Drug Law",
-  "Gaming Law",
-  "Human Rights Law",
-  "Healthcare",
-  "International Law",
-  "Immigration Law",
-  "Infrastructure",
-  "Insolvency and Banking",
-  "Insurance",
-  "Information Technology",
-  "Intellectual Property Law",
-  "Investment Law",
-  "International Trade and Customs Law",
-  "Management of Litigation",
-  "Manufacturing in India",
-  "Metals and Mining",
-  "Technology Law",
-  "Tax Law",
-  "Telecommunication Law",
-  "Personal Injury Law",
-  "Product Liability",
-  "Pharma and Life Sciences",
-  "Public Interest Law",
-  "Public Finance Law",
-  "Railways",
-  "Real Estate/Property Law",
-  "Social Security and Disability Law",
-  "Securities Law",
-  "Sports, Media, Entertainment and Advertising",
-  "Shipping",
-  "Tax-Exempt Organizations Law",
-  "Transportation Law",
-  "Trade and commerce",
-  "Trust",
-  "Other",
+   "Antitrust Law",
+   "Alternative Dispute Resolution",
+   "Aviation",
+   "Banking & Finance",
+   "Business Law",
+   "Civil Law",
+   "Company",
+   "Contract",
+   "Consumer Protection",
+   "Competition/Anti-Trust Law",
+   "Construction",
+   "Corporate Law",
+   "Cybersecurity and Privacy Law",
+   "Mergers and Acquisitions (M&A)",
+   "Defense Law",
+   "Dispute Resolution",
+   "Election Law",
+   "Education Law",
+   "Energy and Natural Resources",
+   "Environmental Law",
+   "Labour and Employment Law",
+   "Franchise Law",
+   "Foreign Exchange Law",
+   "Family and Succession",
+   "Food and Drug Law",
+   "Gaming Law",
+   "Human Rights Law",
+   "Healthcare",
+   "International Law",
+   "Immigration Law",
+   "Infrastructure",
+   "Insolvency and Banking",
+   "Insurance",
+   "Information Technology",
+   "Intellectual Property Law",
+   "Investment Law",
+   "International Trade and Customs Law",
+   "Management of Litigation",
+   "Manufacturing in India",
+   "Metals and Mining",
+   "Technology Law",
+   "Tax Law",
+   "Telecommunication Law",
+   "Personal Injury Law",
+   "Product Liability",
+   "Pharma and Life Sciences",
+   "Public Interest Law",
+   "Public Finance Law",
+   "Railways",
+   "Real Estate/Property Law",
+   "Social Security and Disability Law",
+   "Securities Law",
+   "Sports, Media, Entertainment and Advertising",
+   "Shipping",
+   "Tax-Exempt Organizations Law",
+   "Transportation Law",
+   "Trade and commerce",
+   "Trust",
+   "Other",
 ];
+
+
+
+
+ 
+ 
+ 
+ 
+
+ 
+ 
+
+
+ 
 
 
 
@@ -826,12 +846,17 @@ const DirectoryFilter = ({
           <div className="border-t p-4" onClick={(e) => e.stopPropagation()}>
             <div className="space-y-2">
               {[
-                "Client Relationship Management",
-                "Contract Lifecycle Management",
-                "E-Signature",
-                "Document Management System",
-                "E-billing and Invoicing",
-                "E-discovery"
+               "Client Relationship Management",
+  "Contract Lifecycle Management",
+  "E-Signature",
+  "Document Management System",
+  "E-billing and Invoicing",
+  "E-discovery",
+   "Governance, Risk and Compliance",
+    "Intellectual Property Management",
+    "Legal Research",
+    "Legal Workflow Automation",
+     "Litigation Management and Analytics"
               ].map((category) => (
                 <label 
                   key={category} 
@@ -859,7 +884,7 @@ const DirectoryFilter = ({
         >
           <div className="flex items-center gap-2">
             <MdOutlineBusinessCenter className="text-gray-500" />
-            <span className="font-medium">User Category</span>
+            <span className="font-medium">User</span>
           </div>
           <IoArrowForward 
             className={`transform transition-transform duration-200 ${
@@ -871,13 +896,14 @@ const DirectoryFilter = ({
           <div className="border-t p-4" onClick={(e) => e.stopPropagation()}>
             <div className="space-y-2">
               {[
-                "Individual Practitioner",
-                "Law firms",
-                "Government departments",
-                "Startups",
-                "Enterprises",
-                "Judiciary",
-                "In-House Counsels"
+                
+   "Individual Practitioner",
+   "Law firms",
+   "Government departments",
+   "Startups",
+   "Enterprises",
+   "Judiciary",
+   "In-House Counsels"
               ].map((user) => (
                 <label 
                   key={user} 

@@ -574,12 +574,8 @@ const BookACallForm: React.FC<BookACallFormProps> = ({
   
   
 
-  if (loading) {
-    return <div>Autofilling your details..</div>;
-  }
-
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center p-4 z-[99999]">
       <Card className="w-full max-w-6xl">
         <Button
           variant="ghost"
@@ -596,6 +592,7 @@ const BookACallForm: React.FC<BookACallFormProps> = ({
           
           {/* Right side form */}
           <div className="lg:w-2/3 p-8">
+          
             <CardHeader>
               <CardTitle className="text-xl lg:text-2xl">Contact Information</CardTitle>
               <CardDescription>Please fill in your details to schedule a call with us.</CardDescription>

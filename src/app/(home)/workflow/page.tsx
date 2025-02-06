@@ -1833,37 +1833,72 @@ const WorkflowForm = () => {
                                 {role}
                               </Button>
                             ) : (
+                              // <div className="flex items-center bg-blue-600 text-white px-2 rounded-lg space-x-2">
+                              //   <div className="flex items-center space-x-2 flex-1">
+                              //     <span className="flex-1 break-words">
+                              //       {role}
+                              //     </span>
+                              //     <span className="text-sm font-semibold">
+                              //       Count:
+                              //     </span>
+                              //     <Input
+                              //       type="text"
+                              //       value={selectedRole.count}
+                              //       onChange={(e) =>
+                              //         handleUpdateRoleCount(
+                              //           role,
+                              //           e.target.value
+                              //         )
+                              //       }
+                              //       className="w-16 md:w-20 bg-white/50 py-1 border-white/20 text-white placeholder-white/50"
+                              //       min="1"
+                              //     />
+                              //   </div>
+                              //   <Button
+                              //     type="button"
+                              //     variant="ghost"
+                              //     size="sm"
+                              //     onClick={() => handleRemoveRole(role)}
+                              //     className="shrink-0 text-white hover:text-white/80 hover:bg-blue-700"
+                              //   >
+                              //     <X className="h-4 w-4" />
+                              //   </Button>
+                              // </div>
                               <div className="flex items-center bg-blue-600 text-white px-2 rounded-lg space-x-2">
-                                <div className="flex items-center space-x-2 flex-1">
-                                  <span className="flex-1 break-words">
-                                    {role}
-                                  </span>
-                                  <span className="text-sm font-semibold">
-                                    Count:
-                                  </span>
-                                  <Input
-                                    type="text"
-                                    value={selectedRole.count}
-                                    onChange={(e) =>
-                                      handleUpdateRoleCount(
-                                        role,
-                                        e.target.value
-                                      )
-                                    }
-                                    className="w-16 md:w-20 bg-white/50 py-1 border-white/20 text-white placeholder-white/50"
-                                    min="1"
-                                  />
-                                </div>
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => handleRemoveRole(role)}
-                                  className="shrink-0 text-white hover:text-white/80 hover:bg-blue-700"
-                                >
-                                  <X className="h-4 w-4" />
-                                </Button>
-                              </div>
+ <div className="flex items-center space-x-2 flex-1">
+   <span className="flex-1 break-words">
+     {role}
+   </span>
+   <span className="text-sm font-semibold">
+     Count:
+   </span>
+   <Input
+ type="text"
+ value={selectedRole.count}
+ onChange={(e) => {
+   const value = e.target.value.replace(/[^0-9]/g, ''); // Only allow numbers
+   handleUpdateRoleCount(role, value);
+ }}
+ onKeyDown={(e) => {
+   if (e.key === 'Enter') {
+     e.preventDefault();
+     e.target.blur();
+   }
+ }}
+ className="w-16 md:w-20 bg-white/50 py-1 border-white/20 text-white placeholder-white/50"
+ min="1"
+/>
+ </div>
+ <Button
+   type="button"
+   variant="ghost" 
+   size="sm"
+   onClick={() => handleRemoveRole(role)}
+   className="shrink-0 text-white hover:text-white/80 hover:bg-blue-700"
+ >
+   <X className="h-4 w-4" />
+ </Button>
+</div>
                             )}
                           </div>
                         );

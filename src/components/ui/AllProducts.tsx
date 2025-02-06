@@ -135,6 +135,7 @@ const AllProducts = () => {
 
   const { vendorId, userType } = useAuth();
   const userId = vendorId;
+  console.log(userId)
 // State declarations should be at the top level of your component
 
 const fetchProducts = async () => {

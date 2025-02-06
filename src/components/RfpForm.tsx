@@ -2283,20 +2283,20 @@ const RfpForm = ({ CustomerUserId, onClose }) => {
     }
   };
 
-  if (loading) {
-    return <div>Loading user data...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading user data...</div>;
+  // }
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center p-4 pt-24">
       <Card className="w-full max-w-4xl">
-        <Button
+        {/* <Button
           variant="ghost"
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
           onClick={onClose}
         >
           <X className="h-5 w-5" />
-        </Button>
+        </Button> */}
         <CardHeader>
           <CardTitle className="text-2xl">Request for Proposal (RFP)</CardTitle>
           <CardDescription>
@@ -2553,12 +2553,22 @@ const RfpForm = ({ CustomerUserId, onClose }) => {
             )}
 
             {error && <div className="text-red-500">{error}</div>}
-            <Button
+            <div className="flex space-x-4">
+              <Button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-            >
+              >
               Submit RFP
-            </Button>
+              </Button>
+              <Button
+              type="button"
+              className="w-full bg-red-600 hover:bg-red-700 text-white"
+              onClick={onClose}
+              >
+              Close
+              <X className="h-5 w-5 ml-2" />
+              </Button>
+            </div>
           </form>
         </CardContent>
       </Card>

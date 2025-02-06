@@ -151,7 +151,7 @@ export async function middleware(request) {
       }
       // If user tries to access vendor dashboard
       if (userType === 'user') {
-        return NextResponse.redirect(new URL('/legal_proffesionals/dashboard', request.url));
+        return NextResponse.redirect(new URL('/legal_professionals/dashboard', request.url));
       }
       // For any other unauthorized access
       return NextResponse.redirect(new URL('/unauthorized', request.url));

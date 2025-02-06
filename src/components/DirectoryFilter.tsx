@@ -366,6 +366,8 @@ function DirectoryFilter({
     "Trust",
     "Other",
   ];
+
+  
   const [openCategory, setOpenCategory] = useState({
     category: false,
     customer: false,

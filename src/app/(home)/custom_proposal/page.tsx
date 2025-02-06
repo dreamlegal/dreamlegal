@@ -105,36 +105,36 @@ const VendorProposalGenerator = () => {
     }
   };
 
-  // const handleGenerateProposal = async () => {
-  //   if (!selectedProduct || !clientSector || !clientTeamSize || !clientCategory) return;
+  const handleGenerateProposal = async () => {
+    if (!selectedProduct || !clientSector || !clientTeamSize || !clientCategory) return;
     
-  //   setLoading(true);
-  //   try {
-  //     const response = await fetch('https://ai-backend-y6mq.onrender.com/proposal/', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         product_profile: selectedProduct,
-  //         client_profile: {
-  //           Sector: clientSector,
-  //           "Team Size": parseInt(clientTeamSize),
-  //           Category: clientCategory
-  //         }
-  //       }),
-  //     });
+    setLoading(true);
+    try {
+      const response = await fetch('https://ai-backend-y6mq.onrender.com/proposal/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          product_profile: selectedProduct,
+          client_profile: {
+            Sector: clientSector,
+            "Team Size": parseInt(clientTeamSize),
+            Category: clientCategory
+          }
+        }),
+      });
       
-  //     const data = await response.json();
-  //     setProposalResponse(data);
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+      const data = await response.json();
+      setProposalResponse(data);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-// Frontend component update
+
 // const handleGenerateProposal = async () => {
 //   if (!selectedProduct || !clientSector || !clientTeamSize || !clientCategory) return;
   
@@ -174,58 +174,58 @@ const VendorProposalGenerator = () => {
 //   }
 // };
 
-// Proposal Generation Handler
-const handleGenerateProposal = async () => {
-  if (!selectedProduct || !clientSector || !clientTeamSize || !clientCategory) return;
-  if (!credits?.proposalCredits) {
-    alert('You have no proposal credits remaining');
-    return;
-  }
+// // Proposal Generation Handler
+// const handleGenerateProposal = async () => {
+//   if (!selectedProduct || !clientSector || !clientTeamSize || !clientCategory) return;
+//   if (!credits?.proposalCredits) {
+//     alert('You have no proposal credits remaining');
+//     return;
+//   }
   
-  setLoading(true);
-  try {
-    const response = await fetch('/api/create-custom-proposal', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        product_profile: selectedProduct,
-        client_profile: {
-          Sector: clientSector,
-          "Team Size": parseInt(clientTeamSize),
-          Category: clientCategory
-        },
-        vendorId
-      }),
-    });
+//   setLoading(true);
+//   try {
+//     const response = await fetch('/api/create-custom-proposal', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         product_profile: selectedProduct,
+//         client_profile: {
+//           Sector: clientSector,
+//           "Team Size": parseInt(clientTeamSize),
+//           Category: clientCategory
+//         },
+//         vendorId
+//       }),
+//     });
     
-    const data = await response.json();
+//     const data = await response.json();
     
-    if (response.ok) {
-      setProposalResponse(data.proposal);
-      // Update credits immediately
-      setCredits(prev => ({
-        ...prev,
-        proposalCredits: data.remainingCredits
-      }));
-    } else {
-      alert(data.error);
-      // Update credits even on error to stay in sync
-      if (data.remainingCredits !== undefined) {
-        setCredits(prev => ({
-          ...prev,
-          proposalCredits: data.remainingCredits
-        }));
-      }
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('An error occurred during proposal generation');
-  } finally {
-    setLoading(false);
-  }
-};
+//     if (response.ok) {
+//       setProposalResponse(data.proposal);
+//       // Update credits immediately
+//       setCredits(prev => ({
+//         ...prev,
+//         proposalCredits: data.remainingCredits
+//       }));
+//     } else {
+//       alert(data.error);
+//       // Update credits even on error to stay in sync
+//       if (data.remainingCredits !== undefined) {
+//         setCredits(prev => ({
+//           ...prev,
+//           proposalCredits: data.remainingCredits
+//         }));
+//       }
+//     }
+//   } catch (error) {
+//     console.error('Error:', error);
+//     alert('An error occurred during proposal generation');
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 
   return (
     <div className="min-h-screen p-12">

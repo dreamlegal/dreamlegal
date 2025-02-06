@@ -185,6 +185,7 @@ const countryNames: { [key: string]: string } = {
 };
 import ChatInterface from "./ChatInterface";
 import ReactToPrint from "react-to-print";
+import { useAuth } from '@/context/authContext';
 
 function PageComponent({ data }: any) {
   console.log(data);
@@ -192,8 +193,10 @@ function PageComponent({ data }: any) {
   const countryName = countryNames[location.country];
   console.log(countryName);
   const componentRef = useRef(null);
-  const userId =
-    typeof window !== "undefined" ? localStorage.getItem("userId") : null; // Check if window is defined
+
+    const { userId, userType } = useAuth();
+  // const userId =
+  //   typeof window !== "undefined" ? localStorage.getItem("userId") : null; // Check if window is defined
 
   // add view
   const hasViewed = useRef(false); // Ref to track if the view has been added
@@ -501,8 +504,8 @@ function PageComponent({ data }: any) {
 
 
   // forms  bookmycall and rfp
-  const CustomerUserId =
-  typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+  const CustomerUserId = userId
+  // typeof win.dow !== "undefined" ? localStorage.getItem("userId") : null;
   console.log(CustomerUserId);
 
  
@@ -719,7 +722,7 @@ const formatDataForCompatibility = (productData, userData) => {
       </Dialog>
   
   </div>
-    <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 font-clarity">
+    <div className="px-4 py-24 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 font-clarity">
       <Link href={`/directory`}>
         <div className=" flex gap-2  text-gray-900  my-4 transition-all duration-200 hover:cursor-pointer hover:translate-y-[-3px] hover:text-primary1 hover:gap-3 items-center ">
           <IoReturnUpBackOutline className=" text-[22px] " />
@@ -754,13 +757,13 @@ const formatDataForCompatibility = (productData, userData) => {
             >
               Check Compatibility
             </Button> */}
-             <Button 
+             {/* <Button 
         onClick={checkCompatibility}
         className="bg-blue-600 hover:bg-blue-700 text-white"
         disabled={loading}
       >
         {loading ? "Checking..." : "Check Compatibility"}
-      </Button>
+      </Button> */}
             </div>
           <div className=" border shadow-md rounded-3xl px-4 md:px-16 py-10">
             <div className="flex flex-col gap-5">

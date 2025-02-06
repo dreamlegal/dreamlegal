@@ -1648,10 +1648,13 @@ import { FaBookmark } from 'react-icons/fa6';
 import { FiShare2 } from 'react-icons/fi';
 import { IoIosArrowRoundForward } from 'react-icons/io';
 import { data } from "@/app/(home)/category/_components/data";
+import { useAuth } from '@/context/authContext';
 
 const ProductCard = ({ id, image, title, description, category, product }) => {
   // ... keep existing state and effects code ...
-  const userId = typeof window !== "undefined" && localStorage.getItem("userId");
+  // const userId = typeof window !== "undefined" && localStorage.getItem("userId");
+   const { userId, userType } = useAuth();
+   console.log(`userId: ${userId}, userType: ${userType}`);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [ratings, setRatings] = useState({ overallRating: 0, message: "" });
   const [loading, setLoading] = useState(true);
@@ -1660,6 +1663,7 @@ const ProductCard = ({ id, image, title, description, category, product }) => {
   useEffect(() => {
     const checkBookmark = async () => {
       if (!userId) return;
+      
       try {
         const response = await fetch("/api/check-bookmark", {
           method: "POST",
@@ -1711,15 +1715,21 @@ const ProductCard = ({ id, image, title, description, category, product }) => {
   }, [product, id]);
 
   const handleBookmarkClick = async () => {
-    if (!userId) {
-      alert("Please log in to bookmark products");
+    if (userType === "vendor") {
+      alert("Vendor can't bookmark products");
       return;
     }
+    if (!userId) {
+      alert("Please log in as User to bookmark products");
+      return;
+    }
+    
     try {
+      console.log(id);
       const response = await fetch("/api/save-product", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, productId: id }),
+        body: JSON.stringify({ userId, productId: product.id }),
       });
       if (response.ok) {
         const result = await response.json();
@@ -1945,7 +1955,7 @@ const ProductCard = ({ id, image, title, description, category, product }) => {
         </div>
 
         {/* Stats with Enhanced Styling */}
-        <div className="flex gap-8">
+        {/* <div className="flex gap-8">
           <div className="group">
             <h4 className="text-sm font-medium bg-gradient-to-r from-blue-700 to-blue-600 
                         bg-clip-text text-transparent mb-1">Adoption Time</h4>
@@ -1965,7 +1975,7 @@ const ProductCard = ({ id, image, title, description, category, product }) => {
               <span className="text-sm text-gray-400 ml-1">/5</span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

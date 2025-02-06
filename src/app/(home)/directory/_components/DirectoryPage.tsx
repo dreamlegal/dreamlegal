@@ -1116,6 +1116,80 @@ const DirectoryProduct = () => {
     price: [],
   });
 
+  // const fetchProducts = async (searchValue = "") => {
+  //   setIsLoading(true);
+  //   setError(null);
+    
+  //   try {
+  //     const response = await fetch("/api/get-all-products", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         number: 50
+  //       }),
+  //     });
+      
+  //     if (!response.ok) {
+  //       const errorData = await response.json();
+  //       throw new Error(errorData.msg || 'Failed to fetch products');
+  //     }
+
+  //     const data = await response.json();
+      
+  //     if (data.success && Array.isArray(data.products)) {
+  //       let filtered = data.products.filter(product => product.active === "publish");
+        
+  //       // Apply search filter
+  //       if (searchValue.trim()) {
+  //         const searchTerms = searchValue.toLowerCase().trim().split(/\s+/);
+  //         filtered = filtered.filter(product => 
+  //           searchTerms.every(term => 
+  //             product.name?.toLowerCase().includes(term) ||
+  //             product.description?.toLowerCase().includes(term) ||
+  //             product.category?.some(cat => cat.toLowerCase().includes(term)) ||
+  //             product.industry?.some(ind => ind.toLowerCase().includes(term))
+  //           )
+  //         );
+  //       }
+
+  //       // Apply filters
+  //       Object.entries(selectedFilters).forEach(([filterType, selectedValues]) => {
+  //         if (selectedValues.length > 0) {
+  //           filtered = filtered.filter(product => {
+  //             switch (filterType) {
+  //               case 'categories':
+  //                 return product.category?.some(cat => selectedValues.includes(cat));
+  //               case 'userCategory':
+  //                 return product.userCategory?.some(cat => selectedValues.includes(cat));
+  //               case 'language':
+  //                 return product.languages?.some(lang => selectedValues.includes(lang));
+  //               case 'country':
+  //                 return product.focusCountries?.some(country => selectedValues.includes(country));
+  //               case 'industry':
+  //                 return product.industry?.some(ind => selectedValues.includes(ind));
+  //               case 'practiceAreas':
+  //                 return product.practiceAreas?.some(area => selectedValues.includes(area));
+  //               default:
+  //                 return true;
+  //             }
+  //           });
+  //         }
+  //       });
+
+  //       setFilteredProducts(filtered);
+  //     } else {
+  //       setFilteredProducts([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching products:", error);
+  //     setError(error.message || 'Failed to load products. Please try again later.');
+  //     setFilteredProducts([]);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
   const fetchProducts = async (searchValue = "") => {
     setIsLoading(true);
     setError(null);
@@ -1131,66 +1205,100 @@ const DirectoryProduct = () => {
         }),
       });
       
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.msg || 'Failed to fetch products');
-      }
-
       const data = await response.json();
       
+      if (!response.ok) {
+        throw new Error(data.error || data.msg || `HTTP error! status: ${response.status}`);
+      }
+      
+      if (!data.success) {
+        throw new Error(data.msg || 'Failed to fetch products');
+      }
+  
       if (data.success && Array.isArray(data.products)) {
-        let filtered = data.products.filter(product => product.active === "publish");
+        console.log("Products fetched successfully:", {
+          total: data.products.length,
+          sample: data.products[0]?.name
+        });
+  
+        let filtered = data.products;
         
         // Apply search filter
         if (searchValue.trim()) {
           const searchTerms = searchValue.toLowerCase().trim().split(/\s+/);
-          filtered = filtered.filter(product => 
-            searchTerms.every(term => 
-              product.name?.toLowerCase().includes(term) ||
-              product.description?.toLowerCase().includes(term) ||
-              product.category?.some(cat => cat.toLowerCase().includes(term)) ||
-              product.industry?.some(ind => ind.toLowerCase().includes(term))
-            )
-          );
+          filtered = filtered.filter(product => {
+            try {
+              return searchTerms.every(term => 
+                (product.name || '').toLowerCase().includes(term) ||
+                (product.description || '').toLowerCase().includes(term) ||
+                (Array.isArray(product.category) && product.category.some(cat => (cat || '').toLowerCase().includes(term))) ||
+                (Array.isArray(product.industry) && product.industry.some(ind => (ind || '').toLowerCase().includes(term)))
+              );
+            } catch (filterError) {
+              console.error("Error filtering product:", product.id, filterError);
+              return false;
+            }
+          });
         }
-
-        // Apply filters
+  
+        // Apply filters with error handling
         Object.entries(selectedFilters).forEach(([filterType, selectedValues]) => {
           if (selectedValues.length > 0) {
             filtered = filtered.filter(product => {
-              switch (filterType) {
-                case 'categories':
-                  return product.category?.some(cat => selectedValues.includes(cat));
-                case 'userCategory':
-                  return product.userCategory?.some(cat => selectedValues.includes(cat));
-                case 'language':
-                  return product.languages?.some(lang => selectedValues.includes(lang));
-                case 'country':
-                  return product.focusCountries?.some(country => selectedValues.includes(country));
-                case 'industry':
-                  return product.industry?.some(ind => selectedValues.includes(ind));
-                case 'practiceAreas':
-                  return product.practiceAreas?.some(area => selectedValues.includes(area));
-                default:
-                  return true;
+              try {
+                switch (filterType) {
+                  case 'categories':
+                    return Array.isArray(product.category) && 
+                           product.category.some(cat => selectedValues.includes(cat));
+                  case 'userCategory':
+                    return Array.isArray(product.userCategory) && 
+                           product.userCategory.some(cat => selectedValues.includes(cat));
+                  case 'language':
+                    return Array.isArray(product.languages) && 
+                           product.languages.some(lang => selectedValues.includes(lang));
+                  case 'country':
+                    return Array.isArray(product.focusCountries) && 
+                           product.focusCountries.some(country => selectedValues.includes(country));
+                  case 'industry':
+                    return Array.isArray(product.industry) && 
+                           product.industry.some(ind => selectedValues.includes(ind));
+                  case 'practiceAreas':
+                    return Array.isArray(product.practiceAreas) && 
+                           product.practiceAreas.some(area => selectedValues.includes(area));
+                  default:
+                    return true;
+                }
+              } catch (filterError) {
+                console.error(`Error applying ${filterType} filter to product:`, product.id, filterError);
+                return false;
               }
             });
           }
         });
-
+  
+        console.log("Filtered products:", {
+          before: data.products.length,
+          after: filtered.length
+        });
+  
         setFilteredProducts(filtered);
       } else {
+        console.warn("Invalid data structure received:", data);
         setFilteredProducts([]);
+        setError('Received invalid data structure from server');
       }
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Error fetching products:", {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
       setError(error.message || 'Failed to load products. Please try again later.');
       setFilteredProducts([]);
     } finally {
       setIsLoading(false);
     }
   };
-
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);

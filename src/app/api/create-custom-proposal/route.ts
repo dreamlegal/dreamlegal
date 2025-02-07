@@ -26,7 +26,7 @@ export async function POST(request) {
     }
 
     // Call the render API for proposal generation
-    const proposalResponse = await fetch('https://ai-backend-y6mq.onrender.com/proposal/', {
+    const proposalResponse = await fetch('https://dreamlegal.in/ai/proposal/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

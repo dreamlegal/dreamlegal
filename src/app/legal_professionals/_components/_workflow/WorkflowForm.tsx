@@ -3923,7 +3923,7 @@ const WorkflowForm = () => {
         },
       };
   
-      const reportResponse = await fetch("https://ai-backend-y6mq.onrender.com/workflow_report/", {
+      const reportResponse = await fetch("https://dreamlegal.in/ai/workflow_report/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -612,7 +612,7 @@ const formatDataForCompatibility = (productData, userData) => {
       setError(null);
       const formattedData = formatDataForCompatibility(product, userData);
       
-      const response = await fetch('http://localhost:8000/compatibility/', {
+      const response = await fetch('https://dreamlegal.in/ai/compatibility/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

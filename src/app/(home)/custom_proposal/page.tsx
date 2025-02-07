@@ -110,7 +110,7 @@ const VendorProposalGenerator = () => {
     
     setLoading(true);
     try {
-      const response = await fetch('https://ai-backend-y6mq.onrender.com/proposal/', {
+      const response = await fetch('https://dreamlegal.in/ai/proposal/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

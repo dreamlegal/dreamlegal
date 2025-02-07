@@ -130,7 +130,7 @@ export async function POST(request) {
     }
 
     // Call the render API for analysis
-    const analysisResponse = await fetch('https://ai-backend-y6mq.onrender.com/feature_analysis/', {
+    const analysisResponse = await fetch('https://dreamlegal.in/ai/feature_analysis/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -81,7 +81,7 @@ const PremiumHero = () => {
               </div>
             </h1>
           </div> */}
-          <div className="space-y-2 sm:space-y-4 mb-4 sm:mb-8 px-4 sm:px-6 lg:px-8">
+          {/* <div className="space-y-2 sm:space-y-4 mb-4 sm:mb-8 px-4 sm:px-6 lg:px-8">
   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight">
     <div className="flex flex-col gap-3 sm:gap-4 md:gap-6">
       <span className="block bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 
@@ -98,7 +98,26 @@ const PremiumHero = () => {
       </span>
     </div>
   </h1>
+</div> */}
+<div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 px-4 sm:px-6 lg:px-8">
+  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight">
+    <div className="flex flex-col gap-1 sm:gap-2 md:gap-3">
+      <span className="block bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 
+                     bg-clip-text text-transparent leading-snug sm:leading-tight pb-0 sm:pb-1">
+        Harmonizing Legal Tradition
+      </span>
+      <span className="block bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 
+                     bg-clip-text text-transparent leading-snug sm:leading-tight pb-0 sm:pb-1">
+        With Partnerships And
+      </span>
+      <span className="block bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 
+                     bg-clip-text text-transparent leading-snug sm:leading-tight pb-0 sm:pb-1">
+        Collaborations
+      </span>
+    </div>
+  </h1>
 </div>
+
 
           {/* Premium Button Group */}
           <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mx-auto">

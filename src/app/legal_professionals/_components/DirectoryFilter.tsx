@@ -669,10 +669,6 @@ const styles = `
   }
 `;
 
-const styleSheet = document.createElement("style");
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);
-
 export default DirectoryFilter;
 
 // const languages = [

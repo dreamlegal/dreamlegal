@@ -275,7 +275,7 @@ const CurvedLayout = () => {
                 </div>
                 <div className="absolute right-8 top-16 transform -translate-y-4 transition-all duration-500 hover:scale-105 hover:-translate-y-6">
                   <img 
-                    src="partners/legal_service.png" 
+                    src="partners/legal_Service.png" 
                     alt="Legal Service" 
                     className="w-64 h-48 object-cover rounded-lg" 
                     style={{ 

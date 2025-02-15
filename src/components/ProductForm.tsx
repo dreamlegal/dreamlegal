@@ -22,6 +22,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { useToast } from "./ui/use-toast";
 import { useAuth } from '@/context/authContext';
+import Alert from '@/components/Alert';
+
 // const ProductFormWithProgress = ({ editing = false }: { editing: boolean }) => {
 // const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing }) => {
 const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing, product }) => {
@@ -112,8 +114,14 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
   setAttachmentsUrl,
   
   } = ProductInfo();
-
-
+ const [alert, setAlert] = useState(null);
+  const showAlert = (message, type = 'success') => {
+    setAlert({ message, type });
+    // Auto dismiss after 3 seconds
+    setTimeout(() => {
+      setAlert(null);
+    }, 3000);
+  };
   useEffect(() => {
     if (editing === true) {
       console.log("Setting product info because editing is true");
@@ -447,6 +455,7 @@ setStorage(storage);
   const { vendorId, userType } = useAuth();
   const handleSubmit = async () => {
 
+    showAlert("Saving Your Information..Have Some Patience Please!", 'success');
     toast({
       title: "saving...",
       description: "Saving Your Information..Have Some Patience Please!",
@@ -582,11 +591,13 @@ setStorage(storage);
               description: "Fail to create product",
               variant: "destructive",
             });
+            showAlert("Fail to create product", 'error');
             toast({
               title: "Fail to create product",
               description: "Fail to create product",
               variant: "destructive",
             });
+            
             setSubmissionStatus("error"); // Set status to "error" if submission fails
             return;
           } else {
@@ -595,11 +606,13 @@ setStorage(storage);
               description: "Thank you for your submission!",
               variant: "success",
             });
+            showAlert("Form Submitted", 'success');
             toast({
               title: "Form Submitted",
               description: "Thank you for your submission!",
               variant: "success",
             });
+            
             setSubmissionStatus("saved"); 
           }
       } catch (error) {
@@ -609,11 +622,13 @@ setStorage(storage);
           description: "Got some internal error",
           variant: "destructive",
         });
+        showAlert("Fail to create product", 'error');
         toast({
           title: "Fail to submit",
           description: "Got some internal error",
           variant: "destructive",
         });
+
         setSubmissionStatus("error");
       }
     }
@@ -859,6 +874,13 @@ setStorage(storage);
 
   // In your existing component, replace the form section with:
 <div className="relative">
+{alert && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert(null)}
+        />
+      )}
   {/* Header with Refresh */}
   <div className="mb-8 flex items-center justify-between">
     <div>

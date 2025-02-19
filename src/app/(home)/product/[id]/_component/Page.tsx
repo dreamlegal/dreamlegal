@@ -1152,7 +1152,7 @@ useEffect(() => {
     {company?.headQuaters ? (
       <p className="text-sm text-slate-500">{company.headQuaters}</p>
     ) : product?.Headquarters ? (
-      <p className="text-sm text-slate-500">{product.ByAdminYearFounded}</p>
+      <p className="text-sm text-slate-500">{product.Headquarters}</p>
     ) : (
       <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
         Not Available
@@ -1163,11 +1163,11 @@ useEffect(() => {
     <p className="text-sm text-gray-900 font-bold">Founders</p>
     {company?.NameOfFounders ? (
       <p className="text-sm text-slate-500">{company.NameOfFounders}</p>
-    ) : product?.ByAdminAwards ? (
+    ) : product?.FoundersNames ? (
       <p className="text-sm text-slate-500">
-        {Array.isArray(product.ByAdminAwards)
-          ? product.ByAdminAwards.join(", ")
-          : product.ByAdminAwards}
+        {Array.isArray(product.FoundersNames)
+          ? product.FoundersNames.join(", ")
+          : product.FoundersNames}
       </p>
     ) : (
       <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">

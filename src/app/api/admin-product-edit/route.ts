@@ -136,6 +136,7 @@ export async function POST(request: Request) {
           success: true,
           msg: "Product updated successfully",
           product: updatedProduct.id,
+          productInfo: updatedProduct,
         }),
         { status: 200 }
       );

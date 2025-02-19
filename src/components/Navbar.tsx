@@ -48,12 +48,12 @@ const Navbar = () => {
     {
       title: 'Directory',
       hasDropdown: false,
-      href: 'directory'
+      href: '/directory'
     },
     {
       title: 'Tech Vendor',
       hasDropdown: false,
-      href: 'tech_vendor'
+      href: '/tech_vendor'
     },
     {
       title: 'Partners',

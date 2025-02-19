@@ -87,7 +87,18 @@ export async function POST(request: Request) {
 
         CompanyName:formData.companyName || '',         
   Headquarters :formData.headquarters || '',         
-  FoundersNames:formData.foundersNames || '',          
+  FoundersNames:formData.foundersNames || '',  
+  ByAdminYearFounded:formData.ByAdminYearFounded,
+          
+          ByAdminAwards:formData.ByAdminAwards,
+         
+          ByAdminTeamSize:formData.ByAdminTeamSize,
+          
+          ByAdminEmail:formData.ByAdminEmail,
+          
+          ByAdminPhone:formData.ByAdminPhone,
+         
+          ByAdminWebsite:formData.ByAdminWebsite,        
 
         featured: false
       };

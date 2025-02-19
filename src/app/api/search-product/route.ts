@@ -62,6 +62,14 @@ export async function POST(request: Request) {
           freeTrial: true,
           freeVersion: true,
           pricingModel: true,
+          CompanyName: true,             
+          Headquarters: true,             
+          ByAdminYearFounded: true,        
+          ByAdminAwards: true,            
+          ByAdminTeamSize: true,           
+          ByAdminEmail: true,              
+          ByAdminPhone: true,            
+          ByAdminWebsite: true,  
           Review: {
             select: {
               overallExperienc: true,

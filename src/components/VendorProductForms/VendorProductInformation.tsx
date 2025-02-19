@@ -68,6 +68,21 @@ const ProductInformation = () => {
     setCompanyName,
     setHeadquarters,
     setFoundersNames,
+
+
+    ByAdminYearFounded,
+setByAdminYearFounded,
+ByAdminAwards,
+setByAdminAwards,
+ByAdminTeamSize,
+setByAdminTeamSize,
+ByAdminEmail,
+setByAdminEmail,
+ByAdminPhone,
+setByAdminPhone,
+ByAdminWebsite,
+setByAdminWebsite,
+
   } = ProductInfo();
 
   const [inputValue, setInputValue] = useState(productName);
@@ -744,6 +759,19 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     companyName,
     headquarters,
     foundersNames,
+
+    ByAdminYearFounded,
+   
+    ByAdminAwards,
+    
+    ByAdminTeamSize,
+    
+    ByAdminEmail,
+   
+    ByAdminPhone,
+    
+    ByAdminWebsite,
+   
     // Add more fields as needed
   };
 
@@ -766,6 +794,14 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLogoPreview(logoUrl || null);
   }, [logoUrl, setLogoPreview]);
 
+  const teamSizeOptions = [
+     "1 ",
+    "2-20 ",
+    "21-50 ",
+     "51-200 ",
+     "201-500 ",
+     "500+ "
+  ];
 
 
   return (
@@ -797,7 +833,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
        
         <div className="space-y-6">
           {/* Company Name */}
-          <div className="space-y-2">
+            <div className="space-y-2">
             <Label htmlFor="companyName">Company Name</Label>
             <Input
               id="companyName"
@@ -806,10 +842,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               placeholder="Enter company name"
               className="w-full"
             />
-          </div>
+            </div>
 
-          {/* Headquarters */}
-          <div className="space-y-2">
+            {/* Headquarters */}
+            <div className="space-y-2">
             <Label htmlFor="headquarters">Headquarters</Label>
             <Input
               id="headquarters"
@@ -818,7 +854,84 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               placeholder="Enter headquarters location"
               className="w-full"
             />
-          </div>
+            </div>
+
+            {/* ByAdminYearFounded */}
+            <div className="space-y-2">
+            <Label htmlFor="ByAdminYearFounded">Year Founded</Label>
+            <Input
+              id="ByAdminYearFounded"
+              value={ByAdminYearFounded}
+              onChange={(e) => setByAdminYearFounded(e.target.value)}
+              placeholder="Enter year founded"
+              className="w-full"
+            />
+            </div>
+
+            {/* ByAdminAwards */}
+            <div className="space-y-2">
+            <Label htmlFor="ByAdminAwards">Awards</Label>
+            <Textarea
+              id="ByAdminAwards"
+              value={ByAdminAwards}
+              onChange={(e) => setByAdminAwards(e.target.value)}
+              placeholder="Enter awards"
+              className="w-full"
+            />
+            </div>
+
+            {/* ByAdminTeamSize */}
+            <div className="space-y-2">
+            <Label htmlFor="ByAdminTeamSize">Team Size</Label>
+            <Select value={ByAdminTeamSize} onValueChange={(value) => setByAdminTeamSize(value)}>
+              <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select team size" />
+              </SelectTrigger>
+              <SelectContent>
+              {teamSizeOptions.map((option) => (
+                <SelectItem key={option} value={option}>
+                {option}
+                </SelectItem>
+              ))}
+              </SelectContent>
+            </Select>
+            </div>
+
+            {/* ByAdminEmail */}
+            <div className="space-y-2">
+            <Label htmlFor="ByAdminEmail">Email</Label>
+            <Input
+              id="ByAdminEmail"
+              value={ByAdminEmail}
+              onChange={(e) => setByAdminEmail(e.target.value)}
+              placeholder="Enter email"
+              className="w-full"
+            />
+            </div>
+
+            {/* ByAdminPhone */}
+            <div className="space-y-2">
+            <Label htmlFor="ByAdminPhone">Phone</Label>
+            <Input
+              id="ByAdminPhone"
+              value={ByAdminPhone}
+              onChange={(e) => setByAdminPhone(e.target.value)}
+              placeholder="Enter phone number"
+              className="w-full"
+            />
+            </div>
+
+            {/* ByAdminWebsite */}
+            <div className="space-y-2">
+            <Label htmlFor="ByAdminWebsite">Website</Label>
+            <Input
+              id="ByAdminWebsite"
+              value={ByAdminWebsite}
+              onChange={(e) => setByAdminWebsite(e.target.value)}
+              placeholder="Enter website URL"
+              className="w-full"
+            />
+            </div>
 
           {/* Founders Names */}
           <div className="space-y-2">

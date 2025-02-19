@@ -637,7 +637,45 @@ const formatDataForCompatibility = (productData, userData) => {
   const matchPercentage = calculateOverallMatch();
 
 
+const similarcat = product.category?.length ? product.category[Math.floor(Math.random() * product.category.length)] : null;
 
+
+const [similarProducts, setSimilarProducts] = useState([]);
+ 
+// useEffect(() => {
+//   const fetchSimilarProducts = async () => {
+//     if (!similarcat) return; // Don't fetch if no category
+
+//     try {
+//       const response = await fetch(`/api/get-similar-products?category=${encodeURIComponent(similarcat)}`);
+//       const data = await response.json();
+//       setSimilarProducts(data);
+//     } catch (error) {
+//       console.error('Failed to fetch similar products:', error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   fetchSimilarProducts();
+// }, [similarcat]);
+useEffect(() => {
+  const fetchSimilarProducts = async () => {
+    if (!similarcat) return;
+
+    try {
+      const response = await fetch(`/api/get-similar-products?category=${encodeURIComponent(similarcat)}&currentId=${product.id}`);
+      const data = await response.json();
+      setSimilarProducts(data);
+    } catch (error) {
+      console.error('Failed to fetch similar products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchSimilarProducts();
+}, [similarcat, product.id]);
 
   if (!product) {
     return <Loading />;
@@ -818,7 +856,7 @@ const formatDataForCompatibility = (productData, userData) => {
                     )}
                   </div>
                   <div
-                    className="text-xl text-primary1 p-2 rounded-full border border-primary1"
+                    className="text-xl h-10 w-10 text-primary1 p-2 rounded-full border border-primary1"
                     onClick={handleBookmarkClick}
                   >
                     <MdOutlineBookmarkBorder
@@ -828,7 +866,7 @@ const formatDataForCompatibility = (productData, userData) => {
 
                   <Dialog>
                     <DialogTrigger asChild>
-                      <div className="text-xl text-primary1 p-2 rounded-full border border-primary1">
+                      <div className="text-xl h-10 w-10 text-primary1 p-2 rounded-full border border-primary1">
                         <GoShareAndroid />
                       </div>
                     </DialogTrigger>
@@ -999,11 +1037,15 @@ const formatDataForCompatibility = (productData, userData) => {
     </div>
     <div>
       <p className="text-sm text-gray-900 font-bold">Year Founded</p>
-      {company?.yearFounded && product.isVendorVerified ? (
+      {company?.yearFounded ? (
         <p className="text-sm text-slate-500">{company.yearFounded}</p>
+      ) : product.ByAdminYearFounded? (
+        <p className="text-sm text-slate-500">
+          {product.ByAdminYearFounded}
+        </p>
       ) : (
         <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
-          2015
+          No year provided
         </p>
         
       )}
@@ -1012,24 +1054,27 @@ const formatDataForCompatibility = (productData, userData) => {
       <p className="text-sm text-gray-900 font-bold">Awards</p>
       {company?.Awards ? (
         <p className="text-sm text-slate-500">{company.Awards}</p>
+      ) : product?.ByAdminAwards ?  (
+        <p className="text-sm text-slate-500">
+           {product.ByAdminAwards}
+        </p>
       ) : (
         <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
-          Best Innovation Award 2023
+          No awards available
         </p>
+        
       )}
     </div>
   </div>
 
   {/* Column 2 */}
-  <div className="flex flex-col gap-3 mb-3">
+  {/* <div className="flex flex-col gap-3 mb-3">
     <div>
       <p className="text-sm text-gray-900 font-bold">Headquarters</p>
       {company?.headQuaters ? (
         <p className="text-sm text-slate-500">{company.headQuaters}</p>
       ) : (
-        // <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
-        //   San Francisco, CA
-        // </p>
+        
         <p className="text-sm text-slate-500">{product.Headquarters}</p>
       )}
     </div>
@@ -1059,7 +1104,6 @@ const formatDataForCompatibility = (productData, userData) => {
     </div>
   </div>
 
-  {/* Column 3 */}
   <div className="flex flex-col gap-3 mb-3">
     <div>
       <p className="text-sm text-gray-900 font-bold">Email</p>
@@ -1083,19 +1127,114 @@ const formatDataForCompatibility = (productData, userData) => {
     </div>
     <div>
       <p className="text-sm text-gray-900 font-bold">Website</p>
-      {company?.website ? (
-        <p className="text-sm text-slate-500">
-          <a href={company.website} target="_blank" rel="noopener noreferrer">
-            {company.website}
-          </a>
-        </p>
-      ) : (
-        <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
-          www.company.com
-        </p>
-      )}
+    
+      <p className="text-sm text-slate-500">
+  {company?.website ? (
+    <a href={company.website} target="_blank" rel="noopener noreferrer">
+      {company.website}
+    </a>
+  ) : product?.websiteUrl ? (
+    <a href={product.websiteUrl} target="_blank" rel="noopener noreferrer">
+      {product.websiteUrl}
+    </a>
+  ) : (
+    <span className="text-gray-800 blur-[3px] select-none font-medium">
+      www.company.com
+    </span>
+  )}
+</p>
+
     </div>
+  </div> */}
+  <div className="flex flex-col gap-3 mb-3">
+    <div>
+    <p className="text-sm text-gray-900 font-bold">Headquarters</p>
+    {company?.headQuaters ? (
+      <p className="text-sm text-slate-500">{company.headQuaters}</p>
+    ) : product?.Headquarters ? (
+      <p className="text-sm text-slate-500">{product.ByAdminYearFounded}</p>
+    ) : (
+      <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+        Not Available
+      </p>
+    )}
   </div>
+  <div>
+    <p className="text-sm text-gray-900 font-bold">Founders</p>
+    {company?.NameOfFounders ? (
+      <p className="text-sm text-slate-500">{company.NameOfFounders}</p>
+    ) : product?.ByAdminAwards ? (
+      <p className="text-sm text-slate-500">
+        {Array.isArray(product.ByAdminAwards)
+          ? product.ByAdminAwards.join(", ")
+          : product.ByAdminAwards}
+      </p>
+    ) : (
+      <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+        Not Available
+      </p>
+    )}
+  </div>
+  <div>
+    <p className="text-sm text-gray-900 font-bold">Team size</p>
+    {company?.TeamSize ? (
+      <p className="text-sm text-slate-500">{company.TeamSize}</p>
+    ) : product?.ByAdminTeamSize ? (
+      <p className="text-sm text-slate-500">{product.ByAdminTeamSize}</p>
+    ) : (
+      <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+        50-100 employees
+      </p>
+    )}
+  </div>
+</div>
+
+{/* Column 2 */}
+<div className="flex flex-col gap-3 mb-3">
+  <div>
+    <p className="text-sm text-gray-900 font-bold">Email</p>
+    {user?.email ? (
+      <p className="text-sm text-slate-500">{user.email}</p>
+    ) : product?.ByAdminEmail ? (
+      <p className="text-sm text-slate-500">{product.ByAdminEmail}</p>
+    ) : (
+      <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+        contact@company.com
+      </p>
+    )}
+  </div>
+  <div>
+    <p className="text-sm text-gray-900 font-bold">Phone</p>
+    {company?.contact ? (
+      <p className="text-sm text-slate-500">{company.contact}</p>
+    ) : product?.ByAdminPhone ? (
+      <p className="text-sm text-slate-500">{product.ByAdminPhone}</p>
+    ) : (
+      <p className="text-sm text-gray-800 blur-[3px] select-none font-medium">
+        +1 (555) 123-4567
+      </p>
+    )}
+  </div>
+  <div>
+    <p className="text-sm text-gray-900 font-bold">Website</p>
+    <p className="text-sm text-slate-500">
+      {company?.website ? (
+        <a href={company.website} target="_blank" rel="noopener noreferrer">
+          {company.website}
+        </a>
+      ) : product?.ByAdminWebsite ? (
+        <a href={product.ByAdminWebsite} target="_blank" rel="noopener noreferrer">
+          {product.ByAdminWebsite}
+        </a>
+      ) : (
+        <span className="text-gray-800 blur-[3px] select-none font-medium">
+          www.company.com
+        </span>
+      )}
+    </p>
+  </div>
+</div>
+
 </div>
 
             
@@ -1629,16 +1768,19 @@ const formatDataForCompatibility = (productData, userData) => {
             </div>
           </div>
 
-          <div className=" block ">
-            <h2 className="text-xl md:text-2xl font-bold my-4">
-              Similar products
-            </h2>
-            <div className="flex flex-col  gap-3 md:px-2 my-5">
-              <ProductCompareCard />
-              <ProductCompareCard />
-              <ProductCompareCard />
+        <div className="block">
+              <h2 className="text-xl md:text-2xl font-bold my-4">Similar products</h2>
+              <div className="flex flex-col gap-3 md:px-2 my-5">
+                {similarProducts.map((similarProduct) => (
+                  <ProductCompareCard
+                    key={similarProduct.slug}
+                    name={similarProduct.name}
+                    slug={similarProduct.slug}
+                    logoUrl={similarProduct.logoUrl}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
         </div>
       </div>
       {product.isVendorVerified && (

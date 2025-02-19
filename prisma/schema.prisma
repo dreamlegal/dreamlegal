@@ -208,6 +208,12 @@ model Product {
   CompanyName             String? @default("abc")
   Headquarters            String? @default("India")
   FoundersNames           String[] @default([])
+  ByAdminYearFounded      String?  
+  ByAdminAwards           String? 
+  ByAdminTeamSize         String?  
+  ByAdminEmail            String?  
+  ByAdminPhone            String?
+  ByAdminWebsite          String?
 }
 
 model Review {
@@ -466,4 +472,23 @@ model VendorLeads {
   email         String?
   message       String?
   createdAt     DateTime @default(now())
+}
+
+model AiProposal {
+  id            String    @id @default(cuid())
+  vendorId      String
+  name          String?   // Optional proposal name
+  formData      Json     // Initial form data
+  aiResponse    Json?    // AI generated response
+  versions      Json?    // Array of versions with {name, content, createdAt}
+  status        ProposalStatus @default(UNSAVED)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([vendorId])
+}
+
+enum ProposalStatus {
+  UNSAVED
+  SAVED
 }

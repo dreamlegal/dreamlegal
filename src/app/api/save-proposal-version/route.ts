@@ -5,6 +5,7 @@ import prisma from '@/lib/prisma';
 export async function POST(request) {
   try {
     const { proposalId, name, content } = await request.json();
+    console.log(content);
 
     const proposal = await prisma.aiProposal.findUnique({
       where: { id: proposalId }
@@ -28,7 +29,7 @@ export async function POST(request) {
       where: { id: proposalId },
       data: {
         versions: [...currentVersions, newVersion],
-        status: 'SAVED'
+        
       }
     });
 

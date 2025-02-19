@@ -1,539 +1,4 @@
 
-// "use client"
-
-// import React, { useState, useEffect } from 'react';
-// import { useParams } from 'next/navigation';
-// import { Card, CardContent } from '@/components/ui/card';
-// import { Button } from '@/components/ui/button';
-// import { Textarea } from '@/components/ui/textarea';
-// import { Input } from '@/components/ui/input';
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogFooter,
-// } from "@/components/ui/dialog";
-// import { 
-//   Edit2, Save, AlertCircle, Activity, 
-//   Calendar, Settings, Target, Sparkles,
-//   CheckCircle2, Users, Building2, FileText,
-//   Plus, X, Briefcase, Trash2
-// } from 'lucide-react';
-
-// // Editable text component
-// const EditableParagraph = ({ text, onSave, onCancel, onDelete }) => {
-//   const [value, setValue] = useState(text);
-
-//   return (
-//     <div className="relative group">
-//       <div className="space-y-2">
-//         <Textarea
-//           value={value}
-//           onChange={(e) => setValue(e.target.value)}
-//           className="min-h-[100px] w-full pr-24"
-//           rows={3}
-//         />
-//         <div className="absolute top-2 right-2 flex gap-1">
-//           <Button 
-//             size="sm" 
-//             variant="ghost" 
-//             className="text-red-500 hover:text-red-600"
-//             onClick={onDelete}
-//           >
-//             <Trash2 className="w-4 h-4" />
-//           </Button>
-//           <Button 
-//             size="sm" 
-//             variant="ghost" 
-//             className="text-gray-500"
-//             onClick={onCancel}
-//           >
-//             Cancel
-//           </Button>
-//           <Button 
-//             size="sm" 
-//             className="bg-indigo-500 text-white hover:bg-indigo-600"
-//             onClick={() => onSave(value)}
-//           >
-//             <Save className="w-4 h-4 mr-1" />
-//             Save
-//           </Button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// const ProposalDisplay = () => {
-//   const params = useParams();
-//   const [loading, setLoading] = useState(true);
-//   const [proposal, setProposal] = useState(null);
-//   const [editingItems, setEditingItems] = useState({});
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-//   const [versionName, setVersionName] = useState('');
-
-//   useEffect(() => {
-//     fetchProposal();
-//   }, [params.id]);
-
-//   const fetchProposal = async () => {
-//     try {
-//       const response = await fetch('/api/get-proposal', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({ proposalId: params.id })
-//       });
-      
-//       const data = await response.json();
-//       if (response.ok) {
-//         setProposal(data.currentContent);
-//       } else {
-//         throw new Error(data.error || 'Failed to fetch proposal');
-//       }
-//     } catch (error) {
-//       console.error('Error fetching proposal:', error);
-//       alert('Failed to fetch proposal');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleEdit = (path) => {
-//     setEditingItems(prev => ({
-//       ...prev,
-//       [path]: true
-//     }));
-//   };
-
-//   const handleSave = (path, newValue) => {
-//     const pathSegments = path.split('.');
-//     const lastSegment = pathSegments[pathSegments.length - 1];
-    
-//     setProposal(prev => {
-//       const newProposal = { ...prev };
-//       let current = newProposal;
-      
-//       for (let i = 0; i < pathSegments.length - 1; i++) {
-//         current = current[pathSegments[i]];
-//       }
-      
-//       if (Array.isArray(current)) {
-//         current[parseInt(lastSegment)] = newValue;
-//       } else {
-//         current[lastSegment] = newValue;
-//       }
-      
-//       return newProposal;
-//     });
-    
-//     setEditingItems(prev => ({
-//       ...prev,
-//       [path]: false
-//     }));
-//   };
-
-//   const handleCancel = (path) => {
-//     setEditingItems(prev => ({
-//       ...prev,
-//       [path]: false
-//     }));
-//   };
-
-//   const handleDelete = (path) => {
-//     const pathSegments = path.split('.');
-//     const lastSegment = pathSegments[pathSegments.length - 1];
-    
-//     setProposal(prev => {
-//       const newProposal = { ...prev };
-//       let current = newProposal;
-      
-//       for (let i = 0; i < pathSegments.length - 1; i++) {
-//         current = current[pathSegments[i]];
-//       }
-      
-//       if (Array.isArray(current)) {
-//         current.splice(parseInt(lastSegment), 1);
-//       } else {
-//         delete current[lastSegment];
-//       }
-      
-//       return newProposal;
-//     });
-//   };
-
-//   const handleSaveVersion = async () => {
-//     if (!versionName.trim()) {
-//       alert('Please enter a version name');
-//       return;
-//     }
-
-//     try {
-//       const response = await fetch('/api/save-proposal-version', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({
-//           proposalId: params.id,
-//           name: versionName,
-//           content: proposal
-//         }),
-//       });
-
-//       const data = await response.json();
-
-//       if (response.ok) {
-//         setProposal(data.currentContent);
-//         setIsModalOpen(false);
-//         setVersionName('');
-//         alert('Version saved successfully');
-//       } else {
-//         throw new Error(data.error || 'Failed to save version');
-//       }
-//     } catch (error) {
-//       console.error('Error saving version:', error);
-//       alert(error.message || 'Failed to save version');
-//     }
-//   };
-
-//   const getIconForSection = (sectionKey) => {
-//     const iconMap = {
-//       'Problems Addressed': AlertCircle,
-//       'Pain Points': Target,
-//       'Product Overview': Briefcase,
-//       'Top Features': Sparkles,
-//       'Top Functionalities': Settings,
-//       'Best Version of Product': CheckCircle2,
-//       'Testimonials': Users,
-//       'About the company': Building2,
-//       'Company Description': Building2,
-//       'Analysis of Customer Preferences': Activity,
-//       'Particular Requirements': FileText,
-//       'How the Product Can Help': CheckCircle2
-//     };
-    
-//     const key = Object.keys(iconMap).find(k => 
-//       sectionKey.toLowerCase().includes(k.toLowerCase())
-//     );
-    
-//     return iconMap[key] || FileText;
-//   };
-
-//   const renderContent = (content, path) => {
-//     if (!content) return null;
-    
-//     if (typeof content === 'string') {
-//       const isEditing = editingItems[path];
-      
-//       return isEditing ? (
-//         <EditableParagraph
-//           text={content}
-//           onSave={(newValue) => handleSave(path, newValue)}
-//           onCancel={() => handleCancel(path)}
-//           onDelete={() => handleDelete(path)}
-//         />
-//       ) : (
-//         <div className="relative group">
-//           <p className="text-gray-700 leading-relaxed mb-2 pr-20">{content}</p>
-//           <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
-//             <Button 
-//               size="sm" 
-//               variant="ghost" 
-//               className="text-red-500 hover:text-red-600"
-//               onClick={() => handleDelete(path)}
-//             >
-//               <Trash2 className="w-4 h-4" />
-//             </Button>
-//             <Button 
-//               size="sm" 
-//               variant="ghost"
-//               onClick={() => handleEdit(path)}
-//             >
-//               <Edit2 className="w-4 h-4" />
-//             </Button>
-//           </div>
-//         </div>
-//       );
-//     }
-    
-//     if (Array.isArray(content)) {
-//       return (
-//         <div className="space-y-3">
-//           {content.map((item, index) => (
-//             <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
-//               {typeof item === 'object' ? (
-//                 <div>
-//                   {(item.Feature || item.functionality) && (
-//                     <h4 className="font-semibold text-indigo-600 mb-2">
-//                       {item.Feature || item.functionality}
-//                     </h4>
-//                   )}
-                  
-//                   {item.Details && (
-//                     <div className="ml-4">
-//                       {Array.isArray(item.Details) 
-//                         ? item.Details.map((detail, idx) => (
-//                             <div key={idx} className="relative group">
-//                               {editingItems[`${path}.Details.${idx}`] ? (
-//                                 <EditableParagraph
-//                                   text={detail}
-//                                   onSave={(newValue) => handleSave(`${path}.Details.${idx}`, newValue)}
-//                                   onCancel={() => handleCancel(`${path}.Details.${idx}`)}
-//                                   onDelete={() => handleDelete(`${path}.Details.${idx}`)}
-//                                 />
-//                               ) : (
-//                                 <div className="relative group">
-//                                   <p className="text-gray-700 mb-2 pr-20">{detail}</p>
-//                                   <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
-//                                     <Button 
-//                                       size="sm" 
-//                                       variant="ghost" 
-//                                       className="text-red-500 hover:text-red-600"
-//                                       onClick={() => handleDelete(`${path}.Details.${idx}`)}
-//                                     >
-//                                       <Trash2 className="w-4 h-4" />
-//                                     </Button>
-//                                     <Button 
-//                                       size="sm" 
-//                                       variant="ghost"
-//                                       onClick={() => handleEdit(`${path}.Details.${idx}`)}
-//                                     >
-//                                       <Edit2 className="w-4 h-4" />
-//                                     </Button>
-//                                   </div>
-//                                 </div>
-//                               )}
-//                             </div>
-//                           ))
-//                         : <p className="text-gray-700">{item.Details}</p>
-//                       }
-//                     </div>
-//                   )}
-                  
-//                   {item.features && (
-//                     <ul className="list-disc ml-6 mt-2">
-//                       {item.features.map((feature, idx) => (
-//                         <li key={idx} className="text-gray-700 relative group">
-//                           {editingItems[`${path}.features.${idx}`] ? (
-//                             <EditableParagraph
-//                               text={feature}
-//                               onSave={(newValue) => handleSave(`${path}.features.${idx}`, newValue)}
-//                               onCancel={() => handleCancel(`${path}.features.${idx}`)}
-//                               onDelete={() => handleDelete(`${path}.features.${idx}`)}
-//                             />
-//                           ) : (
-//                             <div className="relative group">
-//                               <span className="pr-20">{feature}</span>
-//                               <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
-//                                 <Button 
-//                                   size="sm" 
-//                                   variant="ghost" 
-//                                   className="text-red-500 hover:text-red-600"
-//                                   onClick={() => handleDelete(`${path}.features.${idx}`)}
-//                                 >
-//                                   <Trash2 className="w-4 h-4" />
-//                                 </Button>
-//                                 <Button 
-//                                   size="sm" 
-//                                   variant="ghost"
-//                                   onClick={() => handleEdit(`${path}.features.${idx}`)}
-//                                 >
-//                                   <Edit2 className="w-4 h-4" />
-//                                 </Button>
-//                               </div>
-//                             </div>
-//                           )}
-//                         </li>
-//                       ))}
-//                     </ul>
-//                   )}
-                  
-//                   {item.Name && (
-//                     <div className="border-l-4 border-indigo-500 pl-4">
-//                       <p className="font-semibold">{item.Name}</p>
-//                       <p className="text-sm text-gray-600">
-//                         {item.Designation} at {item.Organization}
-//                       </p>
-//                       <p className="mt-2 italic">"{item.Message}"</p>
-//                     </div>
-//                   )}
-//                 </div>
-//               ) : (
-//                 renderContent(item, `${path}.${index}`)
-//               )}
-//             </div>
-//           ))}
-//           <Button
-//             size="sm"
-//             variant="outline"
-//             onClick={() => {
-//               setProposal(prev => {
-//                 const newProposal = { ...prev };
-//                 let current = newProposal;
-//                 const pathSegments = path.split('.');
-//                 for (const segment of pathSegments) {
-//                   current = current[segment];
-//                 }
-//                 current.push('');
-//                 return newProposal;
-//               });
-//             }}
-//             className="mt-2"
-//           >
-//             <Plus className="w-4 h-4 mr-2" />
-//             Add Item
-//           </Button>
-//         </div>
-//       );
-//     }
-    
-//     if (typeof content === 'object' && content !== null) {
-//       return (
-//         <div className="space-y-4">
-//           {Object.entries(content).map(([key, value]) => {
-//             if (['id', 'createdAt', 'updatedAt'].includes(key)) return null;
-            
-//             if (['CE', 'COI', 'ROI'].includes(key)) {
-//               const titles = {
-//                 'CE': 'Competitive Edge',
-//                 'COI': 'Cost of Inaction',
-//                 'ROI': 'Return on Investment'
-//               };
-              
-//               return (
-//                 <div key={key} className="mb-4">
-//                   <h4 className="font-semibold text-indigo-600 mb-2">{titles[key]}</h4>
-//                   {renderContent(value, `${path}.${key}`)}
-//                 </div>
-//               );
-//             }
-            
-//             return (
-//               <div key={key} className="mb-4">
-//                 <h4 className="font-semibold text-indigo-600 mb-2">
-//                   {key.replace(/[•-]\s?/g, '')}
-//                 </h4>
-//                 {renderContent(value, `${path}.${key}`)}
-//               </div>
-//             );
-//           })}
-//         </div>
-//       );
-//     }
-    
-//     return null;
-//   };
-// const Section = ({ title, sectionKey, icon: Icon }) => {
-//     if (!proposal[sectionKey] || 
-//         (Array.isArray(proposal[sectionKey]) && proposal[sectionKey].length === 0) ||
-//         (typeof proposal[sectionKey] === 'object' && Object.keys(proposal[sectionKey]).length === 0)) {
-//       return null;
-//     }
-
-//     return (
-//       <Card className="overflow-hidden transform hover:scale-[1.01] transition-transform duration-300 shadow-xl rounded-xl border-0 bg-gradient-to-r from-white to-gray-50">
-//         <CardContent className="p-8">
-//           <div className="flex items-center gap-4 mb-6">
-//             {Icon && (
-//               <div className="p-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 shadow-lg">
-//                 <Icon className="w-6 h-6 text-white" />
-//               </div>
-//             )}
-//             <h3 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-//               {title}
-//             </h3>
-//           </div>
-//           <div className="space-y-6">
-//             {renderContent(proposal[sectionKey], sectionKey)}
-//           </div>
-//         </CardContent>
-//       </Card>
-//     );
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="flex items-center justify-center min-h-[400px]">
-//         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
-//       </div>
-//     );
-//   }
-
-//   const sections = Object.keys(proposal || {}).filter(key => 
-//     !['id', 'createdAt', 'updatedAt'].includes(key)
-//   );
-
-//   return (
-//     <div className="pt-20 pb-12">
-//       <div className="max-w-4xl mx-auto space-y-8 px-4">
-//         {/* Header */}
-//         <div className="text-center space-y-6 py-8">
-//           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-//             {proposal?.Title || "AI-Generated Business Proposal"}
-//           </h2>
-//           <div className="flex justify-end">
-//             <Button
-//               onClick={() => setIsModalOpen(true)}
-//               className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600"
-//             >
-//               <Save className="w-4 h-4 mr-2" />
-//               Save Version
-//             </Button>
-//           </div>
-//         </div>
-
-//         {/* Sections */}
-//         {sections.map(sectionKey => (
-//           <Section
-//             key={sectionKey}
-//             title={sectionKey.replace(/([A-Z])/g, ' $1').trim()}
-//             sectionKey={sectionKey}
-//             icon={getIconForSection(sectionKey)}
-//           />
-//         ))}
-
-//         {/* Export Button */}
-//         <div className="flex justify-center pt-8">
-//           <Button
-//             size="lg"
-//             className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-lg"
-//             onClick={() => console.log(JSON.stringify(proposal, null, 2))}
-//           >
-//             Export Proposal
-//           </Button>
-//         </div>
-
-//         {/* Save Version Modal */}
-//         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-//           <DialogContent>
-//             <DialogHeader>
-//               <DialogTitle>Save New Version</DialogTitle>
-//             </DialogHeader>
-//             <div className="py-4">
-//               <Input
-//                 placeholder="Enter version name..."
-//                 value={versionName}
-//                 onChange={(e) => setVersionName(e.target.value)}
-//               />
-//             </div>
-//             <DialogFooter>
-//               <Button variant="outline" onClick={() => setIsModalOpen(false)}>
-//                 Cancel
-//               </Button>
-//               <Button 
-//                 onClick={handleSaveVersion}
-//                 className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
-//               >
-//                 Save Version
-//               </Button>
-//             </DialogFooter>
-//           </DialogContent>
-//         </Dialog>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ProposalDisplay;
 "use client"
 
 import React, { useState, useEffect } from 'react';
@@ -644,18 +109,6 @@ const TextDisplay = ({ text, onEdit, onDelete }) => {
   );
 };
 
-// Enhanced add item button
-// const AddItemButton = ({ onAdd }) => (
-//   <Button
-//     size="sm"
-//     variant="outline"
-//     onClick={onAdd}
-//     className="w-full mt-4 py-6 border-2 border-dashed border-gray-300 hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200 group"
-//   >
-//     <Plus className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-200" />
-//     Add New Item
-//   </Button>
-// );
 
 const ProposalDisplay = () => {
   const params = useParams();
@@ -780,6 +233,7 @@ const ProposalDisplay = () => {
       alert('Please enter a version name');
       return;
     }
+    console.log(proposal)
 
     try {
       const response = await fetch('/api/save-proposal-version', {
@@ -1002,6 +456,36 @@ const Section = ({ title, sectionKey, icon: Icon }) => {
   );
 };
 
+const proposalId = params.id;
+
+const [isSaving, setIsSaving] = useState(false);
+
+  const handleSaveToDashboard = async () => {
+    if (isSaving) return;
+    
+    setIsSaving(true);
+    try {
+      const response = await fetch('/api/save-proposal-to-dashboard', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ proposalId }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to save to dashboard');
+      }
+
+      alert('Proposal saved to dashboard successfully');
+      
+    } catch (error) {
+      console.error('Error saving to dashboard:', error);
+      alert(error.message || 'Failed to save to dashboard');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 if (loading) {
   return (
     <div className="flex items-center justify-center min-h-[400px]">
@@ -1045,8 +529,17 @@ return (
         ))}
       </div>
 
-      {/* Export Button */}
-      <div className="flex justify-center pt-8">
+      <div className="flex justify-center pt-8 space-x-4">
+        <Button
+        size="lg"
+          onClick={handleSaveToDashboard}
+          disabled={isSaving}
+          className="bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transform hover:scale-105 transition-all duration-200 disabled:opacity-50"
+        >
+          <CheckCircle2 className="w-4 h-4 mr-2" />
+          {isSaving ? 'Saving...' : 'Save to Dashboard'}
+        </Button>
+
         <Button
           size="lg"
           className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-lg transform hover:scale-105 transition-all duration-200"
@@ -1082,7 +575,7 @@ return (
               onClick={handleSaveVersion}
               className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600"
             >
-              Save Version
+              Save 
             </Button>
           </DialogFooter>
         </DialogContent>

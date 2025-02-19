@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 export async function POST(request: Request) {
     const formData = await request.json();
-    
+    console.log("this is the form data",formData);
     try {
       // Check if product exists
       const productId = formData.id;
@@ -113,6 +113,15 @@ export async function POST(request: Request) {
         CompanyName: formData.companyName || existingProduct.CompanyName,
         Headquarters: formData.headquarters || existingProduct.Headquarters,
         FoundersNames: formData.foundersNames || existingProduct.FoundersNames,
+
+        ByAdminYearFounded: formData.ByAdminYearFounded,
+          
+        ByAdminAwards : formData.ByAdminAwards,
+        ByAdminTeamSize : formData.ByAdminTeamSize,
+        ByAdminEmail  : formData.ByAdminEmail,
+        ByAdminPhone : formData.ByAdminPhone,
+        ByAdminWebsite : formData.ByAdminWebsite,
+
         featured: formData.featured ?? existingProduct.featured
       };
 

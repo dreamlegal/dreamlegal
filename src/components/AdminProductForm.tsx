@@ -386,6 +386,14 @@ useEffect(() => {
     safeSetState(product.Headquarters, setHeadquarters);
     safeSetState(product.FoundersNames, setFoundersNames);
 
+    safeSetState(product.ByAdminYearFounded, setByAdminYearFounded);
+    safeSetState(product.ByAdminAwards, setByAdminAwards);
+    safeSetState(product.ByAdminTeamSize, setByAdminTeamSize);
+    safeSetState(product.ByAdminEmail, setByAdminEmail);
+    safeSetState(product.ByAdminPhone, setByAdminPhone);
+    safeSetState(product.ByAdminWebsite, setByAdminWebsite);
+
+
  
     // Handle process lifecycle object
     if (product.processLifecycle && typeof product.processLifecycle === 'object') {
@@ -832,6 +840,13 @@ useEffect(() => {
           companyName: companyName,
           headquarters: headquarters,
           foundersNames: foundersNames,
+          ByAdminYearFounded,
+          
+          ByAdminAwards,
+          ByAdminTeamSize,
+          ByAdminEmail,
+          ByAdminPhone,
+          ByAdminWebsite,
 
 
         

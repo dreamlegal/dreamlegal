@@ -528,7 +528,8 @@ const ProposalDisplay = ({ proposalResponse }) => {
 
 
 
-// // updated code 
+// updated code 
+
 // "use client"
 
 // import React, { useState, useEffect } from 'react';
@@ -554,7 +555,9 @@ const ProposalDisplay = ({ proposalResponse }) => {
 //   const [selectedProduct, setSelectedProduct] = useState(null);
 //   const [loading, setLoading] = useState(false);
 //   const [proposalResponse, setProposalResponse] = useState(null);
-//   const vendorId = "cm164oz7v0002vaf5fc8rx9of";
+//   // const vendorId = "cm164le6u0000vaf5r6hehl1f";
+//    const { vendorId, userType } = useAuth()
+    
 
 //   // Client Information States
 //   const [clientSector, setClientSector] = useState('');
@@ -653,21 +656,45 @@ const ProposalDisplay = ({ proposalResponse }) => {
     
 //     setLoading(true);
 //     try {
-//       const response = await fetch('http://localhost:8000/ai/proposal', {
+//       const response = await fetch('https://ai-backend-y6mq.onrender.com/ai/proposal', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
 //         },
+//         // body: JSON.stringify({
+//         //   product_profile: selectedProduct,
+//         //   client_profile: {
+//         //     Sector: clientSector,
+//         //     "Team Size": parseInt(clientTeamSize),
+//         //     Category: clientCategory,
+//         //     Problems: clientProblems,
+//         //     Requirements: clientRequirements
+//         //   },
+//         //   vendor_profile: {
+//         //     ROI: {
+//         //       Time: roiTime,
+//         //       Cost: roiCost,
+//         //       KPI: roiKpi
+//         //     },
+//         //     Testimonial: {
+//         //       Name: testimonial.name,
+//         //       Designation: testimonial.designation,
+//         //       Organization: testimonial.organization,
+//         //       Message: testimonial.message
+//         //     },
+//         //     CompanyDescription: companyDescription
+//         //   }
+//         // }),
 //         body: JSON.stringify({
 //           product_profile: selectedProduct,
 //           client_profile: {
 //             Sector: clientSector,
-//             "Team Size": parseInt(clientTeamSize),
+//             "Team Size": clientTeamSize, // Remove parseInt
 //             Category: clientCategory,
 //             Problems: clientProblems,
-//             Requirements: clientRequirements
+//             "Particular Requirements": clientRequirements // Update key name
 //           },
-//           vendor_profile: {
+//           vendor_information: { // Change from vendor_profile
 //             ROI: {
 //               Time: roiTime,
 //               Cost: roiCost,
@@ -676,77 +703,274 @@ const ProposalDisplay = ({ proposalResponse }) => {
 //             Testimonial: {
 //               Name: testimonial.name,
 //               Designation: testimonial.designation,
-//               Organization: testimonial.organization,
+//               Organisation: testimonial.organization, // Update spelling
 //               Message: testimonial.message
 //             },
-//             CompanyDescription: companyDescription
+//             AboutCompany: companyDescription // Change from CompanyDescription
 //           }
-//         }),
+//         })
 //       });
       
 //       const data = await response.json();
 //       setProposalResponse(data);
+//       console.log(data);
+//       console.log(proposalResponse);
 //     } catch (error) {
 //       console.error('Error:', error);
 //     } finally {
 //       setLoading(false);
 //     }
 //   };
-//   const proposalData = {
-//     "Challenges": {
-//       "Problems": "AI-driven suggestions on how the tool fits into their current process. Detailed version based on response input.",
-//       "Particular Requirements": [
-//         "Requirement 1 - Brief explanation of how it is met",
-//         "Requirement 2 - Brief explanation of how it is met",
-//         "Requirement 3 - Brief explanation of how it is met"
-//       ]
-//     },
-//     "Why_A_Category_Tool": {
-//       "Competitive Edge": [
-//         "Early adopters experience X% increase in efficiency",
-//         "Reduces manual workload by Y%",
-//         "Faster decision-making with AI insights"
-//       ],
-//       "Cost of Inaction": [
-//         "Teams continue facing inefficiencies and increased costs",
-//         "Missed opportunities for data-driven decision-making",
-//         "Higher risk of compliance issues and legal errors"
-//       ],
-//       "Success Stories & ROI Predictions": [
-//         "Company X saw a Z% reduction in contract processing time",
-//         "Legal team at Company Y saved $X annually by automating processes",
-//         "Firm Z improved client response time by Y% using AI-driven tools"
-//       ]
-//     },
-//     "Product_&_Offering_Information": {
-//       "Product Overview": "Concise summary of what the product does, generated by AI based on user profile.",
-//       "Problems Addressed": [
-//         "Pain point 1 solved for legal teams",
-//         "Pain point 2 solved for legal teams",
-//         "Pain point 3 solved for legal teams"
-//       ],
-//       "Key Features & Functionalities": [
-//         "Feature 1 - Brief description",
-//         "Feature 2 - Brief description",
-//         "Feature 3 - Brief description"
-//       ],
-//       "Best Version Use Cases": [
-//         "Ideal for mid-sized law firms",
-//         "Suitable for in-house legal teams in tech companies",
-//         "Beneficial for compliance teams in financial services"
-//       ]
-//     },
-//     "Testimonial": {
-//       "Testimonials": [
-//         "'This tool transformed our legal workflow.' - Client A",
-//         "'A must-have for any legal team looking to improve efficiency.' - Client B",
-//         "'We saw immediate ROI within the first three months.' - Client C"
-//       ]
-//     },
-//     "About_The_Company": {
-//       "Description": "Brief company overview based on responses from questions."
+// new one
+//   "use client"
+
+// import React, { useState, useEffect } from 'react';
+// import { useRouter } from 'next/navigation';
+// import { 
+//   Search, 
+//   Building2, 
+//   Users, 
+//   Briefcase,
+//   FileText,
+//   Package,
+//   ArrowRight,
+//   CheckCircle2,
+//   Sparkles,
+//   Target,
+//   Star
+// } from 'lucide-react';
+// import { Card, CardContent } from '@/components/ui/card';
+// import { useAuth } from '@/context/authContext';
+
+// const VendorProposalGenerator = () => {
+//   const router = useRouter();
+//   const [products, setProducts] = useState([]);
+//   const [productsLoading, setProductsLoading] = useState(true);
+//   const [selectedProduct, setSelectedProduct] = useState(null);
+//   const [loading, setLoading] = useState(false);
+//   // const { vendorId } = useAuth();
+//   const vendorId ="cm164le6u0000vaf5r6hehl1f";
+//   const [credits, setCredits] = useState(null);
+
+//   // Client Information States
+//   const [clientSector, setClientSector] = useState('');
+//   const [clientTeamSize, setClientTeamSize] = useState('');
+//   const [clientCategory, setClientCategory] = useState('');
+//   const [clientProblems, setClientProblems] = useState('');
+//   const [clientRequirements, setClientRequirements] = useState('');
+
+//   // ROI States
+//   const [roiTime, setRoiTime] = useState('');
+//   const [roiCost, setRoiCost] = useState('');
+//   const [roiKpi, setRoiKpi] = useState('');
+
+//   // Testimonial State
+//   const [testimonial, setTestimonial] = useState({
+//     name: '',
+//     designation: '',
+//     organization: '',
+//     message: ''
+//   });
+
+//   // Company Description State
+//   const [companyDescription, setCompanyDescription] = useState('');
+
+//   const categories = [
+//     "Client Relationship Management",
+//     "Governance, Risk and Compliance",
+//     "Contract Lifecycle Management",
+//     "E-Signature",
+//     "Document Management System",
+//     "E-billing and Invoicing",
+//     "E-discovery",
+//     "Intellectual Property Management",
+//     "Litigation Management and Analytics",
+//     "Legal Workflow Automation",
+//     "Legal Research",
+//   ];
+
+//   const teamSizes = ["1", "2-20", "21-50", "51-200", "201-500", "500+"];
+
+//   useEffect(() => {
+//     fetchProducts();
+//     fetchCredits();
+//   }, []);
+
+//   const fetchCredits = async () => {
+//     try {
+//       const response = await fetch('/api/get-vendor-credits', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ vendorId })
+//       });
+//       const data = await response.json();
+//       setCredits(data);
+//     } catch (error) {
+//       console.error('Error fetching credits:', error);
 //     }
-//   }
+//   };
+
+//   const fetchProducts = async () => {
+//     setProductsLoading(true);
+//     try {
+//       const response = await fetch('/api/get-all-product-by-vendor', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ userId: vendorId }),
+//       });
+//       const data = await response.json();
+//       const productArray = Array.isArray(data) ? data : data.data || [];
+//       setProducts(productArray);
+//     } catch (error) {
+//       console.error('Error fetching products:', error);
+//       setProducts([]);
+//     } finally {
+//       setProductsLoading(false);
+//     }
+//   };
+
+//   // const handleGenerateProposal = async () => {
+//   //   if (!selectedProduct || !clientSector || !clientTeamSize || !clientCategory) return;
+//   //   if (!credits?.proposalCredits) {
+//   //     alert('You have no proposal credits remaining');
+//   //     return;
+//   //   }
+    
+//   //   setLoading(true);
+//   //   try {
+//   //     // First save the form data
+//   //     const formResponse = await fetch('/api/save-proposal-form', {
+//   //       method: 'POST',
+//   //       headers: { 'Content-Type': 'application/json' },
+//   //       body: JSON.stringify({
+//   //         vendorId,
+//   //         formData: {
+//   //           product_profile: selectedProduct,
+//   //           client_profile: {
+//   //             Sector: clientSector,
+//   //             "Team Size": clientTeamSize,
+//   //             Category: clientCategory,
+//   //             Problems: clientProblems,
+//   //             "Particular Requirements": clientRequirements
+//   //           },
+//   //           vendor_information: {
+//   //             ROI: {
+//   //               Time: roiTime,
+//   //               Cost: roiCost,
+//   //               KPI: roiKpi
+//   //             },
+//   //             Testimonial: {
+//   //               Name: testimonial.name,
+//   //               Designation: testimonial.designation,
+//   //               Organisation: testimonial.organization,
+//   //               Message: testimonial.message
+//   //             },
+//   //             AboutCompany: companyDescription
+//   //           }
+//   //         }
+//   //       }),
+//   //     });
+
+//   //     const { id: proposalId } = await formResponse.json();
+
+//   //     // Then generate the AI proposal
+//   //     const generateResponse = await fetch('/api/create-custom-proposal', {
+//   //       method: 'POST',
+//   //       headers: { 'Content-Type': 'application/json' },
+//   //       body: JSON.stringify({ proposalId, vendorId }),
+//   //     });
+
+//   //     const data = await generateResponse.json();
+      
+//   //     if (generateResponse.ok) {
+//   //       // Open the proposal page in a new tab
+//   //       window.open(`/proposals/${proposalId}`, '_blank');
+      
+//   //     } else {
+//   //       alert(data.error);
+//   //     }
+//   //   } catch (error) {
+//   //     console.error('Error:', error);
+//   //     alert('An error occurred during proposal generation');
+//   //   } finally {
+//   //     setLoading(false);
+//   //   }
+//   // };
+//   const handleGenerateProposal = async () => {
+//     if (!selectedProduct || !clientSector || !clientTeamSize || !clientCategory) return;
+//     if (!credits?.proposalCredits) {
+//       alert('You have no proposal credits remaining');
+//       return;
+//     }
+    
+//     const formData = {
+//       product_profile: selectedProduct,
+//       client_profile: {
+//         Sector: clientSector,
+//         "Team Size": clientTeamSize,
+//         Category: clientCategory,
+//         Problems: clientProblems,
+//         "Particular Requirements": clientRequirements
+//       },
+//       vendor_information: {
+//         ROI: {
+//           Time: roiTime,
+//           Cost: roiCost,
+//           KPI: roiKpi
+//         },
+//         Testimonial: {
+//           Name: testimonial.name,
+//           Designation: testimonial.designation,
+//           Organisation: testimonial.organization,
+//           Message: testimonial.message
+//         },
+//         AboutCompany: companyDescription
+//       }
+//     };
+    
+//     setLoading(true);
+//     try {
+//       // First save the form data
+//       const formResponse = await fetch('/api/save-proposal-form', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({
+//           vendorId,
+//           formData
+//         }),
+//       });
+  
+//       const { id } = await formResponse.json();
+//       // const sdc=await formResponse.json();
+//       const proposalId = id;
+//       console.log(`Proposal ID: ${proposalId}`);
+    
+  
+//       // Then generate the AI proposal with the same form data
+//       const generateResponse = await fetch('/api/create-custom-proposal', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ 
+//           proposalId,
+//           vendorId,
+//           formData 
+//         }),
+//       });
+  
+//       const data = await generateResponse.json();
+      
+//       if (generateResponse.ok) {
+//         window.open(`/proposals/${proposalId}`, '_blank');
+//       } else {
+//         alert(data.error);
+//       }
+//     } catch (error) {
+//       console.error('Error:', error);
+//       alert('An error occurred during proposal generation');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
   
 
 //   return (
@@ -1063,29 +1287,7 @@ const ProposalDisplay = ({ proposalResponse }) => {
 //         </div>
 
 //         {/* Proposal Response Section */}
-//         {/* {(loading || proposalResponse) && ( */}
-//   <div className="mt-8 transform transition-all duration-500">
-//     <Card className="bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300">
-//       <CardContent className="p-8">
-
-//       <ProposalDisplay  proposal={proposalData}/>
-//         {loading ? (
-//           <div className="min-h-[400px] flex flex-col items-center justify-center">
-//             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-500"></div>
-//             <p className="mt-6 text-lg text-gray-600">Analyzing your feature...</p>
-//             <p className="text-sm text-gray-500 mt-2">This may take a moment</p>
-//           </div>
-//         ) : (
-//           proposalResponse && (
-//             <pre className="bg-gray-50 p-4 rounded-lg overflow-auto max-h-[600px]">
-//               {JSON.stringify(proposalResponse, null, 2)}
-//             </pre>
-//           )
-//         )}
-//       </CardContent>
-//     </Card>
-//   </div>
-// {/* )} */}
+       
 //       </div>
 //     </div>
 //   );
@@ -1098,299 +1300,209 @@ const ProposalDisplay = ({ proposalResponse }) => {
 // import { Button } from '@/components/ui/button';
 // import { Input } from '@/components/ui/input';
 // import { Textarea } from '@/components/ui/textarea';
-
-// import { Edit2, Save, X,  } from 'lucide-react';
+// import { 
+//   Edit2, Save, X, AlertCircle, 
+//  Activity, Calendar, Settings 
+// } from 'lucide-react';
 
 // const ProposalDisplay = ({ proposal: initialProposal }) => {
-//   const [proposal, setProposal] = useState(initialProposal);
+//   // Handle both wrapper formats
+//   const initialData = initialProposal?.response?.Proposal || initialProposal || {};
+//   const [proposal, setProposal] = useState(initialData);
 //   const [editingSection, setEditingSection] = useState(null);
 //   const [editingField, setEditingField] = useState(null);
 
-//   const handleSave = (section, field, value) => {
-//     setProposal(prev => ({
-//       ...prev,
-//       [section]: field ? {
-//         ...prev[section],
-//         [field]: value
-//       } : value
-//     }));
-//     setEditingSection(null);
-//     setEditingField(null);
-//   };
-
-//   const EditableText = ({ text, onSave }) => {
-//     const [value, setValue] = useState(text);
+//   // Helper to get icon by section
+//   const getIconForSection = (sectionKey) => {
+//     const iconMap = {
+//       'Problems Addressed': AlertCircle,
+//       'Pain Points': Target,
+//       'Product Overview': Briefcase,
+//       'Top Features': Sparkles,
+//       'Top Functionalities': Settings,
+//       'Best Version of Product': CheckCircle2,
+//       'Testimonials': Users,
+//       'About the company': Building2,
+//       'Company Description': Building2,
+//       'Analysis of Customer Preferences': Activity,
+//       'Particular Requirements': FileText,
+//       'How the Product Can Help': CheckCircle2
+//     };
     
-//     return (
-//       <div className="flex flex-col gap-2">
-//         <Textarea 
-//           value={value}
-//           onChange={(e) => setValue(e.target.value)}
-//           className="min-h-[100px] bg-white border-0 shadow-sm"
-//         />
-//         <div className="flex gap-2">
-//           <Button 
-//             size="sm"
-//             onClick={() => onSave(value)}
-//             className="bg-green-500 hover:bg-green-600"
-//           >
-//             <Save className="w-4 h-4 mr-1" />
-//             Save
-//           </Button>
-//           <Button 
-//             size="sm"
-//             variant="outline"
-//             onClick={() => {
-//               setEditingSection(null);
-//               setEditingField(null);
-//             }}
-//           >
-//             <X className="w-4 h-4 mr-1" />
-//             Cancel
-//           </Button>
-//         </div>
-//       </div>
+//     // Match partial keys for similar sections
+//     const key = Object.keys(iconMap).find(k => 
+//       sectionKey.toLowerCase().includes(k.toLowerCase())
 //     );
+    
+//     return iconMap[key] || FileText;
 //   };
 
-//   const EditableList = ({ items, onSave }) => {
-//     const [values, setValues] = useState(items);
-
-//     return (
-//       <div className="flex flex-col gap-2">
-//         {values.map((item, index) => (
-//           <div key={index} className="flex gap-2">
-//             <Input
-//               value={item}
-//               onChange={(e) => setValues(values.map((v, i) => i === index ? e.target.value : v))}
-//               className="flex-1 bg-white border-0 shadow-sm"
-//             />
-//             <Button 
-//               size="sm"
-//               variant="outline"
-//               onClick={() => setValues(values.filter((_, i) => i !== index))}
-//               className="text-red-500"
-//             >
-//               <X className="w-4 h-4" />
-//             </Button>
-//           </div>
-//         ))}
-//         <div className="flex gap-2 mt-2">
-//           <Button 
-//             size="sm"
-//             onClick={() => setValues([...values, ''])}
-//             variant="outline"
-//           >
-//             Add Item
-//           </Button>
-//           <Button 
-//             size="sm"
-//             onClick={() => onSave(values)}
-//             className="bg-green-500 hover:bg-green-600"
-//           >
-//             <Save className="w-4 h-4 mr-1" />
-//             Save
-//           </Button>
-//           <Button 
-//             size="sm"
-//             variant="outline"
-//             onClick={() => {
-//               setEditingSection(null);
-//               setEditingField(null);
-//             }}
-//           >
-//             <X className="w-4 h-4 mr-1" />
-//             Cancel
-//           </Button>
-//         </div>
-//       </div>
-//     );
-//   };
-
-//   const Section = ({ title, sectionKey, icon: Icon, children }) => (
-//     <Card className="overflow-hidden transform hover:scale-[1.01] transition-transform duration-300 shadow-xl rounded-xl border-0 bg-gradient-to-r from-white to-gray-50">
-//       <CardContent className="p-8">
-//         <div className="flex items-center gap-4 mb-6">
-//           {Icon && (
-//             <div className="p-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 shadow-lg">
-//               <Icon className="w-6 h-6 text-white" />
-//             </div>
-//           )}
-//           <h3 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">{title}</h3>
-//           <Button
-//             size="sm"
-//             variant="outline"
-//             className="ml-auto text-indigo-600"
-//             onClick={() => {
-//               setEditingSection(sectionKey);
-//               setEditingField(null);
-//             }}
-//           >
-//             <Edit2 className="w-4 h-4" />
-//           </Button>
-//         </div>
-//         <div className="space-y-6">
-//           {children}
-//         </div>
-//       </CardContent>
-//     </Card>
-//   );
-
-//   const BulletList = ({ title, items, sectionKey, fieldKey }) => (
-//     <div className="space-y-4">
-//       {title && (
-//         <div className="flex justify-between items-center">
-//           <h4 className="text-xl font-semibold text-gray-700">{title}</h4>
-//           <Button
-//             size="sm"
-//             variant="outline"
-//             className="text-indigo-600"
-//             onClick={() => {
-//               setEditingSection(sectionKey);
-//               setEditingField(fieldKey);
-//             }}
-//           >
-//             <Edit2 className="w-4 h-4" />
-//           </Button>
-//         </div>
-//       )}
-//       {editingSection === sectionKey && editingField === fieldKey ? (
-//         <EditableList
-//           items={items}
-//           onSave={(value) => handleSave(sectionKey, fieldKey, value)}
-//         />
-//       ) : (
-//         <div className="space-y-4">
-//           {items?.map((item, index) => (
-//             <div 
-//               key={index}
-//               className="flex items-start space-x-4 bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200"
-//             >
-//               <div className="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"></div>
-//               <span className="text-gray-700 leading-relaxed">{item}</span>
+//   const renderContent = (content, depth = 0) => {
+//     if (!content) return null;
+    
+//     if (typeof content === 'string') {
+//       return (
+//         <p className="text-gray-700 leading-relaxed mb-2">{content}</p>
+//       );
+//     }
+    
+//     if (Array.isArray(content)) {
+//       return (
+//         <div className="space-y-3">
+//           {content.map((item, index) => (
+//             <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
+//               {typeof item === 'object' ? (
+//                 <div>
+//                   {/* Handle feature objects */}
+//                   {(item.Feature || item.functionality) && (
+//                     <h4 className="font-semibold text-indigo-600 mb-2">
+//                       {item.Feature || item.functionality}
+//                     </h4>
+//                   )}
+                  
+//                   {/* Handle details */}
+//                   {item.Details && (
+//                     <div className="ml-4">
+//                       {Array.isArray(item.Details) 
+//                         ? item.Details.map((detail, idx) => (
+//                             <p key={idx} className="text-gray-700 mb-2">{detail}</p>
+//                           ))
+//                         : <p className="text-gray-700">{item.Details}</p>
+//                       }
+//                     </div>
+//                   )}
+                  
+//                   {/* Handle features list */}
+//                   {item.features && (
+//                     <ul className="list-disc ml-6 mt-2">
+//                       {item.features.map((feature, idx) => (
+//                         <li key={idx} className="text-gray-700">{feature}</li>
+//                       ))}
+//                     </ul>
+//                   )}
+                  
+//                   {/* Handle testimonials */}
+//                   {item.Name && (
+//                     <div className="border-l-4 border-indigo-500 pl-4">
+//                       <p className="font-semibold">{item.Name}</p>
+//                       <p className="text-sm text-gray-600">
+//                         {item.Designation} at {item.Organization}
+//                       </p>
+//                       <p className="mt-2 italic">"{item.Message}"</p>
+//                     </div>
+//                   )}
+//                 </div>
+//               ) : (
+//                 <p className="text-gray-700">{item}</p>
+//               )}
 //             </div>
 //           ))}
 //         </div>
-//       )}
-//     </div>
-//   );
-
-//   const Paragraph = ({ text, sectionKey, fieldKey }) => (
-//     <div className="relative group">
-//       {editingSection === sectionKey && editingField === fieldKey ? (
-//         <EditableText
-//           text={text}
-//           onSave={(value) => handleSave(sectionKey, fieldKey, value)}
-//         />
-//       ) : (
-//         <div className="relative bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-//           <p className="text-gray-700 leading-relaxed">
-//             {text}
-//           </p>
-//           <Button
-//             size="sm"
-//             variant="outline"
-//             className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-indigo-600"
-//             onClick={() => {
-//               setEditingSection(sectionKey);
-//               setEditingField(fieldKey);
-//             }}
-//           >
-//             <Edit2 className="w-4 h-4" />
-//           </Button>
+//       );
+//     }
+    
+//     if (typeof content === 'object' && content !== null) {
+//       return (
+//         <div className="space-y-4">
+//           {Object.entries(content).map(([key, value]) => {
+//             // Skip rendering certain metadata keys
+//             if (['id', 'createdAt', 'updatedAt'].includes(key)) return null;
+            
+//             // Handle special sections (CE, COI, ROI)
+//             if (['CE', 'COI', 'ROI'].includes(key)) {
+//               const titles = {
+//                 'CE': 'Competitive Edge',
+//                 'COI': 'Cost of Inaction',
+//                 'ROI': 'Return on Investment'
+//               };
+              
+//               return (
+//                 <div key={key} className="mb-4">
+//                   <h4 className="font-semibold text-indigo-600 mb-2">{titles[key]}</h4>
+//                   {renderContent(value, depth + 1)}
+//                 </div>
+//               );
+//             }
+            
+//             // Regular section rendering
+//             return (
+//               <div key={key} className="mb-4">
+//                 <h4 className="font-semibold text-indigo-600 mb-2">
+//                   {key.replace(/[•-]\s?/g, '')}
+//                 </h4>
+//                 {renderContent(value, depth + 1)}
+//               </div>
+//             );
+//           })}
 //         </div>
-//       )}
-//     </div>
+//       );
+//     }
+    
+//     return null;
+//   };
+
+//   const Section = ({ title, sectionKey, icon: Icon }) => {
+//     // Skip rendering empty sections
+//     if (!proposal[sectionKey] || 
+//         (Array.isArray(proposal[sectionKey]) && proposal[sectionKey].length === 0) ||
+//         (typeof proposal[sectionKey] === 'object' && Object.keys(proposal[sectionKey]).length === 0)) {
+//       return null;
+//     }
+
+//     return (
+//       <Card className="overflow-hidden transform hover:scale-[1.01] transition-transform duration-300 shadow-xl rounded-xl border-0 bg-gradient-to-r from-white to-gray-50">
+//         <CardContent className="p-8">
+//           <div className="flex items-center gap-4 mb-6">
+//             {Icon && (
+//               <div className="p-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 shadow-lg">
+//                 <Icon className="w-6 h-6 text-white" />
+//               </div>
+//             )}
+//             <h3 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+//               {title}
+//             </h3>
+//             <Button
+//               size="sm"
+//               variant="outline"
+//               className="ml-auto text-indigo-600"
+//               onClick={() => setEditingSection(sectionKey)}
+//             >
+//               <Edit2 className="w-4 h-4" />
+//             </Button>
+//           </div>
+//           <div className="space-y-6">
+//             {renderContent(proposal[sectionKey])}
+//           </div>
+//         </CardContent>
+//       </Card>
+//     );
+//   };
+
+//   // Get all sections from the proposal
+//   const sections = Object.keys(proposal).filter(key => 
+//     !['id', 'createdAt', 'updatedAt'].includes(key)
 //   );
 
 //   return (
 //     <div className="max-w-4xl mx-auto p-6 space-y-8">
+//       {/* Title Section */}
 //       <div className="text-center space-y-6 py-8">
 //         <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-//           AI-Generated Business Proposal
+//           {proposal.Title || "AI-Generated Business Proposal"}
 //         </h2>
-//         <p className="text-gray-600">
-//           A comprehensive analysis and recommendation tailored to your needs
-//         </p>
 //       </div>
 
-//       <Section title="Challenges" sectionKey="Challenges" icon={Target}>
-//         <Paragraph
-//           text={proposal.Challenges.Problems}
-//           sectionKey="Challenges"
-//           fieldKey="Problems"
+//       {/* Dynamic Sections */}
+//       {sections.map(sectionKey => (
+//         <Section
+//           key={sectionKey}
+//           title={sectionKey.replace(/([A-Z])/g, ' $1').trim()} // Add spaces before capital letters
+//           sectionKey={sectionKey}
+//           icon={getIconForSection(sectionKey)}
 //         />
-//         <BulletList
-//           title="Particular Requirements"
-//           items={proposal.Challenges["Particular Requirements"]}
-//           sectionKey="Challenges"
-//           fieldKey="Particular Requirements"
-//         />
-//       </Section>
+//       ))}
 
-//       <Section title="Why Choose This Solution?" sectionKey="Why_A_Category_Tool" icon={Sparkles}>
-//         <BulletList
-//           title="Competitive Edge"
-//           items={proposal.Why_A_Category_Tool["Competitive Edge"]}
-//           sectionKey="Why_A_Category_Tool"
-//           fieldKey="Competitive Edge"
-//         />
-//         <BulletList
-//           title="Cost of Inaction"
-//           items={proposal.Why_A_Category_Tool["Cost of Inaction"]}
-//           sectionKey="Why_A_Category_Tool"
-//           fieldKey="Cost of Inaction"
-//         />
-//         <BulletList
-//           title="Success Stories"
-//           items={proposal.Why_A_Category_Tool["Success Stories & ROI Predictions"]}
-//           sectionKey="Why_A_Category_Tool"
-//           fieldKey="Success Stories & ROI Predictions"
-//         />
-//       </Section>
-
-//       <Section title="Product & Features" sectionKey="Product_&_Offering_Information" icon={CheckCircle2}>
-//         <Paragraph
-//           text={proposal["Product_&_Offering_Information"]["Product Overview"]}
-//           sectionKey="Product_&_Offering_Information"
-//           fieldKey="Product Overview"
-//         />
-//         <BulletList
-//           title="Problems Addressed"
-//           items={proposal["Product_&_Offering_Information"]["Problems Addressed"]}
-//           sectionKey="Product_&_Offering_Information"
-//           fieldKey="Problems Addressed"
-//         />
-//         <BulletList
-//           title="Key Features"
-//           items={proposal["Product_&_Offering_Information"]["Key Features & Functionalities"]}
-//           sectionKey="Product_&_Offering_Information"
-//           fieldKey="Key Features & Functionalities"
-//         />
-//         <BulletList
-//           title="Best Use Cases"
-//           items={proposal["Product_&_Offering_Information"]["Best Version Use Cases"]}
-//           sectionKey="Product_&_Offering_Information"
-//           fieldKey="Best Version Use Cases"
-//         />
-//       </Section>
-
-//       <Section title="Client Testimonials" sectionKey="Testimonial" icon={Users}>
-//         <BulletList
-//           items={proposal.Testimonial.Testimonials}
-//           sectionKey="Testimonial"
-//           fieldKey="Testimonials"
-//         />
-//       </Section>
-
-//       <Section title="About Us" sectionKey="About_The_Company" icon={Building2}>
-//         <Paragraph
-//           text={proposal.About_The_Company.Description}
-//           sectionKey="About_The_Company"
-//           fieldKey="Description"
-//         />
-//       </Section>
-
+//       {/* Export Button */}
 //       <div className="flex justify-center pt-8">
 //         <Button
 //           size="lg"

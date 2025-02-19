@@ -28,6 +28,20 @@ setLogoPreview: (preview) => set({ logoPreview: preview }),
   // setFoundersNames: (name) => set({ foundersNames: name }),
   setFoundersNames: (names) => set({ foundersNames: names }),  // Correct
 
+  
+ByAdminYearFounded: '',
+setByAdminYearFounded: (year) => set({ ByAdminYearFounded: year }),
+ByAdminAwards: '',
+setByAdminAwards: (awards) => set({ ByAdminAwards: awards }),
+ByAdminTeamSize: '',
+setByAdminTeamSize: (size) => set({ ByAdminTeamSize: size }),
+ByAdminEmail: '',
+setByAdminEmail: (email) => set({ ByAdminEmail: email }),
+ByAdminPhone: '',
+setByAdminPhone: (phone) => set({ ByAdminPhone: phone }),
+ByAdminWebsite: '',
+setByAdminWebsite: (website) => set({ ByAdminWebsite: website }),
+
   productName: '',
   logoUrl: '',
   category: [],

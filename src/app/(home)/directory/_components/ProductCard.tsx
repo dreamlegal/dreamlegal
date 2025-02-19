@@ -39,6 +39,8 @@ const ProductCard = ({
   const [shareUrl, setShareUrl] = useState('');
   const [tooltip, setTooltip] = useState('');
 
+  console.log(product);
+
   // Check bookmark status when component mounts or userId changes
   useEffect(() => {
     const checkBookmarkStatus = async () => {
@@ -345,16 +347,19 @@ const ProductCard = ({
         {/* Footer */}
         <div className="mt-6 pt-6 border-t border-gray-200">
           <div className="flex items-center justify-between">
-            <div>
+            <div className="flex flex-col md:flex-row gap-4">
+              <div>
               <p className="text-xs text-gray-500">Company</p>
               <p className="text-sm font-medium text-gray-900">
-                {product.company?.companyName || 'N/A'}
+                {product.company?.companyName || product.CompanyName || 'N/A'}
               </p>
-              {product.company?.headQuaters && (
-                <p className="text-xs text-gray-500 mt-1">
-                  {product.company.headQuaters}
-                </p>
-              )}
+              </div>
+              <div>
+              <p className="text-xs text-gray-500">Headquarters</p>
+              <p className="text-sm font-medium text-gray-900">
+                {product.company?.headQuaters || product.Headquarters || 'N/A'}
+              </p>
+              </div>
             </div>
             <Link
               href={`/product/${product.slug}`}

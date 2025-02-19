@@ -62,6 +62,19 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
     setCompanyName,
     setHeadquarters,
     setFoundersNames,
+
+    ByAdminYearFounded,
+    setByAdminYearFounded,
+    ByAdminAwards,
+    setByAdminAwards,
+    ByAdminTeamSize,
+    setByAdminTeamSize,
+    ByAdminEmail,
+    setByAdminEmail,
+    ByAdminPhone,
+    setByAdminPhone,
+    ByAdminWebsite,
+    setByAdminWebsite,
   } = ProductInfo();
 
 
@@ -666,6 +679,18 @@ useEffect(() => {
           companyName: companyName,
           headquarters: headquarters,
           foundersNames: foundersNames,
+          ByAdminYearFounded,
+          
+          ByAdminAwards,
+         
+          ByAdminTeamSize,
+          
+          ByAdminEmail,
+          
+          ByAdminPhone,
+         
+          ByAdminWebsite,
+          
 
         
           active: "draft",  // Default value

@@ -1,11 +1,15 @@
-import prisma from "@/lib/prisma";
+// import prisma from "@/lib/prisma";
 
-// export async function GET(request: Request) {
+
+// export async function POST(request: Request) {
 //   try {
 //     // Fetch all products where the 'active' field is 'draft'
 //     const products = await prisma.product.findMany({
 //       where: {
 //         active: 'draft',
+//       },
+//       orderBy: {
+//         createdAt: 'desc', // or 'createdAt' depending on your schema
 //       },
 //     });
 
@@ -33,16 +37,31 @@ import prisma from "@/lib/prisma";
 //   }
 // }
 
+// app/api/get-new-products/route.ts
+import prisma from "@/lib/prisma";
+
 export async function POST(request: Request) {
   try {
-    // Fetch all products where the 'active' field is 'draft'
+    const { page = 1, limit = 10 } = await request.json();
+    const skip = (page - 1) * limit;
+
+    // Get total count for pagination
+    const totalCount = await prisma.product.count({
+      where: {
+        active: 'draft'
+      }
+    });
+
+    // Fetch products with pagination
     const products = await prisma.product.findMany({
       where: {
-        active: 'draft',
+        active: 'draft'
       },
+      take: limit,
+      skip: skip,
       orderBy: {
-        createdAt: 'desc', // or 'createdAt' depending on your schema
-      },
+        createdAt: 'desc'
+      }
     });
 
     return Response.json(
@@ -50,6 +69,9 @@ export async function POST(request: Request) {
         msg: "Products fetched successfully",
         success: true,
         products,
+        total: totalCount,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit)
       },
       {
         status: 200,

@@ -270,13 +270,13 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
     const uploadedImages = await handleImageUpload();
     const uploadedAttachments = await handleAttachmentUpload();
   
-    if (uploadedImages.length === 0) {
-      console.error("No images were successfully uploaded");
-      setErrors(prev => ({ ...prev, images: "Failed to upload images" }));
+    // if (uploadedImages.length === 0) {
+    //   console.error("No images were successfully uploaded");
+    //   setErrors(prev => ({ ...prev, images: "Failed to upload images" }));
       
-      return;
+    //   return;
       
-    }
+    // }
     setImagesUrl(uploadedImages);
     setAttachmentsUrl(uploadedAttachments);
 
@@ -345,7 +345,7 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
             accept="image/*" 
             onChange={(e) => handleFileChange(e, "images")}
             ref={imageInputRef} // Reference for resetting
-            required
+            
           />
           {errors.images && <p className="text-red-500">{errors.images}</p>}
           <Button 
@@ -468,7 +468,7 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
          <div className="w-full mb-4">
            <label htmlFor="instagramUrl">Instagram</label>
            <div className="flex items-center">
-             <Input type="url" id="instagramUrl" name="instagramUrl" value={instagramUrl || ""} onChange={handleUrlChange} placeholder="Instagram URL" />
+             <Input type="text" id="instagramUrl" name="instagramUrl" value={instagramUrl || ""} onChange={handleUrlChange} placeholder="Instagram URL" />
            </div>
            {errors.instagramUrl && <p className="text-red-500">{errors.instagramUrl}</p>}
          </div>
@@ -476,7 +476,7 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
        <div className="w-full mb-4">
            <label htmlFor="linkedinUrl">Linkedin</label>
            <div className="flex items-center">
-             <Input type="url" id="linkedinUrl" name="linkedinUrl" value={linkedinUrl || ""} onChange={handleUrlChange} placeholder="LinkedIn URL" />           </div>
+             <Input type="text" id="linkedinUrl" name="linkedinUrl" value={linkedinUrl || ""} onChange={handleUrlChange} placeholder="LinkedIn URL" />           </div>
            {errors.linkedinUrl && <p className="text-red-500">{errors.linkedinUrl}</p>}
          </div>
         
@@ -484,7 +484,7 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
          <div className="w-full mb-4">
            <label htmlFor="twitterUrl">Twitter</label>
            <div className="flex items-center">
-             <Input type="url" id="twitterUrl" name="twitterUrl" value={twitterUrl || ""} onChange={handleUrlChange} placeholder="Twitter URL" />
+             <Input type="text" id="twitterUrl" name="twitterUrl" value={twitterUrl || ""} onChange={handleUrlChange} placeholder="Twitter URL" />
            </div>
            {errors.twitterUrl && <p className="text-red-500">{errors.twitterUrl}</p>}
          </div>
@@ -493,7 +493,7 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
          <div className="w-full mb-4">
            <label htmlFor="youtubeUrl">YouTube</label>
            <div className="flex items-center">
-            <Input type="url" id="youtubeUrl" name="youtubeUrl" value={youtubeUrl || ""} onChange={handleUrlChange} placeholder="YouTube Channel URL" />
+            <Input type="text" id="youtubeUrl" name="youtubeUrl" value={youtubeUrl || ""} onChange={handleUrlChange} placeholder="YouTube Channel URL" />
            </div>
            {errors.youtubeUrl && <p className="text-red-500">{errors.youtubeUrl}</p>}
          </div>

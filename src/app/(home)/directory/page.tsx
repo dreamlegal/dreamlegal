@@ -1,22 +1,21 @@
-// import DirectoryPage from "@/pages/DirectoryPage";
-// import React from "react";
+import CuratedCollection from "@/components/CuratedCollection";
+import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
+import HomeBlog from "@/components/HomeBlog";
+import HomeCta from "@/components/HomeCta";
+import HomeHero from "@/components/HomeHero";
+import HomeProduct from "@/components/HomeProduct";
+import { Testomonial } from "@/components/animated-ui/Testimonial";
 
-// function page() {
-//   return <DirectoryPage />;
-// }
-
-// export default page;
-
-"use client";
-import DirectoryPage from "./_components/DirectoryPage";
-import React from "react";
-
-function Page() {
+function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
-      <DirectoryPage />
+    <div>
+      <HomeHero />
+      <HomeProduct  />
+     
+      
     </div>
   );
 }
 
-export default Page;
+export default HomePage;

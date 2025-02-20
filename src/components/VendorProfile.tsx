@@ -1082,6 +1082,204 @@ import { useRouter } from "next/navigation";
 import { useAuth } from '@/context/authContext';
 import { Building2, Users, Star, Calendar, RefreshCw, Globe, Mail, Phone, MapPin, Award, Edit2 } from 'lucide-react';
 
+
+const countries = [
+  "Afghanistan",
+  "Albania",
+  "Algeria",
+  "Andorra",
+  "Angola",
+  "Antigua and Barbuda",
+  "Argentina",
+  "Armenia",
+  "Australia",
+  "Austria",
+  "Azerbaijan",
+  "Bahamas",
+  "Bahrain",
+  "Bangladesh",
+  "Barbados",
+  "Belarus",
+  "Belgium",
+  "Belize",
+  "Benin",
+  "Bhutan",
+  "Bolivia",
+  "Bosnia and Herzegovina",
+  "Botswana",
+  "Brazil",
+  "Brunei",
+  "Bulgaria",
+  "Burkina Faso",
+  "Burundi",
+  "Cabo Verde",
+  "Cambodia",
+  "Cameroon",
+  "Canada",
+  "Central African Republic",
+  "Chad",
+  "Chile",
+  "China",
+  "Colombia",
+  "Comoros",
+  "Congo, Democratic Republic of the",
+  "Congo, Republic of the",
+  "Costa Rica",
+  "Croatia",
+  "Cuba",
+  "Cyprus",
+  "Czech Republic",
+  "Denmark",
+  "Djibouti",
+  "Dominica",
+  "Dominican Republic",
+  "East Timor (Timor-Leste)",
+  "Ecuador",
+  "Egypt",
+  "El Salvador",
+  "Equatorial Guinea",
+  "Eritrea",
+  "Estonia",
+  "Eswatini",
+  "Ethiopia",
+  "Fiji",
+  "Finland",
+  "France",
+  "Gabon",
+  "Gambia",
+  "Georgia",
+  "Germany",
+  "Ghana",
+  "Greece",
+  "Grenada",
+  "Guatemala",
+  "Guinea",
+  "Guinea-Bissau",
+  "Guyana",
+  "Haiti",
+  "Honduras",
+  "Hungary",
+  "Iceland",
+  "India",
+  "Indonesia",
+  "Iran",
+  "Iraq",
+  "Ireland",
+  "Israel",
+  "Italy",
+  "Jamaica",
+  "Japan",
+  "Jordan",
+  "Kazakhstan",
+  "Kenya",
+  "Kiribati",
+  "Korea, North",
+  "Korea, South",
+  "Kosovo",
+  "Kuwait",
+  "Kyrgyzstan",
+  "Laos",
+  "Latvia",
+  "Lebanon",
+  "Lesotho",
+  "Liberia",
+  "Libya",
+  "Liechtenstein",
+  "Lithuania",
+  "Luxembourg",
+  "Madagascar",
+  "Malawi",
+  "Malaysia",
+  "Maldives",
+  "Mali",
+  "Malta",
+  "Marshall Islands",
+  "Mauritania",
+  "Mauritius",
+  "Mexico",
+  "Micronesia, Federated States of",
+  "Moldova",
+  "Monaco",
+  "Mongolia",
+  "Montenegro",
+  "Morocco",
+  "Mozambique",
+  "Myanmar (Burma)",
+  "Namibia",
+  "Nauru",
+  "Nepal",
+  "Netherlands",
+  "New Zealand",
+  "Nicaragua",
+  "Niger",
+  "Nigeria",
+  "North Macedonia",
+  "Norway",
+  "Oman",
+  "Pakistan",
+  "Palau",
+  "Panama",
+  "Papua New Guinea",
+  "Paraguay",
+  "Peru",
+  "Philippines",
+  "Poland",
+  "Portugal",
+  "Qatar",
+  "Romania",
+  "Russia",
+  "Rwanda",
+  "Saint Kitts and Nevis",
+  "Saint Lucia",
+  "Saint Vincent and the Grenadines",
+  "Samoa",
+  "San Marino",
+  "Sao Tome and Principe",
+  "Saudi Arabia",
+  "Senegal",
+  "Serbia",
+  "Seychelles",
+  "Sierra Leone",
+  "Singapore",
+  "Slovakia",
+  "Slovenia",
+  "Solomon Islands",
+  "Somalia",
+  "South Africa",
+  "South Sudan",
+  "Spain",
+  "Sri Lanka",
+  "Sudan",
+  "Suriname",
+  "Sweden",
+  "Switzerland",
+  "Syria",
+  "Taiwan",
+  "Tajikistan",
+  "Tanzania",
+  "Thailand",
+  "Togo",
+  "Tonga",
+  "Trinidad and Tobago",
+  "Tunisia",
+  "Turkey",
+  "Turkmenistan",
+  "Tuvalu",
+  "Uganda",
+  "Ukraine",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States",
+  "Uruguay",
+  "Uzbekistan",
+  "Vanuatu",
+  "Vatican City (Holy See)",
+  "Venezuela",
+  "Vietnam",
+  "Yemen",
+  "Zambia",
+  "Zimbabwe",
+];
 const VendorProfile = ({ verified, getProfile }) => {
   const router = useRouter();
   const { vendorId, userType } = useAuth();
@@ -1361,36 +1559,55 @@ const VendorProfile = ({ verified, getProfile }) => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Company Details Form */}
             <div className="space-y-6">
-              <div>
-                <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2 mb-4">
-                  <Building2 className="w-4 h-4 text-blue-500" />
-                  Company Information
-                </h3>
-                <div className="space-y-4">
-                  {[
-                    ['companyName', 'Company Name'],
-                    ['website', 'Website'],
-                    ['yearFounded', 'Year Founded'],
-                    ['headQuaters', 'Location'],
-                    ['contact', 'Contact'],
-                    ['NameOfFounders', 'Founders']
-                  ].map(([key, label]) => (
-                    <div key={key} className="space-y-2">
-                      <label className="text-sm font-medium text-gray-500">
-                        {label}
-                      </label>
-                      <input
-                        type="text"
-                        value={editedData[key] || ''}
-                        onChange={(e) => handleFieldChange(key, e.target.value)}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-200 
-                                focus:border-black focus:ring-1 focus:ring-black
-                                transition-colors"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div className="space-y-6">
+  <div>
+    <h3 className="text-sm font-medium text-gray-900 flex items-center gap-2 mb-4">
+      <Building2 className="w-4 h-4 text-blue-500" />
+      Company Information
+    </h3>
+    <div className="space-y-4">
+      {[
+        ['companyName', 'Company Name', 'text'],
+        ['website', 'Website', 'text'],
+        ['yearFounded', 'Year Founded', 'text'],
+        ['headQuaters', 'Location', 'select'],
+        ['contact', 'Contact', 'text'],
+        ['NameOfFounders', 'Founders', 'text']
+      ].map(([key, label, type]) => (
+        <div key={key} className="space-y-2">
+          <label className="text-sm font-medium text-gray-500">
+            {label}
+          </label>
+          {type === 'select' ? (
+            <select
+              value={editedData[key] || ''}
+              onChange={(e) => handleFieldChange(key, e.target.value)}
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 
+                        focus:border-black focus:ring-1 focus:ring-black
+                        transition-colors"
+            >
+              <option value="">Select a country</option>
+              {countries.map((country) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              type={type}
+              value={editedData[key] || ''}
+              onChange={(e) => handleFieldChange(key, e.target.value)}
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 
+                        focus:border-black focus:ring-1 focus:ring-black
+                        transition-colors"
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
             </div>
 
             {/* Achievements and Contact Form */}

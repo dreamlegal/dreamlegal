@@ -847,13 +847,18 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             {/* Headquarters */}
             <div className="space-y-2">
             <Label htmlFor="headquarters">Headquarters</Label>
-            <Input
-              id="headquarters"
-              value={headquarters}
-              onChange={(e) => setHeadquarters(e.target.value)}
-              placeholder="Enter headquarters location"
-              className="w-full"
-            />
+            <Select value={headquarters} onValueChange={(value) => setHeadquarters(value)}>
+              <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select headquarters location" />
+              </SelectTrigger>
+              <SelectContent>
+              {countries.map((country) => (
+              <SelectItem key={country} value={country}>
+              {country}
+              </SelectItem>
+              ))}
+              </SelectContent>
+            </Select>
             </div>
 
             {/* ByAdminYearFounded */}

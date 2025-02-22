@@ -1,4 +1,4 @@
-
+// 
 // old one 
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -196,7 +196,8 @@ const ProductComparison = ({ products, isOpen, onClose }) => {
 
 
 import  { useState, useEffect, useCallback } from 'react';
-import { Grid, List, Search, Package, FilterIcon,  } from 'lucide-react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { Grid, List, Search, Package, FilterIcon } from 'lucide-react';
 import { debounce } from 'lodash';
 import DirectoryFilter from './DirectoryFilter';
 import ProductCard from './ProductCard';
@@ -204,23 +205,53 @@ import ProductCard from './ProductCard';
 
 const ITEMS_PER_PAGE = 10;
 
+const extractCategoryName = (categoryString) => {
+  if (!categoryString) return '';
+  const parts = categoryString.split('|');
+  return parts[0].trim();
+};
+
 const DirectoryPage = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
   // State management
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || "");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [viewMode, setViewMode] = useState('list');
   const [compareProducts, setCompareProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
   
+  const getUserCategoryFromUrl = () => {
+    const userCategoryParam = searchParams.get('userCategory');
+    if (!userCategoryParam) return [];
+    // Decode the URL parameter properly, replacing '+' with spaces
+    const decodedCategory = decodeURIComponent(userCategoryParam.replace(/\+/g, ' '));
+    return [decodedCategory];
+  };
+
+  const parseCategoryParam = (categoryParam) => {
+    if (!categoryParam) return [];
+    return decodeURIComponent(categoryParam)
+      .split(',')
+      .map(cat => cat.replace(/\+/g, ' '));
+  };
+
   const [selectedFilters, setSelectedFilters] = useState({
-    categories: [],
-    userCategory: [],
+    // categories: searchParams.get('category') ? [searchParams.get('category')] : [],
+    categories: searchParams.get('category') 
+  ? decodeURIComponent(searchParams.get('category'))
+      .split(',')
+      .map(cat => cat.replace(/\+/g, ' '))
+  : [],
+    userCategory: getUserCategoryFromUrl(),
     language: [],
     country: [],
     industry: [],
@@ -229,76 +260,85 @@ const DirectoryPage = () => {
     price: [],
   });
 
-  // Debounced search function
-  const debouncedSearch = useCallback(
-    debounce(async (term) => {
-      try {
-        const response = await fetch('/api/search-product', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            searchTerm: term,
-            page: 1,  // Reset to first page on search
-            limit: ITEMS_PER_PAGE,
-            filters: selectedFilters
-          })
-        });
-        
-        if (!response.ok) throw new Error('Search failed');
-        
-        const data = await response.json();
-        setFilteredProducts(data.products);
-        setTotalPages(Math.ceil(data.total / ITEMS_PER_PAGE));
-        setCurrentPage(1);  // Reset to first page
-      } catch (err) {
-        setError('Search failed. Please try again.');
-      }
-    }, 300),
-    [selectedFilters]
-  );
 
-  // Fetch products with pagination and filters
+
+  
+
+  // Helper function to extract category name from the format "Category|Value|Boolean"
+  const extractCategoryName = (categoryString) => {
+    return categoryString.split('|')[0].trim();
+  };
+
+
+  useEffect(() => {
+    const initialSearch = searchParams.get('q');
+    const initialUserCategory = getUserCategoryFromUrl();
+    const initialCategories = parseCategoryParam(searchParams.get('category'));
+    
+    if (initialSearch) {
+      setSearchTerm(initialSearch);
+      debouncedSearch(initialSearch);
+    } else {
+      // Pass the initial filters to fetchProducts
+      fetchProducts(1, {
+        ...selectedFilters,
+        categories: initialCategories,
+        userCategory: initialUserCategory
+      });
+    }
+  }, []);
+
+
   const fetchProducts = async (page = 1, filters = selectedFilters) => {
     try {
       setLoading(true);
+      
+      // Remove userCategory from API filters since we'll handle it client-side
+      const { userCategory, ...apiFilters } = filters;
+      
       const response = await fetch('/api/get-all-products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           page,
           limit: ITEMS_PER_PAGE,
-          filters
+          filters: apiFilters  // Send filters without userCategory
         })
       });
-
+  
       if (!response.ok) throw new Error('Failed to fetch products');
-
+  
       const data = await response.json();
       
-      setProducts(data.products);
-      setFilteredProducts(data.products);
-      setTotalPages(Math.ceil(data.total / ITEMS_PER_PAGE));
+      if (!data.success) {
+        throw new Error(data.message || 'Failed to fetch products');
+      }
+  
+      // Handle userCategory filtering in the frontend
+      let filteredData = data.products;
+      if (filters.userCategory?.length > 0) {
+        filteredData = filteredData.filter(product => {
+          const productCategories = product.userCategory.map(cat => extractCategoryName(cat));
+          return filters.userCategory.some(selectedCat => 
+            productCategories.includes(selectedCat)
+          );
+        });
+      }
+  
+      setProducts(data.products); // Keep original products
+      setFilteredProducts(filteredData); // Set filtered products
+      setTotalPages(Math.ceil(filteredData.length / ITEMS_PER_PAGE));
       setError(null);
     } catch (err) {
+      console.error('Error in fetchProducts:', err);
       setError('Failed to load products. Please try again.');
+      setFilteredProducts([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle search input changes
-  const handleSearchChange = (e) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    if (term) {
-      debouncedSearch(term);
-    } else {
-      setFilteredProducts(products);
-      setCurrentPage(1);
-    }
-  };
-
-  // Handle filter changes
+  // Modify handleFilterChange to handle userCategory more efficiently
   const handleFilterChange = (filterType, value) => {
     setSelectedFilters(prev => {
       const newFilters = {
@@ -307,13 +347,76 @@ const DirectoryPage = () => {
           ? prev[filterType].filter(item => item !== value)
           : [...prev[filterType], value]
       };
+
+      // Fetch products with the new filters
       fetchProducts(1, newFilters);
+      
       return newFilters;
     });
     setCurrentPage(1);
   };
 
-  // Handle product comparison
+  // Modify search function to handle userCategory
+  const debouncedSearch = useCallback(
+    debounce(async (term) => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/search-product', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            searchTerm: term,
+            page: 1,
+            limit: ITEMS_PER_PAGE,
+            filters: {
+              ...selectedFilters,
+              userCategory: selectedFilters.userCategory.map(cat => extractCategoryName(cat))
+            }
+          })
+        });
+        
+        if (!response.ok) throw new Error('Search failed');
+        
+        const data = await response.json();
+        
+        if (!data.success) {
+          throw new Error(data.message || 'Search failed');
+        }
+
+        setProducts(data.products);
+        setFilteredProducts(data.products);
+        setTotalPages(Math.ceil(data.total / ITEMS_PER_PAGE));
+        setCurrentPage(1);
+        setError(null);
+      } catch (err) {
+        console.error('Error in search:', err);
+        setError('Search failed. Please try again.');
+        setFilteredProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    }, 300),
+    [selectedFilters]
+  );
+
+  // Add useEffect to clean up filters when component unmounts
+ 
+  
+
+  
+  const handleSearchChange = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    
+    if (term) {
+      setLoading(true); // Set loading immediately when user types
+      debouncedSearch(term);
+    } else {
+      setFilteredProducts(products);
+      setCurrentPage(1);
+    }
+  };
+
   const toggleCompareProduct = (product) => {
     setCompareProducts(prev => {
       if (prev.find(p => p.id === product.id)) {
@@ -330,15 +433,13 @@ const DirectoryPage = () => {
   // Handle page change
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
-    fetchProducts(newPage, selectedFilters);
-    // Scroll to top of product list
+    if (searchTerm) {
+      debouncedSearch(searchTerm);
+    } else {
+      fetchProducts(newPage, selectedFilters);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  // Initial fetch
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   // Handle screen resize
   useEffect(() => {
@@ -520,7 +621,7 @@ const DirectoryPage = () => {
               )}
 
               {/* Products Grid */}
-              {loading && filteredProducts.length === 0 ? (
+              {loading ? (
                 <div className="text-center py-12">
                   <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
                   <p className="text-gray-600">Loading products...</p>
@@ -550,7 +651,7 @@ const DirectoryPage = () => {
               )}
 
               {/* Empty State */}
-              {filteredProducts.length === 0 && !loading && (
+              {!loading && filteredProducts.length === 0 && (
                 <div className="text-center py-12">
                   <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">
@@ -572,6 +673,21 @@ const DirectoryPage = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
+
+      {/* Mobile Filter Drawer */}
+      {isMobileFilterOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setIsMobileFilterOpen(false)} />
+          <div className="absolute right-0 top-0 h-full w-80 bg-white shadow-xl">
+            <DirectoryFilter
+              selectedFilters={selectedFilters}
+              handleFilterChange={handleFilterChange}
+              setSelectedFilters={setSelectedFilters}
+              isMobileView
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

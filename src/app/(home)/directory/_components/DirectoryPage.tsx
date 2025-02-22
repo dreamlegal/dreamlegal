@@ -1,5 +1,6 @@
 // 
 // old one 
+"use client"
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { FaCircleCheck } from 'react-icons/fa6';

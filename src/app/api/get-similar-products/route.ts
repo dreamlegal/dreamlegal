@@ -207,7 +207,8 @@
 // app/api/get-similar-products/route.js
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-
+// In your /api/get-similar-products route file
+export const dynamic = 'force-dynamic'  // Add this at the top of the file
 export async function GET(request) {
   try {
     const searchParams = request.nextUrl.searchParams;

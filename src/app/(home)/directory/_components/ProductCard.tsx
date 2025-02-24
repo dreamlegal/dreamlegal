@@ -149,232 +149,180 @@ const ProductCard = ({
   const avgRating = calculateRating();
 
   return (
+
     <div className={`relative bg-white rounded-xl shadow-lg transition-all duration-300 
-                   hover:shadow-xl ${className}`}>
-      {/* Compare Badge */}
-      {isCompared && (
-        <div className="absolute -top-2 -right-2 bg-blue-600 text-white px-3 py-1 
-                     rounded-full text-xs font-medium shadow-lg z-10">
-          Selected for Comparison
-        </div>
-      )}
+      hover:shadow-xl ${className}`}>
+{isCompared && (
+<div className="absolute -top-2 -right-2 bg-blue-600 text-white px-3 py-1 
+        rounded-full text-xs font-medium shadow-lg z-10">
+Selected for Comparison
+</div>
+)}
 
-      <div className="p-6">
-        {/* Header Section */}
-        <div className="flex items-start justify-between gap-4">
-          {/* Logo and Title */}
-          <div className="flex items-start gap-4">
-            <div className="relative group">
-            <div className="w-16 h-16 rounded-xl overflow-hidden shadow-sm bg-white">
-      <img
-        src={product.logoUrl}
-        alt={product.name}
-        className="w-full h-full object-contain p-2 transition-transform duration-300 
-                   group-hover:scale-110"
-      />
-    </div>
-              {product.featured && (
-                <span className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 
-                             to-yellow-500 text-white text-xs px-2 py-1 rounded-full 
-                             shadow-sm">
-                  Featured
-                </span>
-              )}
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {product.category.map(cat => (
-                  <span key={cat} className="inline-flex items-center px-3 py-1 rounded-full 
-                                         text-xs font-medium bg-blue-50 text-blue-700">
-                    {cat}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
+<div className="p-4 sm:p-6">
+{/* Header Section - Different layouts for mobile and desktop */}
+<div className="flex flex-col gap-4 sm:gap-0">
+{/* Logo, Title and Actions Container */}
+<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+{/* Logo and Title */}
+<div className="flex items-start gap-4">
+<div className="relative shrink-0">
+  <div className="w-16 h-16 rounded-xl overflow-hidden shadow-sm bg-white">
+    <img
+      src={product.logoUrl}
+      alt={product.name}
+      className="w-full h-full object-contain p-2"
+    />
+  </div>
+  {product.featured && (
+    <span className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 
+                  to-yellow-500 text-white text-xs px-2 py-1 rounded-full 
+                  shadow-sm">
+      Featured
+    </span>
+  )}
+</div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2">
-            {/* Bookmark Button */}
-            <button
-              onClick={handleBookmarkClick}
-              disabled={loading}
-              className="p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200 
-                     relative"
-            >
-              <FaBookmark
-                className={`w-5 h-5 ${
-                  isBookmarked ? 'text-blue-600' : 'text-gray-400'
-                } transition-colors duration-200`}
-              />
-              {tooltip && (
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 
-                            mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded-lg 
-                            whitespace-nowrap z-20">
-                  {tooltip}
-                </div>
-              )}
-            </button>
+<div className="flex-1 min-w-0">
+  <h3 className="text-lg font-semibold text-gray-900 break-words">{product.name}</h3>
+  <div className="flex flex-wrap gap-2 mt-2">
+    {product.category.map(cat => (
+      <span key={cat} className="inline-flex items-center px-3 py-1 rounded-full 
+                              text-xs font-medium bg-blue-50 text-blue-700">
+        {cat}
+      </span>
+    ))}
+  </div>
+</div>
+</div>
 
-            {/* Share Dialog */}
-            <Dialog>
-              <DialogTrigger asChild>
-                <button className="p-2 rounded-lg hover:bg-gray-50 transition-colors 
-                               duration-200">
-                  <FiShare2 className="w-5 h-5 text-gray-400" />
-                </button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Share Product</DialogTitle>
-                  <DialogDescription>
-                    Share this product with your network
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="flex flex-col gap-4 p-4">
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      readOnly
-                      value={shareUrl}
-                      className="flex-1 px-3 py-2 border rounded-lg bg-gray-50"
-                    />
-                    <Button onClick={handleCopyLink} variant="outline">
-                      Copy
-                    </Button>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button variant="secondary">Close</Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+{/* Action Buttons - Different layouts for mobile and desktop */}
+<div className="flex items-center justify-between sm:justify-end gap-2 border-t border-gray-100 pt-2 sm:border-0 sm:pt-0">
+<div className="flex items-center gap-2">
+  {/* Bookmark Button */}
+  <button
+    onClick={handleBookmarkClick}
+    disabled={loading}
+    className="p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+  >
+    <FaBookmark
+      className={`w-5 h-5 ${
+        isBookmarked ? 'text-blue-600' : 'text-gray-400'
+      }`}
+    />
+  </button>
 
-            {/* Compare Button */}
-            <button
-              onClick={() => onCompare(product)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all 
-                       duration-200 ${
-                         isCompared
-                           ? 'bg-blue-50 text-blue-600'
-                           : 'text-gray-600 hover:bg-gray-50'
-                       }`}
-            >
-              {isCompared ? 'Remove Compare' : 'Compare'}
-            </button>
-          </div>
-        </div>
-
-        {/* Description */}
-        <p className="mt-4 text-gray-600 text-base line-clamp-2">
-          {product.description}
-        </p>
-
-        {/* Features Grid */}
-        {/* <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-          
-          <div className="p-3 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-500 mb-1">Deployment</p>
-            <div className="flex flex-wrap gap-1">
-              {product.deployement?.map(type => (
-                <span key={type} className="text-xs font-medium text-gray-900">
-                  {type}
-                </span>
-              ))}
-            </div>
-          </div>
-
-         
-          <div className="p-3 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-500 mb-1">Mobile App</p>
-            <p className="text-xs font-medium text-gray-900">
-              {product.mobileAvailable === "Yes" ? "Available" : "Not Available"}
-            </p>
-          </div>
-
-         
-          <div className="p-3 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-500 mb-1">Free Trial</p>
-            <p className="text-xs font-medium text-gray-900">
-              {product.freeTrial ? "Available" : "Not Available"}
-            </p>
-          </div>
-
-         
-          <div className="p-3 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-500 mb-1">User Rating</p>
-            <div className="flex items-baseline gap-1">
-              <span className="text-lg font-semibold text-yellow-500">
-                {avgRating}
-              </span>
-              {avgRating !== 'N/A' && (
-                <span className="text-xs text-gray-500">/5</span>
-              )}
-            </div>
-          </div>
-        </div> */}
-
-        {/* Target Users */}
-        <div className="mt-6">
-          <p className="text-xs text-gray-500 mb-2">Target Users</p>
-          <div className="flex flex-wrap gap-3">
-            {userCategoryIcons.map(category => (
-              <div
-                key={category.name}
-                className="group relative flex items-center p-2 bg-gray-50 rounded-lg 
-                         hover:bg-blue-50 transition-colors duration-200"
-              >
-                <img
-                  src={category.icon}
-                  alt={category.name}
-                  className="w-5 h-5"
-                />
-                <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 
-                              mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded 
-                              opacity-0 group-hover:opacity-100 transition-opacity 
-                              duration-200 whitespace-nowrap z-10">
-                  {category.name}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div>
-              <p className="text-xs text-gray-500">Company</p>
-              <p className="text-sm font-medium text-gray-900">
-                {product.company?.companyName || product.CompanyName || 'N/A'}
-              </p>
-              </div>
-              <div>
-              <p className="text-xs text-gray-500">Headquarters</p>
-              <p className="text-sm font-medium text-gray-900">
-                {product.company?.headQuaters || product.Headquarters || 'N/A'}
-              </p>
-              </div>
-            </div>
-            <Link
-              href={`/product/${product.slug}`}
-              className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white 
-                     rounded-lg hover:bg-blue-700 transition-colors duration-200 
-                     group"
-            >
-              View Details
-              <IoIosArrowRoundForward className="w-5 h-5 transition-transform 
-                                             duration-200 group-hover:translate-x-1" />
-            </Link>
-          </div>
-        </div>
+  {/* Share Button */}
+  <Dialog>
+    <DialogTrigger asChild>
+      <button className="p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+        <FiShare2 className="w-5 h-5 text-gray-400" />
+      </button>
+    </DialogTrigger>
+    <DialogContent className="sm:max-w-md">
+      <DialogHeader>
+        <DialogTitle>Share Product</DialogTitle>
+        <DialogDescription>
+          Share this product with your network
+        </DialogDescription>
+      </DialogHeader>
+      <div className="flex items-center gap-2 p-4">
+        <input
+          type="text"
+          readOnly
+          value={shareUrl}
+          className="flex-1 px-3 py-2 border rounded-lg bg-gray-50"
+        />
+        <Button onClick={handleCopyLink} variant="outline">
+          Copy
+        </Button>
       </div>
-    </div>
+    </DialogContent>
+  </Dialog>
+</div>
+
+{/* Compare Button */}
+<button
+  onClick={() => onCompare(product)}
+  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm font-medium 
+            transition-all duration-200 ${
+              isCompared
+                ? 'bg-blue-50 text-blue-600'
+                : 'text-gray-600 hover:bg-gray-50'
+            }`}
+>
+  {isCompared ? (
+    <span className="hidden sm:inline">Remove Compare</span>
+  ) : (
+    <span className="hidden sm:inline">Compare</span>
+  )}
+  <span className="sm:hidden">{isCompared ? 'Remove' : 'Compare'}</span>
+</button>
+</div>
+</div>
+
+{/* Description */}
+<p className="text-gray-600 text-sm sm:text-base line-clamp-2">
+{product.description}
+</p>
+</div>
+
+{/* Target Users */}
+<div className="mt-6">
+<p className="text-xs text-gray-500 mb-2">Target Users</p>
+<div className="flex flex-wrap gap-2 sm:gap-3">
+{userCategoryIcons.map(category => (
+<div
+  key={category.name}
+  className="group relative flex items-center p-2 bg-gray-50 rounded-lg 
+            hover:bg-blue-50 transition-colors duration-200"
+>
+  <img
+    src={category.icon}
+    alt={category.name}
+    className="w-5 h-5"
+  />
+  <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 
+                mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded 
+                opacity-0 group-hover:opacity-100 transition-opacity 
+                duration-200 whitespace-nowrap z-10">
+    {category.name}
+  </span>
+</div>
+))}
+</div>
+</div>
+
+{/* Footer */}
+<div className="mt-6 pt-4 sm:pt-6 border-t border-gray-200">
+<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div className="grid grid-cols-2 sm:flex sm:flex-row gap-4">
+<div>
+  <p className="text-xs text-gray-500">Company</p>
+  <p className="text-sm font-medium text-gray-900 truncate">
+    {product.company?.companyName || product.CompanyName || 'N/A'}
+  </p>
+</div>
+<div>
+  <p className="text-xs text-gray-500">Headquarters</p>
+  <p className="text-sm font-medium text-gray-900 truncate">
+    {product.company?.headQuaters || product.Headquarters || 'N/A'}
+  </p>
+</div>
+</div>
+<Link
+href={`/product/${product.slug}`}
+className="flex items-center justify-center sm:justify-start gap-2 w-full 
+        sm:w-auto px-4 sm:px-6 py-2 bg-blue-600 text-white rounded-lg 
+        hover:bg-blue-700 transition-colors duration-200 text-sm font-medium"
+>
+View Details
+<IoIosArrowRoundForward className="w-5 h-5" />
+</Link>
+</div>
+</div>
+</div>
+</div>
   );
 };
 

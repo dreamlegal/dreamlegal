@@ -783,7 +783,7 @@ useEffect(() => {
                   </button>
                 </SheetTrigger>
                 <SheetContent>
-                  <ProductMobileSidebar />
+                  <ProductMobileSidebar product={product} />
                 </SheetContent>
               </Sheet>
             </div>

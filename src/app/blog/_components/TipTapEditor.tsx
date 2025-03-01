@@ -19,8 +19,8 @@ import TextAlign from '@tiptap/extension-text-align';
 import Dropcursor from '@tiptap/extension-dropcursor';
 import Typography from '@tiptap/extension-typography';
 import CharacterCount from '@tiptap/extension-character-count';
-import { 
-  Bold, Italic, Underline as UnderlineIcon, AlignLeft, AlignCenter, AlignRight, 
+import {
+  Bold, Italic, Underline as UnderlineIcon, AlignLeft, AlignCenter, AlignRight,
   Link2, Image as ImageIcon, Table as TableIcon, List, ListOrdered, RefreshCw, Save,
   Upload, X, AlertTriangle
 } from 'lucide-react';
@@ -34,7 +34,7 @@ const ImageModal = ({ onClose, onInsert }) => {
   const [alignment, setAlignment] = useState('center');
   const [isValidUrl, setIsValidUrl] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(false);
-  
+
   // S3 Upload States
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -46,9 +46,9 @@ const ImageModal = ({ onClose, onInsert }) => {
       setIsValidUrl(false);
       return;
     }
-    
+
     setIsImageLoading(true);
-    
+
     // Use the browser's built-in Image constructor
     const imgElement = new window.Image();
     imgElement.onload = () => {
@@ -73,31 +73,31 @@ const ImageModal = ({ onClose, onInsert }) => {
   const handleFileUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     // Validate file type
     const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     if (!validTypes.includes(file.type)) {
       setUploadError('Please upload a valid image file (JPEG, PNG, GIF, WEBP)');
       return;
     }
-    
+
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setUploadError('Image size should be less than 5MB');
       return;
     }
-    
+
     setIsUploading(true);
     setUploadProgress(0);
     setUploadError('');
-    
+
     try {
       const formData = new FormData();
       formData.append('file', file);
-      
+
       // Setup XHR for progress tracking
       const xhr = new XMLHttpRequest();
-      
+
       // Track upload progress
       xhr.upload.addEventListener('progress', (event) => {
         if (event.lengthComputable) {
@@ -105,7 +105,7 @@ const ImageModal = ({ onClose, onInsert }) => {
           setUploadProgress(percentComplete);
         }
       });
-      
+
       // Handle response
       xhr.onload = () => {
         if (xhr.status === 200) {
@@ -123,17 +123,17 @@ const ImageModal = ({ onClose, onInsert }) => {
           setIsUploading(false);
         }
       };
-      
+
       // Handle errors
       xhr.onerror = () => {
         setUploadError('Network error occurred during upload');
         setIsUploading(false);
       };
-      
+
       // Send the upload request
       xhr.open('POST', '/api/blogs/upload');
       xhr.send(formData);
-      
+
     } catch (err) {
       setUploadError(err.message || 'An unexpected error occurred during upload');
       setIsUploading(false);
@@ -151,40 +151,40 @@ const ImageModal = ({ onClose, onInsert }) => {
   };
 
   return (
-    <div 
-      className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4" 
+    <div
+      className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4"
       onClick={onClose}
     >
-      <div 
-        className="bg-white p-6 rounded-lg w-full max-w-xl" 
+      <div
+        className="bg-white p-6 rounded-lg w-full max-w-xl"
         onClick={e => e.stopPropagation()}
       >
         <h3 className="text-xl font-bold mb-4 text-gray-800">Insert Image</h3>
-        
+
         {/* S3 Image Upload */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1 text-gray-700">Upload Image</label>
-          
-          <div 
+
+          <div
             onClick={triggerFileInput}
             className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition bg-gray-50"
           >
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileUpload} 
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
               accept="image/jpeg,image/png,image/gif,image/webp"
               className="hidden"
             />
-            
+
             {isUploading ? (
               <div className="w-full px-8">
                 <div className="text-center mb-2">
                   <p className="text-gray-600">Uploading... {uploadProgress}%</p>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div 
-                    className="bg-blue-600 h-2.5 rounded-full" 
+                  <div
+                    className="bg-blue-600 h-2.5 rounded-full"
                     style={{ width: `${uploadProgress}%` }}
                   ></div>
                 </div>
@@ -197,7 +197,7 @@ const ImageModal = ({ onClose, onInsert }) => {
               </>
             )}
           </div>
-          
+
           {uploadError && (
             <div className="mt-2 p-2 bg-red-50 text-red-600 rounded text-sm">
               <div className="flex items-start">
@@ -207,7 +207,7 @@ const ImageModal = ({ onClose, onInsert }) => {
             </div>
           )}
         </div>
-        
+
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1 text-gray-700">Or Enter Image URL</label>
           <input
@@ -218,7 +218,7 @@ const ImageModal = ({ onClose, onInsert }) => {
             placeholder="https://example.com/image.jpg"
           />
         </div>
-        
+
         {/* Image Preview */}
         {imageUrl && (
           <div className="mb-4 relative">
@@ -227,12 +227,12 @@ const ImageModal = ({ onClose, onInsert }) => {
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
               </div>
             )}
-            
+
             {isValidUrl ? (
               <div className={`relative p-3 bg-gray-50 rounded border ${alignment === 'center' ? 'text-center' : alignment === 'right' ? 'text-right' : 'text-left'}`}>
-                <img 
-                  src={imageUrl} 
-                  alt="Preview" 
+                <img
+                  src={imageUrl}
+                  alt="Preview"
                   className={`img-align-${alignment} rounded max-h-40 border`}
                   style={{
                     width: width !== '100%' ? width : null,
@@ -249,7 +249,7 @@ const ImageModal = ({ onClose, onInsert }) => {
             )}
           </div>
         )}
-        
+
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-sm font-medium mb-1 text-gray-700">Width</label>
@@ -265,7 +265,7 @@ const ImageModal = ({ onClose, onInsert }) => {
               <option value="200px">Extra Small (200px)</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium mb-1 text-gray-700">Height</label>
             <select
@@ -281,7 +281,7 @@ const ImageModal = ({ onClose, onInsert }) => {
             </select>
           </div>
         </div>
-        
+
         {/* <div className="mb-6">
           <label className="block text-sm font-medium mb-1 text-gray-700">Alignment</label>
           <div className="flex gap-2">
@@ -317,7 +317,7 @@ const ImageModal = ({ onClose, onInsert }) => {
             </button>
           </div>
         </div> */}
-        
+
         <div className="flex justify-end gap-3">
           <button
             type="button"
@@ -343,10 +343,10 @@ const ImageModal = ({ onClose, onInsert }) => {
 // Function to extract headings from the editor content
 const extractHeadings = (editor) => {
   if (!editor) return [];
-  
+
   const headings = [];
   const content = editor.getJSON();
-  
+
   const processNode = (node) => {
     if (node.type === 'heading') {
       const text = node.content?.[0]?.text || 'Untitled';
@@ -357,16 +357,16 @@ const extractHeadings = (editor) => {
         id
       });
     }
-    
+
     if (node.content) {
       node.content.forEach(child => processNode(child));
     }
   };
-  
+
   if (content.content) {
     content.content.forEach(node => processNode(node));
   }
-  
+
   return headings;
 };
 
@@ -402,7 +402,7 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
           H3
         </button>
       </div>
-      
+
       <div className="flex gap-1 border-r pr-2 mr-2">
         <button
           type="button"
@@ -429,7 +429,7 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
           <UnderlineIcon size={18} />
         </button>
       </div>
-      
+
       <div className="flex gap-1 border-r pr-2 mr-2">
         <button
           type="button"
@@ -456,7 +456,7 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
           <AlignRight size={18} />
         </button>
       </div>
-      
+
       <div className="flex gap-1 border-r pr-2 mr-2">
         <button
           type="button"
@@ -475,7 +475,7 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
           <ListOrdered size={18} />
         </button>
       </div>
-      
+
       <div className="flex gap-1">
         <button
           type="button"
@@ -704,11 +704,11 @@ const customStyles = `
 }
 `;
 
-const TipTapEditor = ({ 
-  onSave, 
-  initialContent = '<p>Start writing your blog post...</p>', 
+const TipTapEditor = ({
+  onSave,
+  initialContent = '<p>Start writing your blog post...</p>',
   onTocUpdate,
-  isSaving = false 
+  isSaving = false
 }) => {
   const [content, setContent] = useState('');
   const [showImageModal, setShowImageModal] = useState(false);
@@ -716,15 +716,15 @@ const TipTapEditor = ({
   // Add function to add heading IDs
   const addHeadingIds = (editor) => {
     if (!editor) return;
-    
+
     // Wait for the editor to be ready
     setTimeout(() => {
       const editorElement = document.querySelector('.ProseMirror');
       if (!editorElement) return;
-      
+
       // Find all heading elements in the editor
       const headings = editorElement.querySelectorAll('h1, h2, h3');
-      
+
       // Apply IDs to each heading based on its content
       headings.forEach(heading => {
         if (!heading.id) {
@@ -740,18 +740,18 @@ const TipTapEditor = ({
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Placeholder.configure({ 
+      Placeholder.configure({
         placeholder: 'Start writing your blog here...',
         emptyEditorClass: 'is-editor-empty',
       }),
       // Use the CustomImage extension instead of the standard Image
       CustomImage.configure({
         inline: false,
-        HTMLAttributes: { 
+        HTMLAttributes: {
           class: 'blog-image',
         },
       }),
-      Table.configure({ 
+      Table.configure({
         resizable: true,
       }),
       TableRow,
@@ -762,7 +762,7 @@ const TipTapEditor = ({
       }),
       Link.configure({
         openOnClick: false,
-        HTMLAttributes: { 
+        HTMLAttributes: {
           class: 'text-blue-600 underline',
         },
       }),
@@ -770,7 +770,7 @@ const TipTapEditor = ({
       Color,
       Underline,
       TextAlign.configure({
-        types: ['heading', 'paragraph', 'image'], 
+        types: ['heading', 'paragraph', 'image'],
       }),
       Dropcursor,
       Typography,
@@ -809,11 +809,11 @@ const TipTapEditor = ({
       editor.on('update', () => {
         addHeadingIds(editor);
       });
-      
+
       // Also apply when editor is ready
       addHeadingIds(editor);
     }
-    
+
     return () => {
       if (editor) {
         editor.off('update');
@@ -824,22 +824,22 @@ const TipTapEditor = ({
   // Set up MutationObserver to track content changes
   useEffect(() => {
     if (!editor) return;
-    
+
     // Set up a MutationObserver to detect changes to the editor content
     const editorElement = document.querySelector('.ProseMirror');
     if (!editorElement) return;
-    
+
     const observer = new MutationObserver(() => {
       // When content changes, reapply heading IDs
       addHeadingIds(editor);
     });
-    
+
     observer.observe(editorElement, {
       childList: true,
       subtree: true,
       characterData: true
     });
-    
+
     return () => {
       observer.disconnect();
     };
@@ -848,24 +848,41 @@ const TipTapEditor = ({
   // Handle image insertion with proper attributes
   const handleImageInsert = useCallback((url, width, height, alignment) => {
     if (!editor || !url) return;
-    
+
     // Insert the image with explicit attributes
-    editor.chain().focus().setImage({ 
+    editor.chain().focus().setImage({
       src: url,
       alt: 'Blog image',
       width: width,
       height: height,
       alignment: alignment
     }).run();
-    
+
     setShowImageModal(false);
   }, [editor]);
+
+  function addIdsToHeadingsWithRegex(htmlContent) {
+    const headingRegex = /<(h[1-6])>(.*?)<\/\1>/gi;
+    return htmlContent.replace(headingRegex, (match, tag, content) => {
+      const textContent = content.replace(/<\/?[^>]+(>|$)/g, '').trim();
+      const slug = textContent
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+      if (slug) {
+        return `<${tag} id="${slug}">${content}</${tag}>`;
+      }
+      return match;
+    });
+  }
 
   // Save content and TOC
   const handleSave = useCallback(() => {
     if (onSave && editor) {
       const headings = extractHeadings(editor);
-      onSave(content, headings);
+      const updatedContent = addIdsToHeadingsWithRegex(content)
+      onSave(updatedContent, headings);
     }
   }, [content, editor, onSave]);
 
@@ -876,9 +893,9 @@ const TipTapEditor = ({
   return (
     <div className="border rounded-lg shadow-md overflow-hidden">
       <style>{customStyles}</style>
-      
-      <EditorToolbar 
-        editor={editor} 
+
+      <EditorToolbar
+        editor={editor}
         onImageAdd={() => setShowImageModal(true)}
         onExtractToc={(headings) => {
           if (onTocUpdate) {
@@ -886,16 +903,16 @@ const TipTapEditor = ({
           }
         }}
       />
-      
+
       <div className="min-h-[400px] bg-white">
         <EditorContent editor={editor} />
       </div>
-      
+
       <div className="flex justify-between p-4 bg-gray-50 border-t">
         <div className="text-gray-500 text-sm">
           {editor.storage.characterCount ? `${editor.storage.characterCount.characters()} characters` : '0 characters'}
         </div>
-        <button 
+        <button
           type="button"
           onClick={handleSave}
           className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition shadow-md flex items-center gap-2"
@@ -909,7 +926,7 @@ const TipTapEditor = ({
           )}
         </button>
       </div>
-      
+
       {showImageModal && (
         <ImageModal
           onClose={() => setShowImageModal(false)}

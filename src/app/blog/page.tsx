@@ -19,11 +19,11 @@ export default function BlogsListPage() {
     async function fetchBlogs() {
       try {
         const response = await fetch('/api/blogs');
-        
+
         if (!response.ok) {
           throw new Error('Failed to fetch blogs');
         }
-        
+
         const data = await response.json();
         setBlogs(data);
       } catch (err) {
@@ -33,21 +33,21 @@ export default function BlogsListPage() {
         setLoading(false);
       }
     }
-    
+
     fetchBlogs();
   }, []);
-  
+
   // Filter blogs based on search term and filter
   const filteredBlogs = blogs.filter(blog => {
     const matchesSearch = blog.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = 
+    const matchesFilter =
       filter === 'all' ? true :
-      filter === 'published' ? blog.published :
-      filter === 'draft' ? !blog.published : true;
-    
+        filter === 'published' ? blog.published :
+          filter === 'draft' ? !blog.published : true;
+
     return matchesSearch && matchesFilter;
   });
-  
+
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto p-6 mt-20">
@@ -58,7 +58,7 @@ export default function BlogsListPage() {
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <div className="max-w-7xl mx-auto p-6 mt-20">
@@ -69,12 +69,12 @@ export default function BlogsListPage() {
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50/50 to-white">
       <div className="max-w-7xl mx-auto p-6 pt-24">
         {/* Header Section */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -85,8 +85,8 @@ export default function BlogsListPage() {
               <h1 className="text-4xl font-bold text-gray-900 mb-2">Your Blog Articles</h1>
               <p className="text-gray-600">Write, manage, and publish your blog content</p>
             </div>
-            <Link 
-              href="/blog/new-blog" 
+            <Link
+              href="/blog/new-blog"
               className="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
             >
               <Plus size={18} />
@@ -95,9 +95,9 @@ export default function BlogsListPage() {
             </Link>
           </div>
         </motion.div>
-        
+
         {/* Search and Filter Controls */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -136,10 +136,10 @@ export default function BlogsListPage() {
             </div>
           </div>
         </motion.div>
-        
+
         {/* Blog Cards */}
         {filteredBlogs.length === 0 ? (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -152,7 +152,7 @@ export default function BlogsListPage() {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">No matching blogs found</h3>
                 <p className="text-gray-600 mb-6">Try adjusting your search or filters</p>
-                <button 
+                <button
                   onClick={() => {
                     setSearchTerm('');
                     setFilter('all');
@@ -173,8 +173,8 @@ export default function BlogsListPage() {
                 <p className="text-gray-600 max-w-lg mx-auto mb-8">
                   Share your expertise, insights, and stories with the world through your first blog post.
                 </p>
-                <Link 
-                  href="/blog/new-blog" 
+                <Link
+                  href="/blog/new-blog"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors"
                 >
                   <span>Create Your First Blog</span>
@@ -192,15 +192,15 @@ export default function BlogsListPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 + index * 0.05 }}
               >
-                <BlogCard blog={blog} />
+                <BlogCard blog={blog} allBlogs={blogs} setBlogs={setBlogs} />
               </motion.div>
             ))}
           </div>
         )}
-        
+
         {/* Footer / Stats */}
         {blogs.length > 0 && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}

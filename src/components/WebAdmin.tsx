@@ -16,7 +16,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import React, { useState } from "react";
 import { RiMenu2Line } from "react-icons/ri";
-
+import  AdminBlogs from "@/components/AdminBlogs";
 function WebAdmin() {
   const [selectedMenu, setSelectedMenu] = useState("NewProduct");
   const handleMenuItemClick = (menuName: string) => {
@@ -70,6 +70,7 @@ function WebAdmin() {
               {selectedMenu === "addAnalytics" && <AddAnalytics />}
               {selectedMenu === "sendNotification" && <SendNotification />}
               {selectedMenu === "adminLeads" && <AdminLeads/>}
+              {selectedMenu === "adminblog" && <AdminBlogs/>}
 
               {/* {selectedMenu === "Dashboard" && <VendorDashborad />}
               {selectedMenu === "AddProduct" && <AddProduct />}

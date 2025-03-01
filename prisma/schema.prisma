@@ -492,3 +492,33 @@ enum ProposalStatus {
   UNSAVED
   SAVED
 }
+
+model Blog {
+  id          String    @id @default(cuid())
+  title       String
+  bannerImage String?
+  content     String    @db.Text
+  published   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+  refLinks    RefLink[]
+  tocItems    TocItem[]
+}
+
+model RefLink {
+  id      String @id @default(cuid())
+  title   String
+  url     String
+  blog    Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  blogId  String
+}
+
+model TocItem {
+  id      String @id @default(cuid())
+  level   Int
+  content String
+  slug    String
+  blog    Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  blogId  String
+}

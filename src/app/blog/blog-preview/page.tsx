@@ -5,7 +5,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Edit, Check, Calendar, Clock, List, ExternalLink, AlertTriangle } from 'lucide-react';
+// import { ArrowLeft, Edit, Check, Calendar, Clock, List, ExternalLink, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Edit, Check, Calendar, Clock, List, ExternalLink, AlertTriangle, Plus } from 'lucide-react';
 
 // Enhanced blog styles for the preview page with improved image alignment
 const blogStyles = `

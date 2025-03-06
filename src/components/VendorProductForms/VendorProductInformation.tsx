@@ -888,6 +888,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             {/* ByAdminTeamSize */}
             <div className="space-y-2">
             <Label htmlFor="ByAdminTeamSize">Team Size</Label>
+             {console.log(`team size here ${ByAdminTeamSize}`)}
             <Select value={ByAdminTeamSize} onValueChange={(value) => setByAdminTeamSize(value)}>
               <SelectTrigger className="w-full">
               <SelectValue placeholder="Select team size" />

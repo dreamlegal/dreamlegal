@@ -1,7 +1,7 @@
-
 'use client';
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import FontSize from '@tiptap/extension-font-size';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
@@ -374,39 +374,108 @@ const extractHeadings = (editor) => {
 const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
   if (!editor) return null;
 
+  // Use mousedown instead of click to prevent focus loss
+  const handleMouseDown = (action) => (e) => {
+    e.preventDefault();
+    action();
+    editor.view.focus();
+  };
+
+  // Function to handle heading application
+  const applyHeading = (level) => {
+    // Simpler approach - use the standard toggleHeading
+    // Headings are block-level elements and will apply to the whole paragraph
+    editor.chain().focus().toggleHeading({ level }).run();
+    
+    // Add an informative tooltip that appears temporarily
+    const toolbarEl = document.querySelector('.editor-toolbar');
+    if (toolbarEl) {
+      const tooltip = document.createElement('div');
+      tooltip.className = 'bg-gray-800 text-white px-3 py-1.5 rounded text-sm absolute -bottom-8 z-20 editor-toolbar-tooltip';
+      tooltip.innerText = 'Headings apply to entire paragraphs';
+      tooltip.style.left = '50%';
+      tooltip.style.transform = 'translateX(-50%)';
+      toolbarEl.appendChild(tooltip);
+      
+      // Remove tooltip after 2 seconds
+      setTimeout(() => {
+        if (tooltip.parentNode === toolbarEl) {
+          toolbarEl.removeChild(tooltip);
+        }
+      }, 2000);
+    }
+  };
+
+  // Function to apply heading-like styling to selected text only
+  const applyTextStyle = (fontSize, isBold = true) => {
+    editor.chain()
+      .focus()
+      .setFontSize(fontSize)
+      .setTextStyle({ fontWeight: isBold ? 'bold' : 'normal' })
+      .run();
+  };
+
   return (
-    <div className="flex flex-wrap gap-2 p-3 mb-2 border-b sticky top-4 bg-white z-10 shadow-sm rounded-t-lg">
+    <div className="flex flex-wrap gap-2 p-3 mb-2 border-b sticky top-4 bg-white z-10 shadow-sm rounded-t-lg relative editor-toolbar">
       <div className="flex gap-1 border-r pr-2 mr-2">
         <button
           type="button"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          onMouseDown={handleMouseDown(() => applyHeading(1))}
           className={`p-2 rounded ${editor.isActive('heading', { level: 1 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Heading 1"
+          title="Heading 1 - Applies to entire paragraph"
         >
           H1
         </button>
         <button
           type="button"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          onMouseDown={handleMouseDown(() => applyHeading(2))}
           className={`p-2 rounded ${editor.isActive('heading', { level: 2 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Heading 2"
+          title="Heading 2 - Applies to entire paragraph"
         >
           H2
         </button>
         <button
           type="button"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          onMouseDown={handleMouseDown(() => applyHeading(3))}
           className={`p-2 rounded ${editor.isActive('heading', { level: 3 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Heading 3"
+          title="Heading 3 - Applies to entire paragraph"
         >
           H3
+        </button>
+      </div>
+      
+      {/* Text Style buttons that work on selections */}
+      <div className="flex gap-1 border-r pr-2 mr-2">
+        <button
+          type="button"
+          onMouseDown={handleMouseDown(() => applyTextStyle('24px'))}
+          className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+          title="Large text - Applies to selected text only"
+        >
+          T1
+        </button>
+        <button
+          type="button"
+          onMouseDown={handleMouseDown(() => applyTextStyle('20px'))}
+          className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+          title="Medium text - Applies to selected text only"
+        >
+          T2
+        </button>
+        <button
+          type="button"
+          onMouseDown={handleMouseDown(() => applyTextStyle('16px'))}
+          className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+          title="Small text - Applies to selected text only"
+        >
+          T3
         </button>
       </div>
 
       <div className="flex gap-1 border-r pr-2 mr-2">
         <button
           type="button"
-          onClick={() => editor.chain().focus().toggleBold().run()}
+          onMouseDown={handleMouseDown(() => editor.chain().focus().toggleBold().run())}
           className={`p-2 rounded ${editor.isActive('bold') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
           title="Bold"
         >
@@ -414,7 +483,7 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
         </button>
         <button
           type="button"
-          onClick={() => editor.chain().focus().toggleItalic().run()}
+          onMouseDown={handleMouseDown(() => editor.chain().focus().toggleItalic().run())}
           className={`p-2 rounded ${editor.isActive('italic') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
           title="Italic"
         >
@@ -422,7 +491,7 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
         </button>
         <button
           type="button"
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          onMouseDown={handleMouseDown(() => editor.chain().focus().toggleUnderline().run())}
           className={`p-2 rounded ${editor.isActive('underline') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
           title="Underline"
         >
@@ -433,7 +502,7 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
       <div className="flex gap-1 border-r pr-2 mr-2">
         <button
           type="button"
-          onClick={() => editor.chain().focus().setTextAlign('left').run()}
+          onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('left').run())}
           className={`p-2 rounded ${editor.isActive({ textAlign: 'left' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
           title="Align Left"
         >
@@ -441,7 +510,7 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
         </button>
         <button
           type="button"
-          onClick={() => editor.chain().focus().setTextAlign('center').run()}
+          onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('center').run())}
           className={`p-2 rounded ${editor.isActive({ textAlign: 'center' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
           title="Align Center"
         >
@@ -449,7 +518,7 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
         </button>
         <button
           type="button"
-          onClick={() => editor.chain().focus().setTextAlign('right').run()}
+          onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('right').run())}
           className={`p-2 rounded ${editor.isActive({ textAlign: 'right' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
           title="Align Right"
         >
@@ -460,7 +529,7 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
       <div className="flex gap-1 border-r pr-2 mr-2">
         <button
           type="button"
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          onMouseDown={handleMouseDown(() => editor.chain().focus().toggleBulletList().run())}
           className={`p-2 rounded ${editor.isActive('bulletList') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
           title="Bullet List"
         >
@@ -468,7 +537,7 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
         </button>
         <button
           type="button"
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          onMouseDown={handleMouseDown(() => editor.chain().focus().toggleOrderedList().run())}
           className={`p-2 rounded ${editor.isActive('orderedList') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
           title="Numbered List"
         >
@@ -479,9 +548,13 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
       <div className="flex gap-1">
         <button
           type="button"
-          onClick={() => {
+          onMouseDown={(e) => {
+            e.preventDefault();
             const url = window.prompt('Enter the URL:');
-            if (url) editor.chain().focus().setLink({ href: url }).run();
+            if (url) {
+              editor.chain().focus().setLink({ href: url }).run();
+            }
+            editor.view.focus();
           }}
           className={`p-2 rounded ${editor.isActive('link') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
           title="Insert Link"
@@ -490,7 +563,10 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
         </button>
         <button
           type="button"
-          onClick={onImageAdd}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            onImageAdd();
+          }}
           className="p-2 rounded bg-gray-100 hover:bg-gray-200"
           title="Insert Image"
         >
@@ -498,7 +574,7 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
         </button>
         <button
           type="button"
-          onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
+          onMouseDown={handleMouseDown(() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run())}
           className="p-2 rounded bg-gray-100 hover:bg-gray-200"
           title="Insert Table"
         >
@@ -506,11 +582,13 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
         </button>
         <button
           type="button"
-          onClick={() => {
+          onMouseDown={(e) => {
+            e.preventDefault();
             if (onExtractToc) {
               const headings = extractHeadings(editor);
               onExtractToc(headings);
             }
+            editor.view.focus();
           }}
           className="ml-2 px-3 py-2 rounded bg-indigo-600 text-white flex items-center gap-2 hover:bg-indigo-700"
           title="Update Table of Contents"
@@ -573,24 +651,29 @@ const CustomImage = Image.extend({
 
 // CSS for editor styling
 const customStyles = `
-
-.ProseMirror h1, 
-.ProseMirror h2, 
-.ProseMirror h3 {
-  scroll-margin-top: 100px; /* Adjust based on your header height */
-}
-
-.highlight-heading {
-  background-color: rgba(59, 130, 246, 0.1);
-  border-radius: 0.25rem;
-  transition: background-color 0.5s ease;
-}
-
+/* Fix for scroll jumping */
 .ProseMirror {
-  padding: 1rem;
   min-height: 400px;
   border-radius: 0.5rem;
   position: relative;
+  padding: 1rem;
+}
+
+/* Editor toolbar tooltip */
+.editor-toolbar {
+  position: relative;
+}
+
+/* Custom tooltip animation */
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.editor-toolbar-tooltip {
+  animation: fadeInOut 2s ease-in-out forwards;
 }
 
 .ProseMirror:focus {
@@ -712,6 +795,8 @@ const TipTapEditor = ({
 }) => {
   const [content, setContent] = useState('');
   const [showImageModal, setShowImageModal] = useState(false);
+  const editorRef = useRef(null);
+  const editorWrapperRef = useRef(null);
 
   // Add function to add heading IDs
   const addHeadingIds = (editor) => {
@@ -739,7 +824,17 @@ const TipTapEditor = ({
   // Initialize editor with all required extensions
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        // Configure history for better paste handling
+        history: {
+          depth: 100,
+          newGroupDelay: 500
+        },
+        // Configure heading to be more intelligent with selections
+        heading: {
+          levels: [1, 2, 3]
+        }
+      }),
       Placeholder.configure({
         placeholder: 'Start writing your blog here...',
         emptyEditorClass: 'is-editor-empty',
@@ -757,6 +852,7 @@ const TipTapEditor = ({
       TableRow,
       TableHeader,
       TableCell,
+      // Custom heading configuration to work better with text selections
       Heading.configure({
         levels: [1, 2, 3],
       }),
@@ -766,6 +862,7 @@ const TipTapEditor = ({
           class: 'text-blue-600 underline',
         },
       }),
+      FontSize,
       TextStyle,
       Color,
       Underline,
@@ -781,6 +878,7 @@ const TipTapEditor = ({
     content: initialContent,
     onUpdate: ({ editor }) => {
       setContent(editor.getHTML());
+      
       // Extract headings on each update
       if (onTocUpdate) {
         const headings = extractHeadings(editor);
@@ -794,6 +892,13 @@ const TipTapEditor = ({
       },
     },
   });
+
+  // Store editor reference
+  useEffect(() => {
+    if (editor) {
+      editorRef.current = editor;
+    }
+  }, [editor]);
 
   // Extract TOC when editor is initialized
   useEffect(() => {
@@ -828,6 +933,9 @@ const TipTapEditor = ({
     // Set up a MutationObserver to detect changes to the editor content
     const editorElement = document.querySelector('.ProseMirror');
     if (!editorElement) return;
+
+    // Store the editor DOM element reference
+    editorWrapperRef.current = editorElement;
 
     const observer = new MutationObserver(() => {
       // When content changes, reapply heading IDs
@@ -881,7 +989,7 @@ const TipTapEditor = ({
   const handleSave = useCallback(() => {
     if (onSave && editor) {
       const headings = extractHeadings(editor);
-      const updatedContent = addIdsToHeadingsWithRegex(content)
+      const updatedContent = addIdsToHeadingsWithRegex(content);
       onSave(updatedContent, headings);
     }
   }, [content, editor, onSave]);

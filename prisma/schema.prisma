@@ -7,6 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Post {
+  id         String         @id @default(cuid())
+  userId     String
+  username   String         @default("anonymous")
+  content    String
+  poll       Json? // Stores {title, options: [{title, count}], isMultiselect: boolean}
+  views      Int            @default(0)
+  upvotes    String[] // Array of userIds who upvoted
+  downvotes  String[] // Array of userIds who downvoted
+  categories String[]
+  replyIds   String[] // Array of postIds that are replies to this post
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  // Relation to User model
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model User {
   id            String          @id @default(cuid())
   email         String          @unique
@@ -27,6 +45,8 @@ model User {
   sessions      Session[]
   companyInfo   companyInfo[]
   userAccount   userAccount[]
+  Post          Post[]
+  bookmarkPost  String[]
 }
 
 model userAccount {
@@ -42,14 +62,13 @@ model userAccount {
   OrgType        String?
   user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  PrimaryLanguage  String[]
-  Industry         String[]
-  PracticeArea     String[]
-  WorkType         String[]
-  Goals            String[]
-  ExistingTools    String[]
-  TeamSize         String?
-
+  PrimaryLanguage String[]
+  Industry        String[]
+  PracticeArea    String[]
+  WorkType        String[]
+  Goals           String[]
+  ExistingTools   String[]
+  TeamSize        String?
 }
 
 model Account {
@@ -199,19 +218,19 @@ model Product {
   pricingModel            String[]
   featured                Boolean       @default(false)
   slug                    String        @unique
-  company                 companyInfo?   @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  user                    User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company                 companyInfo?  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user                    User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
   Review                  Review[]
   SaveProduct             SaveProduct[] @relation("ProductToSaveProduct")
-  isVendorVerified        Boolean       @default(true) 
-  completionRate          Int           @default(0) 
-  CompanyName             String? @default("abc")
-  Headquarters            String? @default("India")
-  FoundersNames           String[] @default([])
-  ByAdminYearFounded      String?  
-  ByAdminAwards           String? 
-  ByAdminTeamSize         String?  
-  ByAdminEmail            String?  
+  isVendorVerified        Boolean       @default(true)
+  completionRate          Int           @default(0)
+  CompanyName             String?       @default("abc")
+  Headquarters            String?       @default("India")
+  FoundersNames           String[]      @default([])
+  ByAdminYearFounded      String?
+  ByAdminAwards           String?
+  ByAdminTeamSize         String?
+  ByAdminEmail            String?
   ByAdminPhone            String?
   ByAdminWebsite          String?
 }
@@ -293,16 +312,14 @@ model Notification {
   id        String   @id @default(cuid())
   message   String
   createdAt DateTime @default(now())
-  userId    String?  // Nullable foreign key for User
+  userId    String? // Nullable foreign key for User
   type      String?
   read      Boolean  @default(false) // Indicates whether the notification has been read
   user      User?    @relation(fields: [userId], references: [id])
-
- 
 }
 
 model Booking {
-  id               String      @id @default(cuid())
+  id               String   @id @default(cuid())
   productId        String
   vendorId         String
   ProductName      String
@@ -317,89 +334,89 @@ model Booking {
   teamSize         String
   bookingTime      DateTime
 
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
-  userId           String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String?
 }
 
 model ProductView {
-  id            Int      @id @default(autoincrement())
-  productId     String   // Change from Int to String if necessary
-  userOrgType   String?  // Nullable for uncategorized users
-  createdAt     DateTime @default(now()) // Timestamp of the view
-  country       String?
+  id          Int      @id @default(autoincrement())
+  productId   String // Change from Int to String if necessary
+  userOrgType String? // Nullable for uncategorized users
+  createdAt   DateTime @default(now()) // Timestamp of the view
+  country     String?
 }
 
 model Bookmark {
-  id            Int      @id @default(autoincrement())
-  productId     String   // Change from Int to String if necessary
-  userOrgType   String?  // Nullable for uncategorized users
-  createdAt     DateTime @default(now()) // Timestamp of the bookmark
-  country       String?
+  id          Int      @id @default(autoincrement())
+  productId   String // Change from Int to String if necessary
+  userOrgType String? // Nullable for uncategorized users
+  createdAt   DateTime @default(now()) // Timestamp of the bookmark
+  country     String?
 }
 
 model Share {
-  id            Int      @id @default(autoincrement())
-  productId     String   // Change from Int to String if necessary
-  country       String?
-  userOrgType   String?  // Nullable for uncategorized users
-  createdAt     DateTime @default(now()) // Timestamp of the share
+  id          Int      @id @default(autoincrement())
+  productId   String // Change from Int to String if necessary
+  country     String?
+  userOrgType String? // Nullable for uncategorized users
+  createdAt   DateTime @default(now()) // Timestamp of the share
 }
+
 model Features {
   id           Int      @id @default(autoincrement())
   productID    String
-  country      String?  // Optional country field
+  country      String? // Optional country field
   userOrgType  String?
   time         DateTime @default(now())
-  categoryData Json     // To store category names and their open counts
+  categoryData Json // To store category names and their open counts
 
   @@map("features") // The table is now called "features"
 }
 
 model RfpForm {
-  id              String   @id @default(uuid())
-  userID          String?  // User ID
-  userOrgType     String?  // Organization Type
-  userTeamSize    String?  // Team Size
-  customisation   String?  // Customization requests
-  
-  urgency         Json?    // Urgency details stored as a JSON object
-  budget          Json?    // Budget details stored as a JSON object
-  features        Json?    // Features stored as a JSON object
-  vendors         Json?    // Vendors stored as a JSON object
+  id            String  @id @default(uuid())
+  userID        String? // User ID
+  userOrgType   String? // Organization Type
+  userTeamSize  String? // Team Size
+  customisation String? // Customization requests
 
-  createdAt       DateTime @default(now()) // Timestamp for when the RFP form is created
-  updatedAt       DateTime @updatedAt      // Timestamp for last update
+  urgency  Json? // Urgency details stored as a JSON object
+  budget   Json? // Budget details stored as a JSON object
+  features Json? // Features stored as a JSON object
+  vendors  Json? // Vendors stored as a JSON object
+
+  createdAt DateTime @default(now()) // Timestamp for when the RFP form is created
+  updatedAt DateTime @updatedAt // Timestamp for last update
 }
 
+model workFlowProcess {
+  id                 String  @id @default(uuid())
+  userID             String? // User ID
+  userOrgType        String
+  userTeamSize       String
+  categoryOfWorkflow String
+  teamRoles          Json
+  toolsUsed          Json
+  workFlowSteps      Json
 
-model workFlowProcess  {
-  id                   String   @id @default(uuid())
-  userID               String?  // User ID
-  userOrgType          String
-  userTeamSize         String
-  categoryOfWorkflow   String
-  teamRoles            Json      
-  toolsUsed            Json      
-  workFlowSteps        Json      
-  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model PasswordReset {
-  id                 String   @id @default(cuid())
-  userId             String   // Foreign key to User
-  token              String   // Reset token
-  tokenExpiration    DateTime // Token expiration time
-  createdAt          DateTime @default(now()) // When the reset request was created
+  id              String   @id @default(cuid())
+  userId          String // Foreign key to User
+  token           String // Reset token
+  tokenExpiration DateTime // Token expiration time
+  createdAt       DateTime @default(now()) // When the reset request was created
 
-  @@unique([token])  // Ensure token is unique
+  @@unique([token]) // Ensure token is unique
 }
 
 model workflowResponse {
   id                 String   @id @default(cuid())
-  formId             String?   @unique
+  formId             String?  @unique
   userId             String?
   name               String?
   categoryOfAnalysis String?
@@ -407,8 +424,6 @@ model workflowResponse {
   isSaved            Boolean  @default(false)
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
-
- 
 }
 
 model OtpVerification {
@@ -419,12 +434,12 @@ model OtpVerification {
 }
 
 model VendorCredits {
-  id                String    @id @default(uuid())
-  vendorId          String    
-  proposalCredits   Int       @default(10)
-  validationCredits Int       @default(10)
-  lastRenewalDate   DateTime  @default(now())
-  nextRenewalDate   DateTime  
+  id                String   @id @default(uuid())
+  vendorId          String
+  proposalCredits   Int      @default(10)
+  validationCredits Int      @default(10)
+  lastRenewalDate   DateTime @default(now())
+  nextRenewalDate   DateTime
 
   @@index([vendorId])
 }
@@ -460,30 +475,30 @@ model DemoLeads {
 }
 
 model PotentialLead {
-  id          String   @id @default(uuid())
-  email       String?
-  typeOfLead  String?
-  createdAt   DateTime @default(now())
+  id         String   @id @default(uuid())
+  email      String?
+  typeOfLead String?
+  createdAt  DateTime @default(now())
 }
 
 model VendorLeads {
-  id            String   @id @default(uuid())
-  companyName   String?
-  email         String?
-  message       String?
-  createdAt     DateTime @default(now())
+  id          String   @id @default(uuid())
+  companyName String?
+  email       String?
+  message     String?
+  createdAt   DateTime @default(now())
 }
 
 model AiProposal {
-  id            String    @id @default(cuid())
-  vendorId      String
-  name          String?   // Optional proposal name
-  formData      Json     // Initial form data
-  aiResponse    Json?    // AI generated response
-  versions      Json?    // Array of versions with {name, content, createdAt}
-  status        ProposalStatus @default(UNSAVED)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id         String         @id @default(cuid())
+  vendorId   String
+  name       String? // Optional proposal name
+  formData   Json // Initial form data
+  aiResponse Json? // AI generated response
+  versions   Json? // Array of versions with {name, content, createdAt}
+  status     ProposalStatus @default(UNSAVED)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
 
   @@index([vendorId])
 }
@@ -507,11 +522,11 @@ model Blog {
 }
 
 model RefLink {
-  id      String @id @default(cuid())
-  title   String
-  url     String
-  blog    Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
-  blogId  String
+  id     String @id @default(cuid())
+  title  String
+  url    String
+  blog   Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  blogId String
 }
 
 model TocItem {

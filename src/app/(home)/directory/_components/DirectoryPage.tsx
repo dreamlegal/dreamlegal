@@ -290,133 +290,133 @@ const DirectoryPage = () => {
   }, []);
 
 
-  const fetchProducts = async (page = 1, filters = selectedFilters) => {
-    try {
-      setLoading(true);
+  // const fetchProducts = async (page = 1, filters = selectedFilters) => {
+  //   try {
+  //     setLoading(true);
       
-      // Remove userCategory from API filters since we'll handle it client-side
-      const { userCategory, ...apiFilters } = filters;
+  //     // Remove userCategory from API filters since we'll handle it client-side
+  //     const { userCategory, ...apiFilters } = filters;
       
-      const response = await fetch('/api/get-all-products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          page,
-          limit: ITEMS_PER_PAGE,
-          filters: apiFilters  // Send filters without userCategory
-        })
-      });
+  //     const response = await fetch('/api/get-all-products', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         page,
+  //         limit: ITEMS_PER_PAGE,
+  //         filters: apiFilters  // Send filters without userCategory
+  //       })
+  //     });
   
-      if (!response.ok) throw new Error('Failed to fetch products');
+  //     if (!response.ok) throw new Error('Failed to fetch products');
   
-      const data = await response.json();
+  //     const data = await response.json();
       
-      if (!data.success) {
-        throw new Error(data.message || 'Failed to fetch products');
-      }
+  //     if (!data.success) {
+  //       throw new Error(data.message || 'Failed to fetch products');
+  //     }
   
-      // Handle userCategory filtering in the frontend
-      let filteredData = data.products;
-      if (filters.userCategory?.length > 0) {
-        filteredData = filteredData.filter(product => {
-          const productCategories = product.userCategory.map(cat => extractCategoryName(cat));
-          return filters.userCategory.some(selectedCat => 
-            productCategories.includes(selectedCat)
-          );
-        });
-      }
+  //     // Handle userCategory filtering in the frontend
+  //     let filteredData = data.products;
+  //     if (filters.userCategory?.length > 0) {
+  //       filteredData = filteredData.filter(product => {
+  //         const productCategories = product.userCategory.map(cat => extractCategoryName(cat));
+  //         return filters.userCategory.some(selectedCat => 
+  //           productCategories.includes(selectedCat)
+  //         );
+  //       });
+  //     }
   
-      setProducts(data.products); // Keep original products
-      setFilteredProducts(filteredData); // Set filtered products
-      setTotalPages(Math.ceil(filteredData.length / ITEMS_PER_PAGE));
-      setError(null);
-    } catch (err) {
-      console.error('Error in fetchProducts:', err);
-      setError('Failed to load products. Please try again.');
-      setFilteredProducts([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     setProducts(data.products); // Keep original products
+  //     setFilteredProducts(filteredData); // Set filtered products
+  //     setTotalPages(Math.ceil(filteredData.length / ITEMS_PER_PAGE));
+  //     setError(null);
+  //   } catch (err) {
+  //     console.error('Error in fetchProducts:', err);
+  //     setError('Failed to load products. Please try again.');
+  //     setFilteredProducts([]);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  // Modify handleFilterChange to handle userCategory more efficiently
-  const handleFilterChange = (filterType, value) => {
-    setSelectedFilters(prev => {
-      const newFilters = {
-        ...prev,
-        [filterType]: prev[filterType].includes(value)
-          ? prev[filterType].filter(item => item !== value)
-          : [...prev[filterType], value]
-      };
+  // // Modify handleFilterChange to handle userCategory more efficiently
+  // const handleFilterChange = (filterType, value) => {
+  //   setSelectedFilters(prev => {
+  //     const newFilters = {
+  //       ...prev,
+  //       [filterType]: prev[filterType].includes(value)
+  //         ? prev[filterType].filter(item => item !== value)
+  //         : [...prev[filterType], value]
+  //     };
 
-      // Fetch products with the new filters
-      fetchProducts(1, newFilters);
+  //     // Fetch products with the new filters
+  //     fetchProducts(1, newFilters);
       
-      return newFilters;
-    });
-    setCurrentPage(1);
-  };
+  //     return newFilters;
+  //   });
+  //   setCurrentPage(1);
+  // };
 
-  // Modify search function to handle userCategory
-  const debouncedSearch = useCallback(
-    debounce(async (term) => {
-      try {
-        setLoading(true);
-        const response = await fetch('/api/search-product', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            searchTerm: term,
-            page: 1,
-            limit: ITEMS_PER_PAGE,
-            filters: {
-              ...selectedFilters,
-              userCategory: selectedFilters.userCategory.map(cat => extractCategoryName(cat))
-            }
-          })
-        });
+  // // Modify search function to handle userCategory
+  // const debouncedSearch = useCallback(
+  //   debounce(async (term) => {
+  //     try {
+  //       setLoading(true);
+  //       const response = await fetch('/api/search-product', {
+  //         method: 'POST',
+  //         headers: { 'Content-Type': 'application/json' },
+  //         body: JSON.stringify({ 
+  //           searchTerm: term,
+  //           page: 1,
+  //           limit: ITEMS_PER_PAGE,
+  //           filters: {
+  //             ...selectedFilters,
+  //             userCategory: selectedFilters.userCategory.map(cat => extractCategoryName(cat))
+  //           }
+  //         })
+  //       });
         
-        if (!response.ok) throw new Error('Search failed');
+  //       if (!response.ok) throw new Error('Search failed');
         
-        const data = await response.json();
+  //       const data = await response.json();
         
-        if (!data.success) {
-          throw new Error(data.message || 'Search failed');
-        }
+  //       if (!data.success) {
+  //         throw new Error(data.message || 'Search failed');
+  //       }
 
-        setProducts(data.products);
-        setFilteredProducts(data.products);
-        setTotalPages(Math.ceil(data.total / ITEMS_PER_PAGE));
-        setCurrentPage(1);
-        setError(null);
-      } catch (err) {
-        console.error('Error in search:', err);
-        setError('Search failed. Please try again.');
-        setFilteredProducts([]);
-      } finally {
-        setLoading(false);
-      }
-    }, 300),
-    [selectedFilters]
-  );
+  //       setProducts(data.products);
+  //       setFilteredProducts(data.products);
+  //       setTotalPages(Math.ceil(data.total / ITEMS_PER_PAGE));
+  //       setCurrentPage(1);
+  //       setError(null);
+  //     } catch (err) {
+  //       console.error('Error in search:', err);
+  //       setError('Search failed. Please try again.');
+  //       setFilteredProducts([]);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }, 300),
+  //   [selectedFilters]
+  // );
 
   // Add useEffect to clean up filters when component unmounts
  
   
 
   
-  const handleSearchChange = (e) => {
-    const term = e.target.value;
-    setSearchTerm(term);
+  // const handleSearchChange = (e) => {
+  //   const term = e.target.value;
+  //   setSearchTerm(term);
     
-    if (term) {
-      setLoading(true); // Set loading immediately when user types
-      debouncedSearch(term);
-    } else {
-      setFilteredProducts(products);
-      setCurrentPage(1);
-    }
-  };
+  //   if (term) {
+  //     setLoading(true); // Set loading immediately when user types
+  //     debouncedSearch(term);
+  //   } else {
+  //     setFilteredProducts(products);
+  //     setCurrentPage(1);
+  //   }
+  // };
 
   const toggleCompareProduct = (product) => {
     setCompareProducts(prev => {
@@ -432,15 +432,166 @@ const DirectoryPage = () => {
   };
 
   // Handle page change
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-    if (searchTerm) {
-      debouncedSearch(searchTerm);
-    } else {
-      fetchProducts(newPage, selectedFilters);
+  // const handlePageChange = (newPage) => {
+  //   setCurrentPage(newPage);
+  //   if (searchTerm) {
+  //     debouncedSearch(searchTerm);
+  //   } else {
+  //     fetchProducts(newPage, selectedFilters);
+  //   }
+  //   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // };
+
+
+  // here 
+
+  // --- MODIFY THIS FUNCTION ---
+const fetchProducts = async (page = 1, filters = selectedFilters) => {
+  try {
+    setLoading(true);
+    
+    // Remove userCategory from API filters since we'll handle it client-side
+    const { userCategory, ...apiFilters } = filters;
+    
+    const response = await fetch('/api/get-all-products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        page,
+        limit: ITEMS_PER_PAGE,
+        filters: apiFilters  // Send filters without userCategory
+      })
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch products');
+
+    const data = await response.json();
+    
+    if (!data.success) {
+      throw new Error(data.message || 'Failed to fetch products');
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+
+    // Handle userCategory filtering in the frontend
+    let filteredData = data.products;
+    if (filters.userCategory?.length > 0) {
+      filteredData = filteredData.filter(product => {
+        const productCategories = product.userCategory.map(cat => extractCategoryName(cat));
+        return filters.userCategory.some(selectedCat => 
+          productCategories.includes(selectedCat)
+        );
+      });
+    }
+
+    setProducts(data.products); // Keep this for existing functionality
+    setFilteredProducts(filteredData); // Keep this for existing functionality
+    
+    // CHANGE: Use the total count from API for pagination
+    setTotalPages(Math.ceil(data.total / ITEMS_PER_PAGE));
+    
+    setError(null);
+  } catch (err) {
+    console.error('Error in fetchProducts:', err);
+    setError('Failed to load products. Please try again.');
+    setFilteredProducts([]);
+  } finally {
+    setLoading(false);
+  }
+};
+
+// --- MODIFY THIS FUNCTION ---
+const debouncedSearch = useCallback(
+  debounce(async (term, page = 1) => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/search-product', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          searchTerm: term,
+          page: page, // CHANGE: Use the passed page parameter
+          limit: ITEMS_PER_PAGE,
+          filters: {
+            ...selectedFilters,
+            userCategory: selectedFilters.userCategory.map(cat => extractCategoryName(cat))
+          }
+        })
+      });
+      
+      if (!response.ok) throw new Error('Search failed');
+      
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error(data.message || 'Search failed');
+      }
+
+      setProducts(data.products);
+      setFilteredProducts(data.products);
+      
+      // CHANGE: Use the total count from API for pagination
+      setTotalPages(Math.ceil(data.total / ITEMS_PER_PAGE));
+      
+      setError(null);
+    } catch (err) {
+      console.error('Error in search:', err);
+      setError('Search failed. Please try again.');
+      setFilteredProducts([]);
+    } finally {
+      setLoading(false);
+    }
+  }, 300),
+  [selectedFilters]
+);
+
+// --- MODIFY THIS FUNCTION ---
+const handleSearchChange = (e) => {
+  const term = e.target.value;
+  setSearchTerm(term);
+  
+  if (term) {
+    setLoading(true);
+    // CHANGE: Reset to page 1 for new searches
+    setCurrentPage(1);
+    debouncedSearch(term, 1);
+  } else {
+    fetchProducts(1, selectedFilters); // CHANGE: Fetch page 1 when search is cleared
+    setCurrentPage(1);
+  }
+};
+
+// --- MODIFY THIS FUNCTION ---
+const handlePageChange = (newPage) => {
+  setCurrentPage(newPage);
+  
+  if (searchTerm) {
+    // CHANGE: Pass the page to search
+    debouncedSearch(searchTerm, newPage);
+  } else {
+    // CHANGE: Pass the page to fetchProducts
+    fetchProducts(newPage, selectedFilters);
+  }
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// --- MODIFY THIS FUNCTION ---
+const handleFilterChange = (filterType, value) => {
+  setSelectedFilters(prev => {
+    const newFilters = {
+      ...prev,
+      [filterType]: prev[filterType].includes(value)
+        ? prev[filterType].filter(item => item !== value)
+        : [...prev[filterType], value]
+    };
+
+    // CHANGE: Reset to page 1 when filters change
+    setCurrentPage(1);
+    // Fetch products with the new filters
+    fetchProducts(1, newFilters);
+    
+    return newFilters;
+  });
+};
 
   // Handle screen resize
   useEffect(() => {

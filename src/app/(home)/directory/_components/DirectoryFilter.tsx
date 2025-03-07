@@ -467,7 +467,7 @@ const DirectoryFilter = ({
 
   // Section open/close state
   const [openSections, setOpenSections] = useState({
-    category: true,
+    category: false,
     customer: false,
     price: false,
     language: false,

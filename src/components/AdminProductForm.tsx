@@ -17,7 +17,7 @@ import FormProgress from '@/components/FormProgress';
 
 
 import { Button } from "./ui/button";
-import { ChevronDown, ChevronUp, ArrowRight ,Check} from 'lucide-react';
+import { ChevronDown, ChevronUp, ArrowRight ,Check ,X ,Menu} from 'lucide-react';
 import CheckUpload from './ProductForms/CheckUpload';
 import { z } from 'zod';
 interface ProductFormWithProgressProps {

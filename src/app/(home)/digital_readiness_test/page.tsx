@@ -1,16 +1,16 @@
 "use client"
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  ArrowRight, 
-  CheckCircle, 
-  Shield, 
-  Clock, 
-  Users, 
-  Sparkles,
+import {
+  ArrowRight,
   BarChart3,
-  FileCheck
+  CheckCircle,
+  Clock,
+  FileCheck,
+  Shield,
+  Sparkles,
+  Users
 } from 'lucide-react';
+import { useState } from 'react';
 
 const FloatingElement = ({ children, delay, duration = 3 }) => (
   <motion.div
@@ -296,7 +296,7 @@ const LegalMaturityLanding = () => {
 
               {/* CTA Button */}
               <div className="pt-4">
-                <CustomButton href="#" className="px-10 py-4 text-lg shadow-lg shadow-blue-200">
+                <CustomButton href="/digital_readiness_test/assesment" className="px-10 py-4 text-lg shadow-lg shadow-blue-200">
                   Start Assessment
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </CustomButton>

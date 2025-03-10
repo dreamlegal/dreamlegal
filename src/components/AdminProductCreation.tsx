@@ -132,8 +132,8 @@ const AdminProductCreation = () => {
         </div>
       </div>
       <div>
-        <div className="grid grid-cols-1 md:grid-cols-4 mt-6">
-          <div className="w-full col-span-3 shadow border px-5 py-6 rounded-lg">
+        <div className="grid grid-cols-1 mt-6">
+          <div className="w-full shadow border px-5 py-6 rounded-lg">
             <div>
               <AdminProductForm key={formKey} editing={false}/> {/* Add key prop here */}
             </div>

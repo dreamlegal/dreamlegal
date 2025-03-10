@@ -3315,23 +3315,324 @@ const PostCreator = ({ initialMode = null, onClose }) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white rounded-xl overflow-hidden shadow-lg min-h-[400px]">
-      {/* Header with author info */}
-      <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
-        <div className="flex items-center justify-between">
+    // <div className="max-w-2xl mx-auto bg-white rounded-xl overflow-hidden shadow-lg min-h-[400px]">
+    //   {/* Header with author info */}
+    //   <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
+    //     <div className="flex items-center justify-between">
+    //       <div className="flex items-center">
+    //         <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 mr-3 flex items-center justify-center text-white font-bold shadow-md">
+    //           <span>
+    //             {isAnonymous ? "A" : extractedUsername.substring(0, 2).toUpperCase()}
+    //           </span>
+    //         </div>
+    //         <div>
+    //           <div className="font-medium text-gray-800 text-lg">
+    //             {isAnonymous ? "Anonymous" : extractedUsername}
+    //             <span className="ml-2 text-xs text-gray-500 bg-white px-2 py-1 rounded-full">{userEmail}</span>
+    //           </div>
+    //           <div className="flex items-center mt-1">
+    //             <label className="flex items-center cursor-pointer hover:bg-white px-2 py-1 rounded-full transition-all">
+    //               <input
+    //                 type="checkbox"
+    //                 className="mr-1.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+    //                 checked={isAnonymous}
+    //                 onChange={(e) => setIsAnonymous(e.target.checked)}
+    //               />
+    //               <span className="text-sm text-gray-600">Post anonymously</span>
+    //             </label>
+                
+    //             <div className="relative ml-3">
+    //               <button 
+    //                 onClick={() => setShowCategorySelector(!showCategorySelector)}
+    //                 className="text-sm flex items-center text-blue-600 hover:text-blue-800 hover:bg-white px-2 py-1 rounded-full transition-all"
+    //               >
+    //                 <span>Categories</span>
+    //                 <ChevronDown size={14} className="ml-1" />
+    //               </button>
+                  
+    //               {showCategorySelector && (
+    //                 <div className="absolute z-10 mt-1 w-56 bg-white rounded-lg shadow-lg p-2 border border-gray-100">
+    //                   <div className="text-xs text-gray-500 mb-2 px-2">Select categories</div>
+    //                   {categories.map(category => (
+    //                     <div key={category.id} className="mb-1 last:mb-0">
+    //                       <label className="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+    //                         <input
+    //                           type="checkbox"
+    //                           className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+    //                           checked={selectedCategories.includes(category.id)}
+    //                           onChange={() => toggleCategory(category.id)}
+    //                         />
+    //                         <span className="text-sm text-gray-700">{category.label}</span>
+    //                       </label>
+    //                     </div>
+    //                   ))}
+    //                 </div>
+    //               )}
+    //             </div>
+    //           </div>
+    //         </div>
+    //       </div>
+    //       <div className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full text-white text-xs font-medium shadow-sm">
+    //         Public
+    //       </div>
+    //     </div>
+    //   </div>
+
+    //   {/* Canvas-like editor */}
+    //   <div className="bg-white p-4 min-h-[300px]">
+    //     {contentBlocks.map((block, index) => (
+    //       <React.Fragment key={block.id}>
+    //         {renderContentBlock(block, index)}
+    //       </React.Fragment>
+    //     ))}
+    //   </div>
+      
+    //   {/* Error message */}
+    //   {error && (
+    //     <div className="p-4 bg-red-50 text-red-600 text-sm border-t border-red-100">
+    //       <div className="flex items-start">
+    //         <div className="p-1 bg-red-100 rounded-full mr-2">
+    //           <X size={14} className="text-red-600" />
+    //         </div>
+    //         <div>{error}</div>
+    //       </div>
+    //     </div>
+    //   )}
+      
+    //   {/* Success message */}
+    //   {postSuccess && (
+    //     <div className="p-4 bg-green-50 text-green-600 text-sm border-t border-green-100">
+    //       <div className="flex items-center">
+    //         <div className="p-1 bg-green-100 rounded-full mr-2">
+    //           <Check size={14} className="text-green-600" />
+    //         </div>
+    //         <div>Post created successfully! Refreshing...</div>
+    //       </div>
+    //     </div>
+    //   )}
+
+    //   {/* Footer with toolbar */}
+    //   <div className="border-t border-gray-100 p-4 bg-gradient-to-r from-gray-50 to-blue-50">
+    //     <div className="flex justify-between items-center">
+    //       <div className="flex space-x-1">
+    //         <button 
+    //           className="p-2 rounded-lg hover:bg-white text-gray-700 transition-all tooltip-trigger"
+    //           onClick={() => {
+    //             if (activeBlockId) {
+    //               insertAtCursor('image');
+    //             } else {
+    //               addContentBlock('image', contentBlocks.length);
+    //             }
+    //           }}
+    //           disabled={isLoading}
+    //           title="Add image"
+    //         >
+    //           <Image size={20} className="text-green-600" />
+    //         </button>
+    //         <button 
+    //           className="p-2 rounded-lg hover:bg-white text-gray-700 transition-all"
+    //           onClick={() => {
+    //             if (activeBlockId) {
+    //               insertAtCursor('link', { url: '' });
+    //             } else {
+    //               addContentBlock('link', contentBlocks.length);
+    //             }
+    //           }}
+    //           disabled={isLoading}
+    //           title="Add link"
+    //         >
+    //           <Link size={20} className="text-blue-600" />
+    //         </button>
+    //         <button 
+    //           className={`p-2 rounded-lg hover:bg-white text-gray-700 transition-all ${hasPoll ? 'opacity-50 cursor-not-allowed' : ''}`}
+    //           onClick={() => !hasPoll && setShowPollCreator(true)}
+    //           disabled={hasPoll || isLoading}
+    //           title={hasPoll ? "Only one poll allowed per post" : "Add poll"}
+    //         >
+    //           <BarChart2 size={20} className="text-purple-600" />
+    //         </button>
+    //       </div>
+          
+    //       <div className="flex space-x-3">
+    //         {onClose && (
+    //           <button 
+    //             className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all"
+    //             onClick={onClose}
+    //             disabled={isLoading}
+    //           >
+    //             Cancel
+    //           </button>
+    //         )}
+            
+    //         <button 
+    //           className={`px-6 py-2 text-white rounded-lg flex items-center ${
+    //             isLoading
+    //               ? 'bg-blue-400 cursor-wait'
+    //               : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
+    //           } transition-all`}
+    //           onClick={handlePost}
+    //           disabled={isLoading}
+    //         >
+    //           {isLoading ? (
+    //             <>
+    //               <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+    //               <span>Posting...</span>
+    //             </>
+    //           ) : (
+    //             <>
+    //               <Send size={16} className="mr-2" /> <span>Publish Post</span>
+    //             </>
+    //           )}
+    //         </button>
+    //       </div>
+    //     </div>
+    //   </div>
+
+    //   {/* Hidden file input for image uploads */}
+    //   <input
+    //     type="file"
+    //     ref={fileInputRef}
+    //     className="hidden"
+    //     accept="image/*"
+    //     onChange={handleFileSelect}
+    //   />
+
+    //   {/* Poll creator */}
+    //   {showPollCreator && (
+    //     <div className="border-t border-gray-200 bg-gradient-to-r from-purple-50 to-indigo-50 p-6">
+    //       <div className="bg-white rounded-xl shadow-md p-5">
+    //         <div className="flex justify-between items-center mb-5">
+    //           <h3 className="text-xl font-bold text-gray-800 flex items-center">
+    //             <BarChart2 size={20} className="text-purple-600 mr-2" />
+    //             {currentEditingPollId ? 'Edit Poll' : 'Create Poll'}
+    //           </h3>
+    //           <button 
+    //             className="p-1.5 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-all"
+    //             onClick={() => {
+    //               setShowPollCreator(false);
+    //               setCurrentEditingPollId(null);
+    //             }}
+    //           >
+    //             <X size={18} />
+    //           </button>
+    //         </div>
+            
+    //         <div className="mb-5">
+    //           <label className="block text-sm font-medium mb-2 text-gray-700">Poll question:</label>
+    //           <input
+    //             type="text"
+    //             placeholder="Ask a question..."
+    //             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition-all"
+    //             value={pollQuestion}
+    //             onChange={(e) => setPollQuestion(e.target.value)}
+    //           />
+    //         </div>
+            
+    //         <div className="mb-5">
+    //           <label className="block text-sm font-medium mb-2 text-gray-700">Poll type:</label>
+    //           <div className="flex space-x-6">
+    //             <label className="flex items-center">
+    //               <input 
+    //                 type="radio" 
+    //                 checked={pollType === 'single'} 
+    //                 onChange={() => setPollType('single')} 
+    //                 className="mr-2 h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300"
+    //               />
+    //               <span className="text-gray-700">Single choice</span>
+    //             </label>
+    //             <label className="flex items-center">
+    //               <input 
+    //                 type="radio" 
+    //                 checked={pollType === 'multiple'} 
+    //                 onChange={() => setPollType('multiple')} 
+    //                 className="mr-2 h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300"
+    //               />
+    //               <span className="text-gray-700">Multiple choice</span>
+    //             </label>
+    //           </div>
+    //         </div>
+            
+    //         <div className="mb-5">
+    //           <div className="flex justify-between items-center mb-2">
+    //             <label className="block text-sm font-medium text-gray-700">Options:</label>
+    //             <span className="text-xs text-gray-500">Minimum 2 options required</span>
+    //           </div>
+              
+    //           <div className="space-y-3 mb-3">
+    //             {pollOptions.map((option, index) => (
+    //               <div key={index} className="flex items-center">
+    //                 <div className="mr-3 text-gray-400 text-sm">{index + 1}.</div>
+    //                 <input
+    //                   type="text"
+    //                   placeholder={`Option ${index + 1}`}
+    //                   className="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition-all"
+    //                   value={option}
+    //                   onChange={(e) => updatePollOption(index, e.target.value)}
+    //                 />
+    //                 {pollOptions.length > 2 && (
+    //                   <button 
+    //                     className="ml-2 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+    //                     onClick={() => removePollOption(index)}
+    //                     title="Remove option"
+    //                   >
+    //                     <X size={18} />
+    //                   </button>
+    //                 )}
+    //               </div>
+    //             ))}
+    //           </div>
+              
+    //           <button 
+    //             className="flex items-center text-purple-600 hover:text-purple-800 px-3 py-2 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all"
+    //             onClick={addPollOption}
+    //           >
+    //             <PlusCircle size={18} className="mr-2" /> Add another option
+    //           </button>
+    //         </div>
+            
+    //         <div className="flex justify-end">
+    //           <button 
+    //             className="mr-3 px-5 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all"
+    //             onClick={() => {
+    //               setShowPollCreator(false);
+    //               setCurrentEditingPollId(null);
+    //             }}
+    //           >
+    //             Cancel
+    //           </button>
+    //           <button 
+    //             className={`px-5 py-2.5 rounded-lg text-white font-medium ${
+    //               !pollQuestion.trim() || pollOptions.filter(o => o.trim()).length < 2
+    //                 ? 'bg-gray-300 cursor-not-allowed'
+    //                 : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
+    //             } transition-all`}
+    //             onClick={addPoll}
+    //             disabled={!pollQuestion.trim() || pollOptions.filter(o => o.trim()).length < 2}
+    //           >
+    //             {currentEditingPollId ? 'Update Poll' : 'Add Poll'}
+    //           </button>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   )}
+    // </div>
+    <div className="w-full max-w-2xl mx-auto bg-white rounded-xl overflow-hidden shadow-lg min-h-[400px]">
+      {/* Header with author info - Responsive adjustments */}
+      <div className="p-3 sm:p-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 mr-3 flex items-center justify-center text-white font-bold shadow-md">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 mr-3 flex items-center justify-center text-white font-bold shadow-md">
               <span>
                 {isAnonymous ? "A" : extractedUsername.substring(0, 2).toUpperCase()}
               </span>
             </div>
             <div>
-              <div className="font-medium text-gray-800 text-lg">
+              <div className="font-medium text-gray-800 text-base sm:text-lg flex flex-col sm:flex-row sm:items-center">
                 {isAnonymous ? "Anonymous" : extractedUsername}
-                <span className="ml-2 text-xs text-gray-500 bg-white px-2 py-1 rounded-full">{userEmail}</span>
+                <span className="mt-1 sm:mt-0 sm:ml-2 text-xs text-gray-500 bg-white px-2 py-1 rounded-full inline-block sm:inline">{userEmail}</span>
               </div>
-              <div className="flex items-center mt-1">
-                <label className="flex items-center cursor-pointer hover:bg-white px-2 py-1 rounded-full transition-all">
+              <div className="flex flex-wrap items-center mt-1">
+                <label className="flex items-center cursor-pointer hover:bg-white px-2 py-1 rounded-full transition-all mr-2 mb-1 sm:mb-0">
                   <input
                     type="checkbox"
                     className="mr-1.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
@@ -3341,7 +3642,7 @@ const PostCreator = ({ initialMode = null, onClose }) => {
                   <span className="text-sm text-gray-600">Post anonymously</span>
                 </label>
                 
-                <div className="relative ml-3">
+                <div className="relative">
                   <button 
                     onClick={() => setShowCategorySelector(!showCategorySelector)}
                     className="text-sm flex items-center text-blue-600 hover:text-blue-800 hover:bg-white px-2 py-1 rounded-full transition-all"
@@ -3351,7 +3652,7 @@ const PostCreator = ({ initialMode = null, onClose }) => {
                   </button>
                   
                   {showCategorySelector && (
-                    <div className="absolute z-10 mt-1 w-56 bg-white rounded-lg shadow-lg p-2 border border-gray-100">
+                    <div className="absolute z-10 mt-1 w-56 bg-white rounded-lg shadow-lg p-2 border border-gray-100 left-0 sm:left-auto">
                       <div className="text-xs text-gray-500 mb-2 px-2">Select categories</div>
                       {categories.map(category => (
                         <div key={category.id} className="mb-1 last:mb-0">
@@ -3372,14 +3673,14 @@ const PostCreator = ({ initialMode = null, onClose }) => {
               </div>
             </div>
           </div>
-          <div className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full text-white text-xs font-medium shadow-sm">
+          <div className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full text-white text-xs font-medium shadow-sm mt-2 sm:mt-0 self-start sm:self-auto">
             Public
           </div>
         </div>
       </div>
 
       {/* Canvas-like editor */}
-      <div className="bg-white p-4 min-h-[300px]">
+      <div className="bg-white p-3 sm:p-4 min-h-[200px] sm:min-h-[300px]">
         {contentBlocks.map((block, index) => (
           <React.Fragment key={block.id}>
             {renderContentBlock(block, index)}
@@ -3389,9 +3690,9 @@ const PostCreator = ({ initialMode = null, onClose }) => {
       
       {/* Error message */}
       {error && (
-        <div className="p-4 bg-red-50 text-red-600 text-sm border-t border-red-100">
+        <div className="p-3 sm:p-4 bg-red-50 text-red-600 text-sm border-t border-red-100">
           <div className="flex items-start">
-            <div className="p-1 bg-red-100 rounded-full mr-2">
+            <div className="p-1 bg-red-100 rounded-full mr-2 flex-shrink-0">
               <X size={14} className="text-red-600" />
             </div>
             <div>{error}</div>
@@ -3401,9 +3702,9 @@ const PostCreator = ({ initialMode = null, onClose }) => {
       
       {/* Success message */}
       {postSuccess && (
-        <div className="p-4 bg-green-50 text-green-600 text-sm border-t border-green-100">
+        <div className="p-3 sm:p-4 bg-green-50 text-green-600 text-sm border-t border-green-100">
           <div className="flex items-center">
-            <div className="p-1 bg-green-100 rounded-full mr-2">
+            <div className="p-1 bg-green-100 rounded-full mr-2 flex-shrink-0">
               <Check size={14} className="text-green-600" />
             </div>
             <div>Post created successfully! Refreshing...</div>
@@ -3411,10 +3712,10 @@ const PostCreator = ({ initialMode = null, onClose }) => {
         </div>
       )}
 
-      {/* Footer with toolbar */}
-      <div className="border-t border-gray-100 p-4 bg-gradient-to-r from-gray-50 to-blue-50">
-        <div className="flex justify-between items-center">
-          <div className="flex space-x-1">
+      {/* Footer with toolbar - Responsive adjustments */}
+      <div className="border-t border-gray-100 p-3 sm:p-4 bg-gradient-to-r from-gray-50 to-blue-50">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+          <div className="flex space-x-1 mb-3 sm:mb-0">
             <button 
               className="p-2 rounded-lg hover:bg-white text-gray-700 transition-all tooltip-trigger"
               onClick={() => {
@@ -3456,7 +3757,7 @@ const PostCreator = ({ initialMode = null, onClose }) => {
           <div className="flex space-x-3">
             {onClose && (
               <button 
-                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all"
+                className="px-3 sm:px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all flex-grow sm:flex-grow-0"
                 onClick={onClose}
                 disabled={isLoading}
               >
@@ -3465,7 +3766,7 @@ const PostCreator = ({ initialMode = null, onClose }) => {
             )}
             
             <button 
-              className={`px-6 py-2 text-white rounded-lg flex items-center ${
+              className={`px-4 sm:px-6 py-2 text-white rounded-lg flex items-center justify-center flex-grow sm:flex-grow-0 ${
                 isLoading
                   ? 'bg-blue-400 cursor-wait'
                   : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
@@ -3497,12 +3798,12 @@ const PostCreator = ({ initialMode = null, onClose }) => {
         onChange={handleFileSelect}
       />
 
-      {/* Poll creator */}
+      {/* Poll creator - Responsive adjustments */}
       {showPollCreator && (
-        <div className="border-t border-gray-200 bg-gradient-to-r from-purple-50 to-indigo-50 p-6">
-          <div className="bg-white rounded-xl shadow-md p-5">
-            <div className="flex justify-between items-center mb-5">
-              <h3 className="text-xl font-bold text-gray-800 flex items-center">
+        <div className="border-t border-gray-200 bg-gradient-to-r from-purple-50 to-indigo-50 p-3 sm:p-6">
+          <div className="bg-white rounded-xl shadow-md p-3 sm:p-5">
+            <div className="flex justify-between items-center mb-4 sm:mb-5">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800 flex items-center">
                 <BarChart2 size={20} className="text-purple-600 mr-2" />
                 {currentEditingPollId ? 'Edit Poll' : 'Create Poll'}
               </h3>
@@ -3517,20 +3818,20 @@ const PostCreator = ({ initialMode = null, onClose }) => {
               </button>
             </div>
             
-            <div className="mb-5">
+            <div className="mb-4 sm:mb-5">
               <label className="block text-sm font-medium mb-2 text-gray-700">Poll question:</label>
               <input
                 type="text"
                 placeholder="Ask a question..."
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition-all"
+                className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition-all"
                 value={pollQuestion}
                 onChange={(e) => setPollQuestion(e.target.value)}
               />
             </div>
             
-            <div className="mb-5">
+            <div className="mb-4 sm:mb-5">
               <label className="block text-sm font-medium mb-2 text-gray-700">Poll type:</label>
-              <div className="flex space-x-6">
+              <div className="flex flex-col sm:flex-row sm:space-x-6 space-y-2 sm:space-y-0">
                 <label className="flex items-center">
                   <input 
                     type="radio" 
@@ -3552,7 +3853,7 @@ const PostCreator = ({ initialMode = null, onClose }) => {
               </div>
             </div>
             
-            <div className="mb-5">
+            <div className="mb-4 sm:mb-5">
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-sm font-medium text-gray-700">Options:</label>
                 <span className="text-xs text-gray-500">Minimum 2 options required</span>
@@ -3561,21 +3862,21 @@ const PostCreator = ({ initialMode = null, onClose }) => {
               <div className="space-y-3 mb-3">
                 {pollOptions.map((option, index) => (
                   <div key={index} className="flex items-center">
-                    <div className="mr-3 text-gray-400 text-sm">{index + 1}.</div>
+                    <div className="mr-2 sm:mr-3 text-gray-400 text-sm">{index + 1}.</div>
                     <input
                       type="text"
                       placeholder={`Option ${index + 1}`}
-                      className="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition-all"
+                      className="flex-1 p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition-all"
                       value={option}
                       onChange={(e) => updatePollOption(index, e.target.value)}
                     />
                     {pollOptions.length > 2 && (
                       <button 
-                        className="ml-2 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+                        className="ml-2 p-1.5 sm:p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
                         onClick={() => removePollOption(index)}
                         title="Remove option"
                       >
-                        <X size={18} />
+                        <X size={16} className="sm:size-18" />
                       </button>
                     )}
                   </div>
@@ -3583,16 +3884,16 @@ const PostCreator = ({ initialMode = null, onClose }) => {
               </div>
               
               <button 
-                className="flex items-center text-purple-600 hover:text-purple-800 px-3 py-2 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all"
+                className="flex items-center text-purple-600 hover:text-purple-800 px-3 py-2 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all text-sm sm:text-base"
                 onClick={addPollOption}
               >
-                <PlusCircle size={18} className="mr-2" /> Add another option
+                <PlusCircle size={16} className="mr-1.5 sm:mr-2 sm:size-18" /> Add another option
               </button>
             </div>
             
             <div className="flex justify-end">
               <button 
-                className="mr-3 px-5 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all"
+                className="mr-2 sm:mr-3 px-3 sm:px-5 py-2 sm:py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all text-sm sm:text-base"
                 onClick={() => {
                   setShowPollCreator(false);
                   setCurrentEditingPollId(null);
@@ -3601,7 +3902,7 @@ const PostCreator = ({ initialMode = null, onClose }) => {
                 Cancel
               </button>
               <button 
-                className={`px-5 py-2.5 rounded-lg text-white font-medium ${
+                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-white font-medium text-sm sm:text-base ${
                   !pollQuestion.trim() || pollOptions.filter(o => o.trim()).length < 2
                     ? 'bg-gray-300 cursor-not-allowed'
                     : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg'

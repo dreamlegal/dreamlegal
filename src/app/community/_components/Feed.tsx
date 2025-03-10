@@ -262,7 +262,7 @@ const Feed = ({ searchQuery = '' }) => {
 
   return (
     <div className="flex justify-between">
-      <div className="space-y-6 w-3/4">
+      <div className="space-y-6 w-full md:w-3/4 mx-auto">
       {posts.map(post => (
         <PostViewTracker key={post.id} postId={post.id}>
         <PostRenderer

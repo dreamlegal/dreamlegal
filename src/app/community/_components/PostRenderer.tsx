@@ -1543,22 +1543,24 @@ const PostRenderer = ({
     <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
       {/* Post Header */}
       <div className="p-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
-        <div className="flex items-center">
+        <div className="flex items-center flex-wrap sm:flex-nowrap">
           <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 mr-3 flex items-center justify-center text-white font-bold shadow-sm">
             <span>{author.substring(0, 2).toUpperCase()}</span>
           </div>
-          <div>
+          <div className="flex-1 min-w-0">
             <div className="font-medium text-gray-800">{author}</div>
-            <div className="flex items-center text-xs text-gray-500 mt-1">
-              <Calendar size={12} className="mr-1" />
-              <span className="mr-2">{formattedDate}</span>
-              <Clock size={12} className="mr-1" />
-              <span>{timeAgo}</span>
+            <div className="flex items-center text-xs text-gray-500 mt-1 flex-wrap sm:flex-nowrap">
+              <div className="flex items-center mr-2">
+                <Calendar size={12} className="mr-1" />
+                <span>{formattedDate}</span>
+              </div>
+              <div className="flex items-center">
+                <Clock size={12} className="mr-1" />
+                <span>{timeAgo}</span>
+              </div>
             </div>
           </div>
-        </div>
-        
-        {/* Categories */}
+        </div>    {/* Categories */}
         {categories && categories.length > 0 && (
           <div className="flex flex-wrap mt-3 gap-2">
             {categories.map((category, index) => {
@@ -1596,98 +1598,178 @@ const PostRenderer = ({
         </div>
       </div>
       
-      {/* Post Stats */}
-      <div className="px-5 py-3 flex flex-wrap items-center justify-between text-sm border-t border-gray-100 bg-gray-50">
-        <div className="flex items-center space-x-4">
-          <button 
-            className={`flex items-center px-2 py-1 rounded-md transition-colors ${
-              votes.hasUpvoted 
-                ? 'text-green-600 bg-green-50' 
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-            onClick={() => handleVotePost('upvote')}
-          >
-            <ThumbsUp size={16} className="mr-1.5" />
-            <span className="font-medium">{votes.upvotes.length}</span>
-          </button>
-          
-          <button 
-            className={`flex items-center px-2 py-1 rounded-md transition-colors ${
-              votes.hasDownvoted 
-                ? 'text-red-600 bg-red-50' 
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-            onClick={() => handleVotePost('downvote')}
-          >
-            <ThumbsDown size={16} className="mr-1.5" />
-            <span className="font-medium">{votes.downvotes.length}</span>
-          </button>
-          
-          <div className="text-sm font-medium flex items-center px-2 py-1 text-blue-600 bg-blue-50 rounded-md">
-            <Award size={16} className="mr-1.5" />
-            Score: {votes.upvotes.length - votes.downvotes.length}
-          </div>
-        </div>
-        
-        <div className="flex items-center space-x-3 mt-2 sm:mt-0">
-          <div className="flex items-center text-gray-500 px-2 py-1">
-            <Eye size={16} className="mr-1.5" />
-            <span className="font-medium">{views}</span>
-          </div>
-          
-          <div className="flex items-center text-gray-500 px-2 py-1">
-            <MessageCircle size={16} className="mr-1.5" />
-            <span className="font-medium">{totalReplies}</span>
-          </div>
-          
-          <a href={`/community/post/${postId}`} className="flex items-center text-gray-500 hover:text-blue-600 px-2 py-1 rounded-md hover:bg-gray-100 transition-colors">
-            <ExternalLink size={16} className="mr-1.5" />
-            <span className="hidden sm:inline">Open</span>
-          </a>
-          
-          <div className="relative">
-            <button 
-              className="flex items-center text-gray-500 hover:text-blue-600 px-2 py-1 rounded-md hover:bg-gray-100 transition-colors"
-              onClick={copyLinkToClipboard}
-            >
-              <Share size={16} className="mr-1.5" />
-              <span className="hidden sm:inline">Share</span>
-            </button>
-            
-            {showShareTooltip && (
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg whitespace-nowrap">
-                Link copied!
-              </div>
-            )}
-          </div>
-          
-          <button className="flex items-center text-gray-500 hover:text-blue-600 px-2 py-1 rounded-md hover:bg-gray-100 transition-colors">
-            <BookmarkPlus size={16} className="mr-1.5" />
-            <span className="hidden sm:inline">Save</span>
-          </button>
-        </div>
+     
+      <div className="px-3 sm:px-5 py-2 sm:py-3 border-t border-gray-100 bg-gray-50">
+  {/* Mobile layout - two rows */}
+  <div className="sm:hidden">
+    {/* Score centered in top row */}
+    <div className="flex justify-center items-center mb-3">
+      <div className="text-sm font-medium flex items-center px-3 py-1.5 text-blue-600 bg-blue-50 rounded-md">
+        <Award size={16} className="mr-1.5" />
+        <span>Score: {votes.upvotes.length - votes.downvotes.length}</span>
       </div>
-
-      {/* Comment Action */}
-      <div className="p-5 border-t border-gray-100">
+    </div>
+    
+    {/* All buttons in bottom row with equal spacing */}
+    <div className="flex justify-between items-center">
+      {/* Upvote */}
+      <button 
+        className={`flex items-center text-gray-600 hover:text-green-600 ${
+          votes.hasUpvoted ? 'text-green-600' : ''
+        }`}
+        onClick={() => handleVotePost('upvote')}
+      >
+        <ThumbsUp size={16} className="mr-1" />
+        <span className="text-xs font-medium">{votes.upvotes.length}</span>
+      </button>
+      
+      {/* Downvote */}
+      <button 
+        className={`flex items-center text-gray-600 hover:text-red-600 ${
+          votes.hasDownvoted ? 'text-red-600' : ''
+        }`}
+        onClick={() => handleVotePost('downvote')}
+      >
+        <ThumbsDown size={16} className="mr-1" />
+        <span className="text-xs font-medium">{votes.downvotes.length}</span>
+      </button>
+      
+      {/* Views */}
+      <div className="flex items-center text-gray-500">
+        <Eye size={16} className="mr-1" />
+        <span className="text-xs font-medium">{views}</span>
+      </div>
+      
+      {/* Comments */}
+      <div className="flex items-center text-gray-500">
+        <MessageCircle size={16} className="mr-1" />
+        <span className="text-xs font-medium">{totalReplies}</span>
+      </div>
+      
+      {/* Open link */}
+      <a href={`/community/post/${postId}`} className="text-gray-500 hover:text-blue-600">
+        <ExternalLink size={16} />
+      </a>
+      
+      {/* Share button */}
+      <div className="relative">
         <button 
-          className={`flex items-center text-blue-600 hover:text-blue-800 mb-4 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors ${
-            showComments ? 'bg-blue-50' : ''
-          }`}
-          onClick={() => setShowComments(!showComments)}
+          className="text-gray-500 hover:text-blue-600"
+          onClick={copyLinkToClipboard}
         >
-          <MessageCircle size={18} className="mr-2" />
-          {showComments ? "Hide comments" : "Reply and view all comments"}
-          <ChevronDown size={16} className={`ml-2 transition-transform ${showComments ? 'transform rotate-180' : ''}`} />
+          <Share size={16} />
         </button>
         
-        {/* Comments Section */}
-        {showComments && (
-          <div className="mt-4 pt-4 border-t border-gray-100">
-            <ThreadedReplies postId={postId} />
+        {showShareTooltip && (
+          <div className="absolute bottom-full right-0 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg whitespace-nowrap">
+            Link copied!
           </div>
         )}
       </div>
+      
+      {/* Bookmark button */}
+      <button className="text-gray-500 hover:text-blue-600">
+        <BookmarkPlus size={16} />
+      </button>
+    </div>
+  </div>
+  
+  {/* Desktop layout - one row with left and right groups */}
+  <div className="hidden sm:flex sm:items-center sm:justify-between">
+    {/* Left group: voting and score */}
+    <div className="flex items-center space-x-4">
+      {/* Upvote */}
+      <button 
+        className={`flex items-center text-gray-600 hover:text-green-600 ${
+          votes.hasUpvoted ? 'text-green-600' : ''
+        }`}
+        onClick={() => handleVotePost('upvote')}
+      >
+        <ThumbsUp size={16} className="mr-1" />
+        <span className="text-sm font-medium">{votes.upvotes.length}</span>
+      </button>
+      
+      {/* Downvote */}
+      <button 
+        className={`flex items-center text-gray-600 hover:text-red-600 ${
+          votes.hasDownvoted ? 'text-red-600' : ''
+        }`}
+        onClick={() => handleVotePost('downvote')}
+      >
+        <ThumbsDown size={16} className="mr-1" />
+        <span className="text-sm font-medium">{votes.downvotes.length}</span>
+      </button>
+      
+      {/* Score */}
+      <div className="text-sm font-medium flex items-center px-3 py-1.5 text-blue-600 bg-blue-50 rounded-md">
+        <Award size={16} className="mr-1.5" />
+        <span>Score: {votes.upvotes.length - votes.downvotes.length}</span>
+      </div>
+    </div>
+    
+    {/* Right group: views, comments, actions */}
+    <div className="flex items-center space-x-4">
+      {/* Views */}
+      <div className="flex items-center text-gray-500">
+        <Eye size={16} className="mr-1" />
+        <span className="text-sm font-medium">{views}</span>
+      </div>
+      
+      {/* Comments */}
+      <div className="flex items-center text-gray-500">
+        <MessageCircle size={16} className="mr-1" />
+        <span className="text-sm font-medium">{totalReplies}</span>
+      </div>
+      
+      {/* Open link */}
+      <a href={`/community/post/${postId}`} className="text-gray-500 hover:text-blue-600">
+        <ExternalLink size={16} />
+      </a>
+      
+      {/* Share button */}
+      <div className="relative">
+        <button 
+          className="text-gray-500 hover:text-blue-600"
+          onClick={copyLinkToClipboard}
+        >
+          <Share size={16} />
+        </button>
+        
+        {showShareTooltip && (
+          <div className="absolute bottom-full right-0 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-lg whitespace-nowrap">
+            Link copied!
+          </div>
+        )}
+      </div>
+      
+      {/* Bookmark button */}
+      <button className="text-gray-500 hover:text-blue-600">
+        <BookmarkPlus size={16} />
+      </button>
+    </div>
+  </div>
+</div>
+
+{/* Comment Action - Simplified for Mobile */}
+<div className="p-3 sm:p-5 border-t border-gray-100">
+  <button 
+    className={`w-full flex items-center justify-center text-blue-600 hover:text-blue-800 px-3 py-2 text-sm rounded-lg hover:bg-blue-50 transition-colors ${
+      showComments ? 'bg-blue-50' : ''
+    }`}
+    onClick={() => setShowComments(!showComments)}
+  >
+    <MessageCircle size={16} className="mr-2" />
+    {showComments ? "Hide comments" : "Reply or Show comments"}
+    <ChevronDown size={14} className={`ml-2 transition-transform ${showComments ? 'transform rotate-180' : ''}`} />
+  </button>
+  
+  {/* Comments Section */}
+  {showComments && (
+    <div className="mt-3 pt-3 border-t border-gray-100">
+      <ThreadedReplies postId={postId} />
+    </div>
+  )}
+</div>
     </div>
   );
 };

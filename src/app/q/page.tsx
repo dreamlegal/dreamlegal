@@ -347,11 +347,21 @@ export default function LegalForm() {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState({});
     const [isComplete, setIsComplete] = useState(false);
+    const [teamSize, setTeamSize] = useState("");
 
     const questions =
         firmType === "legal-department"
             ? legalDepartmentQuestions
             : lawFirmQuestions;
+
+    const teamSizeOptions = [
+        "1 Person",
+        "2-20 Persons",
+        "21-50 Persons",
+        "51-200 Persons",
+        "201-500 Persons",
+        "500+ Persons"
+    ];
 
     const calculateCategoryScores = (questionIndex, selectedOptions) => {
         const question = questions[questionIndex];
@@ -814,505 +824,464 @@ export default function LegalForm() {
         return observations[category] || {};
     };
 
-   
-const generateReport = () => {
-    const categoryScores = Object.entries(answers).map(
-        ([questionIndex, selectedOptions]) =>
-            calculateCategoryScores(
-                parseInt(questionIndex),
-                selectedOptions
-            )
-    );
+    const generateReport = () => {
+        const categoryScores = Object.entries(answers).map(
+            ([questionIndex, selectedOptions]) =>
+                calculateCategoryScores(
+                    parseInt(questionIndex),
+                    selectedOptions
+                )
+        );
 
-    const finalScores = calculateFinalScores();
-    
-    // Create new jsPDF instance
-    const doc = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
-        compress: true,
-    });
-    
-    const pageWidth = doc.internal.pageSize.width;
-    const pageHeight = doc.internal.pageSize.height;
-    const margin = 15;
-    const contentWidth = pageWidth - 2 * margin;
-    
-    // Custom functions
-    const getScoreColor = (percentage) => {
-        if (percentage <= 20) return "#FF5252"; // Red
-        if (percentage <= 40) return "#FF9800"; // Orange
-        if (percentage <= 60) return "#FFC107"; // Yellow
-        if (percentage <= 80) return "#8BC34A"; // Light green
-        return "#4CAF50"; // Green
-    };
-    
-    const addMultiLineText = (text, x, y, maxWidth, fontSize = 10, align = "left", color = "#000000") => {
-        doc.setFontSize(fontSize);
-        doc.setTextColor(color);
-        const lines = doc.splitTextToSize(text, maxWidth);
-        doc.text(lines, x, y, { align: align });
-        return y + lines.length * (fontSize * 0.352); // Approximate line height
-    };
-    
-    const addHeadingWithUnderline = (text, x, y, fontSize = 16, color = "#1D2456") => {
-        doc.setFontSize(fontSize);
-        doc.setFont("helvetica", "bold");
-        doc.setTextColor(color);
-        doc.text(text, x, y);
+        const finalScores = calculateFinalScores();
         
-        // Add underline
-        const textWidth = doc.getTextWidth(text);
-        doc.setDrawColor(color);
-        doc.setLineWidth(0.5);
-        doc.line(x, y + 1, x + textWidth, y + 1);
-        
-        return y + fontSize * 0.5;
-    };
-    
-    const addBulletPoint = (text, x, y, maxWidth, fontSize = 11, bulletType = "•") => {
-        doc.setFontSize(fontSize);
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(50, 50, 50);
-        
-        // Add custom bullet point
-        doc.text(bulletType, x, y);
-        
-        // Calculate bullet width for indentation
-        const bulletWidth = doc.getTextWidth(bulletType + " ");
-        
-        // Add the text with proper indentation
-        const lines = doc.splitTextToSize(text, maxWidth - bulletWidth - 2);
-        doc.text(lines, x + bulletWidth, y);
-        
-        return y + lines.length * (fontSize * 0.352); // Return the new Y position
-    };
-    
-    const drawCircularProgress = (x, y, radius, percentage, customColor = null) => {
-        const color = customColor || getScoreColor(percentage);
-        
-        // Draw background circle (light gray)
-        doc.setFillColor(240, 240, 240);
-        doc.circle(x, y, radius, 'F');
-        
-        // Draw progress arc using multiple small lines to approximate an arc
-        if (percentage > 0) {
-            const startAngle = -90; // Start from top (in degrees)
-            const endAngle = startAngle + (percentage * 360) / 100;
-            
-            // Convert to radians for calculation
-            const startRad = (startAngle * Math.PI) / 180;
-            const endRad = (endAngle * Math.PI) / 180;
-            
-            // Draw the arc using small line segments
-            const segments = 100; // More segments = smoother arc
-            const angleStep = (endRad - startRad) / segments;
-            
-            // Set color for progress
-            doc.setFillColor(color);
-            
-            // Create a series of triangles to approximate the circular segment
-            for (let i = 0; i < segments; i++) {
-                const angle1 = startRad + i * angleStep;
-                const angle2 = startRad + (i + 1) * angleStep;
-                
-                const x1 = x + radius * Math.cos(angle1);
-                const y1 = y + radius * Math.sin(angle1);
-                const x2 = x + radius * Math.cos(angle2);
-                const y2 = y + radius * Math.sin(angle2);
-                
-                // Draw a filled triangle (center point + two points on circumference)
-                doc.triangle(x, y, x1, y1, x2, y2, 'F');
-            }
-        }
-        
-        // Draw inner white circle for donut effect
-        const innerRadius = radius * 0.65;
-        doc.setFillColor(255, 255, 255);
-        doc.circle(x, y, innerRadius, 'F');
-        
-        // Add percentage text in the center
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(14);
-        doc.setTextColor(29, 36, 86);
-        doc.text(`${Math.round(percentage)}%`, x, y + 4, { align: 'center' });
-    };
-    
-    const drawProgressBar = (x, y, width, percentage, label, showPercentage = true) => {
-        const color = getScoreColor(percentage);
-        
-        // Draw background bar
-        doc.setFillColor(240, 240, 240);
-        doc.roundedRect(x, y, width, 6, 3, 3, 'F');
-        
-        // Draw progress bar
-        doc.setFillColor(color);
-        const progressWidth = (width * percentage) / 100;
-        if (progressWidth > 0) {
-            doc.roundedRect(x, y, progressWidth, 6, 3, 3, 'F');
-        }
-        
-        // Add label and percentage
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(9);
-        doc.setTextColor(80, 80, 80);
-        doc.text(label, x, y - 3);
-        
-        if (showPercentage) {
-            doc.setFont("helvetica", "bold");
-            doc.setTextColor(29, 36, 86);
-            doc.text(`${percentage.toFixed(1)}%`, x + width + 5, y + 4);
-        }
-    };
-    
-    // Cover Page
-    // Add header with dark blue background
-    doc.setFillColor(29, 36, 86); // Dark blue
-    doc.rect(0, 0, pageWidth, 45, 'F');
-    
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(22);
-    doc.setFont("helvetica", "bold");
-    doc.text("LEGAL TEAM MATURITY AND", pageWidth / 2, 20, { align: "center" });
-    doc.text("DIGITAL READINESS REPORT", pageWidth / 2, 30, { align: "center" });
-    
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    doc.text("Assessing Efficiency, Technology Adoption, and Future-Readiness of Legal Teams", 
-        pageWidth / 2, 40, { align: "center" });
-    
-    // Add organization type and date
-    let yPos = 60;
-    doc.setTextColor(29, 36, 86);
-    doc.setFontSize(20);
-    doc.setFont("helvetica", "bold");
-    doc.text(
-        `${firmType === "legal-department" ? "Legal Department" : "Law Firm"}`,
-        margin,
-        yPos
-    );
-    
-    doc.setFontSize(14);
-    doc.setFont("helvetica", "normal");
-    doc.text(
-        `Team size: ${Object.keys(answers).length > 2 ? "11-50" : "1-10"}`,
-        margin,
-        yPos + 10
-    );
-    
-    doc.setFontSize(12);
-    doc.text(
-        `Generated on: ${new Date().toLocaleDateString()}`,
-        pageWidth - margin,
-        yPos,
-        { align: "right" }
-    );
-    
-    // Add overall score visualization
-    yPos += 30;
-    
-    // Draw circular progress chart for overall score
-    drawCircularProgress(
-        margin + 45, 
-        yPos + 35, 
-        25, 
-        parseFloat(finalScores.totalScore) 
-    );
-    
-    // Add horizontal progress bars for sub-scores
-    drawProgressBar(
-        margin + 100, 
-        yPos + 25, 
-        pageWidth / 2.5, 
-        parseFloat(finalScores.efficiencyScore), 
-        "Efficiency Score"
-    );
-    
-    drawProgressBar(
-        margin + 100, 
-        yPos + 45, 
-        pageWidth / 2.5, 
-        parseFloat(finalScores.technologyScore), 
-        "Technology Score"
-    );
-    
-    // Add assessment text
-    yPos += 70;
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(50, 50, 50);
-    const assessmentText = getScoreComment(parseFloat(finalScores.totalScore));
-    yPos = addMultiLineText(assessmentText, margin, yPos, contentWidth, 12);
-    
-    // Add category scores line chart
-    yPos += 10;
-    yPos = addHeadingWithUnderline("Legal operations category scores", margin, yPos);
-    
-    yPos += 10;
-    // Draw line chart axes
-    doc.setDrawColor(200, 200, 200);
-    doc.setLineWidth(0.5);
-    doc.line(margin, yPos + 70, margin + contentWidth, yPos + 70); // X-axis
-    doc.line(margin, yPos, margin, yPos + 70); // Y-axis
-    
-    // Draw horizontal grid lines
-    doc.setDrawColor(230, 230, 230);
-    doc.setLineWidth(0.3);
-    for (let i = 1; i <= 4; i++) {
-        const gridY = yPos + 70 - (i * 70 / 5);
-        doc.line(margin, gridY, margin + contentWidth, gridY);
-        doc.setFontSize(9);
-        doc.setTextColor(120, 120, 120);
-        doc.text(`${i * 20}`, margin - 5, gridY, { align: 'right' });
-    }
-    
-    // Draw category score points and lines
-    const xStep = contentWidth / (categoryScores.length + 1);
-    const dataPoints = categoryScores.map((score, index) => {
-        const x = margin + (index + 1) * xStep;
-        // Average of both scores for simplicity
-        const scoreValue = (score.techScore + score.efficiencyScore) / 2;
-        const y = yPos + 70 - (scoreValue * 70 / 100);
-        return { x, y, score: scoreValue, category: score.category };
-    });
-    
-    // Draw connecting lines
-    doc.setDrawColor(76, 193, 224); // Teal blue
-    doc.setLineWidth(1.5);
-    for (let i = 0; i < dataPoints.length - 1; i++) {
-        doc.line(dataPoints[i].x, dataPoints[i].y, dataPoints[i + 1].x, dataPoints[i + 1].y);
-    }
-    
-    // Draw data points
-    dataPoints.forEach((point, index) => {
-        // Draw point circles
-        doc.setFillColor(50, 50, 50);
-        doc.circle(point.x, point.y, 3.5, 'F');
-        
-        // Draw teal circle around point
-        doc.setDrawColor(76, 193, 224);
-        doc.setLineWidth(1.5);
-        doc.circle(point.x, point.y, 4.5, 'S');
-        
-        // Add category labels below x-axis
-        doc.setFontSize(9);
-        doc.setTextColor(80, 80, 80);
-        doc.text(`Item ${index + 1}`, point.x, yPos + 80, { align: 'center' });
-    });
-    
-    // // Add footer
-    // yPos = pageHeight - 15;
-    // doc.setFillColor(255, 255, 255); // White
-    // doc.rect(0, yPos - 5, pageWidth, 20, 'F');
-    
-    // doc.setFontSize(9);
-    // doc.setTextColor(80, 80, 80);
-    // doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos);
-    
-    // // Add logo placeholder
-    // doc.setFillColor(29, 36, 86); // Dark blue
-    // doc.rect(pageWidth - margin - 10, yPos - 5, 10, 10, 'F');
-    
-    // Group categories in pairs for the detail pages (2 per page)
-    const categoryPairs = [];
-    for (let i = 0; i < categoryScores.length; i += 2) {
-        if (i + 1 < categoryScores.length) {
-            categoryPairs.push([categoryScores[i], categoryScores[i + 1]]);
-        } else {
-            categoryPairs.push([categoryScores[i]]);
-        }
-    }
-    
-    // Track the total number of detail pages
-    const totalDetailPages = Math.ceil(categoryScores.length / 2);
-    let currentPage = 1;
-    
-    // Add category detail pages
-    categoryPairs.forEach((pair, pairIndex) => {
-        doc.addPage();
-        currentPage++;
-        
-        // Determine if this is the last detail page
-        const isLastDetailPage = pairIndex === categoryPairs.length - 1;
-        let conclusionAdded = false;
-        
-        pair.forEach((score, index) => {
-            // Calculate vertical position based on whether this is the first or second category on the page
-            const startY = index === 0 ? 20 : pageHeight / 2 + 10;
-            yPos = startY;
-            
-            // Get question and answers for this category
-            const questionIndex = categoryScores.findIndex(cs => cs.category === score.category);
-            const question = questions[questionIndex];
-            const selectedOptions = answers[questionIndex] || [];
-            const implemented = selectedOptions.map(
-                (idx) => question.options[idx].text
-            );
-            const notImplemented = question.options
-                .filter((_, idx) => !selectedOptions.includes(idx))
-                .map((opt) => opt.text);
-                
-            // Category name with underline
-            yPos = addHeadingWithUnderline(score.category, margin, yPos);
-            
-            yPos += 10;
-            
-            // Draw category score visualization
-            drawCircularProgress(
-                margin + 35, 
-                yPos + 20, 
-                20, 
-                (score.techScore + score.efficiencyScore) / 2
-            );
-            
-            // Add score bars
-            drawProgressBar(
-                margin + 80, 
-                yPos + 10, 
-                pageWidth / 2.5, 
-                score.techScore, 
-                "Technology Score"
-            );
-            
-            drawProgressBar(
-                margin + 80, 
-                yPos + 30, 
-                pageWidth / 2.5, 
-                score.efficiencyScore, 
-                "Efficiency Score"
-            );
-            
-            // Add implemented features
-            yPos += 45;
-            yPos = addHeadingWithUnderline("Strengths", margin, yPos, 14, "#4CAF50");
-            
-            yPos += 8;
-            if (implemented.length > 0) {
-                implemented.forEach((feature) => {
-                    yPos = addBulletPoint(
-                        feature,
-                        margin,
-                        yPos,
-                        contentWidth - 10,
-                        11,
-                        "✓"
-                    );
-                    yPos += 3;
-                });
-            } else {
-                yPos = addMultiLineText(
-                    "No strengths identified in this category.",
-                    margin,
-                    yPos,
-                    contentWidth - 10,
-                    11
-                );
-                yPos += 3;
-            }
-            
-            // Add not implemented features
-            yPos += 5;
-            yPos = addHeadingWithUnderline("Weakness", margin, yPos, 14, "#F44336");
-            
-            yPos += 8;
-            if (notImplemented.length > 0) {
-                notImplemented.forEach((feature, idx) => {
-                    // Use numbered bullets (1., 2., 3.) instead of percentage symbols
-                    yPos = addBulletPoint(
-                        feature,
-                        margin,
-                        yPos,
-                        contentWidth - 10,
-                        11,
-                        `${idx + 1}.`
-                    );
-                    yPos += 3;
-                });
-            } else {
-                yPos = addMultiLineText(
-                    "No weaknesses identified in this category.",
-                    margin,
-                    yPos,
-                    contentWidth - 10,
-                    11
-                );
-                yPos += 3;
-            }
-            
-            // Add conclusion after the last category on the last detail page
-            // if (isLastDetailPage && index === pair.length - 1) {
-            //     if (yPos + 150 > pageHeight - 30) {
-            //         // Not enough space, adjust conclusion size
-            //         shrinkConclusionSize();
-            //     }
-            //     addConclusion(yPos + 15);
-            //     conclusionAdded = true;
-            // }
-            if (isLastDetailPage && index === pair.length - 1) {
-                let availableSpace = pageHeight - 30 - yPos; // Remaining space
-                let requiredSpace = 150; // Approx space needed for conclusion
-            
-                if (availableSpace < requiredSpace) {
-                    // Scale down font size proportionally, ensuring a minimum of 10
-                    let newFontSize = Math.max(10, (availableSpace / requiredSpace) * 16);
-                    addConclusion(yPos + 15, newFontSize);
-                    // Add footer to conclusion page
-                    yPos = pageHeight - 8; // Move it lower
-                    doc.setFillColor(255, 255, 255); // White background
-                    doc.rect(0, yPos - 4, pageWidth, 12, 'F'); // Reduce height from 20 to 12
-                    
-                    doc.setFontSize(7); // Reduce font size
-                    doc.setTextColor(80, 80, 80);
-                    doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos - 1);
-                    
-                    // Smaller logo placeholder (Reduced size)
-                    doc.setFillColor(29, 36, 86); // Dark blue
-                    doc.rect(pageWidth - margin - 6, yPos - 5, 6, 6, 'F'); // Reduce from 10x10 to 6x6
-                    
-                } else {
-                    addConclusion(yPos + 15, 16); // Default font size
-                    // Add footer to conclusion page
-                    yPos = pageHeight - 8; // Move it lower
-                    doc.setFillColor(255, 255, 255); // White background
-                    doc.rect(0, yPos - 4, pageWidth, 12, 'F'); // Reduce height from 20 to 12
-                    
-                    doc.setFontSize(7); // Reduce font size
-                    doc.setTextColor(80, 80, 80);
-                    doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos - 1);
-                    
-                    // Smaller logo placeholder (Reduced size)
-                    doc.setFillColor(29, 36, 86); // Dark blue
-                    doc.rect(pageWidth - margin - 6, yPos - 5, 6, 6, 'F'); // Reduce from 10x10 to 6x6
-                    
-                }
-            
-                conclusionAdded = true;
-            }
-            
-            
+        // Create new jsPDF instance
+        const doc = new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4",
+            compress: true,
         });
         
-        // Add footer to each detail page
-        // yPos = pageHeight - 15;
-        // doc.setFillColor(255, 255, 255); // White
-        // doc.rect(0, yPos - 5, pageWidth, 20, 'F');
+        const pageWidth = doc.internal.pageSize.width;
+        const pageHeight = doc.internal.pageSize.height;
+        const margin = 15;
+        const contentWidth = pageWidth - 2 * margin;
         
-        // doc.setFontSize(9);
-        // doc.setTextColor(80, 80, 80);
-        // doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos);
+        // Custom functions
+        const getScoreColor = (percentage) => {
+            if (percentage <= 20) return "#FF5252"; // Red
+            if (percentage <= 40) return "#FF9800"; // Orange
+            if (percentage <= 60) return "#FFC107"; // Yellow
+            if (percentage <= 80) return "#8BC34A"; // Light green
+            return "#4CAF50"; // Green
+        };
         
-        // // Add logo placeholder
-        // doc.setFillColor(29, 36, 86); // Dark blue
-        // doc.rect(pageWidth - margin - 10, yPos - 5, 10, 10, 'F');
+        const addMultiLineText = (text, x, y, maxWidth, fontSize = 10, align = "left", color = "#000000") => {
+            doc.setFontSize(fontSize);
+            doc.setTextColor(color);
+            const lines = doc.splitTextToSize(text, maxWidth);
+            doc.text(lines, x, y, { align: align });
+            return y + lines.length * (fontSize * 0.352); // Approximate line height
+        };
         
-        // If we are on the last page but didn't have room for the conclusion
-        // if (isLastDetailPage && !conclusionAdded) {
-        //     // Add a new page for conclusion
-        //     // doc.addPage();
-        //     addConclusion(20);
+        const addHeadingWithUnderline = (text, x, y, fontSize = 16, color = "#1D2456") => {
+            doc.setFontSize(fontSize);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(color);
+            doc.text(text, x, y);
             
-            // Add footer to conclusion page
+            // Add underline
+            const textWidth = doc.getTextWidth(text);
+            doc.setDrawColor(color);
+            doc.setLineWidth(0.5);
+            doc.line(x, y + 1, x + textWidth, y + 1);
+            
+            return y + fontSize * 0.5;
+        };
+        
+        const addBulletPoint = (text, x, y, maxWidth, fontSize = 11, bulletType = "•") => {
+            doc.setFontSize(fontSize);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(50, 50, 50);
+            
+            // Add custom bullet point
+            doc.text(bulletType, x, y);
+            
+            // Calculate bullet width for indentation
+            const bulletWidth = doc.getTextWidth(bulletType + " ");
+            
+            // Add the text with proper indentation
+            const lines = doc.splitTextToSize(text, maxWidth - bulletWidth - 2);
+            doc.text(lines, x + bulletWidth, y);
+            
+            return y + lines.length * (fontSize * 0.352); // Return the new Y position
+        };
+        
+        const drawCircularProgress = (x, y, radius, percentage, customColor = null) => {
+            const color = customColor || getScoreColor(percentage);
+            
+            // Draw background circle (light gray)
+            doc.setFillColor(240, 240, 240);
+            doc.circle(x, y, radius, 'F');
+            
+            // Draw progress arc using multiple small lines to approximate an arc
+            if (percentage > 0) {
+                const startAngle = -90; // Start from top (in degrees)
+                const endAngle = startAngle + (percentage * 360) / 100;
+                
+                // Convert to radians for calculation
+                const startRad = (startAngle * Math.PI) / 180;
+                const endRad = (endAngle * Math.PI) / 180;
+                
+                // Draw the arc using small line segments
+                const segments = 100; // More segments = smoother arc
+                const angleStep = (endRad - startRad) / segments;
+                
+                // Set color for progress
+                doc.setFillColor(color);
+                
+                // Create a series of triangles to approximate the circular segment
+                for (let i = 0; i < segments; i++) {
+                    const angle1 = startRad + i * angleStep;
+                    const angle2 = startRad + (i + 1) * angleStep;
+                    
+                    const x1 = x + radius * Math.cos(angle1);
+                    const y1 = y + radius * Math.sin(angle1);
+                    const x2 = x + radius * Math.cos(angle2);
+                    const y2 = y + radius * Math.sin(angle2);
+                    
+                    // Draw a filled triangle (center point + two points on circumference)
+                    doc.triangle(x, y, x1, y1, x2, y2, 'F');
+                }
+            }
+            
+            // Draw inner white circle for donut effect
+            const innerRadius = radius * 0.65;
+            doc.setFillColor(255, 255, 255);
+            doc.circle(x, y, innerRadius, 'F');
+            
+            // Add percentage text in the center
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+            doc.setTextColor(29, 36, 86);
+            doc.text(`${Math.round(percentage)}%`, x, y + 4, { align: 'center' });
+        };
+        
+        const drawProgressBar = (x, y, width, percentage, label, showPercentage = true) => {
+            const color = getScoreColor(percentage);
+            
+            // Draw background bar
+            doc.setFillColor(240, 240, 240);
+            doc.roundedRect(x, y, width, 6, 3, 3, 'F');
+            
+            // Draw progress bar
+            doc.setFillColor(color);
+            const progressWidth = (width * percentage) / 100;
+            if (progressWidth > 0) {
+                doc.roundedRect(x, y, progressWidth, 6, 3, 3, 'F');
+            }
+            
+            // Add label and percentage
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(9);
+            doc.setTextColor(80, 80, 80);
+            doc.text(label, x, y - 3);
+            
+            if (showPercentage) {
+                doc.setFont("helvetica", "bold");
+                doc.setTextColor(29, 36, 86);
+                doc.text(`${percentage.toFixed(1)}%`, x + width + 5, y + 4);
+            }
+        };
+        
+        // Cover Page
+        // Add header with dark blue background
+        doc.setFillColor(29, 36, 86); // Dark blue
+        doc.rect(0, 0, pageWidth, 45, 'F');
+        
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(22);
+        doc.setFont("helvetica", "bold");
+        doc.text("LEGAL TEAM MATURITY AND", pageWidth / 2, 20, { align: "center" });
+        doc.text("DIGITAL READINESS REPORT", pageWidth / 2, 30, { align: "center" });
+        
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "normal");
+        doc.text("Assessing Efficiency, Technology Adoption, and Future-Readiness of Legal Teams", 
+            pageWidth / 2, 40, { align: "center" });
+        
+        // Add organization type and date
+        let yPos = 60;
+        doc.setTextColor(29, 36, 86);
+        doc.setFontSize(20);
+        doc.setFont("helvetica", "bold");
+        doc.text(
+            `${firmType === "legal-department" ? "Legal Department" : "Law Firm"}`,
+            margin,
+            yPos
+        );
+        
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "normal");
+        doc.text(
+            `Team size: ${teamSize}`,
+            margin,
+            yPos + 10
+        );
+        
+        doc.setFontSize(12);
+        doc.text(
+            `Generated on: ${new Date().toLocaleDateString()}`,
+            pageWidth - margin,
+            yPos,
+            { align: "right" }
+        );
+        
+        // Add overall score visualization
+        yPos += 30;
+        
+        // Draw circular progress chart for overall score
+        drawCircularProgress(
+            margin + 45, 
+            yPos + 35, 
+            25, 
+            parseFloat(finalScores.totalScore) 
+        );
+        
+        // Add horizontal progress bars for sub-scores
+        drawProgressBar(
+            margin + 100, 
+            yPos + 25, 
+            pageWidth / 2.5, 
+            parseFloat(finalScores.efficiencyScore), 
+            "Efficiency Score"
+        );
+        
+        drawProgressBar(
+            margin + 100, 
+            yPos + 45, 
+            pageWidth / 2.5, 
+            parseFloat(finalScores.technologyScore), 
+            "Technology Score"
+        );
+        
+        // Add assessment text
+        yPos += 70;
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(50, 50, 50);
+        const assessmentText = getScoreComment(parseFloat(finalScores.totalScore));
+        yPos = addMultiLineText(assessmentText, margin, yPos, contentWidth, 12);
+        
+        // Add category scores line chart
+        yPos += 10;
+        yPos = addHeadingWithUnderline("Legal operations category scores", margin, yPos);
+        
+        yPos += 10;
+        // Draw line chart axes
+        doc.setDrawColor(200, 200, 200);
+        doc.setLineWidth(0.5);
+        doc.line(margin, yPos + 70, margin + contentWidth, yPos + 70); // X-axis
+        doc.line(margin, yPos, margin, yPos + 70); // Y-axis
+        
+        // Draw horizontal grid lines
+        doc.setDrawColor(230, 230, 230);
+        doc.setLineWidth(0.3);
+        for (let i = 1; i <= 4; i++) {
+            const gridY = yPos + 70 - (i * 70 / 5);
+            doc.line(margin, gridY, margin + contentWidth, gridY);
+            doc.setFontSize(9);
+            doc.setTextColor(120, 120, 120);
+            doc.text(`${i * 20}`, margin - 5, gridY, { align: 'right' });
+        }
+        
+        // Draw category score points and lines
+        const xStep = contentWidth / (categoryScores.length + 1);
+        const dataPoints = categoryScores.map((score, index) => {
+            const x = margin + (index + 1) * xStep;
+            // Average of both scores for simplicity
+            const scoreValue = (score.techScore + score.efficiencyScore) / 2;
+            const y = yPos + 70 - (scoreValue * 70 / 100);
+            return { x, y, score: scoreValue, category: score.category };
+        });
+        
+        // Draw connecting lines
+        doc.setDrawColor(76, 193, 224); // Teal blue
+        doc.setLineWidth(1.5);
+        for (let i = 0; i < dataPoints.length - 1; i++) {
+            doc.line(dataPoints[i].x, dataPoints[i].y, dataPoints[i + 1].x, dataPoints[i + 1].y);
+        }
+        
+        // Draw data points
+        dataPoints.forEach((point, index) => {
+            // Draw point circles
+            doc.setFillColor(50, 50, 50);
+            doc.circle(point.x, point.y, 3.5, 'F');
+            
+            // Draw teal circle around point
+            doc.setDrawColor(76, 193, 224);
+            doc.setLineWidth(1.5);
+            doc.circle(point.x, point.y, 4.5, 'S');
+            
+            // Add category labels below x-axis
+            doc.setFontSize(9);
+            doc.setTextColor(80, 80, 80);
+            doc.text(`Item ${index + 1}`, point.x, yPos + 80, { align: 'center' });
+        });
+        
+        // Group categories in pairs for the detail pages (2 per page)
+        const categoryPairs = [];
+        for (let i = 0; i < categoryScores.length; i += 2) {
+            if (i + 1 < categoryScores.length) {
+                categoryPairs.push([categoryScores[i], categoryScores[i + 1]]);
+            } else {
+                categoryPairs.push([categoryScores[i]]);
+            }
+        }
+        
+        // Track the total number of detail pages
+        const totalDetailPages = Math.ceil(categoryScores.length / 2);
+        let currentPage = 1;
+        
+        // Add category detail pages
+        categoryPairs.forEach((pair, pairIndex) => {
+            doc.addPage();
+            currentPage++;
+            
+            // Determine if this is the last detail page
+            const isLastDetailPage = pairIndex === categoryPairs.length - 1;
+            let conclusionAdded = false;
+            
+            pair.forEach((score, index) => {
+                // Calculate vertical position based on whether this is the first or second category on the page
+                const startY = index === 0 ? 20 : pageHeight / 2 + 10;
+                yPos = startY;
+                
+                // Get question and answers for this category
+                const questionIndex = categoryScores.findIndex(cs => cs.category === score.category);
+                const question = questions[questionIndex];
+                const selectedOptions = answers[questionIndex] || [];
+                const implemented = selectedOptions.map(
+                    (idx) => question.options[idx].text
+                );
+                const notImplemented = question.options
+                    .filter((_, idx) => !selectedOptions.includes(idx))
+                    .map((opt) => opt.text);
+                    
+                // Category name with underline
+                yPos = addHeadingWithUnderline(score.category, margin, yPos);
+                
+                yPos += 10;
+                
+                // Draw category score visualization
+                drawCircularProgress(
+                    margin + 35, 
+                    yPos + 20, 
+                    20, 
+                    (score.techScore + score.efficiencyScore) / 2
+                );
+                
+                // Add score bars
+                drawProgressBar(
+                    margin + 80, 
+                    yPos + 10, 
+                    pageWidth / 2.5, 
+                    score.techScore, 
+                    "Technology Score"
+                );
+                
+                drawProgressBar(
+                    margin + 80, 
+                    yPos + 30, 
+                    pageWidth / 2.5, 
+                    score.efficiencyScore, 
+                    "Efficiency Score"
+                );
+                
+                // Add implemented features
+                yPos += 45;
+                yPos = addHeadingWithUnderline("Strengths", margin, yPos, 14, "#4CAF50");
+                
+                yPos += 8;
+                if (implemented.length > 0) {
+                    implemented.forEach((feature) => {
+                        yPos = addBulletPoint(
+                            feature,
+                            margin,
+                            yPos,
+                            contentWidth - 10,
+                            11,
+                            "✓"
+                        );
+                        yPos += 3;
+                    });
+                } else {
+                    yPos = addMultiLineText(
+                        "No strengths identified in this category.",
+                        margin,
+                        yPos,
+                        contentWidth - 10,
+                        11
+                    );
+                    yPos += 3;
+                }
+                
+                // Add not implemented features
+                yPos += 5;
+                yPos = addHeadingWithUnderline("Weakness", margin, yPos, 14, "#F44336");
+                
+                yPos += 8;
+                if (notImplemented.length > 0) {
+                    notImplemented.forEach((feature, idx) => {
+                        // Use numbered bullets (1., 2., 3.) instead of percentage symbols
+                        yPos = addBulletPoint(
+                            feature,
+                            margin,
+                            yPos,
+                            contentWidth - 10,
+                            11,
+                            `${idx + 1}.`
+                        );
+                        yPos += 3;
+                    });
+                } else {
+                    yPos = addMultiLineText(
+                        "No weaknesses identified in this category.",
+                        margin,
+                        yPos,
+                        contentWidth - 10,
+                        11
+                    );
+                    yPos += 3;
+                }
+                
+                // Add conclusion after the last category on the last detail page
+                if (isLastDetailPage && index === pair.length - 1) {
+                    let availableSpace = pageHeight - 30 - yPos; // Remaining space
+                    let requiredSpace = 150; // Approx space needed for conclusion
+                
+                    if (availableSpace < requiredSpace) {
+                        // Scale down font size proportionally, ensuring a minimum of 10
+                        let newFontSize = Math.max(10, (availableSpace / requiredSpace) * 16);
+                        addConclusion(yPos + 15, newFontSize);
+                        // Add footer to conclusion page
+                        yPos = pageHeight - 8; // Move it lower
+                        doc.setFillColor(255, 255, 255); // White background
+                        doc.rect(0, yPos - 4, pageWidth, 12, 'F'); // Reduce height from 20 to 12
+                        
+                        doc.setFontSize(7); // Reduce font size
+                        doc.setTextColor(80, 80, 80);
+                        doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos - 1);
+                        
+                        // Smaller logo placeholder (Reduced size)
+                        doc.setFillColor(29, 36, 86); // Dark blue
+                        doc.rect(pageWidth - margin - 6, yPos - 5, 6, 6, 'F'); // Reduce from 10x10 to 6x6
+                        
+                    } else {
+                        addConclusion(yPos + 15, 16); // Default font size
+                        // Add footer to conclusion page
+                        yPos = pageHeight - 8; // Move it lower
+                        doc.setFillColor(255, 255, 255); // White background
+                        doc.rect(0, yPos - 4, pageWidth, 12, 'F'); // Reduce height from 20 to 12
+                        
+                        doc.setFontSize(7); // Reduce font size
+                        doc.setTextColor(80, 80, 80);
+                        doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos - 1);
+                        
+                        // Smaller logo placeholder (Reduced size)
+                        doc.setFillColor(29, 36, 86); // Dark blue
+                        doc.rect(pageWidth - margin - 6, yPos - 5, 6, 6, 'F'); // Reduce from 10x10 to 6x6
+                        
+                    }
+                
+                    conclusionAdded = true;
+                }
+                
+                
+            });
+            
+            // Add footer to each detail page
             // yPos = pageHeight - 15;
             // doc.setFillColor(255, 255, 255); // White
             // doc.rect(0, yPos - 5, pageWidth, 20, 'F');
@@ -1324,201 +1293,137 @@ const generateReport = () => {
             // // Add logo placeholder
             // doc.setFillColor(29, 36, 86); // Dark blue
             // doc.rect(pageWidth - margin - 10, yPos - 5, 10, 10, 'F');
-        // }
-    });
-    
-    // Helper function to add conclusion section
-    // function addConclusion(startYPos) {
-    //     let yPos = startYPos;
-        
-    //     // Conclusive remarks section
-    //     yPos = addHeadingWithUnderline("Conclusive Remark", margin, yPos);
-        
-    //     yPos += 15;
-    //     doc.setTextColor(50, 50, 50);
-    //     doc.setFontSize(14);
-    //     doc.setFont("helvetica", "bold");
-    //     doc.text("Observation:", margin, yPos);
-        
-    //     yPos += 8;
-    //     doc.setFont("helvetica", "normal");
-    //     doc.setFontSize(12);
-    //     yPos = addMultiLineText(
-    //         getScoreComment(parseFloat(finalScores.totalScore)),
-    //         margin,
-    //         yPos,
-    //         contentWidth,
-    //         12
-    //     );
-        
-    //     yPos += 15;
-    //     doc.setFontSize(14);
-    //     doc.setFont("helvetica", "bold");
-    //     doc.setTextColor(76, 175, 80); // Green color
-    //     doc.text("Next Steps:", margin, yPos);
-        
-    //     yPos += 8;
-        
-    //     const recommendations = [
-    //         "Stay ahead by exploring cutting-edge advancements in AI, blockchain, or predictive analytics.",
-    //         "Benchmark performance against industry leaders to maintain a competitive edge.",
-    //         "Invest in continuous training to keep the team proficient with evolving technology."
-    //     ];
-        
-    //     recommendations.forEach(rec => {
-    //         yPos = addBulletPoint(rec, margin, yPos, contentWidth, 12, "✓");
-    //         yPos += 4;
-    //     });
-        
-    //     yPos += 10;
-    //     doc.setFontSize(14);
-    //     doc.setFont("helvetica", "bold");
-    //     doc.setTextColor(255, 152, 0); // Orange/amber color
-    //     doc.text("Caution:", margin, yPos);
-        
-    //     yPos += 8;
-        
-    //     const cautions = [
-    //         "Complacency can lead to stagnation—innovation should be a continuous effort.",
-    //         "Regularly reassess your tech stack to ensure it remains the best fit for evolving needs."
-    //     ];
-        
-    //     cautions.forEach(caution => {
-    //         yPos = addBulletPoint(caution, margin, yPos, contentWidth, 12, "⚠");
-    //         yPos += 4;
-    //     });
-    // }
-    
-    // function addConclusion(startYPos, fontSize = 14) {
-    //     let yPos = startYPos;
-        
-    //     // Conclusive remarks section
-    //     yPos = addHeadingWithUnderline("Conclusive Remark", margin, yPos);
-        
-    //     yPos += 15;
-    //     doc.setTextColor(50, 50, 50);
-    //     doc.setFontSize(fontSize);
-    //     doc.setFont("helvetica", "bold");
-    //     doc.text("Observation:", margin, yPos);
-        
-    //     yPos += 8;
-    //     doc.setFont("helvetica", "normal");
-    //     doc.setFontSize(Math.max(fontSize - 2, 10)); // Ensure minimum font size of 10
-    //     yPos = addMultiLineText(
-    //         getScoreComment(parseFloat(finalScores.totalScore)),
-    //         margin,
-    //         yPos,
-    //         contentWidth,
-    //         Math.max(fontSize - 2, 10)
-    //     );
-        
-    //     yPos += 15;
-    //     doc.setFontSize(fontSize);
-    //     doc.setFont("helvetica", "bold");
-    //     doc.setTextColor(76, 175, 80);
-    //     doc.text("Next Steps:", margin, yPos);
-        
-    //     yPos += 8;
-    //     const recommendations = [
-    //         "Stay ahead by exploring cutting-edge advancements in AI, blockchain, or predictive analytics.",
-    //         "Benchmark performance against industry leaders to maintain a competitive edge.",
-    //         "Invest in continuous training to keep the team proficient with evolving technology."
-    //     ];
-        
-    //     recommendations.forEach(rec => {
-    //         yPos = addBulletPoint(rec, margin, yPos, contentWidth, Math.max(fontSize - 2, 10), "✓");
-    //         yPos += 4;
-    //     });
-    
-    //     yPos += 10;
-    //     doc.setFontSize(fontSize);
-    //     doc.setFont("helvetica", "bold");
-    //     doc.setTextColor(255, 152, 0);
-    //     doc.text("Caution:", margin, yPos);
-        
-    //     yPos += 8;
-    //     const cautions = [
-    //         "Complacency can lead to stagnation—innovation should be a continuous effort.",
-    //         "Regularly reassess your tech stack to ensure it remains the best fit for evolving needs."
-    //     ];
-        
-    //     cautions.forEach(caution => {
-    //         yPos = addBulletPoint(caution, margin, yPos, contentWidth, Math.max(fontSize - 2, 10), "⚠");
-    //         yPos += 4;
-    //     });
-    // }
-    
-    function addConclusion(startYPos, fontSize = 14) {
-        let yPos = startYPos;
-        
-        // Conclusive remarks section
-        yPos = addHeadingWithUnderline("Conclusive Remark", margin, yPos);
-        
-        yPos += 15;
-        doc.setTextColor(50, 50, 50);
-        doc.setFontSize(fontSize);
-        doc.setFont("helvetica", "bold");
-        doc.text("Observation:", margin, yPos);
-        
-        yPos += 8;
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(Math.max(fontSize - 2, 10)); // Ensure minimum font size of 10
-        yPos = addMultiLineText(
-            getScoreComment(parseFloat(finalScores.totalScore)),
-            margin,
-            yPos,
-            contentWidth,
-            Math.max(fontSize - 2, 10)
-        );
-    
-        // 🟢 Next Steps
-        yPos += 15;
-        doc.setFontSize(fontSize);
-        doc.setFont("helvetica", "bold");
-        doc.setTextColor(76, 175, 80);
-        doc.text("Next Steps:", margin, yPos);
-        
-        yPos += 8;
-        const recommendations = [
-            "Stay ahead by exploring cutting-edge advancements in AI, blockchain, or predictive analytics.",
-            "Benchmark performance against industry leaders to maintain a competitive edge.",
-            "Invest in continuous training to keep the team proficient with evolving technology."
-        ];
-        
-        recommendations.forEach(rec => {
-            yPos = addBulletPoint(rec, margin, yPos, contentWidth, Math.max(fontSize - 2, 10), "•"); // Using • as bullet
-            yPos += 4;
+            
+            // If we are on the last page but didn't have room for the conclusion
+            // if (isLastDetailPage && !conclusionAdded) {
+            //     // Add a new page for conclusion
+            //     // doc.addPage();
+                
+                // Add footer to conclusion page
+                // yPos = pageHeight - 15;
+                // doc.setFillColor(255, 255, 255); // White
+                // doc.rect(0, yPos - 5, pageWidth, 20, 'F');
+                
+                // doc.setFontSize(9);
+                // doc.setTextColor(80, 80, 80);
+                // doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos);
+                
+                // // Add logo placeholder
+                // doc.setFillColor(29, 36, 86); // Dark blue
+                // doc.rect(pageWidth - margin - 10, yPos - 5, 10, 10, 'F');
+            // }
         });
-    
-        // ⚠ Caution
-        yPos += 10;
-        doc.setFontSize(fontSize);
-        doc.setFont("helvetica", "bold");
-        doc.setTextColor(255, 152, 0);
-        doc.text("Caution:", margin, yPos);
         
-        yPos += 8;
-        const cautions = [
-            "Complacency can lead to stagnation—innovation should be a continuous effort.",
-            "Regularly reassess your tech stack to ensure it remains the best fit for evolving needs."
-        ];
+        // Helper function to add conclusion section
+        function addConclusion(startYPos, fontSize = 14) {
+            let yPos = startYPos;
+            
+            // Conclusive remarks section
+            yPos = addHeadingWithUnderline("Conclusive Remark", margin, yPos);
+            
+            yPos += 15;
+            doc.setTextColor(50, 50, 50);
+            doc.setFontSize(fontSize);
+            doc.setFont("helvetica", "bold");
+            doc.text("Observation:", margin, yPos);
+            
+            yPos += 8;
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(Math.max(fontSize - 2, 10)); // Ensure minimum font size of 10
+            yPos = addMultiLineText(
+                getScoreComment(parseFloat(finalScores.totalScore)),
+                margin,
+                yPos,
+                contentWidth,
+                Math.max(fontSize - 2, 10)
+            );
         
-        cautions.forEach(caution => {
-            yPos = addBulletPoint(caution, margin, yPos, contentWidth, Math.max(fontSize - 2, 10), "•"); // Using • as bullet
-            yPos += 4;
-        });
-    }
-    
-    // Save the PDF
-    doc.save("legal-assessment-report.pdf");
-};
+            // 🟢 Next Steps
+            yPos += 15;
+            doc.setFontSize(fontSize);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(76, 175, 80);
+            doc.text("Next Steps:", margin, yPos);
+            
+            yPos += 8;
+            const recommendations = [
+                "Stay ahead by exploring cutting-edge advancements in AI, blockchain, or predictive analytics.",
+                "Benchmark performance against industry leaders to maintain a competitive edge.",
+                "Invest in continuous training to keep the team proficient with evolving technology."
+            ];
+            
+            recommendations.forEach(rec => {
+                yPos = addBulletPoint(rec, margin, yPos, contentWidth, Math.max(fontSize - 2, 10), "•"); // Using • as bullet
+                yPos += 4;
+            });
+        
+            // ⚠ Caution
+            yPos += 10;
+            doc.setFontSize(fontSize);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(255, 152, 0);
+            doc.text("Caution:", margin, yPos);
+            
+            yPos += 8;
+            const cautions = [
+                "Complacency can lead to stagnation—innovation should be a continuous effort.",
+                "Regularly reassess your tech stack to ensure it remains the best fit for evolving needs."
+            ];
+            
+            cautions.forEach(caution => {
+                yPos = addBulletPoint(caution, margin, yPos, contentWidth, Math.max(fontSize - 2, 10), "•"); // Using • as bullet
+                yPos += 4;
+            });
+        }
+        
+        // Save the PDF
+        doc.save("legal-assessment-report.pdf");
+    };
+
     const calculateProgress = () => {
         if (!firmType) return 0;
         return ((currentQuestion + 1) / questions.length) * 100;
     };
 
+    const askForTeamSize = () => {
+        return (
+            <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-primary">
+                    Please select your team size:
+                </h3>
+                <div className="grid gap-4">
+                    {teamSizeOptions.map((option, index) => (
+                        <div
+                            key={index}
+                            className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors ${
+                                teamSize === option
+                                    ? "border-primary bg-primary/5"
+                                    : "border-muted hover:border-muted-foreground/50"
+                            }`}
+                        >
+                            <Checkbox
+                                id={`team-size-${index}`}
+                                checked={teamSize === option}
+                                onCheckedChange={() => setTeamSize(option)}
+                                className="h-5 w-5"
+                            />
+                            <div className="flex-grow">
+                                <label
+                                    htmlFor={`team-size-${index}`}
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                                >
+                                    {option}
+                                </label>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    };
+
     return (
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto py-8 mt-28">
             <Card className="shadow-lg border-2">
                 <CardHeader className="space-y-2 pt-5">
                     {!firmType ? (
@@ -1547,7 +1452,9 @@ const generateReport = () => {
                                 </Select>
                             </div>
                         </div>
-                    ) : (
+                    ) : !teamSize ? (
+                        askForTeamSize()
+                    ) : !isComplete ? (
                         <>
                             <div className="flex justify-between items-center border-b py-2">
                                 <h2 className="text-2xl font-bold">
@@ -1561,73 +1468,68 @@ const generateReport = () => {
                                     {questions.length}
                                 </span>
                             </div>
-                        </>
-                    )}
-                </CardHeader>
-
-                <CardContent className="px-6">
-                    {!firmType ? null : !isComplete ? (
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={currentQuestion}
-                                initial={{ x: 50, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                exit={{ x: -50, opacity: 0 }}
-                                transition={{ duration: 0.3 }}
-                                className="space-y-6"
-                            >
-                                <div className="space-y-4">
-                                    <h3 className="text-xl font-semibold text-primary">
-                                        {questions[currentQuestion].question}
-                                    </h3>
-                                    <p className="text-sm text-muted-foreground mb-6">
-                                        Select all options that apply to your
-                                        organization
-                                    </p>
-                                    <div className="grid gap-4">
-                                        {questions[currentQuestion].options.map(
-                                            (option, index) => (
-                                                <div
-                                                    key={index}
-                                                    className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors ${
-                                                        (
-                                                            answers[
-                                                                currentQuestion
-                                                            ] || []
-                                                        ).includes(index)
-                                                            ? "border-primary bg-primary/5"
-                                                            : "border-muted hover:border-muted-foreground/50"
-                                                    }`}
-                                                >
-                                                    <Checkbox
-                                                        id={`option-${index}`}
-                                                        checked={(
-                                                            answers[
-                                                                currentQuestion
-                                                            ] || []
-                                                        ).includes(index)}
-                                                        onCheckedChange={() =>
-                                                            handleCheckboxChange(
-                                                                index
-                                                            )
-                                                        }
-                                                        className="h-5 w-5"
-                                                    />
-                                                    <div className="flex-grow">
-                                                        <label
-                                                            htmlFor={`option-${index}`}
-                                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-                                                        >
-                                                            {option.text}
-                                                        </label>
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={currentQuestion}
+                                    initial={{ x: 50, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    exit={{ x: -50, opacity: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="space-y-6"
+                                >
+                                    <div className="space-y-4">
+                                        <h3 className="text-xl font-semibold text-primary">
+                                            {questions[currentQuestion].question}
+                                        </h3>
+                                        <p className="text-sm text-muted-foreground mb-6">
+                                            Select all options that apply to your
+                                            organization
+                                        </p>
+                                        <div className="grid gap-4">
+                                            {questions[currentQuestion].options.map(
+                                                (option, index) => (
+                                                    <div
+                                                        key={index}
+                                                        className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-colors ${
+                                                            (
+                                                                answers[
+                                                                    currentQuestion
+                                                                ] || []
+                                                            ).includes(index)
+                                                                ? "border-primary bg-primary/5"
+                                                                : "border-muted hover:border-muted-foreground/50"
+                                                        }`}
+                                                    >
+                                                        <Checkbox
+                                                            id={`option-${index}`}
+                                                            checked={(
+                                                                answers[
+                                                                    currentQuestion
+                                                                ] || []
+                                                            ).includes(index)}
+                                                            onCheckedChange={() =>
+                                                                handleCheckboxChange(
+                                                                    index
+                                                                )
+                                                            }
+                                                            className="h-5 w-5"
+                                                        />
+                                                        <div className="flex-grow">
+                                                            <label
+                                                                htmlFor={`option-${index}`}
+                                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                                                            >
+                                                                {option.text}
+                                                            </label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )
-                                        )}
+                                                )
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            </motion.div>
-                        </AnimatePresence>
+                                </motion.div>
+                            </AnimatePresence>
+                        </>
                     ) : (
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -1735,7 +1637,7 @@ const generateReport = () => {
                             </div>
                         </motion.div>
                     )}
-                </CardContent>
+                </CardHeader>
 
                 {firmType && !isComplete && (
                     <CardFooter className="border-t bg-muted/20 p-6">

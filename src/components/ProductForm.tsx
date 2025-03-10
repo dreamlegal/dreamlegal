@@ -11,7 +11,7 @@ import ProductLifeCycle from './ProductForms/ProductLifeCycle';
 import ProductReference from './ProductForms/ProductReference';
 import ProductPostImplementationService from './ProductForms/ProductPostImplementationService';
 import { Button } from "./ui/button";
-import { ChevronDown, ChevronUp, ArrowRight ,Check,RefreshCw} from 'lucide-react';
+import { ChevronDown, ChevronUp, ArrowRight ,Check,RefreshCw ,Menu ,X} from 'lucide-react';
 import CheckUpload from './ProductForms/CheckUpload';
 import { z } from 'zod';
 interface ProductFormWithProgressProps {
@@ -320,17 +320,17 @@ setStorage(storage);
   const [submissionStatus, setSubmissionStatus] = useState("");
   const { toast } = useToast();
 
-  const [completedSteps, setCompletedSteps] = useState({
-    productInformation: false,
-    productOverview: false,
-    productPostImplementationService: false,
-    productSAndS: false,
-    productReference: false,
-    productPricing:false,
-    productLifeCycle:false,
-    productFeatures:false,
-    productCustomerSegments:false,
-  });
+  // const [completedSteps, setCompletedSteps] = useState({
+  //   productInformation: false,
+  //   productOverview: false,
+  //   productPostImplementationService: false,
+  //   productSAndS: false,
+  //   productReference: false,
+  //   productPricing:false,
+  //   productLifeCycle:false,
+  //   productFeatures:false,
+  //   productCustomerSegments:false,
+  // });
 
   const [activeStep, setActiveStep] = useState<number | null>(0);
 
@@ -428,27 +428,27 @@ setStorage(storage);
     processLifecycle
   ]);
 
-  const steps = [
-    { key: 'productInformation', title: 'Product Information', component: ProductInformation },
-    { key: 'productOverview', title: 'Product Overview', component: ProductOverview },
-    { key: 'productCustomerSegments', title: 'Customer Segments', component: ProductCustomerSegment },
-    { key: 'productLifeCycle', title: 'Process LifeCycle', component: ProductLifeCycle },
-    { key: 'productFeatures', title: 'Features', component: ProductFeatures },
-    { key: 'productPricing', title: 'Pricing', component: PricingForm },
-    { key: 'productSAndS', title: 'Service and Support', component: ProductSAndS },
-    { key: 'productPostImplementationService', title: 'Post Implementation Service', component: ProductPostImplementationService },
-    { key: 'productReference', title: 'Reference', component: ProductReference },
-  ];
+  // const steps = [
+  //   { key: 'productInformation', title: 'Product Information', component: ProductInformation },
+  //   { key: 'productOverview', title: 'Product Overview', component: ProductOverview },
+  //   { key: 'productCustomerSegments', title: 'Customer Segments', component: ProductCustomerSegment },
+  //   { key: 'productLifeCycle', title: 'Process LifeCycle', component: ProductLifeCycle },
+  //   { key: 'productFeatures', title: 'Features', component: ProductFeatures },
+  //   { key: 'productPricing', title: 'Pricing', component: PricingForm },
+  //   { key: 'productSAndS', title: 'Service and Support', component: ProductSAndS },
+  //   { key: 'productPostImplementationService', title: 'Post Implementation Service', component: ProductPostImplementationService },
+  //   { key: 'productReference', title: 'Reference', component: ProductReference },
+  // ];
 
-  const handleStepClick = (index: number) => {
-    setActiveStep(prevStep => (prevStep === index ? null : index));
-  };
+  // const handleStepClick = (index: number) => {
+  //   setActiveStep(prevStep => (prevStep === index ? null : index));
+  // };
 
-  const handleNextStep = () => {
-    if (activeStep !== null && activeStep < steps.length - 1) {
-      setActiveStep(activeStep + 1); // Just move to the next form without affecting validation or colors
-    }
-  };
+  // const handleNextStep = () => {
+  //   if (activeStep !== null && activeStep < steps.length - 1) {
+  //     setActiveStep(activeStep + 1); // Just move to the next form without affecting validation or colors
+  //   }
+  // };
 
   // form submission 
 
@@ -808,209 +808,288 @@ setStorage(storage);
   
 
   }
-  
 
+  // const steps = [
+  //   { key: 'productInformation', title: 'Product Information', component: ProductInformation },
+  //   { key: 'productOverview', title: 'Product Overview', component: ProductOverview },
+  //   { key: 'productCustomerSegments', title: 'Customer Segments', component: ProductCustomerSegment },
+  //   { key: 'productLifeCycle', title: 'Process LifeCycle', component: ProductLifeCycle },
+  //   { key: 'productFeatures', title: 'Features', component: ProductFeatures },
+  //   { key: 'productPricing', title: 'Pricing', component: PricingForm },
+  //   { key: 'productSAndS', title: 'Service and Support', component: ProductSAndS },
+  //   { key: 'productPostImplementationService', title: 'Post Implementation Service', component: ProductPostImplementationService },
+  //   { key: 'productReference', title: 'Reference', component: ProductReference },
+  // ];
+
+  // // State for the currently selected step
+  // const [activeStepIndex, setActiveStepIndex] = useState(0);
+  
+  // // Handle selecting a step from the sidebar
+  // const handleStepSelect = (index) => {
+  //   setActiveStepIndex(index);
+  // };
+
+  // // Function to render the active component
+  // const renderActiveComponent = () => {
+  //   const ActiveComponent = steps[activeStepIndex].component;
+  //   return <ActiveComponent />;
+  // };
+
+  const steps = [
+    { key: 'productInformation', title: 'Product Information', component: ProductInformation },
+    { key: 'productOverview', title: 'Product Overview', component: ProductOverview },
+    { key: 'productCustomerSegments', title: 'Customer Segments', component: ProductCustomerSegment },
+    { key: 'productLifeCycle', title: 'Process LifeCycle', component: ProductLifeCycle },
+    { key: 'productFeatures', title: 'Features', component: ProductFeatures },
+    { key: 'productPricing', title: 'Pricing', component: PricingForm },
+    { key: 'productSAndS', title: 'Service and Support', component: ProductSAndS },
+    { key: 'productPostImplementationService', title: 'Post Implementation Service', component: ProductPostImplementationService },
+    { key: 'productReference', title: 'Reference', component: ProductReference },
+  ];
+
+  // State for the currently selected step
+  const [activeStepIndex, setActiveStepIndex] = useState(0);
+  
+  // State for tracking completed steps
+  const [completedSteps, setCompletedSteps] = useState({
+    productInformation: false,
+    productOverview: false,
+    productCustomerSegments: false,
+    productLifeCycle: false,
+    productFeatures: false,
+    productPricing: false,
+    productSAndS: false,
+    productPostImplementationService: false,
+    productReference: false,
+  });
+  
+  // Handle selecting a step from the sidebar
+  const handleStepSelect = (index) => {
+    setActiveStepIndex(index);
+  };
+
+  // Function to render the active component
+  const renderActiveComponent = () => {
+    const ActiveComponent = steps[activeStepIndex].component;
+    return <ActiveComponent />;
+  };
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    
-    // <div className="relative">
-     
-     
-     
-    //   <div className="hidden md:flex absolute left-0 top-0 bottom-0 w-16 flex-col items-center">
-    //     {steps.map((step, index) => (
-    //       <React.Fragment key={index}>
-    //         <div 
-    //           className={`w-8 h-8 rounded-full flex items-center justify-center cursor-pointer ${
-    //             completedSteps[step.key] ? 'bg-green-500 text-white' : 'bg-gray-300'
-    //           }`}
-    //           onClick={() => handleStepClick(index)}
-    //         >
-    //           {completedSteps[step.key] ? <Check size={16} /> : index + 1}
-    //         </div>
-    //         {index < steps.length - 1 && (
-    //           <div className={`w-1 flex-grow ${
-    //             completedSteps[step.key] && completedSteps[steps[index + 1].key]
-    //               ? 'bg-green-500' : 'bg-gray-300'
-    //           }`} />
-    //         )}
-    //       </React.Fragment>
-    //     ))}
-    //   </div>
-    //   <div className="md:pl-20">
-    //     {steps.map((step, index) => (
-    //       <div key={index} className="mb-4">
-    //         <button
-    //           className={`w-full text-left p-4 font-semibold flex justify-between items-center ${
-    //             index === activeStep ? 'bg-blue-100' : 'bg-gray-100'
-    //           } hover:bg-gray-200 rounded-lg`}
-    //           onClick={() => handleStepClick(index)}
-    //         >
-    //           {step.title}
-    //           {index === activeStep ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-    //         </button>
-    //         {index === activeStep && (
-    //           <div className="mt-4">
-    //             <step.component />
-    //             {index < steps.length - 1 && (
-    //               <Button 
-    //                 className="mt-4 flex items-center"
-    //                 onClick={handleNextStep}
-    //               >
-    //                 Next <ArrowRight className="ml-2" size={16} />
-    //               </Button>
-    //             )}
-    //           </div>
-    //         )}
-    //       </div>
-    //     ))}
-
-    //     <Button className="mt-4 flex items-center" onClick={handleSubmit}>Submit here </Button>
-    //   </div>
-
-     
-    // </div>
-
-
-  // In your existing component, replace the form section with:
-<div className="relative">
-{alert && (
-        <Alert
-          message={alert.message}
-          type={alert.type}
-          onClose={() => setAlert(null)}
-        />
-      )}
-  {/* Header with Refresh */}
-  <div className="mb-8 flex items-center justify-between">
+  
+// <div className="max-w-7xl mx-auto px-4 py-8">
+//       {/* Single container for the entire form system */}
+//       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+//         {/* Header */}
+//         <div className="px-6 py-4 border-b border-gray-200">
+//           <h1 className="text-xl font-semibold text-gray-800">Add a New Product</h1>
+//           <p className="text-sm text-gray-500">Complete all sections</p>
+//         </div>
+        
+//         {/* Content area with sidebar and form */}
+//         <div className="flex">
+//           {/* Left sidebar navigation */}
+//           <div className="w-64 border-r border-gray-200 bg-gray-50">
+//             <nav className="py-2">
+//               {steps.map((step, index) => (
+//                 <button
+//                   key={step.key}
+//                   onClick={() => handleStepSelect(index)}
+//                   className={`w-full text-left py-3 px-6 flex items-center gap-3 transition-colors
+//                     ${index === activeStepIndex ? 'bg-blue-50 border-l-4 border-blue-500 pl-5' : 'hover:bg-gray-100 border-l-4 border-transparent'}`}
+//                 >
+//                   <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm
+//                     ${completedSteps[step.key]
+//                       ? 'bg-green-500 text-white'
+//                       : index === activeStepIndex 
+//                         ? 'bg-blue-500 text-white' 
+//                         : 'bg-gray-200 text-gray-700'}`}
+//                   >
+//                     {completedSteps[step.key] ? <Check className="w-4 h-4" /> : index + 1}
+//                   </div>
+//                   <span className={`text-sm ${index === activeStepIndex ? 'text-blue-700 font-medium' : 'text-gray-700'}`}>
+//                     {step.title}
+//                   </span>
+//                 </button>
+//               ))}
+//             </nav>
+//           </div>
+          
+//           {/* Right side form content */}
+//           <div className="flex-1 p-6">
+//             {/* Form title */}
+//             <h2 className="text-xl font-semibold mb-6">{steps[activeStepIndex].title}</h2>
+            
+//             {/* Render the active form component */}
+//             {renderActiveComponent()}
+            
+//             {/* Action buttons */}
+//             <div className="mt-8 flex justify-between items-center border-t pt-6">
+//               <div className="text-sm text-gray-500">
+//                 Step {activeStepIndex + 1} of {steps.length}
+//               </div>
+              
+//               <div className="flex gap-3">
+//                 {activeStepIndex > 0 && (
+//                   <button
+//                     onClick={() => setActiveStepIndex(activeStepIndex - 1)}
+//                     className="px-5 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50"
+//                   >
+//                     Back
+//                   </button>
+//                 )}
+                
+//                 {activeStepIndex < steps.length - 1 ? (
+//                   <button
+//                     onClick={() => setActiveStepIndex(activeStepIndex + 1)}
+//                     className="px-5 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
+//                   >
+//                     Continue
+//                   </button>
+//                 ) : (
+//                   <button
+//                     onClick={handleSubmit}
+//                     className="px-5 py-2 bg-green-600 text-white rounded-md text-sm hover:bg-green-700"
+//                   >
+//                     Submit
+//                   </button>
+//                 )}
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+<div className="max-w-7xl mx-auto px-4 py-8">
+{/* Single container for the entire form system */}
+<div className="bg-white rounded-lg shadow-lg overflow-hidden">
+  {/* Header */}
+  <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
     <div>
-      <h2 className="text-2xl font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-        Add a New Product
-      </h2>
-      <p className="text-gray-500 mt-1">Follow the steps below</p>
+      <h1 className="text-xl font-semibold text-gray-800">Add a New Product</h1>
+      <p className="text-sm text-gray-500">Complete all sections</p>
     </div>
+    
+    {/* Mobile menu toggle - only visible on small screens */}
     <button 
-      onClick={() => window.location.reload()}
-      className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium
-                text-indigo-600 transition-all duration-200 hover:border-indigo-200 hover:bg-indigo-50
-                hover:shadow-md active:scale-95 group"
+      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+      className="md:hidden p-2 text-gray-600 hover:text-gray-900"
     >
-      <RefreshCw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
-      Refresh
+      {mobileMenuOpen ? 
+        <X className="w-6 h-6" /> : 
+        <Menu className="w-6 h-6" />
+      }
     </button>
   </div>
-
-  <div className="flex gap-8">
+  
+  {/* Content area with sidebar and form */}
+  <div className="flex relative">
+    {/* Mobile sidebar overlay - only appears on small screens when menu is open */}
+    {mobileMenuOpen && (
+      <div 
+        className="fixed inset-0 bg-gray-600 bg-opacity-75 z-20 md:hidden"
+        onClick={() => setMobileMenuOpen(false)}
+      />
+    )}
     
-<div className="hidden lg:block w-24 relative">
-
-  <div className="absolute inset-y-0 left-8 w-0.5 bg-gray-200" />
-  
-  
-  <div className="overflow-y-auto h-screen fixed scrollbar-thin scrollbar-thumb-indigo-500 scrollbar-track-gray-100">
-    {steps.map((step, index) => (
-      <div key={index} className="relative mb-24">
-        <div
-          onClick={() => handleStepClick(index)}
-          className={`relative z-10 w-12 h-12 rounded-xl flex items-center justify-center cursor-pointer
-            transition-all duration-300 transform hover:scale-110 shadow-lg
-            ${
-              completedSteps[step.key]
-                ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
-                : index === activeStep
-                ? 'bg-white border-2 border-indigo-500 text-indigo-600'
-                : 'bg-white border-2 border-gray-200 hover:border-indigo-300'
-            }`}
+    {/* Left sidebar navigation - sliding for mobile, fixed for desktop */}
+    <div className={`
+      absolute md:relative inset-y-0 left-0 
+      transform ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
+      md:translate-x-0 transition duration-300 ease-in-out
+      z-30 md:z-0 w-64 border-r border-gray-200 bg-gray-50 h-full
+      md:block
+    `}>
+      <nav className="py-2 h-full overflow-y-auto">
+        {steps.map((step, index) => (
+          <button
+            key={step.key}
+            onClick={() => {
+              handleStepSelect(index);
+              setMobileMenuOpen(false); // Close mobile menu when a step is selected
+            }}
+            className={`w-full text-left py-3 px-6 flex items-center gap-3 transition-colors
+              ${index === activeStepIndex ? 'bg-blue-50 border-l-4 border-blue-500 pl-5' : 'hover:bg-gray-100 border-l-4 border-transparent'}`}
+          >
+            <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm
+              ${completedSteps[step.key]
+                ? 'bg-green-500 text-white'
+                : index === activeStepIndex 
+                  ? 'bg-blue-500 text-white' 
+                  : 'bg-gray-200 text-gray-700'}`}
+            >
+              {completedSteps[step.key] ? <Check className="w-4 h-4" /> : index + 1}
+            </div>
+            <span className={`text-sm ${index === activeStepIndex ? 'text-blue-700 font-medium' : 'text-gray-700'}`}>
+              {step.title}
+            </span>
+          </button>
+        ))}
+      </nav>
+    </div>
+    
+    {/* Right side form content */}
+    <div className="flex-1 p-6">
+      {/* Current step indicator - mobile only */}
+      <div className="flex items-center mb-4 md:hidden">
+        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm
+          ${completedSteps[steps[activeStepIndex].key]
+            ? 'bg-green-500 text-white'
+            : 'bg-blue-500 text-white'}`}
         >
-          {completedSteps[step.key] ? (
-            <Check className="w-6 h-6" />
+          {completedSteps[steps[activeStepIndex].key] ? <Check className="w-4 h-4" /> : activeStepIndex + 1}
+        </div>
+        <span className="ml-2 text-blue-700 font-medium">
+          Step {activeStepIndex + 1}: {steps[activeStepIndex].title}
+        </span>
+      </div>
+      
+      {/* Form title - desktop only */}
+      <h2 className="text-xl font-semibold mb-6 hidden md:block">{steps[activeStepIndex].title}</h2>
+      
+      {/* Render the active form component */}
+      {renderActiveComponent()}
+      
+      {/* Action buttons */}
+      <div className="mt-8 flex justify-between items-center border-t pt-6">
+        <div className="text-sm text-gray-500">
+          Step {activeStepIndex + 1} of {steps.length}
+        </div>
+        
+        <div className="flex gap-3">
+          {activeStepIndex > 0 && (
+            <button
+              onClick={() => setActiveStepIndex(activeStepIndex - 1)}
+              className="px-5 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50"
+            >
+              Back
+            </button>
+          )}
+          
+          {activeStepIndex < steps.length - 1 ? (
+            <button
+              onClick={() => setActiveStepIndex(activeStepIndex + 1)}
+              className="px-5 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
+            >
+              Continue
+            </button>
           ) : (
-            <span className="text-lg font-medium">{index + 1}</span>
+            <button
+              onClick={handleSubmit}
+              className="px-5 py-2 bg-green-600 text-white rounded-md text-sm hover:bg-green-700"
+            >
+              Submit
+            </button>
           )}
         </div>
       </div>
-    ))}
-  </div>
-</div>
-
-
-    {/* Main Content */}
-    <div className="flex-1 max-w-3xl">
-      {steps.map((step, index) => (
-        <div key={index} className="mb-4">
-          <button
-            onClick={() => handleStepClick(index)}
-            className={`w-full transition-all duration-300 ${
-              index === activeStep 
-                ? 'bg-gradient-to-r from-indigo-50 to-purple-50 border-l-4 border-indigo-500'
-                : 'bg-white hover:bg-gray-50'
-            } rounded-xl shadow-sm hover:shadow-md`}
-          >
-            <div className="p-6 flex justify-between items-center">
-              <div className="flex items-center gap-4">
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  completedSteps[step.key]
-                    ? 'bg-green-100 text-green-600'
-                    : index === activeStep
-                    ? 'bg-indigo-100 text-indigo-600'
-                    : 'bg-gray-100 text-gray-500'
-                }`}>
-                  {completedSteps[step.key] ? (
-                    <Check className="w-5 h-5" />
-                  ) : (
-                    <span className="font-medium">{index + 1}</span>
-                  )}
-                </div>
-                <div className="text-left">
-                  <h3 className="font-medium text-gray-900">{step.title}</h3>
-                </div>
-              </div>
-              {index === activeStep ? (
-                <ChevronUp className="w-5 h-5 text-indigo-500" />
-              ) : (
-                <ChevronDown className="w-5 h-5 text-gray-400" />
-              )}
-            </div>
-          </button>
-
-          {index === activeStep && (
-            <div className="mt-4 transform transition-all duration-300">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <step.component />
-                
-                <div className="mt-6 flex justify-end gap-4">
-                  {index < steps.length - 1 ? (
-                    <button 
-                      onClick={handleNextStep}
-                      className="rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-2.5
-                               text-white text-sm font-medium shadow-lg shadow-indigo-200 transition-all duration-200
-                               hover:shadow-xl hover:shadow-indigo-300 active:scale-95
-                               flex items-center gap-2"
-                    >
-                      Continue <ArrowRight className="w-4 h-4" />
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handleSubmit}
-                      className="rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-2.5
-                               text-white text-sm font-medium shadow-lg shadow-indigo-200 transition-all duration-200
-                               hover:shadow-xl hover:shadow-indigo-300 active:scale-95"
-                    >
-                      Submit
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      ))}
     </div>
   </div>
+</div>
 </div>
   );
 };
 
 export default ProductFormWithProgress;
-
 

@@ -664,7 +664,54 @@ const CommunityPage = () => {
           {/* Main content - Left side (3 columns) */}
           <div className="lg:col-span-3 order-2 lg:order-1">
             {/* Search bar */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-6">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-3 sm:p-5 mb-6">
+  <form onSubmit={handleSearch}>
+    <div className="flex flex-col">
+      <div className="mb-3 sm:mb-4">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-sm sm:text-base rounded-xl border border-gray-200 focus:border-blue-400 focus:ring focus:ring-blue-100 transition-all"
+            placeholder="Search discussions..."
+          />
+        </div>
+      </div>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0">
+        <div className="flex flex-wrap gap-2 sm:space-x-2">
+          <button
+            type="button"
+            onClick={() => openPostModal('question')}
+            className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+          >
+            Ask a Question
+          </button>
+          <button
+            type="button"
+            onClick={() => openPostModal('poll')}
+            className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
+          >
+            <BarChart2 className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1" />
+            Create Poll
+          </button>
+        </div>
+        {searchQuery && (
+          <button
+            type="submit"
+            className="px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm rounded-xl font-medium bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-md hover:shadow-lg transition-all mt-2 sm:mt-0"
+          >
+            Search
+          </button>
+        )}
+      </div>
+    </div>
+  </form>
+</div>
+            {/* <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-6">
               <form onSubmit={handleSearch}>
                 <div className="flex flex-col">
                   <div className="mb-4">
@@ -710,10 +757,10 @@ const CommunityPage = () => {
                   </div>
                 </div>
               </form>
-            </div>
+            </div> */}
 
             {/* Tabs */}
-            <div className="flex border-b border-gray-200 mb-6">
+            {/* <div className="flex border-b border-gray-200 mb-6">
               {['FOR YOU', 'TRENDING', 'LATEST', 'BOOKMARKED'].map((tab) => (
                 <button
                   key={tab}
@@ -727,7 +774,22 @@ const CommunityPage = () => {
                   {tab}
                 </button>
               ))}
-            </div>
+            </div> */}
+            <div className="flex flex-wrap border-b border-gray-200 mb-6">
+  {['FOR YOU', 'TRENDING', 'LATEST', 'BOOKMARKED'].map((tab) => (
+    <button
+      key={tab}
+      className={`px-2 py-2 md:px-4 md:py-3 font-medium text-xs md:text-sm transition-all whitespace-nowrap ${
+        activeTab === tab
+          ? 'text-blue-600 border-b-2 border-blue-600'
+          : 'text-gray-500 hover:text-gray-700'
+      }`}
+      onClick={() => setActiveTab(tab)}
+    >
+      {tab}
+    </button>
+  ))}
+</div>
 
             {/* Feed Component */}
             <Feed searchQuery={searchQuery} />
@@ -796,26 +858,26 @@ const CommunityPage = () => {
               </div>
             </div> */}
 
-<div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-md overflow-hidden text-white mb-6">
-              <div className="p-5">
-                <h3 className="text-xl font-bold mb-2">Contact Us</h3>
-                <p className="text-blue-100 text-sm mb-4">
-                  Reach out to us for any inquiries or support.
-                </p>
-                <div className="text-blue-100 text-sm mb-2">
-                  <strong>Email:</strong> support@dreamlegal.com
-                </div>
-                <div className="text-blue-100 text-sm mb-4">
-                  <strong>Phone:</strong> +91-91095-07900
-                </div>
-                <button 
-                  className="w-full bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg flex items-center justify-center transition-all"
-                  onClick={() => openPostModal('question')}
-                >
-                  Start a discussion
-                </button>
-              </div>
-            </div>
+<div className="hidden lg:block bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-md overflow-hidden text-white mb-6">
+    <div className="p-5">
+        <h3 className="text-xl font-bold mb-2">Contact Us</h3>
+        <p className="text-blue-100 text-sm mb-4">
+            Reach out to us for any inquiries or support.
+        </p>
+        <div className="text-blue-100 text-sm mb-2">
+            <strong>Email:</strong> support@dreamlegal.com
+        </div>
+        <div className="text-blue-100 text-sm mb-4">
+            <strong>Phone:</strong> +91-91095-07900
+        </div>
+        <button 
+            className="w-full bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg flex items-center justify-center transition-all"
+            onClick={() => openPostModal('question')}
+        >
+            Start a discussion
+        </button>
+    </div>
+</div>
         
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -849,24 +911,29 @@ const CommunityPage = () => {
 
       {/* Post Creation Modal */}
       {showPostModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-trsn rounded-2xl shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center p-4 border-b">
-              <h2 className="text-xl font-bold text-gray-800">
-                {modalType === 'question' ? 'Ask a Question' : 'Create a Poll'}
-              </h2>
-              <button 
-                onClick={closePostModal}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            <div className="p-4">
-              <PostCreator initialMode={modalType === 'poll' ? 'poll' : null} />
-            </div>
-          </div>
-        </div>
+       <div className="  fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+       <div className="mt-24 bg-white rounded-2xl shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+         <div className="flex justify-between items-center p-4 border-b">
+           <h2 className="text-xl font-bold text-gray-800">
+             {modalType === 'question' ? 'Ask a Question' : 'Create a Poll'}
+           </h2>
+           <button 
+             onClick={closePostModal}
+             className="text-gray-500 hover:text-gray-700"
+           >
+             <X className="w-6 h-6" />
+           </button>
+         </div>
+         
+         {/* Remove width restrictions on the container so PostCreator can expand fully */}
+         <div className="w-full">
+           <PostCreator 
+             initialMode={modalType === 'poll' ? 'poll' : null} 
+             className="w-full" 
+           />
+         </div>
+       </div>
+     </div>
       )}
     </div>
   );

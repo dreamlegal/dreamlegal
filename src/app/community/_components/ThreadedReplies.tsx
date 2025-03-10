@@ -173,7 +173,7 @@ const ThreadedReplies = ({ postId }) => {
               Reply
             </button>
             
-            <Link href={`/post/${reply.id}`} className="hover:text-blue-600">
+            <Link href={`/community/post/${reply.id}`} className="hover:text-blue-600">
               View Thread
             </Link>
           </div>
@@ -212,7 +212,7 @@ const ThreadedReplies = ({ postId }) => {
                 {reply.replies.length > 3 && (
                   <div className="pl-4 mt-1">
                     <Link 
-                      href={`/post/${reply.id}`}
+                      href={`/community/post/${reply.id}`}
                       className="text-xs text-blue-600 hover:underline"
                     >
                       View all {reply.replies.length} replies
@@ -247,15 +247,15 @@ const ThreadedReplies = ({ postId }) => {
           </div>
         )}
         
-        <div className="flex">
-          <div className="w-8 h-8 rounded-full bg-gray-200 mr-2 flex items-center justify-center">
+        <div className="flex flex-col sm:flex-row">
+          <div className="w-8 h-8 rounded-full bg-gray-200 mr-2 flex items-center justify-center mb-2 sm:mb-0">
             <span className="text-gray-600 text-xs">{extractedUsername.substring(0, 2).toUpperCase()}</span>
           </div>
-          <div className="flex-1 flex">
+          <div className="flex-1 flex flex-col sm:flex-row">
             <input
               type="text"
               ref={replyInputRef}
-              className="flex-1 border rounded-lg px-3 py-2 mr-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="flex-1 border rounded-lg px-3 py-2 mb-2 sm:mb-0 sm:mr-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
               placeholder="Write a comment..."
               value={replyText}
               onChange={(e) => setReplyText(e.target.value)}
@@ -263,8 +263,8 @@ const ThreadedReplies = ({ postId }) => {
             />
             <button
               className={`px-3 py-1 ${
-                submitting ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'
-              } text-white rounded-lg flex items-center`}
+          submitting ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'
+              } text-white rounded-lg flex items-center justify-center`}
               onClick={handleSubmitReply}
               disabled={submitting || !replyText.trim()}
             >

@@ -161,7 +161,7 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
       safeSetState(product.websiteUrl, setWebsiteUrl);
       safeSetState(product.logoUrl, setLogoUrl);
       safeSetState(product.category, setCategory);
-      safeSetState(product.deployment, setDeployment);
+      safeSetState(product.deployement, setDeployment);
       safeSetState(product.mobileAvailable, setMobileAvailable);
       safeSetState(product.focusCountries, setFocusCountries);
       safeSetState(Number(product.adoptionPeriod) || 0, setAdoptionPeriod);

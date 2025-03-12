@@ -20,6 +20,9 @@ import {
 } from "@/components/ui/card";
 import jsPDF from "jspdf";
 
+import { PDFDocument, rgb, StandardFonts, degrees } from 'pdf-lib';
+import fontkit from '@pdf-lib/fontkit';
+
 const legalDepartmentQuestions = [
     {
         question: "How effectively does your team manage contracts?",
@@ -824,528 +827,1336 @@ export default function LegalForm() {
         return observations[category] || {};
     };
 
-    const generateReport = () => {
-        const categoryScores = Object.entries(answers).map(
-            ([questionIndex, selectedOptions]) =>
-                calculateCategoryScores(
-                    parseInt(questionIndex),
-                    selectedOptions
-                )
-        );
+    // const generateReport = () => {
+    //     const categoryScores = Object.entries(answers).map(
+    //         ([questionIndex, selectedOptions]) =>
+    //             calculateCategoryScores(
+    //                 parseInt(questionIndex),
+    //                 selectedOptions
+    //             )
+    //     );
 
-        const finalScores = calculateFinalScores();
+    //     const finalScores = calculateFinalScores();
         
-        // Create new jsPDF instance
-        const doc = new jsPDF({
-            orientation: "portrait",
-            unit: "mm",
-            format: "a4",
-            compress: true,
-        });
+    //     // Create new jsPDF instance
+    //     const doc = new jsPDF({
+    //         orientation: "portrait",
+    //         unit: "mm",
+    //         format: "a4",
+    //         compress: true,
+    //     });
         
-        const pageWidth = doc.internal.pageSize.width;
-        const pageHeight = doc.internal.pageSize.height;
-        const margin = 15;
-        const contentWidth = pageWidth - 2 * margin;
+    //     const pageWidth = doc.internal.pageSize.width;
+    //     const pageHeight = doc.internal.pageSize.height;
+    //     const margin = 15;
+    //     const contentWidth = pageWidth - 2 * margin;
         
-        // Custom functions
-        const getScoreColor = (percentage) => {
-            if (percentage <= 20) return "#FF5252"; // Red
-            if (percentage <= 40) return "#FF9800"; // Orange
-            if (percentage <= 60) return "#FFC107"; // Yellow
-            if (percentage <= 80) return "#8BC34A"; // Light green
-            return "#4CAF50"; // Green
-        };
+    //     // Custom functions
+    //     const getScoreColor = (percentage) => {
+    //         if (percentage <= 20) return "#FF5252"; // Red
+    //         if (percentage <= 40) return "#FF9800"; // Orange
+    //         if (percentage <= 60) return "#FFC107"; // Yellow
+    //         if (percentage <= 80) return "#8BC34A"; // Light green
+    //         return "#4CAF50"; // Green
+    //     };
         
-        const addMultiLineText = (text, x, y, maxWidth, fontSize = 10, align = "left", color = "#000000") => {
-            doc.setFontSize(fontSize);
-            doc.setTextColor(color);
-            const lines = doc.splitTextToSize(text, maxWidth);
-            doc.text(lines, x, y, { align: align });
-            return y + lines.length * (fontSize * 0.352); // Approximate line height
-        };
+    //     const addMultiLineText = (text, x, y, maxWidth, fontSize = 10, align = "left", color = "#000000") => {
+    //         doc.setFontSize(fontSize);
+    //         doc.setTextColor(color);
+    //         const lines = doc.splitTextToSize(text, maxWidth);
+    //         doc.text(lines, x, y, { align: align });
+    //         return y + lines.length * (fontSize * 0.352); // Approximate line height
+    //     };
         
-        const addHeadingWithUnderline = (text, x, y, fontSize = 16, color = "#1D2456") => {
-            doc.setFontSize(fontSize);
-            doc.setFont("helvetica", "bold");
-            doc.setTextColor(color);
-            doc.text(text, x, y);
+    //     const addHeadingWithUnderline = (text, x, y, fontSize = 16, color = "#1D2456") => {
+    //         doc.setFontSize(fontSize);
+    //         doc.setFont("helvetica", "bold");
+    //         doc.setTextColor(color);
+    //         doc.text(text, x, y);
             
-            // Add underline
-            const textWidth = doc.getTextWidth(text);
-            doc.setDrawColor(color);
-            doc.setLineWidth(0.5);
-            doc.line(x, y + 1, x + textWidth, y + 1);
+    //         // Add underline
+    //         const textWidth = doc.getTextWidth(text);
+    //         doc.setDrawColor(color);
+    //         doc.setLineWidth(0.5);
+    //         doc.line(x, y + 1, x + textWidth, y + 1);
             
-            return y + fontSize * 0.5;
-        };
+    //         return y + fontSize * 0.5;
+    //     };
         
-        const addBulletPoint = (text, x, y, maxWidth, fontSize = 11, bulletType = "•") => {
-            doc.setFontSize(fontSize);
-            doc.setFont("helvetica", "normal");
-            doc.setTextColor(50, 50, 50);
+    //     const addBulletPoint = (text, x, y, maxWidth, fontSize = 11, bulletType = "•") => {
+    //         doc.setFontSize(fontSize);
+    //         doc.setFont("helvetica", "normal");
+    //         doc.setTextColor(50, 50, 50);
             
-            // Add custom bullet point
-            doc.text(bulletType, x, y);
+    //         // Add custom bullet point
+    //         doc.text(bulletType, x, y);
             
-            // Calculate bullet width for indentation
-            const bulletWidth = doc.getTextWidth(bulletType + " ");
+    //         // Calculate bullet width for indentation
+    //         const bulletWidth = doc.getTextWidth(bulletType + " ");
             
-            // Add the text with proper indentation
-            const lines = doc.splitTextToSize(text, maxWidth - bulletWidth - 2);
-            doc.text(lines, x + bulletWidth, y);
+    //         // Add the text with proper indentation
+    //         const lines = doc.splitTextToSize(text, maxWidth - bulletWidth - 2);
+    //         doc.text(lines, x + bulletWidth, y);
             
-            return y + lines.length * (fontSize * 0.352); // Return the new Y position
-        };
+    //         return y + lines.length * (fontSize * 0.352); // Return the new Y position
+    //     };
         
-        const drawCircularProgress = (x, y, radius, percentage, customColor = null) => {
-            const color = customColor || getScoreColor(percentage);
+    //     const drawCircularProgress = (x, y, radius, percentage, customColor = null) => {
+    //         const color = customColor || getScoreColor(percentage);
             
-            // Draw background circle (light gray)
-            doc.setFillColor(240, 240, 240);
-            doc.circle(x, y, radius, 'F');
+    //         // Draw background circle (light gray)
+    //         doc.setFillColor(240, 240, 240);
+    //         doc.circle(x, y, radius, 'F');
             
-            // Draw progress arc using multiple small lines to approximate an arc
-            if (percentage > 0) {
-                const startAngle = -90; // Start from top (in degrees)
-                const endAngle = startAngle + (percentage * 360) / 100;
+    //         // Draw progress arc using multiple small lines to approximate an arc
+    //         if (percentage > 0) {
+    //             const startAngle = -90; // Start from top (in degrees)
+    //             const endAngle = startAngle + (percentage * 360) / 100;
                 
-                // Convert to radians for calculation
-                const startRad = (startAngle * Math.PI) / 180;
-                const endRad = (endAngle * Math.PI) / 180;
+    //             // Convert to radians for calculation
+    //             const startRad = (startAngle * Math.PI) / 180;
+    //             const endRad = (endAngle * Math.PI) / 180;
                 
-                // Draw the arc using small line segments
-                const segments = 100; // More segments = smoother arc
-                const angleStep = (endRad - startRad) / segments;
+    //             // Draw the arc using small line segments
+    //             const segments = 100; // More segments = smoother arc
+    //             const angleStep = (endRad - startRad) / segments;
                 
-                // Set color for progress
-                doc.setFillColor(color);
+    //             // Set color for progress
+    //             doc.setFillColor(color);
                 
-                // Create a series of triangles to approximate the circular segment
-                for (let i = 0; i < segments; i++) {
-                    const angle1 = startRad + i * angleStep;
-                    const angle2 = startRad + (i + 1) * angleStep;
+    //             // Create a series of triangles to approximate the circular segment
+    //             for (let i = 0; i < segments; i++) {
+    //                 const angle1 = startRad + i * angleStep;
+    //                 const angle2 = startRad + (i + 1) * angleStep;
                     
-                    const x1 = x + radius * Math.cos(angle1);
-                    const y1 = y + radius * Math.sin(angle1);
-                    const x2 = x + radius * Math.cos(angle2);
-                    const y2 = y + radius * Math.sin(angle2);
+    //                 const x1 = x + radius * Math.cos(angle1);
+    //                 const y1 = y + radius * Math.sin(angle1);
+    //                 const x2 = x + radius * Math.cos(angle2);
+    //                 const y2 = y + radius * Math.sin(angle2);
                     
-                    // Draw a filled triangle (center point + two points on circumference)
-                    doc.triangle(x, y, x1, y1, x2, y2, 'F');
-                }
-            }
+    //                 // Draw a filled triangle (center point + two points on circumference)
+    //                 doc.triangle(x, y, x1, y1, x2, y2, 'F');
+    //             }
+    //         }
             
-            // Draw inner white circle for donut effect
-            const innerRadius = radius * 0.65;
-            doc.setFillColor(255, 255, 255);
-            doc.circle(x, y, innerRadius, 'F');
+    //         // Draw inner white circle for donut effect
+    //         const innerRadius = radius * 0.65;
+    //         doc.setFillColor(255, 255, 255);
+    //         doc.circle(x, y, innerRadius, 'F');
             
-            // Add percentage text in the center
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(14);
-            doc.setTextColor(29, 36, 86);
-            doc.text(`${Math.round(percentage)}%`, x, y + 4, { align: 'center' });
-        };
+    //         // Add percentage text in the center
+    //         doc.setFont("helvetica", "bold");
+    //         doc.setFontSize(14);
+    //         doc.setTextColor(29, 36, 86);
+    //         doc.text(`${Math.round(percentage)}%`, x, y + 4, { align: 'center' });
+    //     };
         
-        const drawProgressBar = (x, y, width, percentage, label, showPercentage = true) => {
-            const color = getScoreColor(percentage);
+    //     const drawProgressBar = (x, y, width, percentage, label, showPercentage = true) => {
+    //         const color = getScoreColor(percentage);
             
-            // Draw background bar
-            doc.setFillColor(240, 240, 240);
-            doc.roundedRect(x, y, width, 6, 3, 3, 'F');
+    //         // Draw background bar
+    //         doc.setFillColor(240, 240, 240);
+    //         doc.roundedRect(x, y, width, 6, 3, 3, 'F');
             
-            // Draw progress bar
-            doc.setFillColor(color);
-            const progressWidth = (width * percentage) / 100;
-            if (progressWidth > 0) {
-                doc.roundedRect(x, y, progressWidth, 6, 3, 3, 'F');
-            }
+    //         // Draw progress bar
+    //         doc.setFillColor(color);
+    //         const progressWidth = (width * percentage) / 100;
+    //         if (progressWidth > 0) {
+    //             doc.roundedRect(x, y, progressWidth, 6, 3, 3, 'F');
+    //         }
             
-            // Add label and percentage
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(9);
-            doc.setTextColor(80, 80, 80);
-            doc.text(label, x, y - 3);
+    //         // Add label and percentage
+    //         doc.setFont("helvetica", "normal");
+    //         doc.setFontSize(9);
+    //         doc.setTextColor(80, 80, 80);
+    //         doc.text(label, x, y - 3);
             
-            if (showPercentage) {
-                doc.setFont("helvetica", "bold");
-                doc.setTextColor(29, 36, 86);
-                doc.text(`${percentage.toFixed(1)}%`, x + width + 5, y + 4);
-            }
-        };
+    //         if (showPercentage) {
+    //             doc.setFont("helvetica", "bold");
+    //             doc.setTextColor(29, 36, 86);
+    //             doc.text(`${percentage.toFixed(1)}%`, x + width + 5, y + 4);
+    //         }
+    //     };
         
-        // Cover Page
-        // Add header with dark blue background
-        doc.setFillColor(29, 36, 86); // Dark blue
-        doc.rect(0, 0, pageWidth, 45, 'F');
+    //     // Cover Page
+    //     // Add header with dark blue background
+    //     doc.setFillColor(29, 36, 86); // Dark blue
+    //     doc.rect(0, 0, pageWidth, 45, 'F');
         
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(22);
-        doc.setFont("helvetica", "bold");
-        doc.text("LEGAL TEAM MATURITY AND", pageWidth / 2, 20, { align: "center" });
-        doc.text("DIGITAL READINESS REPORT", pageWidth / 2, 30, { align: "center" });
+    //     doc.setTextColor(255, 255, 255);
+    //     doc.setFontSize(22);
+    //     doc.setFont("helvetica", "bold");
+    //     doc.text("LEGAL TEAM MATURITY AND", pageWidth / 2, 20, { align: "center" });
+    //     doc.text("DIGITAL READINESS REPORT", pageWidth / 2, 30, { align: "center" });
         
-        doc.setFontSize(12);
-        doc.setFont("helvetica", "normal");
-        doc.text("Assessing Efficiency, Technology Adoption, and Future-Readiness of Legal Teams", 
-            pageWidth / 2, 40, { align: "center" });
+    //     doc.setFontSize(12);
+    //     doc.setFont("helvetica", "normal");
+    //     doc.text("Assessing Efficiency, Technology Adoption, and Future-Readiness of Legal Teams", 
+    //         pageWidth / 2, 40, { align: "center" });
         
-        // Add organization type and date
-        let yPos = 60;
-        doc.setTextColor(29, 36, 86);
-        doc.setFontSize(20);
-        doc.setFont("helvetica", "bold");
-        doc.text(
-            `${firmType === "legal-department" ? "Legal Department" : "Law Firm"}`,
-            margin,
-            yPos
-        );
+    //     // Add organization type and date
+    //     let yPos = 60;
+    //     doc.setTextColor(29, 36, 86);
+    //     doc.setFontSize(20);
+    //     doc.setFont("helvetica", "bold");
+    //     doc.text(
+    //         `${firmType === "legal-department" ? "Legal Department" : "Law Firm"}`,
+    //         margin,
+    //         yPos
+    //     );
         
-        doc.setFontSize(14);
-        doc.setFont("helvetica", "normal");
-        doc.text(
-            `Team size: ${teamSize}`,
-            margin,
-            yPos + 10
-        );
+    //     doc.setFontSize(14);
+    //     doc.setFont("helvetica", "normal");
+    //     doc.text(
+    //         `Team size: ${teamSize}`,
+    //         margin,
+    //         yPos + 10
+    //     );
         
-        doc.setFontSize(12);
-        doc.text(
-            `Generated on: ${new Date().toLocaleDateString()}`,
-            pageWidth - margin,
-            yPos,
-            { align: "right" }
-        );
+    //     doc.setFontSize(12);
+    //     doc.text(
+    //         `Generated on: ${new Date().toLocaleDateString()}`,
+    //         pageWidth - margin,
+    //         yPos,
+    //         { align: "right" }
+    //     );
         
-        // Add overall score visualization
-        yPos += 30;
+    //     // Add overall score visualization
+    //     yPos += 30;
         
-        // Draw circular progress chart for overall score
-        drawCircularProgress(
-            margin + 45, 
-            yPos + 35, 
-            25, 
-            parseFloat(finalScores.totalScore) 
-        );
+    //     // Draw circular progress chart for overall score
+    //     drawCircularProgress(
+    //         margin + 45, 
+    //         yPos + 35, 
+    //         25, 
+    //         parseFloat(finalScores.totalScore) 
+    //     );
         
-        // Add horizontal progress bars for sub-scores
-        drawProgressBar(
-            margin + 100, 
-            yPos + 25, 
-            pageWidth / 2.5, 
-            parseFloat(finalScores.efficiencyScore), 
-            "Efficiency Score"
-        );
+    //     // Add horizontal progress bars for sub-scores
+    //     drawProgressBar(
+    //         margin + 100, 
+    //         yPos + 25, 
+    //         pageWidth / 2.5, 
+    //         parseFloat(finalScores.efficiencyScore), 
+    //         "Efficiency Score"
+    //     );
         
-        drawProgressBar(
-            margin + 100, 
-            yPos + 45, 
-            pageWidth / 2.5, 
-            parseFloat(finalScores.technologyScore), 
-            "Technology Score"
-        );
+    //     drawProgressBar(
+    //         margin + 100, 
+    //         yPos + 45, 
+    //         pageWidth / 2.5, 
+    //         parseFloat(finalScores.technologyScore), 
+    //         "Technology Score"
+    //     );
         
-        // Add assessment text
-        yPos += 70;
-        doc.setFontSize(12);
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(50, 50, 50);
-        const assessmentText = getScoreComment(parseFloat(finalScores.totalScore));
-        yPos = addMultiLineText(assessmentText, margin, yPos, contentWidth, 12);
+    //     // Add assessment text
+    //     yPos += 70;
+    //     doc.setFontSize(12);
+    //     doc.setFont("helvetica", "normal");
+    //     doc.setTextColor(50, 50, 50);
+    //     const assessmentText = getScoreComment(parseFloat(finalScores.totalScore));
+    //     yPos = addMultiLineText(assessmentText, margin, yPos, contentWidth, 12);
         
-        // Add category scores line chart
-        yPos += 10;
-        yPos = addHeadingWithUnderline("Legal operations category scores", margin, yPos);
+    //     // Add category scores line chart
+    //     yPos += 10;
+    //     yPos = addHeadingWithUnderline("Legal operations category scores", margin, yPos);
         
-        yPos += 10;
-        // Draw line chart axes
-        doc.setDrawColor(200, 200, 200);
-        doc.setLineWidth(0.5);
-        doc.line(margin, yPos + 70, margin + contentWidth, yPos + 70); // X-axis
-        doc.line(margin, yPos, margin, yPos + 70); // Y-axis
+    //     yPos += 10;
+    //     // Draw line chart axes
+    //     doc.setDrawColor(200, 200, 200);
+    //     doc.setLineWidth(0.5);
+    //     doc.line(margin, yPos + 70, margin + contentWidth, yPos + 70); // X-axis
+    //     doc.line(margin, yPos, margin, yPos + 70); // Y-axis
         
-        // Draw horizontal grid lines
-        doc.setDrawColor(230, 230, 230);
-        doc.setLineWidth(0.3);
-        for (let i = 1; i <= 4; i++) {
-            const gridY = yPos + 70 - (i * 70 / 5);
-            doc.line(margin, gridY, margin + contentWidth, gridY);
-            doc.setFontSize(9);
-            doc.setTextColor(120, 120, 120);
-            doc.text(`${i * 20}`, margin - 5, gridY, { align: 'right' });
-        }
+    //     // Draw horizontal grid lines
+    //     doc.setDrawColor(230, 230, 230);
+    //     doc.setLineWidth(0.3);
+    //     for (let i = 1; i <= 4; i++) {
+    //         const gridY = yPos + 70 - (i * 70 / 5);
+    //         doc.line(margin, gridY, margin + contentWidth, gridY);
+    //         doc.setFontSize(9);
+    //         doc.setTextColor(120, 120, 120);
+    //         doc.text(`${i * 20}`, margin - 5, gridY, { align: 'right' });
+    //     }
         
-        // Draw category score points and lines
-        const xStep = contentWidth / (categoryScores.length + 1);
-        const dataPoints = categoryScores.map((score, index) => {
-            const x = margin + (index + 1) * xStep;
-            // Average of both scores for simplicity
-            const scoreValue = (score.techScore + score.efficiencyScore) / 2;
-            const y = yPos + 70 - (scoreValue * 70 / 100);
-            return { x, y, score: scoreValue, category: score.category };
-        });
+    //     // Draw category score points and lines
+    //     const xStep = contentWidth / (categoryScores.length + 1);
+    //     const dataPoints = categoryScores.map((score, index) => {
+    //         const x = margin + (index + 1) * xStep;
+    //         // Average of both scores for simplicity
+    //         const scoreValue = (score.techScore + score.efficiencyScore) / 2;
+    //         const y = yPos + 70 - (scoreValue * 70 / 100);
+    //         return { x, y, score: scoreValue, category: score.category };
+    //     });
         
-        // Draw connecting lines
-        doc.setDrawColor(76, 193, 224); // Teal blue
-        doc.setLineWidth(1.5);
-        for (let i = 0; i < dataPoints.length - 1; i++) {
-            doc.line(dataPoints[i].x, dataPoints[i].y, dataPoints[i + 1].x, dataPoints[i + 1].y);
-        }
+    //     // Draw connecting lines
+    //     doc.setDrawColor(76, 193, 224); // Teal blue
+    //     doc.setLineWidth(1.5);
+    //     for (let i = 0; i < dataPoints.length - 1; i++) {
+    //         doc.line(dataPoints[i].x, dataPoints[i].y, dataPoints[i + 1].x, dataPoints[i + 1].y);
+    //     }
         
-        // Draw data points
-        dataPoints.forEach((point, index) => {
-            // Draw point circles
-            doc.setFillColor(50, 50, 50);
-            doc.circle(point.x, point.y, 3.5, 'F');
+    //     // Draw data points
+    //     dataPoints.forEach((point, index) => {
+    //         // Draw point circles
+    //         doc.setFillColor(50, 50, 50);
+    //         doc.circle(point.x, point.y, 3.5, 'F');
             
-            // Draw teal circle around point
-            doc.setDrawColor(76, 193, 224);
-            doc.setLineWidth(1.5);
-            doc.circle(point.x, point.y, 4.5, 'S');
+    //         // Draw teal circle around point
+    //         doc.setDrawColor(76, 193, 224);
+    //         doc.setLineWidth(1.5);
+    //         doc.circle(point.x, point.y, 4.5, 'S');
             
-            // Add category labels below x-axis
-            doc.setFontSize(9);
-            doc.setTextColor(80, 80, 80);
-            doc.text(`Item ${index + 1}`, point.x, yPos + 80, { align: 'center' });
-        });
+    //         // Add category labels below x-axis
+    //         doc.setFontSize(9);
+    //         doc.setTextColor(80, 80, 80);
+    //         doc.text(`Item ${index + 1}`, point.x, yPos + 80, { align: 'center' });
+    //     });
         
-        // Group categories in pairs for the detail pages (2 per page)
-        const categoryPairs = [];
-        for (let i = 0; i < categoryScores.length; i += 2) {
-            if (i + 1 < categoryScores.length) {
-                categoryPairs.push([categoryScores[i], categoryScores[i + 1]]);
-            } else {
-                categoryPairs.push([categoryScores[i]]);
-            }
-        }
+    //     // Group categories in pairs for the detail pages (2 per page)
+    //     const categoryPairs = [];
+    //     for (let i = 0; i < categoryScores.length; i += 2) {
+    //         if (i + 1 < categoryScores.length) {
+    //             categoryPairs.push([categoryScores[i], categoryScores[i + 1]]);
+    //         } else {
+    //             categoryPairs.push([categoryScores[i]]);
+    //         }
+    //     }
         
-        // Track the total number of detail pages
-        const totalDetailPages = Math.ceil(categoryScores.length / 2);
-        let currentPage = 1;
+    //     // Track the total number of detail pages
+    //     const totalDetailPages = Math.ceil(categoryScores.length / 2);
+    //     let currentPage = 1;
         
-        // Add category detail pages
-        categoryPairs.forEach((pair, pairIndex) => {
-            doc.addPage();
-            currentPage++;
+    //     // Add category detail pages
+    //     categoryPairs.forEach((pair, pairIndex) => {
+    //         doc.addPage();
+    //         currentPage++;
             
-            // Determine if this is the last detail page
-            const isLastDetailPage = pairIndex === categoryPairs.length - 1;
-            let conclusionAdded = false;
+    //         // Determine if this is the last detail page
+    //         const isLastDetailPage = pairIndex === categoryPairs.length - 1;
+    //         let conclusionAdded = false;
             
-            pair.forEach((score, index) => {
-                // Calculate vertical position based on whether this is the first or second category on the page
-                const startY = index === 0 ? 20 : pageHeight / 2 + 10;
-                yPos = startY;
+    //         pair.forEach((score, index) => {
+    //             // Calculate vertical position based on whether this is the first or second category on the page
+    //             const startY = index === 0 ? 20 : pageHeight / 2 + 10;
+    //             yPos = startY;
                 
-                // Get question and answers for this category
-                const questionIndex = categoryScores.findIndex(cs => cs.category === score.category);
-                const question = questions[questionIndex];
-                const selectedOptions = answers[questionIndex] || [];
-                const implemented = selectedOptions.map(
-                    (idx) => question.options[idx].text
-                );
-                const notImplemented = question.options
-                    .filter((_, idx) => !selectedOptions.includes(idx))
-                    .map((opt) => opt.text);
+    //             // Get question and answers for this category
+    //             const questionIndex = categoryScores.findIndex(cs => cs.category === score.category);
+    //             const question = questions[questionIndex];
+    //             const selectedOptions = answers[questionIndex] || [];
+    //             const implemented = selectedOptions.map(
+    //                 (idx) => question.options[idx].text
+    //             );
+    //             const notImplemented = question.options
+    //                 .filter((_, idx) => !selectedOptions.includes(idx))
+    //                 .map((opt) => opt.text);
                     
-                // Category name with underline
-                yPos = addHeadingWithUnderline(score.category, margin, yPos);
+    //             // Category name with underline
+    //             yPos = addHeadingWithUnderline(score.category, margin, yPos);
                 
-                yPos += 10;
+    //             yPos += 10;
                 
-                // Draw category score visualization
-                drawCircularProgress(
-                    margin + 35, 
-                    yPos + 20, 
-                    20, 
-                    (score.techScore + score.efficiencyScore) / 2
-                );
+    //             // Draw category score visualization
+    //             drawCircularProgress(
+    //                 margin + 35, 
+    //                 yPos + 20, 
+    //                 20, 
+    //                 (score.techScore + score.efficiencyScore) / 2
+    //             );
                 
-                // Add score bars
-                drawProgressBar(
-                    margin + 80, 
-                    yPos + 10, 
-                    pageWidth / 2.5, 
-                    score.techScore, 
-                    "Technology Score"
-                );
+    //             // Add score bars
+    //             drawProgressBar(
+    //                 margin + 80, 
+    //                 yPos + 10, 
+    //                 pageWidth / 2.5, 
+    //                 score.techScore, 
+    //                 "Technology Score"
+    //             );
                 
-                drawProgressBar(
-                    margin + 80, 
-                    yPos + 30, 
-                    pageWidth / 2.5, 
-                    score.efficiencyScore, 
-                    "Efficiency Score"
-                );
+    //             drawProgressBar(
+    //                 margin + 80, 
+    //                 yPos + 30, 
+    //                 pageWidth / 2.5, 
+    //                 score.efficiencyScore, 
+    //                 "Efficiency Score"
+    //             );
                 
-                // Add implemented features
-                yPos += 45;
-                yPos = addHeadingWithUnderline("Strengths", margin, yPos, 14, "#4CAF50");
+    //             // Add implemented features
+    //             yPos += 45;
+    //             yPos = addHeadingWithUnderline("Strengths", margin, yPos, 14, "#4CAF50");
                 
-                yPos += 8;
-                if (implemented.length > 0) {
-                    implemented.forEach((feature) => {
-                        yPos = addBulletPoint(
-                            feature,
-                            margin,
-                            yPos,
-                            contentWidth - 10,
-                            11,
-                            "✓"
-                        );
-                        yPos += 3;
-                    });
-                } else {
-                    yPos = addMultiLineText(
-                        "No strengths identified in this category.",
-                        margin,
-                        yPos,
-                        contentWidth - 10,
-                        11
-                    );
-                    yPos += 3;
-                }
+    //             yPos += 8;
+    //             if (implemented.length > 0) {
+    //                 implemented.forEach((feature) => {
+    //                     yPos = addBulletPoint(
+    //                         feature,
+    //                         margin,
+    //                         yPos,
+    //                         contentWidth - 10,
+    //                         11,
+    //                         "✓"
+    //                     );
+    //                     yPos += 3;
+    //                 });
+    //             } else {
+    //                 yPos = addMultiLineText(
+    //                     "No strengths identified in this category.",
+    //                     margin,
+    //                     yPos,
+    //                     contentWidth - 10,
+    //                     11
+    //                 );
+    //                 yPos += 3;
+    //             }
                 
-                // Add not implemented features
-                yPos += 5;
-                yPos = addHeadingWithUnderline("Weakness", margin, yPos, 14, "#F44336");
+    //             // Add not implemented features
+    //             yPos += 5;
+    //             yPos = addHeadingWithUnderline("Weakness", margin, yPos, 14, "#F44336");
                 
-                yPos += 8;
-                if (notImplemented.length > 0) {
-                    notImplemented.forEach((feature, idx) => {
-                        // Use numbered bullets (1., 2., 3.) instead of percentage symbols
-                        yPos = addBulletPoint(
-                            feature,
-                            margin,
-                            yPos,
-                            contentWidth - 10,
-                            11,
-                            `${idx + 1}.`
-                        );
-                        yPos += 3;
-                    });
-                } else {
-                    yPos = addMultiLineText(
-                        "No weaknesses identified in this category.",
-                        margin,
-                        yPos,
-                        contentWidth - 10,
-                        11
-                    );
-                    yPos += 3;
-                }
+    //             yPos += 8;
+    //             if (notImplemented.length > 0) {
+    //                 notImplemented.forEach((feature, idx) => {
+    //                     // Use numbered bullets (1., 2., 3.) instead of percentage symbols
+    //                     yPos = addBulletPoint(
+    //                         feature,
+    //                         margin,
+    //                         yPos,
+    //                         contentWidth - 10,
+    //                         11,
+    //                         `${idx + 1}.`
+    //                     );
+    //                     yPos += 3;
+    //                 });
+    //             } else {
+    //                 yPos = addMultiLineText(
+    //                     "No weaknesses identified in this category.",
+    //                     margin,
+    //                     yPos,
+    //                     contentWidth - 10,
+    //                     11
+    //                 );
+    //                 yPos += 3;
+    //             }
                 
-                // Add conclusion after the last category on the last detail page
-                if (isLastDetailPage && index === pair.length - 1) {
-                    let availableSpace = pageHeight - 30 - yPos; // Remaining space
-                    let requiredSpace = 150; // Approx space needed for conclusion
+    //             // Add conclusion after the last category on the last detail page
+    //             if (isLastDetailPage && index === pair.length - 1) {
+    //                 let availableSpace = pageHeight - 30 - yPos; // Remaining space
+    //                 let requiredSpace = 150; // Approx space needed for conclusion
                 
-                    if (availableSpace < requiredSpace) {
-                        // Scale down font size proportionally, ensuring a minimum of 10
-                        let newFontSize = Math.max(10, (availableSpace / requiredSpace) * 16);
-                        addConclusion(yPos + 15, newFontSize);
-                        // Add footer to conclusion page
-                        yPos = pageHeight - 8; // Move it lower
-                        doc.setFillColor(255, 255, 255); // White background
-                        doc.rect(0, yPos - 4, pageWidth, 12, 'F'); // Reduce height from 20 to 12
+    //                 if (availableSpace < requiredSpace) {
+    //                     // Scale down font size proportionally, ensuring a minimum of 10
+    //                     let newFontSize = Math.max(10, (availableSpace / requiredSpace) * 16);
+    //                     addConclusion(yPos + 15, newFontSize);
+    //                     // Add footer to conclusion page
+    //                     yPos = pageHeight - 8; // Move it lower
+    //                     doc.setFillColor(255, 255, 255); // White background
+    //                     doc.rect(0, yPos - 4, pageWidth, 12, 'F'); // Reduce height from 20 to 12
                         
-                        doc.setFontSize(7); // Reduce font size
-                        doc.setTextColor(80, 80, 80);
-                        doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos - 1);
+    //                     doc.setFontSize(7); // Reduce font size
+    //                     doc.setTextColor(80, 80, 80);
+    //                     doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos - 1);
                         
-                        // Smaller logo placeholder (Reduced size)
-                        doc.setFillColor(29, 36, 86); // Dark blue
-                        doc.rect(pageWidth - margin - 6, yPos - 5, 6, 6, 'F'); // Reduce from 10x10 to 6x6
+    //                     // Smaller logo placeholder (Reduced size)
+    //                     doc.setFillColor(29, 36, 86); // Dark blue
+    //                     doc.rect(pageWidth - margin - 6, yPos - 5, 6, 6, 'F'); // Reduce from 10x10 to 6x6
                         
+    //                 } else {
+    //                     addConclusion(yPos + 15, 16); // Default font size
+    //                     // Add footer to conclusion page
+    //                     yPos = pageHeight - 8; // Move it lower
+    //                     doc.setFillColor(255, 255, 255); // White background
+    //                     doc.rect(0, yPos - 4, pageWidth, 12, 'F'); // Reduce height from 20 to 12
+                        
+    //                     doc.setFontSize(7); // Reduce font size
+    //                     doc.setTextColor(80, 80, 80);
+    //                     doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos - 1);
+                        
+    //                     // Smaller logo placeholder (Reduced size)
+    //                     doc.setFillColor(29, 36, 86); // Dark blue
+    //                     doc.rect(pageWidth - margin - 6, yPos - 5, 6, 6, 'F'); // Reduce from 10x10 to 6x6
+                        
+    //                 }
+                
+    //                 conclusionAdded = true;
+    //             }
+                
+                
+    //         });
+            
+    //         // Add footer to each detail page
+    //         // yPos = pageHeight - 15;
+    //         // doc.setFillColor(255, 255, 255); // White
+    //         // doc.rect(0, yPos - 5, pageWidth, 20, 'F');
+            
+    //         // doc.setFontSize(9);
+    //         // doc.setTextColor(80, 80, 80);
+    //         // doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos);
+            
+    //         // // Add logo placeholder
+    //         // doc.setFillColor(29, 36, 86); // Dark blue
+    //         // doc.rect(pageWidth - margin - 10, yPos - 5, 10, 10, 'F');
+            
+    //         // If we are on the last page but didn't have room for the conclusion
+    //         // if (isLastDetailPage && !conclusionAdded) {
+    //         //     // Add a new page for conclusion
+    //         //     // doc.addPage();
+                
+    //             // Add footer to conclusion page
+    //             // yPos = pageHeight - 15;
+    //             // doc.setFillColor(255, 255, 255); // White
+    //             // doc.rect(0, yPos - 5, pageWidth, 20, 'F');
+                
+    //             // doc.setFontSize(9);
+    //             // doc.setTextColor(80, 80, 80);
+    //             // doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos);
+                
+    //             // // Add logo placeholder
+    //             // doc.setFillColor(29, 36, 86); // Dark blue
+    //             // doc.rect(pageWidth - margin - 10, yPos - 5, 10, 10, 'F');
+    //         // }
+    //     });
+        
+    //     // Helper function to add conclusion section
+    //     function addConclusion(startYPos, fontSize = 14) {
+    //         let yPos = startYPos;
+            
+    //         // Conclusive remarks section
+    //         yPos = addHeadingWithUnderline("Conclusive Remark", margin, yPos);
+            
+    //         yPos += 15;
+    //         doc.setTextColor(50, 50, 50);
+    //         doc.setFontSize(fontSize);
+    //         doc.setFont("helvetica", "bold");
+    //         doc.text("Observation:", margin, yPos);
+            
+    //         yPos += 8;
+    //         doc.setFont("helvetica", "normal");
+    //         doc.setFontSize(Math.max(fontSize - 2, 10)); // Ensure minimum font size of 10
+    //         yPos = addMultiLineText(
+    //             getScoreComment(parseFloat(finalScores.totalScore)),
+    //             margin,
+    //             yPos,
+    //             contentWidth,
+    //             Math.max(fontSize - 2, 10)
+    //         );
+        
+    //         // 🟢 Next Steps
+    //         yPos += 15;
+    //         doc.setFontSize(fontSize);
+    //         doc.setFont("helvetica", "bold");
+    //         doc.setTextColor(76, 175, 80);
+    //         doc.text("Next Steps:", margin, yPos);
+            
+    //         yPos += 8;
+    //         const recommendations = [
+    //             "Stay ahead by exploring cutting-edge advancements in AI, blockchain, or predictive analytics.",
+    //             "Benchmark performance against industry leaders to maintain a competitive edge.",
+    //             "Invest in continuous training to keep the team proficient with evolving technology."
+    //         ];
+            
+    //         recommendations.forEach(rec => {
+    //             yPos = addBulletPoint(rec, margin, yPos, contentWidth, Math.max(fontSize - 2, 10), "•"); // Using • as bullet
+    //             yPos += 4;
+    //         });
+        
+    //         // ⚠ Caution
+    //         yPos += 10;
+    //         doc.setFontSize(fontSize);
+    //         doc.setFont("helvetica", "bold");
+    //         doc.setTextColor(255, 152, 0);
+    //         doc.text("Caution:", margin, yPos);
+            
+    //         yPos += 8;
+    //         const cautions = [
+    //             "Complacency can lead to stagnation—innovation should be a continuous effort.",
+    //             "Regularly reassess your tech stack to ensure it remains the best fit for evolving needs."
+    //         ];
+            
+    //         cautions.forEach(caution => {
+    //             yPos = addBulletPoint(caution, margin, yPos, contentWidth, Math.max(fontSize - 2, 10), "•"); // Using • as bullet
+    //             yPos += 4;
+    //         });
+    //     }
+        
+    //     // Save the PDF
+    //     doc.save("legal-assessment-report.pdf");
+    // };
+
+
+    
+    const generateReport = async () => {
+        try {
+            const categoryScores = Object.entries(answers).map(
+                ([questionIndex, selectedOptions]) =>
+                    calculateCategoryScores(
+                        parseInt(questionIndex),
+                        selectedOptions
+                    )
+            );
+    
+            const finalScores = calculateFinalScores();
+            
+            // Create a new PDF document
+            const pdfDoc = await PDFDocument.create();
+            
+            // Embed fonts
+            const helveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            
+            // Define constants
+            const pageWidth = 595.28;  // A4 width in points
+            const pageHeight = 841.89; // A4 height in points
+            const margin = 50;         // margin in points
+            const contentWidth = pageWidth - 2 * margin;
+            
+            // Helper function to get color based on score
+            const getScoreColor = (percentage) => {
+                if (percentage <= 20) return rgb(1, 0.32, 0.32); // Red
+                if (percentage <= 40) return rgb(1, 0.6, 0); // Orange
+                if (percentage <= 60) return rgb(1, 0.76, 0.03); // Yellow
+                if (percentage <= 80) return rgb(0.55, 0.76, 0.29); // Light green
+                return rgb(0.3, 0.69, 0.31); // Green
+            };
+            
+            // Helper function to add text with proper word wrapping
+            const addMultiLineText = (page, text, x, y, { maxWidth, font, fontSize, color, lineHeight = 1.2 }) => {
+                const words = text.split(' ');
+                let line = '';
+                let yPos = y;
+                
+                for (let i = 0; i < words.length; i++) {
+                    const testLine = line + words[i] + ' ';
+                    const width = font.widthOfTextAtSize(testLine, fontSize);
+                    
+                    if (width > maxWidth && i > 0) {
+                        page.drawText(line, {
+                            x,
+                            y: yPos,
+                            size: fontSize,
+                            font,
+                            color
+                        });
+                        line = words[i] + ' ';
+                        yPos -= fontSize * lineHeight;
                     } else {
-                        addConclusion(yPos + 15, 16); // Default font size
-                        // Add footer to conclusion page
-                        yPos = pageHeight - 8; // Move it lower
-                        doc.setFillColor(255, 255, 255); // White background
-                        doc.rect(0, yPos - 4, pageWidth, 12, 'F'); // Reduce height from 20 to 12
-                        
-                        doc.setFontSize(7); // Reduce font size
-                        doc.setTextColor(80, 80, 80);
-                        doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos - 1);
-                        
-                        // Smaller logo placeholder (Reduced size)
-                        doc.setFillColor(29, 36, 86); // Dark blue
-                        doc.rect(pageWidth - margin - 6, yPos - 5, 6, 6, 'F'); // Reduce from 10x10 to 6x6
-                        
+                        line = testLine;
                     }
-                
-                    conclusionAdded = true;
                 }
                 
+                page.drawText(line, {
+                    x,
+                    y: yPos,
+                    size: fontSize,
+                    font,
+                    color
+                });
                 
+                return yPos - fontSize * lineHeight;
+            };
+            
+            // Helper to add heading with underline
+            const addHeadingWithUnderline = (page, text, x, y, { fontSize, font, color, underlineColor }) => {
+                // Draw the heading
+                page.drawText(text, {
+                    x,
+                    y,
+                    size: fontSize,
+                    font,
+                    color
+                });
+                
+                // Draw the underline
+                const textWidth = font.widthOfTextAtSize(text, fontSize);
+                page.drawLine({
+                    start: { x, y: y - 2 },
+                    end: { x: x + textWidth, y: y - 2 },
+                    thickness: 1,
+                    color: underlineColor || color
+                });
+                
+                return y - fontSize - 5;
+            };
+            
+            // Helper to draw a circle
+            const drawCircle = (page, centerX, centerY, radius, options) => {
+                const { color, fill = true } = options;
+                
+                // Draw filled rectangle (PDF-lib doesn't have built-in circle)
+                if (fill) {
+                    // We can approximate a circle with a very short line that moves in a circular path
+                    // Set up small segments to make it look like a circle
+                    const segments = 36; // Number of segments to draw
+                    const step = (2 * Math.PI) / segments;
+                    
+                    for (let i = 0; i < segments; i++) {
+                        const angle1 = i * step;
+                        const angle2 = (i + 1) * step;
+                        
+                        const x1 = centerX + radius * Math.cos(angle1);
+                        const y1 = centerY + radius * Math.sin(angle1);
+                        const x2 = centerX + radius * Math.cos(angle2);
+                        const y2 = centerY + radius * Math.sin(angle2);
+                        
+                        // Create a triangle for each segment (center + two points on edge)
+                        page.moveTo(centerX, centerY);
+                        page.lineTo(x1, y1);
+                        page.lineTo(x2, y2);
+                        page.closePath();
+                        page.setFillColor(color);
+                        page.fill();
+                    }
+                } else {
+                    // Draw outline
+                    const segments = 36;
+                    const step = (2 * Math.PI) / segments;
+                    
+                    // Start at first point
+                    let startX = centerX + radius;
+                    let startY = centerY;
+                    page.moveTo(startX, startY);
+                    
+                    // Draw segments around
+                    for (let i = 1; i <= segments; i++) {
+                        const angle = i * step;
+                        const x = centerX + radius * Math.cos(angle);
+                        const y = centerY + radius * Math.sin(angle);
+                        page.lineTo(x, y);
+                    }
+                    
+                    page.setStrokeColor(color);
+                    page.setLineWidth(1);
+                    page.stroke();
+                }
+            };
+            
+            // Helper to draw a pie chart (circular progress)
+            const drawCircularProgress = (page, x, y, radius, percentage, label) => {
+                const color = getScoreColor(percentage);
+                
+                // Draw shadow for 3D effect
+                drawCircle(page, x + 1.5, y - 1.5, radius, { color: rgb(0.85, 0.85, 0.85) });
+                
+                // Draw background circle (light gray)
+                drawCircle(page, x, y, radius, { color: rgb(0.94, 0.94, 0.94) });
+                
+                // Draw progress arc
+                if (percentage > 0) {
+                    const segments = Math.ceil(36 * (percentage / 100)); // Only draw needed segments
+                    const step = (2 * Math.PI) / 36;
+                    
+                    // Starting at -90 degrees (top)
+                    const startAngleDeg = -90;
+                    const startAngle = (startAngleDeg * Math.PI) / 180;
+                    
+                    for (let i = 0; i < segments; i++) {
+                        const angle1 = startAngle + i * step;
+                        const angle2 = startAngle + (i + 1) * step;
+                        
+                        const x1 = x + radius * Math.cos(angle1);
+                        const y1 = y + radius * Math.sin(angle1);
+                        const x2 = x + radius * Math.cos(angle2);
+                        const y2 = y + radius * Math.sin(angle2);
+                        
+                        // Create a triangle for each segment (center + two points on edge)
+                        page.moveTo(x, y);
+                        page.lineTo(x1, y1);
+                        page.lineTo(x2, y2);
+                        page.closePath();
+                        page.setFillColor(color);
+                        page.fill();
+                    }
+                }
+                
+                // Draw inner white circle for donut effect
+                const innerRadius = radius * 0.65;
+                drawCircle(page, x, y, innerRadius, { color: rgb(1, 1, 1) });
+                
+                // Add percentage text in the center
+                const percentText = `${Math.round(percentage)}%`;
+                const textWidth = helveticaBold.widthOfTextAtSize(percentText, 16);
+                page.drawText(percentText, {
+                    x: x - textWidth / 2,
+                    y: y - 8,
+                    size: 16,
+                    font: helveticaBold,
+                    color: rgb(0.11, 0.14, 0.33)
+                });
+                
+                // Add label if provided
+                if (label) {
+                    const lines = label.split('\\n');
+                    let labelY = y - radius - 15;
+                    
+                    lines.forEach(line => {
+                        const labelWidth = helvetica.widthOfTextAtSize(line, 12);
+                        page.drawText(line, {
+                            x: x - labelWidth / 2,
+                            y: labelY,
+                            size: 12,
+                            font: helvetica,
+                            color: rgb(0.11, 0.14, 0.33)
+                        });
+                        labelY -= 14;
+                    });
+                }
+            };
+            
+            // Helper to draw a progress bar
+            const drawProgressBar = (page, x, y, width, percentage, label) => {
+                const color = getScoreColor(percentage);
+                const barHeight = 8;
+                
+                // Draw shadow for 3D effect - using rectangle instead of roundedRect
+                page.drawRectangle({
+                    x: x + 1,
+                    y: y - 1 - barHeight,
+                    width,
+                    height: barHeight,
+                    color: rgb(0.85, 0.85, 0.85)
+                });
+                
+                // Draw background bar
+                page.drawRectangle({
+                    x,
+                    y: y - barHeight,
+                    width,
+                    height: barHeight,
+                    color: rgb(0.94, 0.94, 0.94)
+                });
+                
+                // Draw progress bar
+                const progressWidth = (width * percentage) / 100;
+                if (progressWidth > 0) {
+                    page.drawRectangle({
+                        x,
+                        y: y - barHeight,
+                        width: progressWidth,
+                        height: barHeight,
+                        color
+                    });
+                }
+                
+                // Add label
+                page.drawText(label, {
+                    x,
+                    y: y + 3,
+                    size: 10,
+                    font: helvetica,
+                    color: rgb(0.3, 0.3, 0.3)
+                });
+                
+                // Add percentage
+                const percentText = `${percentage.toFixed(1)}%`;
+                page.drawText(percentText, {
+                    x: x + width + 5,
+                    y: y - 5,
+                    size: 10,
+                    font: helveticaBold,
+                    color: rgb(0.11, 0.14, 0.33)
+                });
+            };
+            
+            // Helper to add a bullet point
+            const addBulletPoint = (page, text, x, y, { maxWidth, font, fontSize, bulletType }) => {
+                // Draw bullet (using standard characters compatible with WinAnsi encoding)
+                page.drawText(bulletType, {
+                    x,
+                    y,
+                    size: fontSize,
+                    font: helveticaBold,
+                    color: rgb(0.11, 0.14, 0.33)
+                });
+                
+                // Calculate bullet width
+                const bulletWidth = helveticaBold.widthOfTextAtSize(bulletType + ' ', fontSize);
+                
+                // Draw text with proper wrapping
+                return addMultiLineText(page, text, x + bulletWidth, y, { 
+                    maxWidth: maxWidth - bulletWidth, 
+                    font, 
+                    fontSize, 
+                    color: rgb(0.2, 0.2, 0.2),
+                    lineHeight: 1.2
+                });
+            };
+            
+            // Helper function to add watermark
+            const addWatermark = (page) => {
+                const text = "DreamLegal";
+                const textWidth = helveticaBold.widthOfTextAtSize(text, 60);
+                const textHeight = 60;
+                
+                // Calculate diagonal position
+                const rotationAngle = 45;
+                const radians = (rotationAngle * Math.PI) / 180;
+                
+                // Position watermark in center
+                page.drawText(text, {
+                    x: pageWidth / 2 - textWidth / 2,
+                    y: pageHeight / 2,
+                    size: 60,
+                    font: helveticaBold,
+                    color: rgb(0.9, 0.9, 0.9),
+                    rotate: degrees(rotationAngle)
+                });
+            };
+            
+            // Helper function to add page border, footer and page number
+            const addPageDecoration = (page, pageNumber, totalPages) => {
+                // Add border
+                page.drawRectangle({
+                    x: margin - 15,
+                    y: margin - 15,
+                    width: pageWidth - 2 * (margin - 15),
+                    height: pageHeight - 2 * (margin - 15),
+                    borderColor: rgb(0.11, 0.14, 0.33),
+                    borderWidth: 1,
+                    color: rgb(1, 1, 1),
+                    opacity: 0
+                });
+                
+                // Add footer text
+                page.drawText("DreamLegal | Driving digital transformation for legal teams", {
+                    x: margin,
+                    y: 30,
+                    size: 9,
+                    font: helvetica,
+                    color: rgb(0.3, 0.3, 0.3)
+                });
+                
+                // Add page number
+                page.drawText(`Page ${pageNumber} of ${totalPages}`, {
+                    x: pageWidth - margin - 50,
+                    y: 30,
+                    size: 9,
+                    font: helvetica,
+                    color: rgb(0.4, 0.4, 0.4)
+                });
+                
+                // Add logo placeholder
+                page.drawRectangle({
+                    x: pageWidth - margin + 2,
+                    y: 25,
+                    width: 8,
+                    height: 8,
+                    color: rgb(0.11, 0.14, 0.33)
+                });
+            };
+            
+            // Create cover page
+            const coverPage = pdfDoc.addPage([pageWidth, pageHeight]);
+            
+            // Add blue header background
+            coverPage.drawRectangle({
+                x: 0,
+                y: pageHeight - 45,
+                width: pageWidth,
+                height: 45,
+                color: rgb(0.11, 0.14, 0.33)
             });
             
-            // Add footer to each detail page
-            // yPos = pageHeight - 15;
-            // doc.setFillColor(255, 255, 255); // White
-            // doc.rect(0, yPos - 5, pageWidth, 20, 'F');
+            // Add title text
+            coverPage.drawText("LEGAL TEAM MATURITY AND", {
+                x: pageWidth / 2 - 170,
+                y: pageHeight - 20,
+                size: 22,
+                font: helveticaBold,
+                color: rgb(1, 1, 1)
+            });
             
-            // doc.setFontSize(9);
-            // doc.setTextColor(80, 80, 80);
-            // doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos);
+            coverPage.drawText("DIGITAL READINESS REPORT", {
+                x: pageWidth / 2 - 170,
+                y: pageHeight - 40,
+                size: 22,
+                font: helveticaBold,
+                color: rgb(1, 1, 1)
+            });
             
-            // // Add logo placeholder
-            // doc.setFillColor(29, 36, 86); // Dark blue
-            // doc.rect(pageWidth - margin - 10, yPos - 5, 10, 10, 'F');
+            // Add subtitle
+            coverPage.drawText("Assessing Efficiency, Technology Adoption, and Future-Readiness of Legal Teams", {
+                x: pageWidth / 2 - 240,
+                y: pageHeight - 60,
+                size: 12,
+                font: helvetica,
+                color: rgb(1, 1, 1)
+            });
             
-            // If we are on the last page but didn't have room for the conclusion
-            // if (isLastDetailPage && !conclusionAdded) {
-            //     // Add a new page for conclusion
-            //     // doc.addPage();
-                
-                // Add footer to conclusion page
-                // yPos = pageHeight - 15;
-                // doc.setFillColor(255, 255, 255); // White
-                // doc.rect(0, yPos - 5, pageWidth, 20, 'F');
-                
-                // doc.setFontSize(9);
-                // doc.setTextColor(80, 80, 80);
-                // doc.text("DreamLegal | Driving digital transformation for legal teams", margin, yPos);
-                
-                // // Add logo placeholder
-                // doc.setFillColor(29, 36, 86); // Dark blue
-                // doc.rect(pageWidth - margin - 10, yPos - 5, 10, 10, 'F');
-            // }
-        });
-        
-        // Helper function to add conclusion section
-        function addConclusion(startYPos, fontSize = 14) {
-            let yPos = startYPos;
+            // Add organization details
+            let yPos = pageHeight - 100;
             
-            // Conclusive remarks section
-            yPos = addHeadingWithUnderline("Conclusive Remark", margin, yPos);
+            coverPage.drawText(`${firmType === "legal-department" ? "Legal Department" : "Law Firm"}`, {
+                x: margin,
+                y: yPos,
+                size: 20,
+                font: helveticaBold,
+                color: rgb(0.11, 0.14, 0.33)
+            });
             
-            yPos += 15;
-            doc.setTextColor(50, 50, 50);
-            doc.setFontSize(fontSize);
-            doc.setFont("helvetica", "bold");
-            doc.text("Observation:", margin, yPos);
+            coverPage.drawText(`Team size: ${teamSize}`, {
+                x: margin,
+                y: yPos - 20,
+                size: 14,
+                font: helvetica,
+                color: rgb(0.11, 0.14, 0.33)
+            });
             
-            yPos += 8;
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(Math.max(fontSize - 2, 10)); // Ensure minimum font size of 10
-            yPos = addMultiLineText(
-                getScoreComment(parseFloat(finalScores.totalScore)),
-                margin,
-                yPos,
-                contentWidth,
-                Math.max(fontSize - 2, 10)
+            coverPage.drawText(`Generated on: ${new Date().toLocaleDateString()}`, {
+                x: pageWidth - margin - 150,
+                y: yPos,
+                size: 12,
+                font: helvetica,
+                color: rgb(0.11, 0.14, 0.33)
+            });
+            
+            // Add overall score visualization
+            yPos -= 60;
+            
+            // Draw overall score circle
+            drawCircularProgress(
+                coverPage,
+                margin + 45,
+                yPos - 35,
+                25,
+                parseFloat(finalScores.totalScore),
+                "Overall Maturity Score\\nBased on all categories"
             );
-        
-            // 🟢 Next Steps
-            yPos += 15;
-            doc.setFontSize(fontSize);
-            doc.setFont("helvetica", "bold");
-            doc.setTextColor(76, 175, 80);
-            doc.text("Next Steps:", margin, yPos);
             
-            yPos += 8;
+            // Draw score bars
+            drawProgressBar(
+                coverPage,
+                margin + 100,
+                yPos - 25,
+                pageWidth / 2.5,
+                parseFloat(finalScores.efficiencyScore),
+                "Efficiency Score"
+            );
+            
+            drawProgressBar(
+                coverPage,
+                margin + 100,
+                yPos - 45,
+                pageWidth / 2.5,
+                parseFloat(finalScores.technologyScore),
+                "Technology Score"
+            );
+            
+            // Add assessment summary
+            yPos -= 70;
+            coverPage.drawText("Assessment Summary:", {
+                x: margin,
+                y: yPos,
+                size: 13,
+                font: helveticaBold,
+                color: rgb(0.11, 0.14, 0.33)
+            });
+            
+            yPos -= 15;
+            yPos = addMultiLineText(coverPage, getScoreComment(parseFloat(finalScores.totalScore)), margin, yPos, {
+                maxWidth: contentWidth,
+                font: helvetica,
+                fontSize: 12,
+                color: rgb(0.2, 0.2, 0.2),
+                lineHeight: 1.2
+            });
+            
+            // Add category scores heading
+            yPos -= 20;
+            yPos = addHeadingWithUnderline(coverPage, "Legal operations category scores", margin, yPos, {
+                fontSize: 16,
+                font: helveticaBold,
+                color: rgb(0.11, 0.14, 0.33),
+                underlineColor: rgb(0.11, 0.14, 0.33)
+            });
+            
+            // Add horizontal line above heading (cyan)
+            coverPage.drawLine({
+                start: { x: margin, y: yPos + 25 },
+                end: { x: pageWidth - margin, y: yPos + 25 },
+                thickness: 1,
+                color: rgb(0.3, 0.76, 0.88)
+            });
+            
+            // Draw category scores chart
+            yPos -= 10;
+            const chartHeight = 60;
+            const chartWidth = contentWidth;
+            
+            // Draw Y-axis
+            coverPage.drawLine({
+                start: { x: margin, y: yPos },
+                end: { x: margin, y: yPos - chartHeight },
+                thickness: 0.5,
+                color: rgb(0.7, 0.7, 0.7)
+            });
+            
+            // Draw X-axis
+            coverPage.drawLine({
+                start: { x: margin, y: yPos - chartHeight },
+                end: { x: margin + chartWidth, y: yPos - chartHeight },
+                thickness: 0.5,
+                color: rgb(0.7, 0.7, 0.7)
+            });
+            
+            // Draw grid lines and labels
+            for (let i = 1; i <= 5; i++) {
+                const gridY = yPos - chartHeight + (i * chartHeight / 5);
+                
+                // Draw horizontal grid line
+                coverPage.drawLine({
+                    start: { x: margin, y: gridY },
+                    end: { x: margin + chartWidth, y: gridY },
+                    thickness: 0.3,
+                    color: rgb(0.85, 0.85, 0.85)
+                });
+                
+                // Add percentage label
+                const percent = (i * 20).toString() + '%';
+                const labelWidth = helvetica.widthOfTextAtSize(percent, 8);
+                coverPage.drawText(percent, {
+                    x: margin - labelWidth - 3,
+                    y: gridY - 3,
+                    size: 8,
+                    font: helvetica,
+                    color: rgb(0.5, 0.5, 0.5)
+                });
+            }
+            
+            // Draw data points and connecting lines
+            const categoryScoreValues = categoryScores.map(score => (score.techScore + score.efficiencyScore) / 2);
+            const xStep = chartWidth / (categoryScoreValues.length + 1);
+            const points = categoryScoreValues.map((value, index) => {
+                const x = margin + (index + 1) * xStep;
+                const y = yPos - chartHeight + (value * chartHeight / 100);
+                return { x, y, value };
+            });
+            
+            // Draw connecting lines
+            for (let i = 0; i < points.length - 1; i++) {
+                coverPage.drawLine({
+                    start: { x: points[i].x, y: points[i].y },
+                    end: { x: points[i + 1].x, y: points[i + 1].y },
+                    thickness: 1,
+                    color: rgb(0.3, 0.76, 0.88)
+                });
+            }
+            
+            // Draw data points
+            points.forEach((point, index) => {
+                // Draw point circle
+                drawCircle(coverPage, point.x, point.y, 3.5, { color: rgb(0.2, 0.2, 0.2) });
+                
+                // Draw outline
+                drawCircle(coverPage, point.x, point.y, 4.5, { color: rgb(0.3, 0.76, 0.88), fill: false });
+                
+                // Add category labels
+                coverPage.drawText(`Item ${index + 1}`, {
+                    x: point.x - 15,
+                    y: yPos - chartHeight - 15,
+                    size: 9,
+                    font: helvetica,
+                    color: rgb(0.3, 0.3, 0.3)
+                });
+            });
+            
+            // Group categories in pairs for the detail pages (2 per page)
+            const categoryPairs = [];
+            for (let i = 0; i < categoryScores.length; i += 2) {
+                if (i + 1 < categoryScores.length) {
+                    categoryPairs.push([categoryScores[i], categoryScores[i + 1]]);
+                } else {
+                    categoryPairs.push([categoryScores[i]]);
+                }
+            }
+            
+            // Add detail pages
+            categoryPairs.forEach((pair) => {
+                const detailPage = pdfDoc.addPage([pageWidth, pageHeight]);
+                
+                pair.forEach((score, index) => {
+                    // Calculate vertical position based on whether this is the first or second category on the page
+                    const startY = index === 0 ? pageHeight - 50 : pageHeight / 2;
+                    yPos = startY;
+                    
+                    // Get question and answers for this category
+                    const questionIndex = categoryScores.findIndex(cs => cs.category === score.category);
+                    const question = questions[questionIndex];
+                    const selectedOptions = answers[questionIndex] || [];
+                    const implemented = selectedOptions.map(
+                        (idx) => question.options[idx].text
+                    );
+                    const notImplemented = question.options
+                        .filter((_, idx) => !selectedOptions.includes(idx))
+                        .map((opt) => opt.text);
+                    
+                    // Add horizontal cyan line
+                    detailPage.drawLine({
+                        start: { x: margin, y: yPos + 5 },
+                        end: { x: pageWidth - margin, y: yPos + 5 },
+                        thickness: 1,
+                        color: rgb(0.3, 0.76, 0.88)
+                    });
+                    
+                    // Category name with underline
+                    yPos = addHeadingWithUnderline(detailPage, score.category, margin, yPos, {
+                        fontSize: 18,
+                        font: helveticaBold,
+                        color: rgb(0.11, 0.14, 0.33),
+                        underlineColor: rgb(0.11, 0.14, 0.33)
+                    });
+                    
+                    yPos -= 20;
+                    
+                    // Draw category score circle
+                    drawCircularProgress(
+                        detailPage,
+                        margin + 35,
+                        yPos - 20,
+                        20,
+                        (score.techScore + score.efficiencyScore) / 2,
+                        "Overall"
+                    );
+                    
+                    // Draw score bars
+                    drawProgressBar(
+                        detailPage,
+                        margin + 80,
+                        yPos - 10,
+                        pageWidth / 2.5,
+                        score.techScore,
+                        "Technology Score"
+                    );
+                    
+                    drawProgressBar(
+                        detailPage,
+                        margin + 80,
+                        yPos - 30,
+                        pageWidth / 2.5,
+                        score.efficiencyScore,
+                        "Efficiency Score"
+                    );
+                    
+                    // Add strengths section
+                    yPos -= 60;
+                    
+                    // Add Strengths heading
+                    yPos = addHeadingWithUnderline(detailPage, "Strengths", margin, yPos, {
+                        fontSize: 14,
+                        font: helveticaBold,
+                        color: rgb(0.3, 0.69, 0.31), // Green
+                        underlineColor: rgb(0.3, 0.69, 0.31)
+                    });
+                    
+                    yPos -= 10;
+                    if (implemented.length > 0) {
+                        implemented.forEach(feature => {
+                            yPos = addBulletPoint(detailPage, feature, margin, yPos, {
+                                maxWidth: contentWidth - 10,
+                                font: helvetica,
+                                fontSize: 11,
+                                bulletType: "+" // Using + instead of ✓ for compatibility
+                            });
+                            yPos -= 5;
+                        });
+                    } else {
+                        yPos = addMultiLineText(detailPage, "No strengths identified in this category.", margin, yPos, {
+                            maxWidth: contentWidth - 10,
+                            font: helvetica,
+                            fontSize: 11,
+                            color: rgb(0.2, 0.2, 0.2)
+                        });
+                        yPos -= 5;
+                    }
+                    
+                    // Add weaknesses section
+                    yPos -= 10;
+                    
+                    // Add Weakness heading
+                    yPos = addHeadingWithUnderline(detailPage, "Weakness", margin, yPos, {
+                        fontSize: 14,
+                        font: helveticaBold,
+                        color: rgb(0.96, 0.26, 0.21), // Red
+                        underlineColor: rgb(0.96, 0.26, 0.21)
+                    });
+                    
+                    yPos -= 10;
+                    if (notImplemented.length > 0) {
+                        notImplemented.forEach((feature, idx) => {
+                            yPos = addBulletPoint(detailPage, feature, margin, yPos, {
+                                maxWidth: contentWidth - 10,
+                                font: helvetica,
+                                fontSize: 11,
+                                bulletType: `${idx + 1}.`
+                            });
+                            yPos -= 5;
+                        });
+                    } else {
+                        yPos = addMultiLineText(detailPage, "No weaknesses identified in this category.", margin, yPos, {
+                            maxWidth: contentWidth - 10,
+                            font: helvetica,
+                            fontSize: 11,
+                            color: rgb(0.2, 0.2, 0.2)
+                        });
+                        yPos -= 5;
+                    }
+                });
+                
+                // Add watermark
+                addWatermark(detailPage);
+            });
+            
+            // Add conclusion page
+            const conclusionPage = pdfDoc.addPage([pageWidth, pageHeight]);
+            
+            // Add horizontal cyan line
+            conclusionPage.drawLine({
+                start: { x: margin, y: pageHeight - 45 },
+                end: { x: pageWidth - margin, y: pageHeight - 45 },
+                thickness: 1,
+                color: rgb(0.3, 0.76, 0.88)
+            });
+            
+            // Add conclusion heading
+            yPos = pageHeight - 50;
+            yPos = addHeadingWithUnderline(conclusionPage, "Conclusive Remark", margin, yPos, {
+                fontSize: 20,
+                font: helveticaBold,
+                color: rgb(0.11, 0.14, 0.33),
+                underlineColor: rgb(0.11, 0.14, 0.33)
+            });
+            
+            // Add observation section
+            yPos -= 30;
+            
+            // Add Observation with cyan underline
+            yPos = addHeadingWithUnderline(conclusionPage, "Observation:", margin, yPos, {
+                fontSize: 16,
+                font: helveticaBold,
+                color: rgb(0.11, 0.14, 0.33),
+                underlineColor: rgb(0.3, 0.76, 0.88)
+            });
+            
+            yPos -= 15;
+            yPos = addMultiLineText(conclusionPage, getScoreComment(parseFloat(finalScores.totalScore)), margin, yPos, {
+                maxWidth: contentWidth,
+                font: helvetica,
+                fontSize: 12,
+                color: rgb(0.2, 0.2, 0.2),
+                lineHeight: 1.2
+            });
+            
+            // Add next steps section
+            yPos -= 30;
+            
+            // Add Next Steps with green underline
+            yPos = addHeadingWithUnderline(conclusionPage, "Next Steps:", margin, yPos, {
+                fontSize: 16,
+                font: helveticaBold,
+                color: rgb(0.3, 0.69, 0.31), // Green
+                underlineColor: rgb(0.3, 0.69, 0.31)
+            });
+            
+            yPos -= 15;
             const recommendations = [
                 "Stay ahead by exploring cutting-edge advancements in AI, blockchain, or predictive analytics.",
                 "Benchmark performance against industry leaders to maintain a competitive edge.",
@@ -1353,32 +2164,70 @@ export default function LegalForm() {
             ];
             
             recommendations.forEach(rec => {
-                yPos = addBulletPoint(rec, margin, yPos, contentWidth, Math.max(fontSize - 2, 10), "•"); // Using • as bullet
-                yPos += 4;
+                yPos = addBulletPoint(conclusionPage, rec, margin, yPos, {
+                    maxWidth: contentWidth,
+                    font: helvetica,
+                    fontSize: 12,
+                    bulletType: "*" // Using * instead of • for compatibility
+                });
+                yPos -= 10;
             });
-        
-            // ⚠ Caution
-            yPos += 10;
-            doc.setFontSize(fontSize);
-            doc.setFont("helvetica", "bold");
-            doc.setTextColor(255, 152, 0);
-            doc.text("Caution:", margin, yPos);
             
-            yPos += 8;
+            // Add caution section
+            yPos -= 20;
+            
+            // Add Caution with orange underline
+            yPos = addHeadingWithUnderline(conclusionPage, "Caution:", margin, yPos, {
+                fontSize: 16,
+                font: helveticaBold,
+                color: rgb(1, 0.6, 0), // Orange
+                underlineColor: rgb(1, 0.6, 0)
+            });
+            
+            yPos -= 15;
             const cautions = [
                 "Complacency can lead to stagnation—innovation should be a continuous effort.",
                 "Regularly reassess your tech stack to ensure it remains the best fit for evolving needs."
             ];
             
             cautions.forEach(caution => {
-                yPos = addBulletPoint(caution, margin, yPos, contentWidth, Math.max(fontSize - 2, 10), "•"); // Using • as bullet
-                yPos += 4;
+                yPos = addBulletPoint(conclusionPage, caution, margin, yPos, {
+                    maxWidth: contentWidth,
+                    font: helvetica,
+                    fontSize: 12,
+                    bulletType: "*" // Using * instead of • for compatibility
+                });
+                yPos -= 10;
             });
+            
+            // Add watermark
+            addWatermark(conclusionPage);
+            
+            // Add page borders, footers and numbers to all pages
+            const totalPages = pdfDoc.getPageCount();
+            for (let i = 0; i < totalPages; i++) {
+                const page = pdfDoc.getPage(i);
+                addPageDecoration(page, i + 1, totalPages);
+            }
+            
+            // Serialize the PDFDocument to bytes
+            const pdfBytes = await pdfDoc.save();
+            
+            // Create a blob and trigger download
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'legal-assessment-report.pdf';
+            link.click();
+            
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            alert('Error generating PDF: ' + error.message);
         }
-        
-        // Save the PDF
-        doc.save("legal-assessment-report.pdf");
     };
+    
+
+
 
     const calculateProgress = () => {
         if (!firmType) return 0;
@@ -1661,4 +2510,4 @@ export default function LegalForm() {
             </Card>
         </div>
     );
-}
+}']'

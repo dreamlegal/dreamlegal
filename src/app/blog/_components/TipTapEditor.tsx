@@ -974,7 +974,7 @@ const TipTapEditor = ({
     return htmlContent.replace(headingRegex, (match, tag, content) => {
       const textContent = content.replace(/<\/?[^>]+(>|$)/g, '').trim();
       const slug = textContent
-        .toLowerCase()
+        // .toLowerCase()
         .replace(/[^\w\s-]/g, '')
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-');

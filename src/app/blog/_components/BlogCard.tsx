@@ -128,7 +128,7 @@ export default function BlogCard({ blog, allBlogs, setBlogs }) {
 
           {blog.published && (
             <Link
-              href={`/blog/${blog.id}`}
+              href={`/blog/${blog.slug}`}
               className="flex items-center gap-1 text-green-600 hover:text-green-800 font-medium text-sm transition-colors"
               target="_blank"
             >

@@ -168,7 +168,8 @@ const blogStyles = `
 export default function BlogPage() {
   const params = useParams();
   const router = useRouter();
-  const { id } = params;
+  const { slug } = params;
+  console.log(slug);
   
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -178,7 +179,7 @@ export default function BlogPage() {
   useEffect(() => {
     async function fetchBlog() {
       try {
-        const response = await fetch(`/api/blogs/${id}`);
+        const response = await fetch(`/api/blogs/slug/${slug}`);
         
         if (response.status === 404) {
           router.push('/404');
@@ -200,7 +201,7 @@ export default function BlogPage() {
     }
     
     fetchBlog();
-  }, [id, router]);
+  }, [slug, router]);
 
   const formatDate = (dateString) => {
     if (!dateString) return '';

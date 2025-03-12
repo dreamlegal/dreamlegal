@@ -520,6 +520,13 @@ model Blog {
   publishedAt DateTime?
   refLinks    RefLink[]
   tocItems    TocItem[]
+
+  htmlTitle       String?   // For <title> tag
+  metaDescription String?   @db.Text  // For meta description
+  ogTitle         String?   // For Open Graph title
+  ogUrl           String?   // For Open Graph URL
+  ogImage         String?   // For Open Graph image
+  slug            String?   @unique
 }
 
 model RefLink {

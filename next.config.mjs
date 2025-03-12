@@ -7,8 +7,12 @@ const nextConfig = {
         ignoreBuildErrors:true
     },
     images: {
-        domains: ['dreamlegal-backend.s3-ap-south-1.amazonaws.com']
-      }
+        remotePatterns: [
+            {
+              protocol: 'https',
+              hostname: '**'
+            }
+          ]  }
 };
 
 export default nextConfig;

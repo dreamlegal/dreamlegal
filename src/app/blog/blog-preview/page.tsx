@@ -353,7 +353,7 @@ export default function BlogPreviewPage() {
             </button>
             {blog.published && (
               <Link 
-                href={`/blog/${blog.id}`}
+                href={`/blog/${blog.slug}`}
                 target="_blank"
                 className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-xl shadow-md hover:shadow-lg hover:bg-green-700 transition-all"
               >
@@ -502,7 +502,7 @@ export default function BlogPreviewPage() {
                 </button>
                 {blog.published && (
                   <Link 
-                    href={`/blog/${blog.id}`}
+                    href={`/blog/${blog.slug}`}
                     target="_blank"
                     className="w-full bg-green-600 text-white px-4 py-3 rounded-xl hover:bg-green-700 transition flex items-center justify-center gap-2"
                   >

@@ -2,8 +2,10 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const UserLoginPage = () => {
+  const {data: session} = useSession()
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -75,6 +77,7 @@ const UserLoginPage = () => {
       showAlert('Error', 'An unexpected error occurred during login');
     }
   };
+
   const handleResetPassword = async (e) => {
     e.preventDefault();
     try {
@@ -105,8 +108,31 @@ const UserLoginPage = () => {
     setTimeout(() => setAlert({ show: false, title: '', message: '' }), 5000);
   };
 
+  const [email, setEmail] = useState('');
+  async function SignInWithEmail(e:React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    console.log("sending ...")
+    const signInResult = await signIn('email', {
+      email: email,
+      callbackUrl: `${window.location.origin}`,
+      redirect: false
+    })
+
+    if (!signInResult?.ok) {
+      return "error"
+    }
+
+    setEmail("")
+    console.log("sent")
+
+    return "success"
+  }
+
+  
+
   return (
     <div className='pt-8'>
+    <div className='mt-16' >{session ? JSON.stringify(session): 'No session'}</div>
    <div className="max-w-2xl mx-auto pt-24 pb-16">
       {alert.show && (
         <div className="fixed top-4 right-4 bg-white p-4 rounded-lg shadow-lg border z-[9999]">
@@ -122,7 +148,7 @@ const UserLoginPage = () => {
             <p className="text-gray-500 mt-2">Please enter your details to sign in</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={SignInWithEmail} className="space-y-4">
             <div className="space-y-4">
               <div className="relative">
                 <Mail 
@@ -133,8 +159,8 @@ const UserLoginPage = () => {
                   type="email"
                   placeholder="Email"
                   className="w-full p-3.5 pl-12 rounded-2xl border border-gray-200 bg-white focus:outline-none focus:border-gray-300"
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -150,7 +176,7 @@ const UserLoginPage = () => {
                   className="w-full p-3.5 pl-12 rounded-2xl border border-gray-200 bg-white focus:outline-none focus:border-gray-300"
                   value={formData.password}
                   onChange={(e) => setFormData({...formData, password: e.target.value})}
-                  required
+              
                 />
                 <Eye
                   size={20}
@@ -175,6 +201,30 @@ const UserLoginPage = () => {
               Sign in
             </button>
           </form>
+
+          <div className='flex items-center justify-between gap-4'>
+            <button
+              type="submit"
+              onClick={() => signIn("google")}
+              className="w-full px-6 py-3 bg-black text-white rounded-2xl hover:bg-gray-800 transition-colors"
+            >
+              Google
+            </button>
+            <button
+              type="submit"
+              onClick={() => signIn("linkedin")}
+              className="w-full px-6 py-3 bg-black text-white rounded-2xl hover:bg-gray-800 transition-colors"
+            >
+              LinkedIn
+            </button>
+            <button
+              type="submit"
+              onClick={() => signOut()}
+              className="w-full px-6 py-3 bg-black text-white rounded-2xl hover:bg-gray-800 transition-colors"
+            >
+              SignOut
+            </button>
+          </div>
 
           <div className="text-center text-sm text-gray-500">
             Don't have an account?{' '}

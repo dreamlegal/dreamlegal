@@ -93,6 +93,12 @@ const protectedPaths = {
 
 export async function middleware(request) {
   try {
+    const { nextUrl } = request;
+    const isLoggedIn = !!request.auth;
+
+    // if(isLoggedIn){
+    //   return NextResponse.redirect(new URL('/onboard', request.url));
+    // }
     // Get the path from the request
     const path = request.nextUrl.pathname;
 

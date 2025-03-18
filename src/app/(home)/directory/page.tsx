@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Search, Sparkles } from 'lucide-react';
 import ProductCategories from './_components/ProductsPart';
 import CategoriesProducts from "./_components/PaidFeaturing"
+import LandingSections from './_components/LandingSections';
 // Modified categories to use simple strings
 const categories = [
   "Client Relationship Management",
@@ -96,14 +97,14 @@ const DirectoryLanding = () => {
 
   return (
     <>
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-blue-50 relative overflow-hidden pt-24 -pb-24">
+    <div className="bg-gradient-to-b from-blue-50 via-white to-blue-50 relative overflow-hidden pt-24 pb-8">
       {/* Grid Pattern Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#3B82F61A_1px,transparent_1px),linear-gradient(to_bottom,#3B82F61A_1px,transparent_1px)] bg-[size:24px_24px]" />
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white via-white/90 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white via-white/90 to-transparent" />
       </div>
-
+  
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(8)].map((_, i) => (
@@ -121,11 +122,11 @@ const DirectoryLanding = () => {
           />
         ))}
       </div>
-
+  
       {/* Main Content */}
       <div className="relative max-w-7xl mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-4">
           <div className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-white/80 to-white/40 
                          backdrop-blur-md rounded-full border border-blue-100 shadow-lg mb-8">
             <Sparkles className="w-4 h-4 text-blue-600 animate-pulse" />
@@ -136,15 +137,15 @@ const DirectoryLanding = () => {
           </div>
           
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Find the Perfect Legal Technology Solution
+            Where legal teams find the right technology
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12">
-            Compare and evaluate the best technology for your legal needs
+            Discover and evaluate the legal technology products for your unique needs
           </p>
         </div>
-
+  
         {/* Search Bar */}
-        <div className="max-w-3xl mx-auto mb-20">
+        <div className="max-w-3xl mx-auto mb-8">
           <form onSubmit={handleSearch}>
             <div className="flex items-center p-2 bg-white rounded-2xl shadow-lg">
               <input
@@ -165,87 +166,8 @@ const DirectoryLanding = () => {
             </div>
           </form>
         </div>
-
-        {/* User Categories */}
-        <div className="mb-20">
-          <h2 className="text-2xl font-semibold mb-8 text-center">What Describes You The Best?</h2>
-          <div className="flex flex-wrap justify-center gap-3">
-            {userCategories.map((category) => (
-              <button
-                key={category}
-                onClick={() => handleUserCategoryClick(category)}
-                className={`px-4 py-1.5 text-sm rounded-full transition-all duration-200 
-                  ${selectedUserCategory === category 
-                    ? 'bg-blue-100 text-blue-700 shadow-md scale-105' 
-                    : 'bg-white/80 text-gray-600 hover:bg-blue-50'} 
-                  backdrop-blur-sm border border-blue-100`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Core Legal Functions */}
-        <div className="mb-20">
-          <h2 className="text-2xl font-semibold mb-12 text-center">Core Legal Functions</h2>
-          
-          {/* Main container with max width and perfect alignment */}
-          <div className="w-full px-4 py-8">
-            {/* First Row - 4 items */}
-            <div className="w-full md:max-w-[80%] mx-auto mb-6">
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-4 md:gap-6">
-                {firstRowCategories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => handleFirstRowCategoryClick(category)}
-                    className={`
-                      group relative p-4
-                      bg-white/70 backdrop-blur-sm rounded-xl
-                      border transition-all duration-300
-                      ${selectedCategory === category.name 
-                        ? 'border-blue-400 shadow-lg scale-102 bg-white/80' 
-                        : 'border-blue-100 hover:border-blue-300 hover:shadow-lg'}
-                      transform hover:-translate-y-1
-                    `}
-                  >
-                    <span className="block text-center font-semibold text-gray-900">{category.name}</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 via-transparent to-transparent 
-                                  rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Second Row - 5 items */}
-            <div className="w-full md:max-w-[95%] mx-auto">
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-5 md:gap-6">
-                {secondRowCategories.map((category, index) => (
-                  <button
-                    key={category.id}
-                    onClick={() => handleSecondRowCategoryClick(category)}
-                    className={`
-                      group relative p-4
-                      bg-white/70 backdrop-blur-sm rounded-xl
-                      border transition-all duration-300
-                      ${selectedCategory === category.name 
-                        ? 'border-blue-400 shadow-lg scale-102 bg-white/80' 
-                        : 'border-blue-100 hover:border-blue-300 hover:shadow-lg'}
-                      transform hover:-translate-y-1
-                      ${index === secondRowCategories.length - 1 ? 'md:col-span-1' : ''}
-                    `}
-                  >
-                    <span className="block text-center font-semibold text-gray-900">{category.name}</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 via-transparent to-transparent 
-                                  rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-
+  
       <style jsx global>{`
         @keyframes float {
           0%, 100% { transform: translate(0, 0) rotate(0deg); }
@@ -253,9 +175,10 @@ const DirectoryLanding = () => {
         }
       `}</style>
     </div>
-    {/* <ProductCategories /> */}
-<CategoriesProducts/>
-    </>
+    <CategoriesProducts/>
+    <ProductCategories />
+    <LandingSections />
+  </>
   );
 };
 

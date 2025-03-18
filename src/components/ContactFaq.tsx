@@ -1,43 +1,4 @@
 
-
-// // Enhanced FAQ Item Component
-// const FaqItem = ({ question, answer, delay = 0 }) => {
-//   const [isOpen, setIsOpen] = useState(false);
-
-//   return (
-//     <div 
-//       className="rounded-xl overflow-hidden bg-blue-50/50 hover:bg-blue-50 transition-colors duration-300"
-//       style={{ animationDelay: `${delay}s` }}
-//     >
-//       <button
-//         type="button"
-//         aria-label={isOpen ? "Close question" : "Open question"}
-//         onClick={() => setIsOpen(!isOpen)}
-//         className="flex items-center justify-between w-full p-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-200 rounded-xl"
-//       >
-//         <p className="text-base font-medium text-gray-900 pr-8">
-//           {question}
-//         </p>
-//         <ChevronDown 
-//           className={`w-5 h-5 text-blue-600 transform transition-transform duration-300 flex-shrink-0 ${
-//             isOpen ? 'rotate-180' : 'rotate-0'
-//           }`}
-//         />
-//       </button>
-//       <div
-//         className={`transition-all duration-300 ease-in-out ${
-//           isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-//         }`}
-//       >
-//         <div className="p-4 pt-0 text-gray-600">
-//           {answer}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ContactFaq;
 import React from "react";
 import { HelpCircle } from 'lucide-react';
 

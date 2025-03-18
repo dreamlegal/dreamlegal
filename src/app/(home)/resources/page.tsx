@@ -161,27 +161,27 @@ const BlogListing = () => {
   // Feature categories with headings and descriptions
   const featureCategories = [
     {
-      heading: "Legal Technology",
+      heading: "Industry Report",
       subheading: "Exploring advancements in legal tech solutions",
-      link: "/category/legal-tech",
+      link: "/resources/industry-report",
       icon: "⚖️"
     },
     {
-      heading: "Compliance",
+      heading: "Market Trends",
       subheading: "Navigating complex regulatory frameworks",
-      link: "/category/compliance",
+      link: "/resources/market-trends",
       icon: "📋"
     },
     {
-      heading: "Digital Transformation",
+      heading: "Buyer Perspective Report",
       subheading: "Modernizing legal practice with digital tools",
-      link: "/category/digital",
+      link: "/resources/buyer-perspective-report",
       icon: "💻"
     },
     {
-      heading: "Industry Insights",
+      heading: "Inspiration Stories",
       subheading: "Expert analysis of legal industry trends",
-      link: "/category/insights",
+      link: "/resources/inspiration-stories",
       icon: "🔍"
     }
   ];

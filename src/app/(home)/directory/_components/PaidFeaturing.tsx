@@ -32,15 +32,69 @@ const ProductCard = ({ product }) => {
       return `${formattedCategories[0]}, ${formattedCategories[1]}... +${formattedCategories.length - 2} more`;
     }
   };
+  const handleClick = () => {
+    window.location.href = `/product/${product.slug}`;
+  };
 
 
   return (
+    // <motion.div 
+    
+    //   initial={{ opacity: 0, y: 20 }}
+    //   animate={{ opacity: 1, y: 0 }}
+    //   transition={{ duration: 0.3 }}
+    //   className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow duration-300 h-full"
+    // >
+    //   <div className="p-6 flex flex-col h-full">
+    //     {/* Logo */}
+    //     <div className="flex items-center justify-center mb-4 h-16">
+    //       {product.logoUrl ? (
+    //         <img 
+    //           src={product.logoUrl} 
+    //           alt={`${product.name} logo`} 
+    //           className="max-h-full max-w-full object-contain" 
+    //         />
+    //       ) : (
+    //         <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+    //           <span className="text-blue-600 font-semibold text-lg">
+    //             {product.name.charAt(0)}
+    //           </span>
+    //         </div>
+    //       )}
+    //     </div>
+        
+    //     {/* Name */}
+        
+    //     <h3 className="text-base font-semibold text-gray-900 mb-2 text-center">{product.name}</h3>
+        
+    //     {/* Rating */}
+    //     {/* <div className="flex justify-center mb-3">
+    //       <Rating />
+    //     </div> */}
+        
+    //     {/* User Categories */}
+    //     {formatUserCategories() && (
+    //       <p className="text-xs text-gray-600 mt-auto text-center">
+    //         <span className="font-medium">For:</span> {formatUserCategories()}
+    //       </p>
+    //     )}
+    //   </div>
+    // </motion.div>
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow duration-300 h-full"
+      className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-all duration-300 h-full cursor-pointer relative group"
+      onClick={handleClick}
     >
+      {/* View icon that appears on hover */}
+      <div className="absolute top-0 right-0 m-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-blue-500 text-white p-2 rounded-full">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+      </div>
+      
       <div className="p-6 flex flex-col h-full">
         {/* Logo */}
         <div className="flex items-center justify-center mb-4 h-16">
@@ -68,7 +122,7 @@ const ProductCard = ({ product }) => {
         </div> */}
         
         {/* User Categories */}
-        {formatUserCategories() && (
+        {formatUserCategories && formatUserCategories() && (
           <p className="text-xs text-gray-600 mt-auto text-center">
             <span className="font-medium">For:</span> {formatUserCategories()}
           </p>
@@ -229,7 +283,7 @@ const CategoriesProducts = () => {
     <div className="max-w-7xl mx-auto px-4">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Categories list (vertical on left) */}
-        <div className="lg:col-span-4">
+        {/* <div className="lg:col-span-4">
           <h2 className="text-3xl font-bold text-black mb-4">
             Most Popular Software Categories
           </h2>
@@ -247,7 +301,26 @@ const CategoriesProducts = () => {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
+        <div className="lg:col-span-4">
+  <h2 className="text-2xl md:text-3xl font-bold text-black mb-4">
+    Most Popular Software Categories
+  </h2>
+  <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
+    {categories.map((category) => (
+      <button
+        key={category}
+        onClick={() => setSelectedCategory(category)}
+        className={`text-left px-3 lg:px-4 py-2 lg:py-3 rounded transition-colors text-xs md:text-sm
+                  ${selectedCategory === category 
+                    ? 'bg-blue-50 text-blue-500 border border-blue-200 font-medium' 
+                    : 'text-gray-700 hover:bg-gray-50'}`}
+      >
+        {category}
+      </button>
+    ))}
+  </div>
+</div>
 
         {/* Products grid (on right) */}
         <div className="lg:col-span-8">

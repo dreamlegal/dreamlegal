@@ -545,3 +545,11 @@ model TocItem {
   blog    Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
   blogId  String
 }
+model CommonLead {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  organization  String
+  designation   String
+  message       String
+  createdAt     DateTime @default(now())
+}

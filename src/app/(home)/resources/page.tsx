@@ -16,7 +16,8 @@ const BlogListing = () => {
     "industry-report",
     "market-trends",
     "buyer-perspective-report",
-    "inspiration-stories"
+    "inspiration-stories",
+    "hidden"
   ];
 
   // Function to fetch blogs with retry logic
@@ -206,15 +207,16 @@ const BlogListing = () => {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
         {/* Header Section with Gradient Text */}
-        <div className="text-center mb-16">
-          
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-700 to-blue-500 inline-block text-transparent bg-clip-text">
-            Discovering technology innovations
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Industry inspirations of legal community
-          </p>
-        </div>
+        <header className="py-8 px-4 text-center">
+  <h1 className="font-bold mb-4">
+    <span className="text-blue-600 text-4xl sm:text-5xl md:text-6xl">
+      Discovering technology innovations
+    </span>
+  </h1>
+  <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+    Industry inspirations of legal community
+  </p>
+</header>
 
         {/* Feature Categories - 4 boxes at the top with glass effect */}
         <div className="grid md:grid-cols-2 gap-8 mb-20">

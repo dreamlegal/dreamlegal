@@ -9,6 +9,7 @@ export async function GET(request) {
     const limit = parseInt(searchParams.get('limit') || '50', 10);
     const page = parseInt(searchParams.get('page') || '1', 10);
     const skip = (page - 1) * limit;
+    const category = searchParams.get('category');
 
     // Build the query - only get published blogs
     const query = {
@@ -16,7 +17,12 @@ export async function GET(request) {
         published: true,
         publishedAt: {
           not: null
-        }
+        },
+        ...(category && { 
+          category: {
+            has: category,
+          }
+        })
       },
       orderBy: { 
         publishedAt: 'desc' 

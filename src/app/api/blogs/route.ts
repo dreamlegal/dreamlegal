@@ -113,7 +113,7 @@ export async function GET() {
 // }
 
 // Helper function to generate a slug from title
-function generateSlug(title) {
+function generateSlug(title:string) {
   return title
     .toLowerCase()
     .replace(/[^\w\s-]/g, '') // Remove special characters
@@ -123,7 +123,7 @@ function generateSlug(title) {
 }
 
 // Helper function to ensure slug uniqueness
-async function createUniqueSlug(title) {
+async function createUniqueSlug(title:string) {
   let slug = generateSlug(title);
   let originalSlug = slug;
   let counter = 1;
@@ -144,7 +144,7 @@ async function createUniqueSlug(title) {
   return slug;
 }
 
-export async function POST(request) {
+export async function POST(request:Request) {
   try {
     const data = await request.json();
     
@@ -153,11 +153,12 @@ export async function POST(request) {
     
     const blogData = {
       title: data.title,
+      category: Array.isArray(data.category) ? data.category : [data.category], // Ensure category is an array
       slug, // Add the generated slug
       bannerImage: data.bannerImage || null,
       content: '<p>Start writing your blog post...</p>',
       refLinks: {
-        create: data.refLinks.map(link => ({
+        create: data.refLinks.map((link:any) => ({
           title: link.title,
           url: link.url
         }))
@@ -172,6 +173,7 @@ export async function POST(request) {
     });
     
     return NextResponse.json(blog, { status: 201 });
+
   } catch (error) {
     console.error('Failed to create blog:', error);
     return NextResponse.json(

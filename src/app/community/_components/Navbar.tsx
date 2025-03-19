@@ -1,3 +1,4 @@
+// inspiration one 
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, Bell, Search, User, Bookmark, LogOut, MessageCircle } from 'lucide-react';

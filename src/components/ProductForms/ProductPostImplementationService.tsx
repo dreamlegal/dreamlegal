@@ -49,7 +49,7 @@ const  ProductPostImplementationService = () => {
   };
 
   return (
-    <form className="w-full  font-calarity max-w-4xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-md" onSubmit={handleSubmit}>
+    <form className="w-full  font-calarity max-w-4xl mx-auto " onSubmit={handleSubmit}>
          <span className="text-red-500 italic font-bold text-xs">All Fields Are Required </span>
 
       {/* Maintenance */}

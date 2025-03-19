@@ -25,7 +25,7 @@ import { useParams } from 'next/navigation';
 import { useToast } from "./ui/use-toast";
 
 const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editing, product }) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const {
     logo,

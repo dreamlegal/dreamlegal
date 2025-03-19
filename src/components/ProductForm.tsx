@@ -961,132 +961,134 @@ setStorage(storage);
 //         </div>
 //       </div>
 //     </div>
-<div className="max-w-7xl mx-auto px-4 py-8">
-{/* Single container for the entire form system */}
-<div className="bg-white rounded-lg shadow-lg overflow-hidden">
-  {/* Header */}
-  <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-    <div>
-      <h1 className="text-xl font-semibold text-gray-800">Add a New Product</h1>
-      <p className="text-sm text-gray-500">Complete all sections</p>
-    </div>
-    
-    {/* Mobile menu toggle - only visible on small screens */}
-    <button 
-      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-      className="md:hidden p-2 text-gray-600 hover:text-gray-900"
-    >
-      {mobileMenuOpen ? 
-        <X className="w-6 h-6" /> : 
-        <Menu className="w-6 h-6" />
-      }
-    </button>
-  </div>
-  
-  {/* Content area with sidebar and form */}
-  <div className="flex relative">
-    {/* Mobile sidebar overlay - only appears on small screens when menu is open */}
-    {mobileMenuOpen && (
-      <div 
-        className="fixed inset-0 bg-gray-600 bg-opacity-75 z-20 md:hidden"
-        onClick={() => setMobileMenuOpen(false)}
-      />
-    )}
-    
-    {/* Left sidebar navigation - sliding for mobile, fixed for desktop */}
-    <div className={`
-      absolute md:relative inset-y-0 left-0 
-      transform ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
-      md:translate-x-0 transition duration-300 ease-in-out
-      z-30 md:z-0 w-64 border-r border-gray-200 bg-gray-50 h-full
-      md:block
-    `}>
-      <nav className="py-2 h-full overflow-y-auto">
-        {steps.map((step, index) => (
-          <button
-            key={step.key}
-            onClick={() => {
-              handleStepSelect(index);
-              setMobileMenuOpen(false); // Close mobile menu when a step is selected
-            }}
-            className={`w-full text-left py-3 px-6 flex items-center gap-3 transition-colors
-              ${index === activeStepIndex ? 'bg-blue-50 border-l-4 border-blue-500 pl-5' : 'hover:bg-gray-100 border-l-4 border-transparent'}`}
-          >
-            <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm
-              ${completedSteps[step.key]
-                ? 'bg-green-500 text-white'
-                : index === activeStepIndex 
-                  ? 'bg-blue-500 text-white' 
-                  : 'bg-gray-200 text-gray-700'}`}
-            >
-              {completedSteps[step.key] ? <Check className="w-4 h-4" /> : index + 1}
-            </div>
-            <span className={`text-sm ${index === activeStepIndex ? 'text-blue-700 font-medium' : 'text-gray-700'}`}>
-              {step.title}
-            </span>
-          </button>
-        ))}
-      </nav>
-    </div>
-    
-    {/* Right side form content */}
-    <div className="flex-1 p-6">
-      {/* Current step indicator - mobile only */}
-      <div className="flex items-center mb-4 md:hidden">
-        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm
-          ${completedSteps[steps[activeStepIndex].key]
-            ? 'bg-green-500 text-white'
-            : 'bg-blue-500 text-white'}`}
-        >
-          {completedSteps[steps[activeStepIndex].key] ? <Check className="w-4 h-4" /> : activeStepIndex + 1}
-        </div>
-        <span className="ml-2 text-blue-700 font-medium">
-          Step {activeStepIndex + 1}: {steps[activeStepIndex].title}
-        </span>
+<div className="max-w-7xl mx-auto px-4">
+  {/* Single container for the entire form system */}
+  <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+    {/* Header */}
+    <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+      <div>
+        <h1 className="text-xl font-semibold text-gray-800">Add a New Product</h1>
+        <p className="text-sm text-gray-500">Complete all sections</p>
       </div>
       
-      {/* Form title - desktop only */}
-      <h2 className="text-xl font-semibold mb-6 hidden md:block">{steps[activeStepIndex].title}</h2>
+      {/* Mobile menu toggle - only visible on small screens */}
+      <button 
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        className="md:hidden p-2 text-gray-600 hover:text-gray-900"
+      >
+        {mobileMenuOpen ? 
+          <X className="w-6 h-6" /> : 
+          <Menu className="w-6 h-6" />
+        }
+      </button>
+    </div>
+    
+    {/* Content area with sidebar and form - using grid for equal height columns */}
+    <div className="grid md:grid-cols-[260px_1fr]">
+      {/* Mobile sidebar overlay - only appears on small screens when menu is open */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-gray-600 bg-opacity-75 z-20 md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
       
-      {/* Render the active form component */}
-      {renderActiveComponent()}
+      {/* Left sidebar navigation - using grid makes it full height */}
+      <div className={`
+        fixed md:static inset-y-0 left-0 
+        transform ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
+        md:translate-x-0 transition duration-300 ease-in-out
+        z-30 md:z-0 w-64 md:w-auto border-r border-gray-200 bg-gray-50
+        md:block
+      `}
+      style={{ height: "auto" }}
+      >
+        <nav className="sticky top-0" style={{ height: "100%" }}>
+          {steps.map((step, index) => (
+            <button
+              key={step.key}
+              onClick={() => {
+                handleStepSelect(index);
+                setMobileMenuOpen(false); // Close mobile menu when a step is selected
+              }}
+              className={`w-full text-left py-3 px-6 flex items-center gap-3 transition-colors
+                ${index === activeStepIndex ? 'bg-blue-50 border-l-4 border-blue-500 pl-5' : 'hover:bg-gray-100 border-l-4 border-transparent'}`}
+            >
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm
+                ${completedSteps[step.key]
+                  ? 'bg-green-500 text-white'
+                  : index === activeStepIndex 
+                    ? 'bg-blue-500 text-white' 
+                    : 'bg-gray-200 text-gray-700'}`}
+              >
+                {completedSteps[step.key] ? <Check className="w-4 h-4" /> : index + 1}
+              </div>
+              <span className={`text-sm ${index === activeStepIndex ? 'text-blue-700 font-medium' : 'text-gray-700'}`}>
+                {step.title}
+              </span>
+            </button>
+          ))}
+        </nav>
+      </div>
       
-      {/* Action buttons */}
-      <div className="mt-8 flex justify-between items-center border-t pt-6">
-        <div className="text-sm text-gray-500">
-          Step {activeStepIndex + 1} of {steps.length}
+      {/* Right side form content */}
+      <div className="p-6">
+        {/* Current step indicator - mobile only */}
+        <div className="flex items-center mb-4 md:hidden">
+          <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm
+            ${completedSteps[steps[activeStepIndex].key]
+              ? 'bg-green-500 text-white'
+              : 'bg-blue-500 text-white'}`}
+          >
+            {completedSteps[steps[activeStepIndex].key] ? <Check className="w-4 h-4" /> : activeStepIndex + 1}
+          </div>
+          <span className="ml-2 text-blue-700 font-medium">
+            Step {activeStepIndex + 1}: {steps[activeStepIndex].title}
+          </span>
         </div>
         
-        <div className="flex gap-3">
-          {activeStepIndex > 0 && (
-            <button
-              onClick={() => setActiveStepIndex(activeStepIndex - 1)}
-              className="px-5 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50"
-            >
-              Back
-            </button>
-          )}
+        {/* Form title - desktop only */}
+        <h2 className="text-xl font-semibold mb-6 hidden md:block">{steps[activeStepIndex].title}</h2>
+        
+        {/* Render the active form component */}
+        {renderActiveComponent()}
+        
+        {/* Action buttons */}
+        <div className="mt-8 flex justify-between items-center border-t pt-6">
+          <div className="text-sm text-gray-500">
+            Step {activeStepIndex + 1} of {steps.length}
+          </div>
           
-          {activeStepIndex < steps.length - 1 ? (
-            <button
-              onClick={() => setActiveStepIndex(activeStepIndex + 1)}
-              className="px-5 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
-            >
-              Continue
-            </button>
-          ) : (
-            <button
-              onClick={handleSubmit}
-              className="px-5 py-2 bg-green-600 text-white rounded-md text-sm hover:bg-green-700"
-            >
-              Submit
-            </button>
-          )}
+          <div className="flex gap-3">
+            {activeStepIndex > 0 && (
+              <button
+                onClick={() => setActiveStepIndex(activeStepIndex - 1)}
+                className="px-5 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50"
+              >
+                Back
+              </button>
+            )}
+            
+            {activeStepIndex < steps.length - 1 ? (
+              <button
+                onClick={() => setActiveStepIndex(activeStepIndex + 1)}
+                className="px-5 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
+              >
+                Continue
+              </button>
+            ) : (
+              <button
+                onClick={handleSubmit}
+                className="px-5 py-2 bg-green-600 text-white rounded-md text-sm hover:bg-green-700"
+              >
+                Submit
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </div>
   );
 };

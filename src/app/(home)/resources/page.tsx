@@ -17,7 +17,7 @@ const BlogListing = () => {
     "market-trends",
     "buyer-perspective-report",
     "inspiration-stories",
-    "hidden"
+    "blog"
   ];
 
   // Function to fetch blogs with retry logic

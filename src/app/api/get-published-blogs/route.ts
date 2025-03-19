@@ -87,7 +87,7 @@ export async function GET(request) {
         // Exclude blogs with "hidden" category
         NOT: {
           category: {
-            has: "hidden"
+            has: "blog"
           }
         },
         ...(category && { 

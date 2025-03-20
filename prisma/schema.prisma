@@ -48,6 +48,7 @@ model User {
   userAccount   userAccount[]
   Post          Post[]
   bookmarkPost  String[]
+  productClaims ProductClaim[]
 }
 
 model userAccount {
@@ -234,6 +235,7 @@ model Product {
   ByAdminEmail            String?
   ByAdminPhone            String?
   ByAdminWebsite          String?
+  claims     ProductClaim[]  // Add this line
 }
 
 model Review {
@@ -553,4 +555,18 @@ model CommonLead {
   designation   String
   message       String
   createdAt     DateTime @default(now())
+}
+
+
+model ProductClaim {
+  id         String   @id @default(cuid())
+  productId  String
+  vendorId   String   // The vendor requesting to claim the product
+  createdAt  DateTime @default(now())
+  
+  // Relations
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  vendor     User     @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, vendorId]) // Prevent duplicate claims
 }

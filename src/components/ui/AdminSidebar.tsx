@@ -71,6 +71,14 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
                   Admin Product Creation
                 </li>
                 <li
+                  onClick={() => onMenuItemClick("AdminProductClaimsPage")}
+                  className={`text-slate-300 hover:cursor-pointer ${
+                    selectedMenu === "AdminProductClaimsPage" ? "text-white" : ""
+                  }`}
+                >
+                  Product Claims 
+                </li>
+                <li
                   onClick={() => onMenuItemClick("adminblog")}
                   className={`text-slate-300 hover:cursor-pointer ${
                     selectedMenu === "adminblog" ? "text-white" : ""

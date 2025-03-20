@@ -57,7 +57,7 @@ const Navbar = () => {
       title: 'Home',
       icon: <Home size={16} />,
       hasDropdown: false,
-      href: '/home'
+      href: '/'
     },
     {
       title: 'For Legal teams',

@@ -1057,65 +1057,653 @@ console.log("Form submitted with:", formData);
 
 
   return (
-    <form onSubmit={handleSubmit} className="w-full font-calarity">
-      <div className="flex w-100 flex-col">
+//     <form onSubmit={handleSubmit} className="w-full font-calarity">
+//       <div className="flex w-100 flex-col">
 
     
 
-        {/* Product Name */}
-        <div className="w-full mt-2">
-          <Label htmlFor="productName">Product Name</Label>
+//         {/* Product Name */}
+//         <div className="w-full mt-2">
+//           <Label htmlFor="productName">Product Name</Label>
+//           <Input
+//             type="text"
+//             id="productName"
+//             name="productName"
+//             value={inputValue}
+//             onChange={handleChange}
+//             className="mt-1"
+//           />
+//           {errors.productName && (
+//             <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+//               <XCircle className="w-6 h-6 text-red-500" />
+//               <p className="text-[#DC3545] pl-2">{errors.productName}</p>
+//             </div>
+//           )}
+//         </div>
+//         {/* logo */}
+//         {/* <div className="w-full mt-2">
+//           <Label htmlFor="logo">Logo</Label>
+//           <Input
+//             type="file"
+//             id="logo"
+//             name="logo"
+//             className="mt-1"
+//           />
+//         </div> */}
+//    <div className="w-full mt-2">
+//       <label htmlFor="logo">Logo</label>
+//       <Input
+//         type="file"
+//         id="logo"
+//         name="logo"
+//         className="mt-1"
+//         onChange={handleFileChange}
+//       />
+//       {/* {errors.logo && <p className="text-red-500">{errors.logo}</p>} */}
+//       {errors.logoPreview && (
+//             <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+//               <XCircle className="w-6 h-6 text-red-500" />
+//               <p className="text-[#DC3545] pl-2">{errors.logoPreview}</p>
+//             </div>
+//           )}
+//       {logoPreview && (
+//         <div className="mt-2 ">
+//           <img src={logoPreview} alt="Logo Preview" style={{ maxWidth: '30%' }} />
+//         </div>
+//       )}
+//     </div>
+
+//         {/* Category Checkboxes */}
+//         <div className="mt-2">
+//           <Label htmlFor="category">Select Category</Label>
+//           {[
+//             "Client Relationship Management",
+//             "Governance, Risk and Compliance",
+//             "Contract Lifecycle Management",
+//             "E-Signature",
+//             "Document Management System",
+//             "E-billing and Invoicing",
+//             "E-discovery",
+//             "Intellectual Property Management",
+//             "Litigation Management and Analytics",
+//             "Legal Workflow Automation",
+//             "Legal Research",
+//           ].map((cat) => (
+//             <div key={cat} className="items-top flex space-x-2 mt-2">
+//               <Input
+//                 name="category"
+//                 type="checkbox"
+//                 value={cat}
+//                 checked={category.includes(cat)}
+//                 onChange={handleChange}
+//                 className="w-5 h-5"
+//               />
+//               <div className="grid gap-1.5 leading-none">
+//                 <label className="text-sm font-medium leading-none">
+//                   {cat}
+//                 </label>
+//               </div>
+//             </div>
+//           ))}
+//           {errors.category && (
+//             <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+//               <XCircle className="w-6 h-6 text-red-500" />
+//               <p className="text-[#DC3545] pl-2">{errors.category}</p>
+//             </div>
+//           )}
+//         </div>
+//         {/* Deployment Checkboxes */}
+//         <div className="mt-2">
+//           <Label htmlFor="deployment">Select Deployment</Label>
+//           {["SaaS", "On-premise", "Hybrid", "Cloud"].map((dep) => (
+//             <div key={dep} className="items-top flex space-x-2 mt-2">
+//               <Input
+//                 name="deployment"
+//                 type="checkbox"
+//                 value={dep}
+//                 checked={deployment.includes(dep)}
+//                 onChange={handleChange}
+//                 className="w-5 h-5"
+//               />
+//               <div className="grid gap-1.5 leading-none">
+//                 <label className="text-sm font-medium leading-none">
+//                   {dep}
+//                 </label>
+//               </div>
+//             </div>
+//           ))}
+//           {errors.deployment && (
+//             <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+//               <XCircle className="w-6 h-6 text-red-500" />
+//               <p className="text-[#DC3545] pl-2">{errors.deployment}</p>
+//             </div>
+//           )}
+//         </div>
+//         {/* Select Mobile Accessibility */}
+       
+
+
+//         <div className="w-full mt-2">
+//           <Label>Select Mobile Accessibility</Label>
+//           <div className="flex items-center">
+//             <label className="mr-4">
+//               <input
+//                 type="radio"
+//                 name="freeTrial"
+//                 value="Yes"
+//                 checked={selectedMobileAvailability === "Yes"}
+//                 onChange={handleMobile}
+//               />
+//               Yes
+//             </label>
+//             <label>
+//               <input
+//                 type="radio"
+//                 name="freeTrial"
+//                 value="No"
+//                 checked={selectedMobileAvailability === "No"}
+//                 onChange={handleMobile}
+//               />
+//               No
+//             </label>
+//           </div>
+         
+//            {errors.mobileAvailable && (
+//             <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+//               <XCircle className="w-6 h-6 text-red-500" />
+//               <p className="text-[#DC3545] pl-2">{errors.mobileAvailable}</p>
+//             </div>
+//           )}
+//         </div>
+
+
+//         {/* Adoption Period */}
+//         <div>
+//       <Label htmlFor="adoptionPeriod">Adoption Period</Label>
+//       <div className="flex gap-4">
+//         <Input
+//           name="adoptionPeriod"
+//           type="text"
+//           placeholder="Adoption period"
+//           value={adoptionPeriod}
+//           onChange={handleAdoptionPeriodChange}
+//         />
+//         <Select value={adoptionPeriodUnit} onValueChange={handleAdoptionPeriodUnitChange}>
+//           <SelectTrigger className="w-full">
+//             <SelectValue placeholder="Period"/> 
+//           </SelectTrigger>
+//           <SelectContent>
+//             <SelectItem value="days">Days</SelectItem>
+//             <SelectItem value="months">Months</SelectItem>
+//             <SelectItem value="years">Years</SelectItem>
+//           </SelectContent>
+//         </Select>
+//       </div>
+//       {(errors.adoptionPeriod || errors.adoptionPeriodUnit) && (
+//         <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+//           <XCircle className="w-6 h-6 text-red-500" />
+//           <p className="text-[#DC3545] pl-2">
+//             {errors.adoptionPeriod || errors.adoptionPeriodUnit}
+//           </p>
+//         </div>
+//       )}
+//         </div>
+//         {/* Language Checkboxes */}
+//         <div className="mt-2">
+//           <Label htmlFor="languages">Select Languages</Label>
+//           <MultiSelector
+//             values={languages}
+//             onValuesChange={handleLanguagesChange}
+//           >
+//             <MultiSelectorTrigger>
+//               <MultiSelectorInput placeholder="Select items" />
+//             </MultiSelectorTrigger>
+//             <MultiSelectorContent>
+//               <MultiSelectorList>
+//                 {languagess.map((language) => (
+//                   <MultiSelectorItem key={language} value={language}>
+//                     {language}
+//                   </MultiSelectorItem>
+//                 ))}
+//               </MultiSelectorList>
+//             </MultiSelectorContent>
+//           </MultiSelector>
+//           {errors.languages && (
+//             <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+//               <XCircle className="w-6 h-6 text-red-500" />
+//               <p className="text-[#DC3545] pl-2">{errors.languages}</p>
+//             </div>
+//           )}
+//         </div>
+
+
+//         {/* lang  */}
+
+//         <div className="w-full mb-4">
+//           <label htmlFor="websiteUrl">Website</label>
+//           <div className="flex items-center">
+//             <Input
+//               type="url"
+//               id="websiteUrl"
+//               name="websiteUrl"
+//               value={websiteUrl || ""}
+//               onChange={handleUrlChange}
+//               placeholder="Website URL"
+//             />
+//           </div>
+//           {errors.websiteUrl && (
+//             <p className="text-red-500">{errors.websiteUrl}</p>
+//           )}
+//         </div>
+
+
+//         {/* Security Certificates */}
+//         <div className="mt-2">
+//           <Label className="securityCertificate">Security Certificates</Label>
+//           <Textarea
+//         name="securityCertificate"
+//         placeholder="Mention name of certifications"
+//         id="securityCertificate"
+//         value={securityValue}
+//         onChange={handleAreaChange}
+//       />
+//       {errors.securityCertificate && (
+//             <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
+//               <XCircle className="w-6 h-6 text-red-500" />
+//               <p className="text-[#DC3545] pl-2">{errors.securityCertificate}</p>
+//             </div>
+//           )}
+//         </div>
+
+
+//           {/* integrations  */}
+//       <div className="w-full mt-2">
+//       <Label htmlFor="focusCountries">Select Integrations</Label>
+//       {/* <div className="w-full bg-gray-50 rounded-lg overflow-hidden mt-4 shadow-md">
+//       <button
+//         onClick={() => toggleCategory('root')}
+//         className="w-full text-left p-3 bg-white text-gray-800 border border-gray-200 rounded-t-lg outline-none hover:bg-gray-100 transition-colors duration-150 flex items-center justify-between"
+//       >
+//         <span className="font-semibold">
+//           {expandedCategories['root'] ? 'Hide Integrations' : 'Select Integrations'}
+//         </span>
+//         {expandedCategories['root'] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+//       </button>
+
+//       {expandedCategories['root'] && (
+//         <div className="p-4 border border-gray-200 bg-white">
+//           {Object.entries(integrations).map(([category, options]) => (
+//             <div key={category} className="mb-4 last:mb-0 bg-gray-50 rounded-lg overflow-hidden">
+//               <button
+//                 onClick={() => toggleCategory(category)}
+//                 className="flex justify-between items-center w-full p-3 text-left bg-gray-100 hover:bg-gray-200 transition-colors duration-150"
+//               >
+//                 <span className="font-semibold text-gray-800">{category}</span>
+//                 {expandedCategories[category] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+//               </button>
+
+//               {expandedCategories[category] && (
+//                 <div className="p-3 bg-white">
+//                   {options.map((option) => (
+//                     <label key={option} className="flex items-center space-x-2 mb-2 cursor-pointer">
+//                       <input
+//                         type="checkbox"
+//                         checked={selectedIntegrations.includes(option)}
+//                         onChange={() => toggleIntegration(option)}
+//                         className="form-checkbox h-5 w-5 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
+//                       />
+//                       <span className="text-gray-700">{option}</span>
+//                     </label>
+//                   ))}
+//                 </div>
+//               )}
+//             </div>
+//           ))}
+
+//           <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+//             <h3 className="font-semibold mb-2 text-gray-800">Selected Integrations:</h3>
+//             <ul className="list-disc pl-5 text-gray-700">
+//               {selectedIntegrations.map((integration) => (
+//                 <li key={integration}>{integration}</li>
+//               ))}
+//             </ul>
+//           </div>
+//         </div>
+//       )}
+//     </div> */}
+//      {/* <AlertDialog open={open} onOpenChange={setOpen}>
+//       <AlertDialogTrigger asChild>
+//         <button className="w-full text-left p-3 bg-white text-gray-800 border border-gray-200 rounded-lg outline-none hover:bg-gray-100 transition-colors duration-150 flex items-center justify-between">
+//           <span className="font-semibold">
+//             Select Integrations
+//           </span>
+//           <ChevronDown size={20} />
+         
+          
+//         </button>
+//       </AlertDialogTrigger>
+//       <AlertDialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+//         <div className="p-4">
+//         <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
+//               <X size={20} />
+//             </Button>
+//           <div className="mb-4 p-4 bg-gray-100 rounded-lg">
+//             <h3 className="font-semibold mb-2 text-gray-800">Selected Integrations:</h3>
+//             <ul className="list-disc pl-5 text-gray-700">
+//               {selectedIntegrations.map((integration) => (
+//                 <li key={integration}>{integration}</li>
+//               ))}
+//             </ul>
+//           </div>
+
+//           {Object.entries(integrations).map(([category, options]) => (
+//             <div key={category} className="mb-4 last:mb-0 bg-gray-50 rounded-lg overflow-hidden">
+//               <button
+//                 onClick={() => toggleCategory(category)}
+//                 className="flex justify-between items-center w-full p-3 text-left bg-gray-100 hover:bg-gray-200 transition-colors duration-150"
+//               >
+//                 <span className="font-semibold text-gray-800">{category}</span>
+//                 {expandedCategories[category] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+//               </button>
+
+//               {expandedCategories[category] && (
+//                 <div className="p-3 bg-white">
+//                   {options.map((option) => (
+//                     <label key={option} className="flex items-center space-x-2 mb-2 cursor-pointer">
+//                       <input
+//                         type="checkbox"
+//                         checked={selectedIntegrations.includes(option)}
+//                         onChange={() => toggleIntegration(option)}
+//                         className="form-checkbox h-5 w-5 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
+//                       />
+//                       <span className="text-gray-700">{option}</span>
+//                     </label>
+//                   ))}
+//                 </div>
+//               )}
+//             </div>
+//           ))}
+//         </div>
+//       </AlertDialogContent>
+//     </AlertDialog> */}
+
+// <AlertDialog open={open} onOpenChange={setOpen}>
+//       <AlertDialogTrigger asChild>
+//         <button className="w-full text-left p-3 bg-white text-gray-800 border border-gray-200 rounded-lg outline-none hover:bg-gray-100 transition-colors duration-150 flex items-center justify-between">
+//           <span className="font-semibold">
+//             Select Integrations
+//           </span>
+//           <ChevronDown size={20} />
+//         </button>
+//       </AlertDialogTrigger>
+//       <AlertDialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+//         <div className="p-4">
+//           <div className="flex justify-between items-center mb-4">
+//             <div className="relative flex-grow mr-4">
+//               <input
+//                 type="text"
+//                 placeholder="Search integrations..."
+//                 value={searchTerm}
+//                 onChange={(e) => setSearchTerm(e.target.value)}
+//                 className="w-full p-2 pl-10 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+//               />
+//               {/* <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /> */}
+              
+//             </div>
+//             <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
+//               <X size={20} />
+//             </Button>
+//           </div>
+          
+//           <div className="mb-4 p-4 bg-gray-100 rounded-lg">
+//             <h3 className="font-semibold mb-2 text-gray-800">Selected Integrations:</h3>
+//             <ul className="list-disc pl-5 text-gray-700">
+//               {selectedIntegrations.map((integration) => (
+//                 <li key={integration}>{integration}</li>
+//               ))}
+//             </ul>
+//           </div>
+
+//           {Object.entries(filteredIntegrations).map(([category, options]) => (
+//             <div key={category} className="mb-4 last:mb-0 bg-gray-50 rounded-lg overflow-hidden">
+//               <button
+//                 onClick={() => toggleCategory(category)}
+//                 className="flex justify-between items-center w-full p-3 text-left bg-gray-100 hover:bg-gray-200 transition-colors duration-150"
+//               >
+//                 <span className="font-semibold text-gray-800">{category}</span>
+//                 {expandedCategories[category] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+//               </button>
+
+//               {expandedCategories[category] && (
+//                 <div className="p-3 bg-white">
+//                   {options.map((option) => (
+//                     <label key={option} className="flex items-center space-x-2 mb-2 cursor-pointer">
+//                       <input
+//                         type="checkbox"
+//                         checked={selectedIntegrations.includes(option)}
+//                         onChange={() => toggleIntegration(option)}
+//                         className="form-checkbox h-5 w-5 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
+//                       />
+//                       <span className="text-gray-700">{option}</span>
+//                     </label>
+//                   ))}
+//                 </div>
+//               )}
+//             </div>
+//           ))}
+//         </div>
+//       </AlertDialogContent>
+//     </AlertDialog>
+
+    
+      
+//           {errors.integrations && (
+//             <div className="w-full bg-[#F8D7DA] mt-3 mb-3 p-2 rounded-lg flex">
+//               <XCircle className="w-6 h-6 text-red-500" />
+//               <p className="text-[#DC3545] pl-2">{errors.integrations}</p>
+//             </div>
+//           )}
+//       </div>
+
+//         {/* Focus Countries */}
+//         <div className="mt-2">
+        
+//           <Label htmlFor="focusCountries">Select Countries (Max 5)</Label>
+//           <MultiSelector
+//             values={focusCountries}
+//             onValuesChange={handleCountriesChange}
+//           >
+//             <MultiSelectorTrigger>
+//               <MultiSelectorInput placeholder="Select countries" />
+//             </MultiSelectorTrigger>
+//             <MultiSelectorContent>
+//               <MultiSelectorList>
+//                 {countries.map((country) => (
+//                   <MultiSelectorItem
+//                     key={country}
+//                     value={country}
+//                     disabled={
+//                       focusCountries.length >= 5 &&
+//                       !focusCountries.includes(country)
+//                     }
+//                   >
+//                     {country}
+//                   </MultiSelectorItem>
+//                 ))}
+//               </MultiSelectorList>
+//             </MultiSelectorContent>
+//           </MultiSelector>
+//           {errors.focusCountries && (
+//             <div className="w-full bg-[#F8D7DA] mt-3 mb-3 p-2 rounded-lg flex">
+//               <XCircle className="w-6 h-6 text-red-500" />
+//               <p className="text-[#DC3545] pl-2">{errors.focusCountries}</p>
+//             </div>
+//           )}
+//         </div>
+        
+//         <Button type="submit" className=" bg-blue-500 text-white font-semibold "   >Save Product Information</Button>
+       
+//       </div>
+//     </form>
+<form onSubmit={handleSubmit} className="w-full font-calarity max-w-4xl mx-auto">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {/* Left Column */}
+    <div>
+      {/* Product Name */}
+      <div className="mb-4">
+        <Label htmlFor="productName">Product Name</Label>
+        <Input
+          type="text"
+          id="productName"
+          name="productName"
+          value={inputValue}
+          onChange={handleChange}
+          className="mt-1"
+        />
+        {errors.productName && (
+          <div className="w-full bg-[#F8D7DA] mt-2 p-2 rounded-lg flex">
+            <XCircle className="w-5 h-5 text-red-500" />
+            <p className="text-[#DC3545] pl-2 text-sm">{errors.productName}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Logo */}
+      <div className="mb-4">
+        <Label htmlFor="logo">Logo</Label>
+        <Input
+          type="file"
+          id="logo"
+          name="logo"
+          className="mt-1"
+          onChange={handleFileChange}
+        />
+        {errors.logoPreview && (
+          <div className="w-full bg-[#F8D7DA] mt-2 p-2 rounded-lg flex">
+            <XCircle className="w-5 h-5 text-red-500" />
+            <p className="text-[#DC3545] pl-2 text-sm">{errors.logoPreview}</p>
+          </div>
+        )}
+        {logoPreview && (
+          <div className="mt-2">
+            <img src={logoPreview} alt="Logo Preview" style={{ maxWidth: '150px' }} />
+          </div>
+        )}
+      </div>
+
+      {/* Website URL */}
+      <div className="mb-4">
+        <Label htmlFor="websiteUrl">Website</Label>
+        <Input
+          type="url"
+          id="websiteUrl"
+          name="websiteUrl"
+          value={websiteUrl || ""}
+          onChange={handleUrlChange}
+          placeholder="Website URL"
+          className="mt-1"
+        />
+        {errors.websiteUrl && (
+          <div className="w-full bg-[#F8D7DA] mt-2 p-2 rounded-lg flex">
+            <XCircle className="w-5 h-5 text-red-500" />
+            <p className="text-[#DC3545] pl-2 text-sm">{errors.websiteUrl}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Mobile Accessibility */}
+      <div className="mb-4">
+        <Label>Mobile Accessibility</Label>
+        <div className="flex items-center mt-1">
+          <label className="flex items-center mr-4">
+            <input
+              type="radio"
+              name="freeTrial"
+              value="Yes"
+              checked={selectedMobileAvailability === "Yes"}
+              onChange={handleMobile}
+              className="mr-2"
+            />
+            <span>Yes</span>
+          </label>
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="freeTrial"
+              value="No"
+              checked={selectedMobileAvailability === "No"}
+              onChange={handleMobile}
+              className="mr-2"
+            />
+            <span>No</span>
+          </label>
+        </div>
+        {errors.mobileAvailable && (
+          <div className="w-full bg-[#F8D7DA] mt-2 p-2 rounded-lg flex">
+            <XCircle className="w-5 h-5 text-red-500" />
+            <p className="text-[#DC3545] pl-2 text-sm">{errors.mobileAvailable}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Adoption Period */}
+      <div className="mb-4">
+        <Label htmlFor="adoptionPeriod">Adoption Period</Label>
+        <div className="flex gap-2 mt-1">
           <Input
+            name="adoptionPeriod"
             type="text"
-            id="productName"
-            name="productName"
-            value={inputValue}
-            onChange={handleChange}
-            className="mt-1"
+            placeholder="Adoption period"
+            value={adoptionPeriod}
+            onChange={handleAdoptionPeriodChange}
           />
-          {errors.productName && (
-            <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
-              <XCircle className="w-6 h-6 text-red-500" />
-              <p className="text-[#DC3545] pl-2">{errors.productName}</p>
-            </div>
-          )}
+          <Select value={adoptionPeriodUnit} onValueChange={handleAdoptionPeriodUnitChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Period" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="days">Days</SelectItem>
+              <SelectItem value="months">Months</SelectItem>
+              <SelectItem value="years">Years</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        {/* logo */}
-        {/* <div className="w-full mt-2">
-          <Label htmlFor="logo">Logo</Label>
-          <Input
-            type="file"
-            id="logo"
-            name="logo"
-            className="mt-1"
-          />
-        </div> */}
-   <div className="w-full mt-2">
-      <label htmlFor="logo">Logo</label>
-      <Input
-        type="file"
-        id="logo"
-        name="logo"
-        className="mt-1"
-        onChange={handleFileChange}
-      />
-      {/* {errors.logo && <p className="text-red-500">{errors.logo}</p>} */}
-      {errors.logoPreview && (
-            <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
-              <XCircle className="w-6 h-6 text-red-500" />
-              <p className="text-[#DC3545] pl-2">{errors.logoPreview}</p>
-            </div>
-          )}
-      {logoPreview && (
-        <div className="mt-2 ">
-          <img src={logoPreview} alt="Logo Preview" style={{ maxWidth: '30%' }} />
-        </div>
-      )}
+        {(errors.adoptionPeriod || errors.adoptionPeriodUnit) && (
+          <div className="w-full bg-[#F8D7DA] mt-2 p-2 rounded-lg flex">
+            <XCircle className="w-5 h-5 text-red-500" />
+            <p className="text-[#DC3545] pl-2 text-sm">
+              {errors.adoptionPeriod || errors.adoptionPeriodUnit}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Security Certificates */}
+      <div className="mb-4">
+        <Label htmlFor="securityCertificate">Security Certificates</Label>
+        <Textarea
+          name="securityCertificate"
+          placeholder="Mention name of certifications"
+          id="securityCertificate"
+          value={securityValue}
+          onChange={handleAreaChange}
+          className="mt-1"
+        />
+        {errors.securityCertificate && (
+          <div className="w-full bg-[#F8D7DA] mt-2 p-2 rounded-lg flex">
+            <XCircle className="w-5 h-5 text-red-500" />
+            <p className="text-[#DC3545] pl-2 text-sm">{errors.securityCertificate}</p>
+          </div>
+        )}
+      </div>
     </div>
 
-        {/* Category Checkboxes */}
-        <div className="mt-2">
-          <Label htmlFor="category">Select Category</Label>
+    {/* Right Column */}
+    <div>
+      {/* Category Selection */}
+      <div className="mb-4">
+        <Label htmlFor="category">Category</Label>
+        <div className="mt-1 border border-gray-200 rounded-lg p-3 max-h-60 overflow-y-auto">
           {[
             "Client Relationship Management",
             "Governance, Risk and Compliance",
@@ -1129,311 +1717,134 @@ console.log("Form submitted with:", formData);
             "Legal Workflow Automation",
             "Legal Research",
           ].map((cat) => (
-            <div key={cat} className="items-top flex space-x-2 mt-2">
+            <div key={cat} className="flex items-center space-x-2 mb-2">
               <Input
                 name="category"
                 type="checkbox"
                 value={cat}
                 checked={category.includes(cat)}
                 onChange={handleChange}
-                className="w-5 h-5"
+                className="w-4 h-4"
+                id={`category-${cat}`}
               />
-              <div className="grid gap-1.5 leading-none">
-                <label className="text-sm font-medium leading-none">
-                  {cat}
-                </label>
-              </div>
+              <label htmlFor={`category-${cat}`} className="text-sm">
+                {cat}
+              </label>
             </div>
           ))}
-          {errors.category && (
-            <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
-              <XCircle className="w-6 h-6 text-red-500" />
-              <p className="text-[#DC3545] pl-2">{errors.category}</p>
-            </div>
-          )}
         </div>
-        {/* Deployment Checkboxes */}
-        <div className="mt-2">
-          <Label htmlFor="deployment">Select Deployment</Label>
+        {errors.category && (
+          <div className="w-full bg-[#F8D7DA] mt-2 p-2 rounded-lg flex">
+            <XCircle className="w-5 h-5 text-red-500" />
+            <p className="text-[#DC3545] pl-2 text-sm">{errors.category}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Deployment Options */}
+      <div className="mb-4">
+        <Label htmlFor="deployment">Deployment</Label>
+        <div className="mt-1 flex flex-wrap gap-4">
           {["SaaS", "On-premise", "Hybrid", "Cloud"].map((dep) => (
-            <div key={dep} className="items-top flex space-x-2 mt-2">
+            <label key={dep} className="flex items-center space-x-2">
               <Input
                 name="deployment"
                 type="checkbox"
                 value={dep}
                 checked={deployment.includes(dep)}
                 onChange={handleChange}
-                className="w-5 h-5"
+                className="w-4 h-4"
+                id={`deployment-${dep}`}
               />
-              <div className="grid gap-1.5 leading-none">
-                <label className="text-sm font-medium leading-none">
-                  {dep}
-                </label>
-              </div>
-            </div>
+              <span className="text-sm">{dep}</span>
+            </label>
           ))}
-          {errors.deployment && (
-            <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
-              <XCircle className="w-6 h-6 text-red-500" />
-              <p className="text-[#DC3545] pl-2">{errors.deployment}</p>
-            </div>
-          )}
         </div>
-        {/* Select Mobile Accessibility */}
-       
-
-
-        <div className="w-full mt-2">
-          <Label>Select Mobile Accessibility</Label>
-          <div className="flex items-center">
-            <label className="mr-4">
-              <input
-                type="radio"
-                name="freeTrial"
-                value="Yes"
-                checked={selectedMobileAvailability === "Yes"}
-                onChange={handleMobile}
-              />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="freeTrial"
-                value="No"
-                checked={selectedMobileAvailability === "No"}
-                onChange={handleMobile}
-              />
-              No
-            </label>
+        {errors.deployment && (
+          <div className="w-full bg-[#F8D7DA] mt-2 p-2 rounded-lg flex">
+            <XCircle className="w-5 h-5 text-red-500" />
+            <p className="text-[#DC3545] pl-2 text-sm">{errors.deployment}</p>
           </div>
-         
-           {errors.mobileAvailable && (
-            <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
-              <XCircle className="w-6 h-6 text-red-500" />
-              <p className="text-[#DC3545] pl-2">{errors.mobileAvailable}</p>
-            </div>
-          )}
-        </div>
-
-
-        {/* Adoption Period */}
-        <div>
-      <Label htmlFor="adoptionPeriod">Adoption Period</Label>
-      <div className="flex gap-4">
-        <Input
-          name="adoptionPeriod"
-          type="text"
-          placeholder="Adoption period"
-          value={adoptionPeriod}
-          onChange={handleAdoptionPeriodChange}
-        />
-        <Select value={adoptionPeriodUnit} onValueChange={handleAdoptionPeriodUnitChange}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Period"/> 
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="days">Days</SelectItem>
-            <SelectItem value="months">Months</SelectItem>
-            <SelectItem value="years">Years</SelectItem>
-          </SelectContent>
-        </Select>
+        )}
       </div>
-      {(errors.adoptionPeriod || errors.adoptionPeriodUnit) && (
-        <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
-          <XCircle className="w-6 h-6 text-red-500" />
-          <p className="text-[#DC3545] pl-2">
-            {errors.adoptionPeriod || errors.adoptionPeriodUnit}
-          </p>
-        </div>
-      )}
-        </div>
-        {/* Language Checkboxes */}
-        <div className="mt-2">
-          <Label htmlFor="languages">Select Languages</Label>
-          <MultiSelector
-            values={languages}
-            onValuesChange={handleLanguagesChange}
-          >
-            <MultiSelectorTrigger>
-              <MultiSelectorInput placeholder="Select items" />
-            </MultiSelectorTrigger>
-            <MultiSelectorContent>
-              <MultiSelectorList>
-                {languagess.map((language) => (
-                  <MultiSelectorItem key={language} value={language}>
-                    {language}
-                  </MultiSelectorItem>
-                ))}
-              </MultiSelectorList>
-            </MultiSelectorContent>
-          </MultiSelector>
-          {errors.languages && (
-            <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
-              <XCircle className="w-6 h-6 text-red-500" />
-              <p className="text-[#DC3545] pl-2">{errors.languages}</p>
-            </div>
-          )}
-        </div>
 
-
-        {/* lang  */}
-
-        <div className="w-full mb-4">
-          <label htmlFor="websiteUrl">Website</label>
-          <div className="flex items-center">
-            <Input
-              type="url"
-              id="websiteUrl"
-              name="websiteUrl"
-              value={websiteUrl || ""}
-              onChange={handleUrlChange}
-              placeholder="Website URL"
-            />
-          </div>
-          {errors.websiteUrl && (
-            <p className="text-red-500">{errors.websiteUrl}</p>
-          )}
-        </div>
-
-
-        {/* Security Certificates */}
-        <div className="mt-2">
-          <Label className="securityCertificate">Security Certificates</Label>
-          <Textarea
-        name="securityCertificate"
-        placeholder="Mention name of certifications"
-        id="securityCertificate"
-        value={securityValue}
-        onChange={handleAreaChange}
-      />
-      {errors.securityCertificate && (
-            <div className="w-full bg-[#F8D7DA] mt-3 p-2 rounded-lg flex">
-              <XCircle className="w-6 h-6 text-red-500" />
-              <p className="text-[#DC3545] pl-2">{errors.securityCertificate}</p>
-            </div>
-          )}
-        </div>
-
-
-          {/* integrations  */}
-      <div className="w-full mt-2">
-      <Label htmlFor="focusCountries">Select Integrations</Label>
-      {/* <div className="w-full bg-gray-50 rounded-lg overflow-hidden mt-4 shadow-md">
-      <button
-        onClick={() => toggleCategory('root')}
-        className="w-full text-left p-3 bg-white text-gray-800 border border-gray-200 rounded-t-lg outline-none hover:bg-gray-100 transition-colors duration-150 flex items-center justify-between"
-      >
-        <span className="font-semibold">
-          {expandedCategories['root'] ? 'Hide Integrations' : 'Select Integrations'}
-        </span>
-        {expandedCategories['root'] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-      </button>
-
-      {expandedCategories['root'] && (
-        <div className="p-4 border border-gray-200 bg-white">
-          {Object.entries(integrations).map(([category, options]) => (
-            <div key={category} className="mb-4 last:mb-0 bg-gray-50 rounded-lg overflow-hidden">
-              <button
-                onClick={() => toggleCategory(category)}
-                className="flex justify-between items-center w-full p-3 text-left bg-gray-100 hover:bg-gray-200 transition-colors duration-150"
-              >
-                <span className="font-semibold text-gray-800">{category}</span>
-                {expandedCategories[category] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-              </button>
-
-              {expandedCategories[category] && (
-                <div className="p-3 bg-white">
-                  {options.map((option) => (
-                    <label key={option} className="flex items-center space-x-2 mb-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={selectedIntegrations.includes(option)}
-                        onChange={() => toggleIntegration(option)}
-                        className="form-checkbox h-5 w-5 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
-                      />
-                      <span className="text-gray-700">{option}</span>
-                    </label>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-
-          <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-            <h3 className="font-semibold mb-2 text-gray-800">Selected Integrations:</h3>
-            <ul className="list-disc pl-5 text-gray-700">
-              {selectedIntegrations.map((integration) => (
-                <li key={integration}>{integration}</li>
+      {/* Languages */}
+      <div className="mb-4">
+        <Label htmlFor="languages">Languages</Label>
+        <MultiSelector
+          values={languages}
+          onValuesChange={handleLanguagesChange}
+          className="mt-1"
+        >
+          <MultiSelectorTrigger>
+            <MultiSelectorInput placeholder="Select languages" />
+          </MultiSelectorTrigger>
+          <MultiSelectorContent>
+            <MultiSelectorList>
+              {languagess.map((language) => (
+                <MultiSelectorItem key={language} value={language}>
+                  {language}
+                </MultiSelectorItem>
               ))}
-            </ul>
+            </MultiSelectorList>
+          </MultiSelectorContent>
+        </MultiSelector>
+        {errors.languages && (
+          <div className="w-full bg-[#F8D7DA] mt-2 p-2 rounded-lg flex">
+            <XCircle className="w-5 h-5 text-red-500" />
+            <p className="text-[#DC3545] pl-2 text-sm">{errors.languages}</p>
           </div>
-        </div>
-      )}
-    </div> */}
-     {/* <AlertDialog open={open} onOpenChange={setOpen}>
+        )}
+      </div>
+
+      {/* Focus Countries */}
+      <div className="mb-4">
+        <Label htmlFor="focusCountries">Focus Countries (Max 5)</Label>
+        <MultiSelector
+          values={focusCountries}
+          onValuesChange={handleCountriesChange}
+          className="mt-1"
+        >
+          <MultiSelectorTrigger>
+            <MultiSelectorInput placeholder="Select countries" />
+          </MultiSelectorTrigger>
+          <MultiSelectorContent>
+            <MultiSelectorList>
+              {countries.map((country) => (
+                <MultiSelectorItem
+                  key={country}
+                  value={country}
+                  disabled={
+                    focusCountries.length >= 5 &&
+                    !focusCountries.includes(country)
+                  }
+                >
+                  {country}
+                </MultiSelectorItem>
+              ))}
+            </MultiSelectorList>
+          </MultiSelectorContent>
+        </MultiSelector>
+        {errors.focusCountries && (
+          <div className="w-full bg-[#F8D7DA] mt-2 p-2 rounded-lg flex">
+            <XCircle className="w-5 h-5 text-red-500" />
+            <p className="text-[#DC3545] pl-2 text-sm">{errors.focusCountries}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+
+  {/* Full Width Section */}
+  <div className="mt-2 mb-6">
+    <Label htmlFor="integrations">Integrations</Label>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <button className="w-full text-left p-3 bg-white text-gray-800 border border-gray-200 rounded-lg outline-none hover:bg-gray-100 transition-colors duration-150 flex items-center justify-between">
-          <span className="font-semibold">
+        <button className="w-full text-left mt-1 p-3 bg-white text-gray-800 border border-gray-200 rounded-lg outline-none hover:bg-gray-100 transition-colors duration-150 flex items-center justify-between">
+          <span className="font-medium">
             Select Integrations
           </span>
-          <ChevronDown size={20} />
-         
-          
-        </button>
-      </AlertDialogTrigger>
-      <AlertDialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-        <div className="p-4">
-        <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
-              <X size={20} />
-            </Button>
-          <div className="mb-4 p-4 bg-gray-100 rounded-lg">
-            <h3 className="font-semibold mb-2 text-gray-800">Selected Integrations:</h3>
-            <ul className="list-disc pl-5 text-gray-700">
-              {selectedIntegrations.map((integration) => (
-                <li key={integration}>{integration}</li>
-              ))}
-            </ul>
-          </div>
-
-          {Object.entries(integrations).map(([category, options]) => (
-            <div key={category} className="mb-4 last:mb-0 bg-gray-50 rounded-lg overflow-hidden">
-              <button
-                onClick={() => toggleCategory(category)}
-                className="flex justify-between items-center w-full p-3 text-left bg-gray-100 hover:bg-gray-200 transition-colors duration-150"
-              >
-                <span className="font-semibold text-gray-800">{category}</span>
-                {expandedCategories[category] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-              </button>
-
-              {expandedCategories[category] && (
-                <div className="p-3 bg-white">
-                  {options.map((option) => (
-                    <label key={option} className="flex items-center space-x-2 mb-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={selectedIntegrations.includes(option)}
-                        onChange={() => toggleIntegration(option)}
-                        className="form-checkbox h-5 w-5 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
-                      />
-                      <span className="text-gray-700">{option}</span>
-                    </label>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </AlertDialogContent>
-    </AlertDialog> */}
-
-<AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <button className="w-full text-left p-3 bg-white text-gray-800 border border-gray-200 rounded-lg outline-none hover:bg-gray-100 transition-colors duration-150 flex items-center justify-between">
-          <span className="font-semibold">
-            Select Integrations
-          </span>
-          <ChevronDown size={20} />
+          <ChevronDown size={16} />
         </button>
       </AlertDialogTrigger>
       <AlertDialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
@@ -1447,8 +1858,6 @@ console.log("Form submitted with:", formData);
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full p-2 pl-10 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
               />
-              {/* <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /> */}
-              
             </div>
             <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
               <X size={20} />
@@ -1457,11 +1866,15 @@ console.log("Form submitted with:", formData);
           
           <div className="mb-4 p-4 bg-gray-100 rounded-lg">
             <h3 className="font-semibold mb-2 text-gray-800">Selected Integrations:</h3>
-            <ul className="list-disc pl-5 text-gray-700">
-              {selectedIntegrations.map((integration) => (
-                <li key={integration}>{integration}</li>
-              ))}
-            </ul>
+            {selectedIntegrations.length > 0 ? (
+              <ul className="list-disc pl-5 text-gray-700">
+                {selectedIntegrations.map((integration) => (
+                  <li key={integration}>{integration}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-500">No integrations selected</p>
+            )}
           </div>
 
           {Object.entries(filteredIntegrations).map(([category, options]) => (
@@ -1471,7 +1884,7 @@ console.log("Form submitted with:", formData);
                 className="flex justify-between items-center w-full p-3 text-left bg-gray-100 hover:bg-gray-200 transition-colors duration-150"
               >
                 <span className="font-semibold text-gray-800">{category}</span>
-                {expandedCategories[category] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                {expandedCategories[category] ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </button>
 
               {expandedCategories[category] && (
@@ -1482,7 +1895,7 @@ console.log("Form submitted with:", formData);
                         type="checkbox"
                         checked={selectedIntegrations.includes(option)}
                         onChange={() => toggleIntegration(option)}
-                        className="form-checkbox h-5 w-5 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
+                        className="form-checkbox h-4 w-4 text-gray-600 rounded border-gray-300 focus:ring-gray-500"
                       />
                       <span className="text-gray-700">{option}</span>
                     </label>
@@ -1494,57 +1907,22 @@ console.log("Form submitted with:", formData);
         </div>
       </AlertDialogContent>
     </AlertDialog>
-
-    
-      
-          {errors.integrations && (
-            <div className="w-full bg-[#F8D7DA] mt-3 mb-3 p-2 rounded-lg flex">
-              <XCircle className="w-6 h-6 text-red-500" />
-              <p className="text-[#DC3545] pl-2">{errors.integrations}</p>
-            </div>
-          )}
+    {errors.integrations && (
+      <div className="w-full bg-[#F8D7DA] mt-2 p-2 rounded-lg flex">
+        <XCircle className="w-5 h-5 text-red-500" />
+        <p className="text-[#DC3545] pl-2 text-sm">{errors.integrations}</p>
       </div>
+    )}
+  </div>
 
-        {/* Focus Countries */}
-        <div className="mt-2">
-        
-          <Label htmlFor="focusCountries">Select Countries (Max 5)</Label>
-          <MultiSelector
-            values={focusCountries}
-            onValuesChange={handleCountriesChange}
-          >
-            <MultiSelectorTrigger>
-              <MultiSelectorInput placeholder="Select countries" />
-            </MultiSelectorTrigger>
-            <MultiSelectorContent>
-              <MultiSelectorList>
-                {countries.map((country) => (
-                  <MultiSelectorItem
-                    key={country}
-                    value={country}
-                    disabled={
-                      focusCountries.length >= 5 &&
-                      !focusCountries.includes(country)
-                    }
-                  >
-                    {country}
-                  </MultiSelectorItem>
-                ))}
-              </MultiSelectorList>
-            </MultiSelectorContent>
-          </MultiSelector>
-          {errors.focusCountries && (
-            <div className="w-full bg-[#F8D7DA] mt-3 mb-3 p-2 rounded-lg flex">
-              <XCircle className="w-6 h-6 text-red-500" />
-              <p className="text-[#DC3545] pl-2">{errors.focusCountries}</p>
-            </div>
-          )}
-        </div>
-        
-        <Button type="submit" className=" bg-blue-500 text-white font-semibold "   >Save Product Information</Button>
-       
-      </div>
-    </form>
+  {/* Submit Button */}
+  <Button 
+    type="submit" 
+    className="w-full bg-blue-500 text-white font-semibold py-2.5"
+  >
+    Save Product Information
+  </Button>
+</form>
   );
 };
 

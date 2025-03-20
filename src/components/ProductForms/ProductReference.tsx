@@ -800,86 +800,228 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
 
  
   return (
-    <form onSubmit={handleSubmit} className="w-full font-calarity max-w-4xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-md">
-      <div className="flex w-100 flex-col">
-      {/* <span className="text-red-500  text-xs">Image Field Necassary</span> */}
-        {/* Image upload */}
-        <div className="w-full mb-4 mt-4">
-          <label htmlFor="images" className="block mb-2 font-bold">Images <span className="text-yellow-500 italic text-xs">(1-5 images required)</span></label>
-          <Input 
-            type="file" 
-            id="images" 
-            name="images" 
-            multiple 
-            accept="image/*" 
-            onChange={(e) => handleFileChange(e, "images")}
-            ref={imageInputRef} // Reference for resetting
-            required
-          />
-          {errors.images && <p className="text-red-500">{errors.images}</p>}
-          <Button 
-            onClick={(e) => {
-              e.preventDefault();
-              clearImages();
-            }} 
-            className="mt-2 bg-red-500 text-white"
-          >
-            Reset Images
-          </Button>
-        </div>
+    // <form onSubmit={handleSubmit} className="w-full font-calarity max-w-4xl mx-auto mt-4 p-6 bg-white rounded-lg shadow-md">
+    //   <div className="flex w-100 flex-col">
+    //   {/* <span className="text-red-500  text-xs">Image Field Necassary</span> */}
+    //     {/* Image upload */}
+    //     <div className="w-full mb-4 mt-4">
+    //       <label htmlFor="images" className="block mb-2 font-bold">Images <span className="text-yellow-500 italic text-xs">(1-5 images required)</span></label>
+    //       <Input 
+    //         type="file" 
+    //         id="images" 
+    //         name="images" 
+    //         multiple 
+    //         accept="image/*" 
+    //         onChange={(e) => handleFileChange(e, "images")}
+    //         ref={imageInputRef} // Reference for resetting
+    //         required
+    //       />
+    //       {errors.images && <p className="text-red-500">{errors.images}</p>}
+    //       <Button 
+    //         onClick={(e) => {
+    //           e.preventDefault();
+    //           clearImages();
+    //         }} 
+    //         className="mt-2 bg-red-500 text-white"
+    //       >
+    //         Reset Images
+    //       </Button>
+    //     </div>
 
-        {/* Image previews */}
-        {imagePreviews.length > 0 && (
-          <div className="w-full mb-4">
-            <label className="block mb-2 font-bold">Image Previews</label>
-            <div className="flex flex-wrap gap-2">
-              {imagePreviews.map((preview, index) => (
-                <div key={index} className="relative w-32 h-32">
-                  <img src={preview} alt={`Preview ${index}`} className="w-full h-full object-cover" />
-                  {/* <Button 
-                    onClick={() => {
-                      const newImages = images.filter((_, i) => i !== index);
-                      setImages(newImages);
-                    }} 
-                    className="absolute top-0 right-0 bg-red-500 text-white text-xs"
-                  >
-                    Remove
-                  </Button> */}
-                </div>
-              ))}
-            </div>
+    //     {/* Image previews */}
+    //     {imagePreviews.length > 0 && (
+    //       <div className="w-full mb-4">
+    //         <label className="block mb-2 font-bold">Image Previews</label>
+    //         <div className="flex flex-wrap gap-2">
+    //           {imagePreviews.map((preview, index) => (
+    //             <div key={index} className="relative w-32 h-32">
+    //               <img src={preview} alt={`Preview ${index}`} className="w-full h-full object-cover" />
+    //               {/* <Button 
+    //                 onClick={() => {
+    //                   const newImages = images.filter((_, i) => i !== index);
+    //                   setImages(newImages);
+    //                 }} 
+    //                 className="absolute top-0 right-0 bg-red-500 text-white text-xs"
+    //               >
+    //                 Remove
+    //               </Button> */}
+    //             </div>
+    //           ))}
+    //         </div>
+    //       </div>
+    //     )}
+    //     <div>
+
+
+    //     {/* <div>
+    //   {loading ? (
+    //     <p>Loading images...</p> // Show this while loading
+    //   ) : imagePreviews.length > 0 ? (
+    //     <div>
+    //       {imagePreviews.map((url, index) => (
+    //         <img key={index} src={url} alt={`Preview ${index}`} style={{ width: '200px', height: 'auto', margin: '10px' }} />
+    //       ))}
+    //     </div>
+    //   ) : (
+    //     <p>No images available.</p> // Message when there are no images
+    //   )}
+    // </div> */}
+    // </div>
+
+    //     {/* Video URL */}
+    //     <div className="w-full mb-4">
+    //       <label htmlFor="videoUrl">Video</label>
+    //       <div className="flex items-center">
+    //         <Input type="url" id="videoUrl" name="videoUrl" value={videoUrl || ""} onChange={handleUrlChange} placeholder="Enter Video Url Only Youtube/Vimeo" />
+    //       </div>
+    //       {errors.videoUrl && <p className="text-red-500">{errors.videoUrl}</p>}
+    //     </div>
+
+    //     {/* Attachments upload */}
+    //     <div className="w-full mb-4">
+    //     <label htmlFor="attachments" className="block mb-2 font-bold">Attachments <span className="text-yellow-500 italic text-xs">(up to 2)</span></label>
+    //     <Input 
+    //       type="file" 
+    //       id="attachments" 
+    //       name="attachments" 
+    //       multiple 
+    //       onChange={(e) => handleFileChange(e, "attachments")} 
+    //       ref={attachmentInputRef}
+    //     />
+    //     {errors.attachments && <p className="text-red-500">{errors.attachments}</p>}
+    //     <Button 
+    //       onClick={(e) => {
+    //         e.preventDefault();
+    //         clearAttachments();
+    //       }} 
+    //       className="mt-2 bg-red-500 text-white"
+    //     >
+    //       Reset Attachments
+    //     </Button>
+    //   </div>
+
+    //   {/* Attachment previews */}
+    //   {attachmentInfos.length > 0 && (
+    //     <div className="w-full mb-4">
+    //       <label className="block mb-2 font-bold">Attachment Previews</label>
+    //       <div className="flex flex-col gap-2">
+    //         {attachmentInfos.map((info, index) => (
+    //           <div key={index} className="p-4 border rounded-lg flex justify-between items-center">
+    //             <div>
+    //               <p className="font-bold">{info.name}</p>
+    //               <p className="text-sm text-gray-600">
+    //                 {info.size ? `${(info.size / 1024).toFixed(2)} KB` : 'Size unknown'} | {info.type}
+    //               </p>
+    //             </div>
+    //             {/* <Button 
+    //               onClick={() => {
+    //                 const newAttachments = attachments?.filter((_, i) => i !== index) || [];
+    //                 const newAttachmentUrls = attachmentsUrl?.filter((_, i) => i !== index) || [];
+    //                 setAttachments(newAttachments);
+    //                 setAttachmentsUrl(newAttachmentUrls);
+    //                 updateAttachmentInfos(newAttachments);
+    //               }} 
+    //               className="bg-red-500 text-white text-xs"
+    //             >
+    //               Remove
+    //             </Button> */}
+    //           </div>
+    //         ))}
+    //       </div>
+    //     </div>
+    //   )}
+    //     {/* Social media URLs */}
+       
+    //      {/* Social media URLs */}
+    //      {/* Instagram */}
+    //      <div className="w-full mb-4">
+    //        <label htmlFor="instagramUrl">Instagram</label>
+    //        <div className="flex items-center">
+    //          <Input type="url" id="instagramUrl" name="instagramUrl" value={instagramUrl || ""} onChange={handleUrlChange} placeholder="Instagram URL" />
+    //        </div>
+    //        {errors.instagramUrl && <p className="text-red-500">{errors.instagramUrl}</p>}
+    //      </div>
+      
+    //    <div className="w-full mb-4">
+    //        <label htmlFor="linkedinUrl">Linkedin</label>
+    //        <div className="flex items-center">
+    //          <Input type="url" id="linkedinUrl" name="linkedinUrl" value={linkedinUrl || ""} onChange={handleUrlChange} placeholder="LinkedIn URL" />           </div>
+    //        {errors.linkedinUrl && <p className="text-red-500">{errors.linkedinUrl}</p>}
+    //      </div>
+        
+    //      {/* Twitter */}
+    //      <div className="w-full mb-4">
+    //        <label htmlFor="twitterUrl">Twitter</label>
+    //        <div className="flex items-center">
+    //          <Input type="url" id="twitterUrl" name="twitterUrl" value={twitterUrl || ""} onChange={handleUrlChange} placeholder="Twitter URL" />
+    //        </div>
+    //        {errors.twitterUrl && <p className="text-red-500">{errors.twitterUrl}</p>}
+    //      </div>
+
+    //     {/* YouTube */}
+    //      <div className="w-full mb-4">
+    //        <label htmlFor="youtubeUrl">YouTube</label>
+    //        <div className="flex items-center">
+    //         <Input type="url" id="youtubeUrl" name="youtubeUrl" value={youtubeUrl || ""} onChange={handleUrlChange} placeholder="YouTube Channel URL" />
+    //        </div>
+    //        {errors.youtubeUrl && <p className="text-red-500">{errors.youtubeUrl}</p>}
+    //      </div>
+
+    //     <Button type="submit" className="mt-4 bg-blue-500 text-white font-semibold ">Save References</Button>
+    //   </div>
+    // </form>
+    <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto p-4 bg-white rounded-lg">
+  {/* Media Files Row - Images and Attachments */}
+  <div className="flex flex-col md:flex-row gap-4 mb-4">
+    {/* Images upload */}
+    <div className="w-full md:w-1/2">
+      <label htmlFor="images" className="block text-sm font-medium mb-1">
+        Images <span className="text-yellow-500 italic text-xs">(1-5 required)</span>
+      </label>
+      <div className="flex items-center gap-2">
+        <Input 
+          type="file" 
+          id="images" 
+          name="images" 
+          multiple 
+          accept="image/*" 
+          onChange={(e) => handleFileChange(e, "images")}
+          ref={imageInputRef}
+          required
+          className="text-xs"
+        />
+        <Button 
+          onClick={(e) => {
+            e.preventDefault();
+            clearImages();
+          }} 
+          className="bg-red-500 text-white text-xs h-8 px-2"
+        >
+          Reset
+        </Button>
+      </div>
+      {errors.images && <p className="text-red-500 text-xs mt-1">{errors.images}</p>}
+      
+      {/* Image previews */}
+      {imagePreviews.length > 0 && (
+        <div className="mt-2">
+          <div className="flex flex-wrap gap-1">
+            {imagePreviews.map((preview, index) => (
+              <div key={index} className="w-12 h-12">
+                <img src={preview} alt={`Preview ${index}`} className="w-full h-full object-cover rounded" />
+              </div>
+            ))}
           </div>
-        )}
-        <div>
-
-
-        {/* <div>
-      {loading ? (
-        <p>Loading images...</p> // Show this while loading
-      ) : imagePreviews.length > 0 ? (
-        <div>
-          {imagePreviews.map((url, index) => (
-            <img key={index} src={url} alt={`Preview ${index}`} style={{ width: '200px', height: 'auto', margin: '10px' }} />
-          ))}
         </div>
-      ) : (
-        <p>No images available.</p> // Message when there are no images
       )}
-    </div> */}
     </div>
 
-        {/* Video URL */}
-        <div className="w-full mb-4">
-          <label htmlFor="videoUrl">Video</label>
-          <div className="flex items-center">
-            <Input type="url" id="videoUrl" name="videoUrl" value={videoUrl || ""} onChange={handleUrlChange} placeholder="Enter Video Url Only Youtube/Vimeo" />
-          </div>
-          {errors.videoUrl && <p className="text-red-500">{errors.videoUrl}</p>}
-        </div>
-
-        {/* Attachments upload */}
-        <div className="w-full mb-4">
-        <label htmlFor="attachments" className="block mb-2 font-bold">Attachments <span className="text-yellow-500 italic text-xs">(up to 2)</span></label>
+    {/* Attachments upload */}
+    <div className="w-full md:w-1/2">
+      <label htmlFor="attachments" className="block text-sm font-medium mb-1">
+        Attachments <span className="text-yellow-500 italic text-xs">(up to 2)</span>
+      </label>
+      <div className="flex items-center gap-2">
         <Input 
           type="file" 
           id="attachments" 
@@ -887,100 +1029,126 @@ const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
           multiple 
           onChange={(e) => handleFileChange(e, "attachments")} 
           ref={attachmentInputRef}
+          className="text-xs"
         />
-        {errors.attachments && <p className="text-red-500">{errors.attachments}</p>}
         <Button 
           onClick={(e) => {
             e.preventDefault();
             clearAttachments();
           }} 
-          className="mt-2 bg-red-500 text-white"
+          className="bg-red-500 text-white text-xs h-8 px-2"
         >
-          Reset Attachments
+          Reset
         </Button>
       </div>
-
-      {/* Attachment previews */}
+      {errors.attachments && <p className="text-red-500 text-xs mt-1">{errors.attachments}</p>}
+      
+      {/* Attachment info */}
       {attachmentInfos.length > 0 && (
-        <div className="w-full mb-4">
-          <label className="block mb-2 font-bold">Attachment Previews</label>
-          <div className="flex flex-col gap-2">
+        <div className="mt-2">
+          <div className="flex flex-col gap-1">
             {attachmentInfos.map((info, index) => (
-              <div key={index} className="p-4 border rounded-lg flex justify-between items-center">
-                <div>
-                  <p className="font-bold">{info.name}</p>
-                  <p className="text-sm text-gray-600">
-                    {info.size ? `${(info.size / 1024).toFixed(2)} KB` : 'Size unknown'} | {info.type}
-                  </p>
-                </div>
-                {/* <Button 
-                  onClick={() => {
-                    const newAttachments = attachments?.filter((_, i) => i !== index) || [];
-                    const newAttachmentUrls = attachmentsUrl?.filter((_, i) => i !== index) || [];
-                    setAttachments(newAttachments);
-                    setAttachmentsUrl(newAttachmentUrls);
-                    updateAttachmentInfos(newAttachments);
-                  }} 
-                  className="bg-red-500 text-white text-xs"
-                >
-                  Remove
-                </Button> */}
+              <div key={index} className="p-1 border rounded text-xs flex items-center">
+                <span className="font-medium truncate">{info.name}</span>
+                <span className="text-gray-500 ml-1">
+                  ({info.size ? `${(info.size / 1024).toFixed(1)}KB` : 'Size unknown'})
+                </span>
               </div>
             ))}
           </div>
         </div>
       )}
-        {/* Social media URLs */}
-       
-         {/* Social media URLs */}
-         {/* Instagram */}
-         <div className="w-full mb-4">
-           <label htmlFor="instagramUrl">Instagram</label>
-           <div className="flex items-center">
-             <Input type="url" id="instagramUrl" name="instagramUrl" value={instagramUrl || ""} onChange={handleUrlChange} placeholder="Instagram URL" />
-           </div>
-           {errors.instagramUrl && <p className="text-red-500">{errors.instagramUrl}</p>}
-         </div>
-      
-       <div className="w-full mb-4">
-           <label htmlFor="linkedinUrl">Linkedin</label>
-           <div className="flex items-center">
-             <Input type="url" id="linkedinUrl" name="linkedinUrl" value={linkedinUrl || ""} onChange={handleUrlChange} placeholder="LinkedIn URL" />           </div>
-           {errors.linkedinUrl && <p className="text-red-500">{errors.linkedinUrl}</p>}
-         </div>
-        
-         {/* Twitter */}
-         <div className="w-full mb-4">
-           <label htmlFor="twitterUrl">Twitter</label>
-           <div className="flex items-center">
-             <Input type="url" id="twitterUrl" name="twitterUrl" value={twitterUrl || ""} onChange={handleUrlChange} placeholder="Twitter URL" />
-           </div>
-           {errors.twitterUrl && <p className="text-red-500">{errors.twitterUrl}</p>}
-         </div>
+    </div>
+  </div>
 
-        {/* YouTube */}
-         <div className="w-full mb-4">
-           <label htmlFor="youtubeUrl">YouTube</label>
-           <div className="flex items-center">
-            <Input type="url" id="youtubeUrl" name="youtubeUrl" value={youtubeUrl || ""} onChange={handleUrlChange} placeholder="YouTube Channel URL" />
-           </div>
-           {errors.youtubeUrl && <p className="text-red-500">{errors.youtubeUrl}</p>}
-         </div>
+  {/* Video URL Row */}
+  <div className="mb-4">
+    <label htmlFor="videoUrl" className="block text-sm font-medium mb-1">Video URL</label>
+    <Input 
+      type="url" 
+      id="videoUrl" 
+      name="videoUrl" 
+      value={videoUrl || ""} 
+      onChange={handleUrlChange} 
+      placeholder="Enter YouTube/Vimeo URL only" 
+      className="text-xs"
+    />
+    {errors.videoUrl && <p className="text-red-500 text-xs mt-1">{errors.videoUrl}</p>}
+  </div>
 
-        <Button type="submit" className="mt-4 bg-blue-500 text-white font-semibold ">Save References</Button>
-      </div>
-    </form>
+  {/* Social Media Links - First Row */}
+  <div className="flex flex-col md:flex-row gap-4 mb-4">
+    {/* Instagram */}
+    <div className="w-full md:w-1/2">
+      <label htmlFor="instagramUrl" className="block text-sm font-medium mb-1">Instagram</label>
+      <Input 
+        type="url" 
+        id="instagramUrl" 
+        name="instagramUrl" 
+        value={instagramUrl || ""} 
+        onChange={handleUrlChange} 
+        placeholder="Instagram URL" 
+        className="text-xs"
+      />
+      {errors.instagramUrl && <p className="text-red-500 text-xs mt-1">{errors.instagramUrl}</p>}
+    </div>
+
+    {/* LinkedIn */}
+    <div className="w-full md:w-1/2">
+      <label htmlFor="linkedinUrl" className="block text-sm font-medium mb-1">LinkedIn</label>
+      <Input 
+        type="url" 
+        id="linkedinUrl" 
+        name="linkedinUrl" 
+        value={linkedinUrl || ""} 
+        onChange={handleUrlChange} 
+        placeholder="LinkedIn URL" 
+        className="text-xs"
+      />
+      {errors.linkedinUrl && <p className="text-red-500 text-xs mt-1">{errors.linkedinUrl}</p>}
+    </div>
+  </div>
+
+  {/* Social Media Links - Second Row */}
+  <div className="flex flex-col md:flex-row gap-4 mb-4">
+    {/* Twitter */}
+    <div className="w-full md:w-1/2">
+      <label htmlFor="twitterUrl" className="block text-sm font-medium mb-1">Twitter</label>
+      <Input 
+        type="url" 
+        id="twitterUrl" 
+        name="twitterUrl" 
+        value={twitterUrl || ""} 
+        onChange={handleUrlChange} 
+        placeholder="Twitter URL" 
+        className="text-xs"
+      />
+      {errors.twitterUrl && <p className="text-red-500 text-xs mt-1">{errors.twitterUrl}</p>}
+    </div>
+
+    {/* YouTube */}
+    <div className="w-full md:w-1/2">
+      <label htmlFor="youtubeUrl" className="block text-sm font-medium mb-1">YouTube</label>
+      <Input 
+        type="url" 
+        id="youtubeUrl" 
+        name="youtubeUrl" 
+        value={youtubeUrl || ""} 
+        onChange={handleUrlChange} 
+        placeholder="YouTube Channel URL" 
+        className="text-xs"
+      />
+      {errors.youtubeUrl && <p className="text-red-500 text-xs mt-1">{errors.youtubeUrl}</p>}
+    </div>
+  </div>
+
+  {/* Submit Button */}
+  <div className="flex justify-end">
+    <Button type="submit" className="bg-blue-500 text-white">Save References</Button>
+  </div>
+</form>
   );
 };
 
 export default ProductReference;
-
-// ... (keep the existing schema and interfaces)
-
-
-
-  // ... (keep existing functions like validateAllFields, handleUrlChange, etc.)
-
-
-
 

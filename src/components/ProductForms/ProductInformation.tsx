@@ -32,6 +32,7 @@ import {
 } from "../ui/select";
 import { Switch } from "../ui/switch"
 import { useToast } from "../ui/use-toast";;
+import Alert from '@/components/Alert';
 
 interface Integrations {
   [category: string]: string[];
@@ -958,6 +959,14 @@ const handleFileChange = (event) => {
     setLogoPreview(null);
   }
 };
+const [alert, setAlert] = useState(null);
+  const showAlert = (message, type = 'success') => {
+    setAlert({ message, type });
+    // Auto dismiss after 3 seconds
+    setTimeout(() => {
+      setAlert(null);
+    }, 3000);
+  };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   
@@ -966,6 +975,7 @@ const handleFileChange = (event) => {
     if (!validateAllFields()) {
       console.log("Validation failed");
       hasErrors = true;
+      showAlert("Validation Failed!", 'error');
       toast({
         title: "Validation Failed",
         description: "Please check the form for errors",
@@ -1007,12 +1017,15 @@ const handleFileChange = (event) => {
     }
 
     if (logoPreview === "" || logoPreview === null || logoPreview === undefined) {
+      showAlert("Fill All Details And Upload Logo Please", 'error');
       toast({
         title: "Missing Fields",
         description: "Fill All Details And Upload Logo Please",
         variant: "error",
       });
+      
     }else {
+      showAlert("Product Information  Saved ... Move to the next form", 'success');
       toast({
         title: "Saved",
         description: "Product Information  Saved ... Move to the next form",
@@ -1546,6 +1559,13 @@ console.log("Form submitted with:", formData);
 //       </div>
 //     </form>
 <form onSubmit={handleSubmit} className="w-full font-calarity max-w-4xl mx-auto">
+{alert && (
+  <Alert 
+    message={alert.message} 
+    type={alert.type} 
+    onClose={() => setAlert(null)} 
+  />
+)}
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     {/* Left Column */}
     <div>

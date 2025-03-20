@@ -962,6 +962,13 @@ setStorage(storage);
 //       </div>
 //     </div>
 <div className="max-w-7xl mx-auto px-4">
+{alert && (
+  <Alert 
+    message={alert.message} 
+    type={alert.type} 
+    onClose={() => setAlert(null)} 
+  />
+)}
   {/* Single container for the entire form system */}
   <div className="bg-white rounded-lg shadow-lg overflow-hidden">
     {/* Header */}

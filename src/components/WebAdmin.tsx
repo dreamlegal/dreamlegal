@@ -17,6 +17,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import React, { useState } from "react";
 import { RiMenu2Line } from "react-icons/ri";
 import  AdminBlogs from "@/components/AdminBlogs";
+import AdminProductClaimsPage from "@/components/admin/AdminProductClaimsPage"
 function WebAdmin() {
   const [selectedMenu, setSelectedMenu] = useState("NewProduct");
   const handleMenuItemClick = (menuName: string) => {
@@ -64,6 +65,7 @@ function WebAdmin() {
               {selectedMenu === "NewVendor" && <NewVendor />}
               {selectedMenu === "allProducts" && <AllProducts />}
               {selectedMenu === "AdminProductCreation" && <AdminProductCreation />}
+              {selectedMenu === "AdminProductClaimsPage" && <AdminProductClaimsPage />}
               {selectedMenu === "allUsers" && <AllUsers />}
               {selectedMenu === "allAdmins" && <AllAdmins />}
               {selectedMenu === "addAdmin" && <AddAdmin />}

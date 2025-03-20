@@ -2,8 +2,9 @@
 "use client"
 import React, { useState } from "react";
 import { ChevronDown, ChevronRight, LogOut } from "lucide-react";
-import { MdOutlineAddShoppingCart, MdRateReview, MdCall, MdTrendingUp, MdPeople, MdEmail } from "react-icons/md";
+import { MdOutlineAddShoppingCart, MdRateReview, MdCall, MdTrendingUp, MdPeople, MdEmail ,} from "react-icons/md";
 import { RiProfileLine } from "react-icons/ri";
+import { ShoppingCart } from 'lucide-react'
 import Link from "next/link";
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/context/authContext';
@@ -114,6 +115,11 @@ const VendorSidebar = ({ className = "" }) => {
       name: "Reviews", 
       icon: <MdRateReview size={20} />,
       path: "/tech_vendor/dashboard/reviews"
+    },
+    { 
+      name: "Claim Products", 
+      icon: <ShoppingCart size={20} />,
+      path: "/tech_vendor/dashboard/claim_product"
     },
     { 
       name: "Leads",

@@ -105,9 +105,9 @@ const LandingPage = () => {
     
 <SectionOne/>
       <ITServicesSection/>
+     <SectionFive/>
       <DigitalServicesSection/>
      <SectionFour/>
-     <SectionFive/>
       <SectionSix/>
       <SectionSeven/>
     {/* <ContactFaq/> */}

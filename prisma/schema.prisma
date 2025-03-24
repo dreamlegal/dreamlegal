@@ -236,6 +236,7 @@ model Product {
   ByAdminPhone            String?
   ByAdminWebsite          String?
   claims     ProductClaim[]  // Add this line
+  region                  String?
 }
 
 model Review {

@@ -217,6 +217,7 @@ import type { NextRequest } from 'next/server';
 
 // Define protected paths and their allowed types
 const protectedPaths = {
+  '/community': ['user', 'vendor'],
   '/tech_vendor/dashboard': ['vendor'],
   '/legal_professionals/dashboard': ['user'],
   '/onboard': ['user']
@@ -343,7 +344,8 @@ export const config = {
   matcher: [
     '/tech_vendor/dashboard/:path*',
     '/legal_professionals/dashboard/:path*',
-    '/onboard'
+    '/onboard',
+    '/community'
     // Note: We're removing '/api/auth/:path*' from the matcher
     // to prevent middleware from running on auth routes
   ]

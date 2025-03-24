@@ -888,19 +888,19 @@ const CommunityPage = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-700">#legaltech</span>
-                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">128</span>
+                    {/* <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">128</span> */}
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-700">#compliance</span>
-                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">93</span>
+                    {/* <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">93</span> */}
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-700">#contractmanagement</span>
-                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">87</span>
+                    {/* <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">87</span> */}
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-700">#legalops</span>
-                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">64</span>
+                    {/* <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">64</span> */}
                   </div>
                 </div>
               </div>

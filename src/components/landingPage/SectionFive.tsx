@@ -119,8 +119,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Brain, Search, BarChart3 } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
-const PlatformCard = ({ icon: Icon, title, description, index }) => (
+const PlatformCard = ({ icon: Icon, title, description, index, btnLabel, btnHref }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -144,6 +146,22 @@ const PlatformCard = ({ icon: Icon, title, description, index }) => (
       {description}
     </p>
 
+    <Link href={btnHref}>
+    <button className={cn(btnLabel != "Coming Soon" ? `relative z-20 group whitespace-nowrap px-4 py-2 bg-[#7cc6ee] 
+                      text-white rounded-xl font-medium hover:bg-[#7cc6ee] active:bg-[#7cc6ee] 
+                      transition-all duration-200 flex items-center 
+                      justify-center gap-2 shadow-sm hover:shadow-md text-lg 
+                      cursor-pointer focus:outline-none 
+                      hover:ring-2 hover:ring-[#7cc6ee] hover:ring-opacity-50 
+                      active:scale-95 w-full sm:w-auto` : `
+                      relative z-20 group whitespace-nowrap px-4 py-2  
+                      rounded-xl font-medium  
+                      transition-all duration-200 flex items-center 
+                      justify-center gap-2 text-lg 
+                      cursor-pointer focus:outline-none  
+                      active:scale-95 w-full sm:w-auto`)}>{btnLabel}</button>
+    </Link>
+
     {/* Ready Now Badge */}
     {/* <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#7cc6ee]/10 
                   text-xs font-medium text-[#1e2556]">
@@ -165,17 +183,23 @@ const InnovationPlatforms = () => {
     {
       icon: Brain,
       title: "AI-Powered Legal Process Audit",
-      description: "AI trained on 1700+ workflows to identify inefficiencies and automation opportunities in legal operations."
+      description: "AI trained on 1700+ workflows to identify inefficiencies and automation opportunities in legal operations.",
+      btnLabel: "Contact Us",
+      btnHref: "/contact"
     },
     {
       icon: Search,
       title: "Technology Discovery Platform",
-      description: "Helps legal teams explore, evaluate, and compare legal tech solutions for seamless digital transformation."
+      description: "Helps legal teams explore, evaluate, and compare legal tech solutions for seamless digital transformation.",
+      btnLabel: "Explore",
+      btnHref: "/directory"
     },
     {
       icon: BarChart3,
       title: "Legal Operations Analytics",
-      description: "Tracks legal team capabilities, measures key operational metrics, and enhances overall efficiency."
+      description: "Tracks legal team capabilities, measures key operational metrics, and enhances overall efficiency.",
+      btnLabel: "Coming Soon",
+      btnHref: ""
     }
   ];
 
@@ -206,7 +230,7 @@ const InnovationPlatforms = () => {
             viewport={{ once: true }}
             className="text-lg text-[#334155] max-w-2xl mx-auto"
           >
-            Cutting-edge solutions designed specifically for legal teams
+            Our USP is intelligence and analysis
           </motion.p>
         </div>
 

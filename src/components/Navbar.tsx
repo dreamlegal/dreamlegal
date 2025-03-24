@@ -88,7 +88,7 @@ const Navbar = () => {
       title: 'For technology companies',
       icon: <Cpu size={16} />,
       hasDropdown: false,
-      href: '/vendor'
+      href: '/tech_vendor'
     },
     {
       title: 'Resources',

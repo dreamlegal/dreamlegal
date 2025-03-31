@@ -71,7 +71,7 @@ const AnimatedMetric = ({ value, suffix = '', prefix = '', isVisible }) => {
                      ${isVisible ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
         {prefix}{formattedCount}{suffix}
       </span>
-      <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-purple-500/20 
+      <div className="absolute -inset-1 bg-[#1e2556]/20 
                     blur-lg transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
     </div>
   );
@@ -87,7 +87,7 @@ const AnimatedAchievements = () => {
       suffix: "%",
       title: "Optimize Client Engagement",
       description: "Reduce client nurturing costs by automating and streamlining communication processes.",
-      accentColor: "bg-purple-500"
+      accentColor: "bg-[#7cc6ee]"
     },
     {
       icon: <Rocket className="w-6 h-6" />,
@@ -96,7 +96,7 @@ const AnimatedAchievements = () => {
       suffix: "x",
       title: "Data driven product strategy",
       description: "Leverage analytics to guide product development and align with market demands.",
-      accentColor: "bg-blue-600"
+      accentColor: "bg-[#1e2556]"
     },
     {
       icon: <Zap className="w-6 h-6" />,
@@ -104,77 +104,57 @@ const AnimatedAchievements = () => {
       suffix: "/7",
       title: "Enhanced Market Fit",
       description: "Use customer feedback and usage data to refine features and ensure the product meets evolving market needs.",
-      accentColor: "bg-indigo-500"
+      accentColor: "bg-[#7cc6ee]"
     }
   ];
 
   return (
-   
-    <div ref={sectionRef} className="w-full bg-white py-12 md:py-24 relative overflow-hidden">
-      
-      {/* Main grid pattern with dual-layer effect */}
-      <div className="absolute inset-0">
-        {/* Primary grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px]" />
-        
-        {/* Secondary grid for depth */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000005_1px,transparent_1px),linear-gradient(to_bottom,#00000005_1px,transparent_1px)] bg-[size:48px_48px] opacity-70" />
-        
-        {/* Responsive fades */}
-        <div className="absolute inset-x-0 top-0 h-20 md:h-40 bg-gradient-to-b from-white via-white/95 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-20 md:h-40 bg-gradient-to-t from-white via-white/95 to-transparent" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,white_100%)] opacity-40" />
-        <div className="absolute inset-y-0 left-0 w-20 md:w-40 bg-gradient-to-r from-white via-white/90 to-transparent" />
-        <div className="absolute inset-y-0 right-0 w-20 md:w-40 bg-gradient-to-l from-white via-white/90 to-transparent" />
-      </div>
-
+    <div ref={sectionRef} className="w-full bg-[#1e2556] py-12 md:py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header section */}
         <div className={`mb-8 md:mb-20 text-center relative transition-all duration-700 transform
                       ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="inline-block">
-            <span className="block text-xs sm:text-sm font-semibold text-blue-600 mb-2 tracking-wider">
+            <span className="block text-xs sm:text-sm font-semibold text-[#7cc6ee] mb-2 tracking-wider">
               DELIVERING RESULTS
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 relative inline-block">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 relative inline-block">
               Our Impact
-              <div className={`absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-purple-500 
+              <div className={`absolute -bottom-2 left-0 right-0 h-1 bg-[#7cc6ee] 
                            transform origin-left transition-transform duration-1000 
                            ${isInView ? 'scale-x-100' : 'scale-x-0'}`} />
             </h2>
-            <p className="text-sm sm:text-base text-gray-600 mt-4 max-w-xl mx-auto px-4 sm:px-0">
-            Transforming your client journey with cutting-edge solutions & measurable results
+            <p className="text-sm sm:text-base text-white/80 mt-4 max-w-xl mx-auto px-4 sm:px-0">
+              Transforming your client journey with cutting-edge solutions & measurable results
             </p>
           </div>
         </div>
 
-
-
         {/* Main achievements container */}
         <div className="relative">
-          <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-900/10 to-transparent" />
+          <div className="absolute top-1/2 left-0 right-0 h-px bg-[#7cc6ee]/20" />
 
-          {/* Responsive grid container */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {/* Responsive flex container - centered */}
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8 justify-center">
             {achievements.map((achievement, index) => (
               <div
                 key={index}
-                className={`relative group transform transition-all duration-700
+                className={`relative group transform transition-all duration-700 w-full md:w-1/3 max-w-sm
                           ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
                           ${activeIndex === index ? 'scale-100 md:scale-105 z-10' : 'scale-95 opacity-90'}`}
                 style={{ transitionDelay: `${index * 150}ms` }}
                 onMouseEnter={() => setActiveIndex(index)}
               >
                 <div className="relative overflow-hidden rounded-xl bg-white p-4 sm:p-6 
-                               border border-gray-200/80 backdrop-blur-sm
-                               shadow-lg hover:shadow-xl transition-all duration-300">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-purple-500 opacity-0 
+                               border border-[#7cc6ee]/10 
+                               shadow-md hover:shadow-xl transition-all duration-300">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-[#1e2556] opacity-0 
                                 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   <div className="flex items-start justify-between mb-4 sm:mb-6">
-                    <div className="p-2 sm:p-2.5 bg-gray-900 rounded-lg group-hover:bg-gray-800 
+                    <div className="p-2 sm:p-2.5 bg-[#1e2556] rounded-md
                                   transition-colors duration-300">
-                      <div className="text-gray-100 group-hover:text-white transition-colors duration-300">
+                      <div className="text-white transition-colors duration-300">
                         {achievement.icon}
                       </div>
                     </div>
@@ -187,19 +167,13 @@ const AnimatedAchievements = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 
-                                 group-hover:text-blue-600 transition-colors duration-300">
+                    <h3 className="text-base sm:text-lg font-semibold text-[#1e2556]">
                       {achievement.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[#334155] leading-relaxed">
                       {achievement.description}
                     </p>
                   </div>
-
-                  <div className="absolute top-0 right-0 w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-br from-gray-900/5 to-transparent 
-                               opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-bl-3xl" />
-                  <div className="absolute bottom-0 left-0 w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-tr from-gray-900/5 to-transparent 
-                               opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-tr-3xl" />
                 </div>
               </div>
             ))}
@@ -213,15 +187,14 @@ const AnimatedAchievements = () => {
               key={i}
               className={`w-2 h-2 rounded-full transition-all duration-300
                          ${activeIndex === i 
-                           ? 'bg-gray-900 scale-125 sm:scale-150' 
-                           : 'bg-gray-300 hover:bg-gray-400'}`}
+                           ? 'bg-[#7cc6ee] scale-125 sm:scale-150' 
+                           : 'bg-white/30 hover:bg-[#7cc6ee]/50'}`}
               onClick={() => setActiveIndex(i)}
             />
           ))}
         </div>
       </div>
     </div>
-
   );
 };
 

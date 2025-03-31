@@ -16,16 +16,18 @@ const CategorySelector = ({ value, onChange }) => {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 hover:border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-left flex items-center justify-between"
+        className="w-full px-4 py-3 rounded-xl bg-white border border-[#7cc6ee]/20 
+                 hover:border-[#7cc6ee]/50 focus:border-[#7cc6ee] focus:ring-2 focus:ring-[#7cc6ee]/20 
+                 transition-all duration-300 text-left flex items-center justify-between"
       >
-        <span className={value ? "text-gray-900" : "text-gray-400"}>
+        <span className={value ? "text-[#1e2556]" : "text-[#334155]"}>
           {value || "Select category"}
         </span>
-        <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${isOpen ? "transform rotate-180" : ""}`} />
+        <ChevronDown className={`w-5 h-5 text-[#334155] transition-transform duration-300 ${isOpen ? "transform rotate-180" : ""}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 w-full mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-300">
+        <div className="absolute z-50 w-full mt-2 bg-white rounded-xl shadow-xl border border-[#7cc6ee]/10 overflow-hidden transition-all duration-300">
           <div className="max-h-64 overflow-y-auto">
             {categories.map((category) => (
               <button
@@ -35,9 +37,11 @@ const CategorySelector = ({ value, onChange }) => {
                   onChange(category);
                   setIsOpen(false);
                 }}
-                className={`w-full px-4 py-3 text-left hover:bg-blue-50 transition-colors duration-200 ${category === value ? "bg-blue-50 text-blue-600" : "text-gray-700"} flex items-center gap-2`}
+                className={`w-full px-4 py-3 text-left hover:bg-[#f5f7fa] transition-colors duration-200 
+                           ${category === value ? "bg-[#f5f7fa] text-[#7cc6ee]" : "text-[#2d2d2d]"} 
+                           flex items-center gap-2`}
               >
-                <span className={`w-2 h-2 rounded-full ${category === value ? "bg-blue-600" : "bg-gray-300"}`} />
+                <span className={`w-2 h-2 rounded-full ${category === value ? "bg-[#7cc6ee]" : "bg-[#334155]/30"}`} />
                 {category}
               </button>
             ))}
@@ -103,9 +107,6 @@ const Modal = ({ isOpen, onClose }) => {
         email: ''
       });
 
-      // Optional: Close modal after success
-      // setTimeout(onClose, 2000);
-
     } catch (error) {
       console.error('Submission error:', error);
       setAlert({
@@ -132,36 +133,35 @@ const Modal = ({ isOpen, onClose }) => {
       
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-gray-900/10 backdrop-blur-sm transition-all duration-300"
+        className="fixed inset-0 bg-[#1e2556]/10 backdrop-blur-sm transition-all duration-300"
         onClick={onClose}
       />
       
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative bg-gradient-to-b from-white to-blue-50/50 rounded-3xl max-w-md w-full 
+        <div className="relative bg-white rounded-3xl max-w-md w-full 
                      shadow-2xl transform transition-all duration-500 scale-100 overflow-hidden
-                     border border-blue-100">
+                     border border-[#7cc6ee]/20">
           
           {/* Content */}
           <div className="relative p-8">
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute right-6 top-6 p-2 rounded-full hover:bg-blue-50 
+              className="absolute right-6 top-6 p-2 rounded-full hover:bg-[#f5f7fa] 
                        transition-all duration-300 group"
             >
-              <X className="w-5 h-5 text-gray-400 group-hover:text-blue-600 
+              <X className="w-5 h-5 text-[#334155] group-hover:text-[#7cc6ee] 
                         transition-colors duration-300" />
             </button>
 
             {/* Header */}
             <div className="mb-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full mb-4">
-                <Sparkles className="w-4 h-4 text-blue-600" />
-                <span className="text-sm font-semibold text-blue-600">JOIN OUR NETWORK</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#f5f7fa] rounded-full mb-4">
+                <Sparkles className="w-4 h-4 text-[#7cc6ee]" />
+                <span className="text-sm font-semibold text-[#7cc6ee]">JOIN OUR NETWORK</span>
               </div>
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 
-                         bg-clip-text text-transparent">
+              <h2 className="text-3xl font-bold text-[#1e2556]">
                 Get Started Today
               </h2>
             </div>
@@ -169,7 +169,7 @@ const Modal = ({ isOpen, onClose }) => {
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700">
+                <label className="block text-sm font-semibold text-[#1e2556]">
                   Name
                 </label>
                 <input
@@ -177,16 +177,16 @@ const Modal = ({ isOpen, onClose }) => {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 
-                         focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
-                         transition-all duration-300 placeholder:text-gray-400
-                         hover:border-blue-200"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#7cc6ee]/20 
+                         focus:border-[#7cc6ee] focus:ring-2 focus:ring-[#7cc6ee]/20 
+                         transition-all duration-300 placeholder:text-[#334155]/50
+                         hover:border-[#7cc6ee]/50"
                   placeholder="Enter your name"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700">
+                <label className="block text-sm font-semibold text-[#1e2556]">
                   Category
                 </label>
                 <CategorySelector
@@ -196,7 +196,7 @@ const Modal = ({ isOpen, onClose }) => {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700">
+                <label className="block text-sm font-semibold text-[#1e2556]">
                   Email
                 </label>
                 <input
@@ -204,10 +204,10 @@ const Modal = ({ isOpen, onClose }) => {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 
-                         focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
-                         transition-all duration-300 placeholder:text-gray-400
-                         hover:border-blue-200"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#7cc6ee]/20 
+                         focus:border-[#7cc6ee] focus:ring-2 focus:ring-[#7cc6ee]/20 
+                         transition-all duration-300 placeholder:text-[#334155]/50
+                         hover:border-[#7cc6ee]/50"
                   placeholder="Enter your email"
                 />
               </div>
@@ -215,7 +215,7 @@ const Modal = ({ isOpen, onClose }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="group relative w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 to-blue-500 
+                className="group relative w-full py-3.5 px-4 bg-[#1e2556] 
                        text-white font-medium rounded-xl shadow-lg hover:shadow-xl
                        transition-all duration-300 transform hover:-translate-y-0.5
                        disabled:opacity-70 disabled:cursor-not-allowed"
@@ -232,7 +232,6 @@ const Modal = ({ isOpen, onClose }) => {
                     </>
                   )}
                 </div>
-                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-xl" />
               </button>
             </form>
           </div>

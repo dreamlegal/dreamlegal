@@ -1,4 +1,3 @@
-
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -149,7 +148,7 @@ export async function GET(request: NextRequest) {
     };
 
     const headquartersDistribution = [];
-    const headquartersMap = new Map();
+    const headquartersMap = new Map<string, number>();
 
     products.forEach((product) => {
       let hq = product.Headquarters || (product.company && product.company.headQuaters) || "Unknown";
@@ -173,6 +172,9 @@ export async function GET(request: NextRequest) {
         count,
       });
     });
+
+    // Unique country count
+    const totalHeadquartersCount = headquartersMap.size;
 
     // Founding year distribution
     const foundingYearRanges = [
@@ -252,6 +254,7 @@ export async function GET(request: NextRequest) {
       foundingYearDistribution,
       deploymentDistribution,
       mobileAvailable,
+      totalHeadquartersCount,
       mobileNotAvailable: totalListings - mobileAvailable,
       averageRecommendation,
     };

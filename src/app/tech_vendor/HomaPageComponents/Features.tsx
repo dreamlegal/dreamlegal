@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -45,23 +44,23 @@ const ServiceTab = ({ service, isActive, onClick, index, isInView }) => {
         cursor-pointer flex items-center gap-3 px-6 py-4 w-full
         relative group transition-all duration-300
         transform ${isInView ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}
-        ${isActive ? 'text-blue-600 font-medium' : 'text-gray-600'}
+        ${isActive ? 'text-[#7cc6ee] font-medium' : 'text-[#2d2d2d]'}
       `}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
       {isActive && (
         <div
-          className="absolute inset-0 bg-gradient-to-br from-blue-50 to-blue-100/50 -z-10"
+          className="absolute inset-0 bg-[#f5f7fa] -z-10"
         />
       )}
       
       <Icon className={`w-5 h-5 flex-shrink-0 transition-colors duration-300
-        ${isActive ? 'text-blue-600' : 'text-gray-400 group-hover:text-blue-500'}`} />
+        ${isActive ? 'text-[#7cc6ee]' : 'text-[#334155] group-hover:text-[#7cc6ee]'}`} />
       <span className="text-sm md:text-base whitespace-nowrap">
         {service.title}
       </span>
       
-      <div className={`absolute left-0 top-0 bottom-0 w-0.5 bg-blue-600 transform scale-y-0 transition-transform duration-300
+      <div className={`absolute left-0 top-0 bottom-0 w-0.5 bg-[#7cc6ee] transform scale-y-0 transition-transform duration-300
                     ${isActive ? 'scale-y-100' : 'group-hover:scale-y-50'}`} />
     </div>
   );
@@ -73,7 +72,7 @@ const MobileTabSelector = ({ services, activeTab, setActiveTab }) => {
   
   return (
     <div className="md:hidden px-4 py-2">
-      <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100">
+      <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg border border-[#7cc6ee]/10">
         <div className="flex justify-around items-center px-2 py-3">
           {services.map((service) => {
             const Icon = service.icon;
@@ -99,8 +98,8 @@ const MobileTabSelector = ({ services, activeTab, setActiveTab }) => {
                   className={`
                     p-3 rounded-xl cursor-pointer transition-all duration-300
                     ${isActive 
-                      ? 'bg-blue-50 text-blue-600' 
-                      : 'text-gray-400 hover:text-blue-500 hover:bg-blue-50/50'
+                      ? 'bg-[#f5f7fa] text-[#7cc6ee]' 
+                      : 'text-[#334155] hover:text-[#7cc6ee] hover:bg-[#f5f7fa]/50'
                     }
                   `}
                 >
@@ -115,12 +114,12 @@ const MobileTabSelector = ({ services, activeTab, setActiveTab }) => {
                       exit={{ opacity: 0, y: 5 }}
                       transition={{ duration: 0.15 }}
                       className="absolute top-14 px-3 py-1.5
-                               bg-gray-900 text-white text-xs font-medium 
+                               bg-[#1e2556] text-white text-xs font-medium 
                                rounded-lg whitespace-nowrap z-50"
                     >
                       {service.title}
                       <div className="absolute -top-1 left-1/2 -translate-x-1/2 
-                                    w-2 h-2 bg-gray-900 rotate-45" />
+                                    w-2 h-2 bg-[#1e2556] rotate-45" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -257,45 +256,36 @@ const LegalTechDashboard = () => {
   const activeService = services.find(s => s.id === activeTab) || services[0];
 
   return (
-
-          <div
-  ref={sectionRef}
-  className="w-full bg-gradient-to-br from-blue-50 to-white pt-16 pb-4 sm:pt-24 sm:pb-8 relative"
->
-<div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#3B82F61A_1px,transparent_1px),linear-gradient(to_bottom,#3B82F61A_1px,transparent_1px)] bg-[size:24px_24px]" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white via-white/95 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white via-white/95 to-transparent" />
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white via-white/90 to-transparent" />
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white via-white/90 to-transparent" />
-      </div>
-
+    <div
+      ref={sectionRef}
+      className="w-full bg-white pt-16 pb-4 sm:pt-24 sm:pb-8 relative"
+    >
       <div className="max-w-7xl mx-auto px-4 relative">
         <div className={`mb-16 text-center relative transition-all duration-700 transform
                       ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="inline-block">
-            <span className="block text-sm font-semibold text-blue-600 mb-2 tracking-wider">
-              Legal Tech Intelligence
+            <span className="block text-sm font-semibold text-[#7cc6ee] mb-2 tracking-wider">
+              LEGAL TECH INTELLIGENCE
             </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 relative inline-block">
-  Our Solution Suite
-  <div
-    className={`absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-blue-400 
-                transform origin-left transition-transform duration-1000 
-                ${isInView ? 'scale-x-100' : 'scale-x-0'}`}
-  />
-</h2>
-            <p className="text-gray-600 mt-4 max-w-xl mx-auto">
-            Optimized product profiles & shorter sale cycles for your next client
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#1e2556] mb-4 relative inline-block">
+              Our Solution Suite
+              <div
+                className={`absolute -bottom-2 left-0 right-0 h-1 bg-[#7cc6ee] 
+                          transform origin-left transition-transform duration-1000 
+                          ${isInView ? 'scale-x-100' : 'scale-x-0'}`}
+              />
+            </h2>
+            <p className="text-[#2d2d2d] mt-4 max-w-xl mx-auto">
+              Optimized product profiles & shorter sale cycles for your next client
             </p>
           </div>
         </div>
 
-        <div className={`bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden backdrop-blur-sm
+        <div className={`bg-[#f5f7fa] rounded-2xl shadow-xl border border-[#7cc6ee]/10 overflow-hidden
                       transform transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <MobileTabSelector services={services} activeTab={activeTab} setActiveTab={setActiveTab} />
           
-          <div className="hidden md:flex border-b border-gray-100">
+          <div className="hidden md:flex border-b border-[#7cc6ee]/10">
             {services.map((service, index) => (
               <div key={service.id} className="flex-1">
                 <ServiceTab 
@@ -309,14 +299,14 @@ const LegalTechDashboard = () => {
             ))}
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 p-8">
-            <div className={`space-y-8 transition-all duration-700 delay-300 transform
+          <div className="flex flex-col md:flex-row gap-8 p-8">
+            <div className={`space-y-8 transition-all duration-700 delay-300 transform md:w-1/2
                           ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                <h2 className="text-3xl font-bold text-[#1e2556] mb-4">
                   {activeService.content.title}
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-[#2d2d2d]">
                   {activeService.content.description}
                 </p>
               </div>
@@ -325,53 +315,47 @@ const LegalTechDashboard = () => {
                 {activeService.content.features.map((feature, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-3 text-gray-700"
+                    className="flex items-center gap-3 text-[#2d2d2d]"
                     style={{ transitionDelay: `${400 + index * 100}ms` }}
                   >
-                    <div className="h-1.5 w-1.5 rounded-full bg-blue-600 flex-shrink-0" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#7cc6ee] flex-shrink-0" />
                     <span>{feature}</span>
                   </div>
                 ))}
               </div>
 
               <button 
-  className="group px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-500 
-             rounded-lg text-white font-medium relative overflow-hidden"
-  onClick={() => window.location.href = activeService.content.href}
->
-  <span className="relative z-10">{activeService.content.buttonText}</span>
-  <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-blue-600 
-                 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-</button>
+                className="px-8 py-3 bg-[#1e2556] 
+                         rounded-lg text-white font-medium relative overflow-hidden"
+                onClick={() => window.location.href = activeService.content.href}
+              >
+                <span className="relative z-10">{activeService.content.buttonText}</span>
+              </button>
             </div>
 
-          
-
-<div className="w-full ">
-  <div className="relative">
-    <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-    
-    <div className="relative bg-white p-3 md:p-6 rounded-2xl shadow-xl transform group-hover:scale-[1.02] transition-all duration-500 border border-gray-100">
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl opacity-50"></div>
-      
-      {activeService.content.imagePath ? (
-        <img
-          src={activeService.content.imagePath}
-          alt={activeService.content.imageAlt}
-          className="relative z-10 w-full h-auto object-cover rounded-xl shadow-lg"
-        />
-      ) : (
-        <div className="relative z-10 w-full rounded-xl shadow-lg bg-gray-100 flex items-center justify-center">
-          {/* 16:9 aspect ratio placeholder */}
-          <div className="pb-[56.25%]"></div>
-          <span className="absolute text-gray-500 text-lg font-medium">Coming Soon</span>
-        </div>
-      )}
-      
-     
-    </div>
-  </div>
-</div>
+            <div className="w-full md:w-1/2">
+              <div className="relative">
+                <div className="absolute -inset-2 bg-[#1e2556] rounded-2xl blur opacity-20 transition duration-300"></div>
+                
+                <div className="relative bg-white p-3 md:p-6 rounded-2xl shadow-xl transform transition-all duration-500 border border-[#7cc6ee]/10">
+                  <div className="absolute inset-0 bg-[#f5f7fa] rounded-2xl opacity-50"></div>
+                  
+                  {activeService.content.imagePath ? (
+                    <img
+                      src={activeService.content.imagePath}
+                      alt={activeService.content.imageAlt}
+                      className="relative z-10 w-full h-auto object-cover rounded-xl shadow-lg"
+                    />
+                  ) : (
+                    <div className="relative z-10 w-full rounded-xl shadow-lg bg-[#f5f7fa] flex items-center justify-center">
+                      {/* 16:9 aspect ratio placeholder */}
+                      <div className="pb-[56.25%]"></div>
+                      <span className="absolute text-[#334155] text-lg font-medium">Coming Soon</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

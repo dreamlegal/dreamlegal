@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -30,31 +29,26 @@ const useIntersectionObserver = (options = {}) => {
 const logos = [
   { 
     id: 1, 
-    color: '#2563eb',
     imageUrl: "clients/c1.png", 
     alt: 'Company 1'
   },
   { 
     id: 2, 
-    color: '#1d4ed8',
     imageUrl: 'clients/c6.jpg',
     alt: 'Company 2'
   },
   { 
     id: 3, 
-    color: '#2563eb',
     imageUrl: 'clients/c3.webp',
     alt: 'Company 3'
   },
   { 
     id: 4, 
-    color: '#3b82f6',
     imageUrl: 'clients/c4.jpg',
     alt: 'Company 4'
   },
   { 
     id: 5, 
-    color: '#2563eb',
     imageUrl: 'clients/c5.jpg',
     alt: 'Company 5'
   }
@@ -83,30 +77,24 @@ const PremiumMarquee = () => {
   const allLogos = [...logos, ...logos];
 
   return (
-    <div ref={sectionRef} className="w-full bg-white relative overflow-hidden py-10 md:py-16 lg:py-32">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000005_1px,transparent_1px),linear-gradient(to_bottom,#00000005_1px,transparent_1px)] bg-[size:48px_48px] opacity-70" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,white_100%)] opacity-40" />
-      </div>
-    
+    <div ref={sectionRef} className="w-full bg-[#f5f7fa] relative overflow-hidden py-10 md:py-16 lg:py-32">
       <div className={`text-center mb-8 md:mb-12 lg:mb-20 relative z-10 px-4 transition-all duration-700 transform
             ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <span className="block text-xs md:text-sm font-semibold text-blue-600 mb-2 tracking-wider">
+        <span className="block text-xs md:text-sm font-semibold text-[#7cc6ee] mb-2 tracking-wider">
           TRUSTED BY INDUSTRY LEADERS
         </span>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#1e2556] mb-4">
           Powering Legal Teams Who Aim Efficiency
         </h2>
-        <div className={`w-16 md:w-24 h-1 bg-gradient-to-r from-blue-600 to-blue-400 mx-auto transform origin-left transition-transform duration-1000 
+        <div className={`w-16 md:w-24 h-1 bg-[#7cc6ee] mx-auto transform origin-left transition-transform duration-1000 
                       ${isInView ? 'scale-x-100' : 'scale-x-0'}`} />
       </div>
 
       <div className="relative w-full max-w-screen-lg mx-auto">
         {/* Left fade */}
-        <div className="hidden md:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        <div className="hidden md:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#f5f7fa] to-transparent z-10 pointer-events-none" />
         {/* Right fade */}
-        <div className="hidden md:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+        <div className="hidden md:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#f5f7fa] to-transparent z-10 pointer-events-none" />
         
         <div 
           className="relative overflow-hidden mx-auto px-4 md:px-12"
@@ -126,7 +114,7 @@ const PremiumMarquee = () => {
                 <div className="relative w-20 md:w-28 lg:w-36 h-12 md:h-16 lg:h-20 flex items-center justify-center overflow-hidden rounded-xl">
                   {/* White center radial background */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="absolute inset-0 bg-gradient-to-br from-white via-white to-blue-100/20 backdrop-blur-sm" />
+                    <div className="absolute inset-0 bg-white backdrop-blur-sm" />
                   </div>
 
                   {/* Interactive spotlight effect */}
@@ -153,7 +141,7 @@ const PremiumMarquee = () => {
                   </div>
 
                   {/* Premium border effect */}
-                  <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-blue-200/50 transition-all duration-500 group-hover:shadow-xl group-hover:shadow-blue-100/30" />
+                  <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-[#7cc6ee]/20 transition-all duration-500 group-hover:shadow-xl group-hover:shadow-[#7cc6ee]/10" />
                 </div>
               </div>
             ))}

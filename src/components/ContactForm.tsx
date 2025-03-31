@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from 'react';
 import { Send, Linkedin, Instagram, MessageSquare } from 'lucide-react';
@@ -51,16 +50,16 @@ function ContactForm() {
 
   return (
     <div className="relative w-full">
-      {/* Animated background gradient - Adjusted for mobile */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-white to-blue-50 opacity-50 rounded-lg md:rounded-xl" />
+      {/* Background */}
+      <div className="absolute inset-0 bg-[#f5f7fa] opacity-50 rounded-lg md:rounded-xl" />
 
       <form onSubmit={handleSubmit} className="relative bg-white/80 backdrop-blur-sm px-3 md:px-5 py-4 md:py-6 space-y-4 md:space-y-6 rounded-lg md:rounded-xl">
         {/* Name and Email */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 font-clarity">
-          <div className="flex flex-col gap-1.5 md:gap-2 group">
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 font-clarity">
+          <div className="flex flex-col gap-1.5 md:gap-2 group md:w-1/2">
             <label 
               htmlFor="name" 
-              className="text-xs font-bold text-gray-900 ml-2 group-hover:text-blue-600 transition-colors duration-300"
+              className="text-xs font-bold text-[#1e2556] ml-2 group-hover:text-[#7cc6ee] transition-colors duration-300"
             >
               Full name
             </label>
@@ -69,8 +68,8 @@ function ContactForm() {
                 type="text"
                 className={`rounded-full border-2 text-sm px-4 md:px-5 py-3 md:py-4 w-full transition-all duration-300
                   ${focusedField === 'name' 
-                    ? 'border-blue-400 shadow-lg shadow-blue-100' 
-                    : 'border-slate-200 shadow-sm hover:border-blue-200'}`}
+                    ? 'border-[#7cc6ee] shadow-lg shadow-[#7cc6ee]/10' 
+                    : 'border-slate-200 shadow-sm hover:border-[#7cc6ee]/30'}`}
                 placeholder="What is your name?"
                 name="name"
                 id="name"
@@ -83,10 +82,10 @@ function ContactForm() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-1.5 md:gap-2 group">
+          <div className="flex flex-col gap-1.5 md:gap-2 group md:w-1/2">
             <label 
               htmlFor="email" 
-              className="text-xs font-bold text-gray-900 ml-2 group-hover:text-blue-600 transition-colors duration-300"
+              className="text-xs font-bold text-[#1e2556] ml-2 group-hover:text-[#7cc6ee] transition-colors duration-300"
             >
               Email address
             </label>
@@ -94,8 +93,8 @@ function ContactForm() {
               type="email"
               className={`rounded-full border-2 text-sm px-4 md:px-5 py-3 md:py-4 w-full transition-all duration-300
                 ${focusedField === 'email' 
-                  ? 'border-blue-400 shadow-lg shadow-blue-100' 
-                  : 'border-slate-200 shadow-sm hover:border-blue-200'}`}
+                  ? 'border-[#7cc6ee] shadow-lg shadow-[#7cc6ee]/10' 
+                  : 'border-slate-200 shadow-sm hover:border-[#7cc6ee]/30'}`}
               placeholder="What is your email?"
               name="email"
               id="email"
@@ -109,11 +108,11 @@ function ContactForm() {
         </div>
 
         {/* Phone and Organization */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 font-clarity">
-          <div className="flex flex-col gap-1.5 md:gap-2 group">
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 font-clarity">
+          <div className="flex flex-col gap-1.5 md:gap-2 group md:w-1/2">
             <label 
               htmlFor="phone" 
-              className="text-xs font-bold text-gray-900 ml-2 group-hover:text-blue-600 transition-colors duration-300"
+              className="text-xs font-bold text-[#1e2556] ml-2 group-hover:text-[#7cc6ee] transition-colors duration-300"
             >
               Phone number
             </label>
@@ -121,8 +120,8 @@ function ContactForm() {
               type="text"
               className={`rounded-full border-2 text-sm px-4 md:px-5 py-3 md:py-4 w-full transition-all duration-300
                 ${focusedField === 'phone' 
-                  ? 'border-blue-400 shadow-lg shadow-blue-100' 
-                  : 'border-slate-200 shadow-sm hover:border-blue-200'}`}
+                  ? 'border-[#7cc6ee] shadow-lg shadow-[#7cc6ee]/10' 
+                  : 'border-slate-200 shadow-sm hover:border-[#7cc6ee]/30'}`}
               placeholder="What is your Phone number?"
               name="phone"
               id="phone"
@@ -134,10 +133,10 @@ function ContactForm() {
             />
           </div>
 
-          <div className="flex flex-col gap-1.5 md:gap-2 group">
+          <div className="flex flex-col gap-1.5 md:gap-2 group md:w-1/2">
             <label 
               htmlFor="organization" 
-              className="text-xs font-bold text-gray-900 ml-2 group-hover:text-blue-600 transition-colors duration-300"
+              className="text-xs font-bold text-[#1e2556] ml-2 group-hover:text-[#7cc6ee] transition-colors duration-300"
             >
               Organization
             </label>
@@ -145,8 +144,8 @@ function ContactForm() {
               type="text"
               className={`rounded-full border-2 text-sm px-4 md:px-5 py-3 md:py-4 w-full transition-all duration-300
                 ${focusedField === 'organization' 
-                  ? 'border-blue-400 shadow-lg shadow-blue-100' 
-                  : 'border-slate-200 shadow-sm hover:border-blue-200'}`}
+                  ? 'border-[#7cc6ee] shadow-lg shadow-[#7cc6ee]/10' 
+                  : 'border-slate-200 shadow-sm hover:border-[#7cc6ee]/30'}`}
               placeholder="ex. Microsoft"
               name="organization"
               id="organization"
@@ -160,19 +159,19 @@ function ContactForm() {
         </div>
 
         {/* Message */}
-        <div className="grid grid-cols-1 gap-3 md:gap-4 font-clarity">
+        <div className="flex flex-col gap-3 md:gap-4 font-clarity">
           <div className="flex flex-col gap-1.5 md:gap-2 group">
             <label 
               htmlFor="message" 
-              className="text-xs font-bold text-gray-900 ml-2 group-hover:text-blue-600 transition-colors duration-300"
+              className="text-xs font-bold text-[#1e2556] ml-2 group-hover:text-[#7cc6ee] transition-colors duration-300"
             >
               Message
             </label>
             <textarea
               className={`rounded-xl border-2 text-sm px-4 md:px-5 py-3 md:py-4 w-full transition-all duration-300 resize-none
                 ${focusedField === 'message' 
-                  ? 'border-blue-400 shadow-lg shadow-blue-100' 
-                  : 'border-slate-200 shadow-sm hover:border-blue-200'}`}
+                  ? 'border-[#7cc6ee] shadow-lg shadow-[#7cc6ee]/10' 
+                  : 'border-slate-200 shadow-sm hover:border-[#7cc6ee]/30'}`}
               placeholder="Tell us about your query..."
               name="message"
               id="message"
@@ -186,11 +185,11 @@ function ContactForm() {
           </div>
         </div>
 
-        {/* Submit and Social Links - Mobile optimized */}
+        {/* Submit and Social Links */}
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center pt-2 md:pt-4">
           <button
             type="submit"
-            className="group flex gap-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-400 text-white font-bold px-5 md:px-6 py-2.5 md:py-3 text-sm transition-all duration-300 items-center hover:opacity-90 w-full sm:w-auto justify-center sm:justify-start"
+            className="group flex gap-2 rounded-full bg-[#1e2556] text-white font-bold px-5 md:px-6 py-2.5 md:py-3 text-sm transition-all duration-300 items-center hover:bg-[#161c44] w-full sm:w-auto justify-center sm:justify-start"
           >
             Send Message
             <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
@@ -210,7 +209,7 @@ function ContactForm() {
                 className="group"
                 aria-label={social.label}
               >
-                <div className="p-2 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors duration-300">
+                <div className="p-2 rounded-full bg-[#f5f7fa] text-[#7cc6ee] hover:bg-[#7cc6ee]/10 transition-colors duration-300">
                   <social.icon className="w-4 h-4 md:w-5 md:h-5 transform group-hover:scale-110 transition-transform duration-300" />
                 </div>
               </a>

@@ -43,67 +43,13 @@ const initialData = {
   pricingDistribution: [],
   headquartersDistribution: [],
   foundingYearDistribution: [],
-  deploymentDistribution: [],
+  totalHeadquartersCount: 0,
   mobileAvailable: 0,
   mobileNotAvailable: 0,
 };
 
 // Mock data for testing - remove in production
-const mockData = {
-  totalListings: 374,
-  categoryDistribution: [
-    { category: "Contract Management", count: 72 },
-    { category: "Legal Research", count: 58 },
-    { category: "Document Automation", count: 54 },
-    { category: "E-Discovery", count: 41 },
-    { category: "Intellectual Property Management", count: 38 },
-    { category: "Case Management", count: 35 },
-    { category: "Compliance Management", count: 33 },
-    { category: "Legal Analytics", count: 23 },
-    { category: "Dispute Resolution", count: 20 }
-  ],
-  userCategoryDistribution: [
-    { category: "In-House Counsel", count: 112 },
-    { category: "Law Firms", count: 95 },
-    { category: "Solo Practitioners", count: 78 },
-    { category: "Corporate Legal Teams", count: 53 },
-    { category: "Government Legal Departments", count: 36 }
-  ],
-  pricingDistribution: [
-    { model: "Annual Subscription", count: 142 },
-    { model: "Monthly Subscription", count: 94 },
-    { model: "Volume Based", count: 81 },
-    { model: "One Time", count: 43 },
-    { model: "Perpetual", count: 14 }
-  ],
-  headquartersDistribution: [
-    { country: "United States", count: 194 },
-    { country: "United Kingdom", count: 43 },
-    { country: "India", count: 31 },
-    { country: "Canada", count: 27 },
-    { country: "Australia", count: 18 },
-    { country: "Germany", count: 12 },
-    { country: "France", count: 8 },
-    { country: "Singapore", count: 4 },
-    { country: "Japan", count: 1 },
-    { country: "Brazil", count: 1 }
-  ],
-  foundingYearDistribution: [
-    { range: "2020-2024", count: 87 },
-    { range: "2015-2019", count: 129 },
-    { range: "2010-2014", count: 93 },
-    { range: "2005-2009", count: 45 },
-    { range: "Before 2005", count: 20 }
-  ],
-  deploymentDistribution: [
-    { type: "Software as a Service", count: 217 },
-    { type: "Cloud Based", count: 139 },
-    { type: "On Premise", count: 13 },
-    { type: "Hybrid", count: 5 }
-  ],
-  mobileAvailable: 243,
-  mobileNotAvailable: 131
-};
+
 
 // Stat Card Component
 const StatCard = ({ title, value, icon: Icon, bgColor = BRAND_COLORS.card, iconBgColor = BRAND_COLORS.softButtonBg, textColor = BRAND_COLORS.titleHeading }) => (
@@ -318,8 +264,8 @@ const fetchData = async () => {
               />
               
               <StatCard 
-                title="Product Deployments" 
-                value={formatNumber(analytics.deploymentDistribution.reduce((acc, curr) => acc + curr.count, 0))} 
+                title="Total Countries" 
+                value={formatNumber(analytics.totalHeadquartersCount)} 
                 icon={Server}
                 iconBgColor="#f97316"
               />

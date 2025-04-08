@@ -99,7 +99,7 @@ const Navbar = () => {
           title: 'Learning hub', 
           description: 'Content hub for legal tech beginners.',
           icon: <BookOpen size={16} />,
-          href: 'https://blog.dreamlegal.in' 
+          href: '/learning_hub' 
         },
         { 
           title: 'Insights and leadership', 

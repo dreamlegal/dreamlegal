@@ -456,11 +456,28 @@ const BlogInfo = () => {
                 <option value="" disabled>
                   Select a category...
                 </option>
-                <option value="industry-report">Industry Report</option>
+                {/* <option value="industry-report">Industry Report</option>
                 <option value="market-trends">Market Trends</option>
                 <option value="buyer-perspective-report">Buyer Perspective Report</option>
                 <option value="inspiration-stories">Inspiration Stories</option>
-                <option value="blog">blog</option>
+                <option value="blog">blog</option> */}
+                <option value="Industry Report">Industry Report</option>
+<option value="Market Trends">Market Trends</option>
+<option value="Buyer Perspective Report">Buyer Perspective Report</option>
+<option value="Inspiration Stories">Inspiration Stories</option>
+<option value="Blog">Blog</option>
+
+<option value="Client Relationship Management">Client Relationship Management</option>
+<option value="Governance Risk and Compliance">Governance Risk and Compliance</option>
+<option value="Contract Lifecycle Management">Contract Lifecycle Management</option>
+<option value="E-Signature">E-Signature</option>
+<option value="Document Management System">Document Management System</option>
+<option value="E-billing and Invoicing">E-billing and Invoicing</option>
+<option value="E-discovery">E-discovery</option>
+<option value="Intellectual Property Management">Intellectual Property Management</option>
+<option value="Litigation Management and Analytics">Litigation Management and Analytics</option>
+<option value="Legal Workflow Automation">Legal Workflow Automation</option>
+<option value="Legal Research">Legal Research</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
                 <svg

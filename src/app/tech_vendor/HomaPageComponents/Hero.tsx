@@ -207,7 +207,7 @@ const ResponsiveHero = () => {
 
             {/* Email Input */}
             <FloatingElement delay={0.3} className="max-w-xl mx-auto mt-8 sm:mt-12 px-4">
-              <div 
+              {/* <div 
                 className={`flex flex-col sm:flex-row gap-3 transition-all duration-200 
                            ${isInputFocused ? 'transform -translate-y-1' : ''}`}
               >
@@ -252,7 +252,7 @@ const ResponsiveHero = () => {
                     </>
                   )}
                 </button>
-              </div>
+              </div> */}
     
               {/* Status Message */}
               {status.message && (
@@ -263,6 +263,15 @@ const ResponsiveHero = () => {
                   {status.message}
                 </div>
               )}
+              {/* Login and Signup Buttons */}
+              <div className="flex flex-col gap-4 mt-8 md:flex-row">
+  <a href="/auth/vendor/login" className="w-full px-8 py-3 bg-[#1e2556] text-white rounded-md font-medium hover:bg-[#2d2d2d] transition duration-200 text-center md:w-44">
+    Login
+  </a>
+  <a href="/auth/vendor/signup" className="w-full px-8 py-3 bg-[#7cc6ee] text-[#1e2556] rounded-md font-medium hover:bg-[#60b2df] transition duration-200 text-center md:w-44">
+    Signup
+  </a>
+</div>
             </FloatingElement>
           </motion.div>
         </div>

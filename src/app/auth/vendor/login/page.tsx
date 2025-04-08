@@ -106,6 +106,7 @@ const handleLogin = async (e) => {
     e.preventDefault();
     
     try {
+      // const response = await fetch("/api/vendor-login", {
       const response = await fetch("/api/common-login", {
         method: "POST",
         headers: {

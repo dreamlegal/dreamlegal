@@ -34,7 +34,7 @@ export const Footer = () => {
       title: "Resources",
       links: [
         { href: "/legal_blogs", label: "Legal Blogs" },
-        { href: "https://blog.dreamlegal.in/", label: "Learning hub" },
+        { href: "/learning_hub", label: "Learning hub" },
         { href: "/resources", label: "Insights and leadership" },
         { href: "/digital_readiness_test", label: "Digital readiness evaluation" },
       ],

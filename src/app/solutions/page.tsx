@@ -7,7 +7,6 @@ import Achievements from "./_components/Achievements"
 import "@/app/globals.css"
 import FinalCTA from "./_components/FinalCta"
 
-
 const SolutionsPage: React.FC = () => {
   return (
     <>
@@ -27,3 +26,7 @@ const SolutionsPage: React.FC = () => {
 };
 
 export default SolutionsPage;
+
+export const metadata = {
+  title: 'Ai powered legal solution - Dreamlegal',
+};

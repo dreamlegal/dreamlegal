@@ -28,3 +28,8 @@ const PartnersPage: React.FC = () => {
 };
 
 export default PartnersPage;
+
+export const metadata = {
+  title: 'Legal tradition partnership with collaboration - Dreamlegal',
+  
+};

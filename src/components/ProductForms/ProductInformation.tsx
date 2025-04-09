@@ -1688,14 +1688,14 @@ console.log("Form submitted with:", formData);
             </SelectContent>
           </Select>
         </div>
-        {(errors.adoptionPeriod || errors.adoptionPeriodUnit) && (
+        {/* {(errors.adoptionPeriod || errors.adoptionPeriodUnit) && (
           <div className="w-full bg-[#F8D7DA] mt-2 p-2 rounded-lg flex">
             <XCircle className="w-5 h-5 text-red-500" />
             <p className="text-[#DC3545] pl-2 text-sm">
               {errors.adoptionPeriod || errors.adoptionPeriodUnit}
             </p>
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Security Certificates */}

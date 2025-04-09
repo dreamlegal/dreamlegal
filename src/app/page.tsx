@@ -5,9 +5,16 @@ import MainHomeComponent from "@/pages/MainHomeComponent";
 import "./globals.css";
 import MainHomePage from "@/components/MainHomePage";
 import LandingPage from "@/components/landingPage/LandingPage";
-export default async function Home() {
 
-  // return <MainHomeComponent/>;
-  // return <MainHomePage/>
-  return <LandingPage/>
+export default async function Home() {
+  return (
+    <>
+      <LandingPage/>
+    </>
+  );
+}
+
+export const metadata = {
+  title: 'DreamLegal - Legal Tech Directory | Trusted Strategy Law Firm',
+ 
 }

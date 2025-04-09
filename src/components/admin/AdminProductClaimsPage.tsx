@@ -14,28 +14,57 @@ const AdminProductClaimsPage = () => {
     fetchClaims();
   }, []);
 
-  const fetchClaims = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('/api/admin/product-claims');
-      const data = await response.json();
+  // const fetchClaims = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await fetch('/api/admin/product-claims');
+  //     const data = await response.json();
       
-      if (data.success) {
-        setClaims(data.claims);
-        if (data.claims.length === 0) {
-          showMessage('No product claim requests found', 'info');
-        }
-      } else {
-        showMessage(data.message || 'Failed to load claim requests', 'error');
-      }
-    } catch (error) {
-      console.error('Error fetching claims:', error);
-      showMessage('An error occurred while loading claim requests', 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     if (data.success) {
+  //       setClaims(data.claims);
+  //       if (data.claims.length === 0) {
+  //         showMessage('No product claim requests found', 'info');
+  //       }
+  //     } else {
+  //       showMessage(data.message || 'Failed to load claim requests', 'error');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching claims:', error);
+  //     showMessage('An error occurred while loading claim requests', 'error');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
+// Client-side fetch function
+const fetchClaims = async () => {
+  try {
+    setLoading(true);
+    const response = await fetch('/api/admin/product-claims', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // Empty body since we're not sending any data
+      body: JSON.stringify({}),
+    });
+    const data = await response.json();
+    
+    if (data.success) {
+      setClaims(data.claims);
+      if (data.claims.length === 0) {
+        showMessage('No product claim requests found', 'info');
+      }
+    } else {
+      showMessage(data.message || 'Failed to load claim requests', 'error');
+    }
+  } catch (error) {
+    console.error('Error fetching claims:', error);
+    showMessage('An error occurred while loading claim requests', 'error');
+  } finally {
+    setLoading(false);
+  }
+};
   const showMessage = (text, type = 'info') => {
     setMessage(text);
     setMessageType(type);

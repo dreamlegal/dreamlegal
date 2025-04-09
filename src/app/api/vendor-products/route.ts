@@ -10,6 +10,7 @@ const formatProduct = (product: any) => {
         : product.description
       : "",
     logoUrl: product.logoUrl,
+    slug:product.slug,
   };
 };
 
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
         name: true,
         description: true,
         logoUrl: true,
+        slug:true,
       },
     });
 

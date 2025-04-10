@@ -1674,7 +1674,7 @@ console.log("Form submitted with:", formData);
             name="adoptionPeriod"
             type="text"
             placeholder="Adoption period"
-            value={adoptionPeriod}
+            value={adoptionPeriod | ""}
             onChange={handleAdoptionPeriodChange}
           />
           <Select value={adoptionPeriodUnit} onValueChange={handleAdoptionPeriodUnitChange}>

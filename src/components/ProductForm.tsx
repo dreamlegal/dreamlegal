@@ -1259,7 +1259,8 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
       setMobileAvailable(product.mobileAvailable || false);
       setFocusCountries(product.focusCountries || []);
 
-      const [adoptionPeriod, adoptionPeriodUnit] = product.avgTimeAdoption.split(' ');
+      // const [adoptionPeriod, adoptionPeriodUnit] = product.avgTimeAdoption.split(' ');
+      const [adoptionPeriod, adoptionPeriodUnit] = (product.avgTimeAdoption || '0 days').split(' ');
       setAdoptionPeriod(Number(adoptionPeriod) || 0);
       setAdoptionPeriodUnit(adoptionPeriodUnit || 'days');
 

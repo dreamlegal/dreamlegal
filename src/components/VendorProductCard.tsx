@@ -350,7 +350,8 @@ function VendorProductCard({
   };
 
   const handleView = () => {
-    router.push(`/product/${slug}`);
+    // router.push(`/product/${slug}`);
+    window.location.href = `/product/${slug}`; 
   };
 
   return (

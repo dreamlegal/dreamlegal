@@ -328,13 +328,13 @@ export default function BlogPage() {
           transition={{ duration: 0.3 }}
           className="mb-8"
         >
-          <Link 
-            href="/blog" 
+          <button 
+            onClick={() => window.history.back()} 
             className="flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
           >
             <ArrowLeft size={18} />
             <span>Back to Blogs</span>
-          </Link>
+          </button>
         </motion.div>
         
         <div className="flex flex-col lg:flex-row gap-8">

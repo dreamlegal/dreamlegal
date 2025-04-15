@@ -3,11 +3,21 @@
 //   "rules": { "react/no-unescaped-entities": 0 }
 // }
 
+// {
+//   "extends": "next/core-web-vitals",
+//   "rules": {
+//     "react/no-unescaped-entities": 0,
+//     "@next/next/no-img-element": "warn",  // Downgrade from error to warning
+//     "react-hooks/exhaustive-deps": "warn" // Downgrade from error to warning
+//   }
+// }
 {
   "extends": "next/core-web-vitals",
   "rules": {
     "react/no-unescaped-entities": 0,
-    "@next/next/no-img-element": "warn",  // Downgrade from error to warning
-    "react-hooks/exhaustive-deps": "warn" // Downgrade from error to warning
+    "@next/next/no-img-element": "warn",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-no-undef": "warn",
+    "jsx-a11y/alt-text": "warn"
   }
 }

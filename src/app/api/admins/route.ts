@@ -52,14 +52,14 @@ export async function POST(request) {
     }
     
     // Hash the password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // const salt = await bcrypt.genSalt(10);
+    // const hashedPassword = await bcrypt.hash(password, salt);
     
     // Create new admin
     const newAdmin = await prisma.admins.create({
       data: {
         email,
-        password: hashedPassword,
+        password: password,
         user: user || null
       }
     });

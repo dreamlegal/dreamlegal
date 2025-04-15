@@ -1,259 +1,220 @@
+import { NextResponse } from 'next/server';
 
-// import prisma from '@/lib/prisma'; 
-
-// import { NextResponse } from "next/server"; // For Next.js 13+
-// // import { prisma } from "../../lib/prisma"; // Adjust based on your project
-
-// export async function POST(req: Request) {
-//   try {
-//     const { leadId, vendorId, urgencyResponse, budgetResponse } = await req.json();
-
-//     // Fetch the lead to modify the urgency and budget fields
-//     const lead = await prisma.rfpForm.findUnique({
-//       where: { id: leadId },
-//     });
-
-//     if (!lead) {
-//       return NextResponse.json({ success: false, message: "Lead not found" }, { status: 404 });
-//     }
-
-//     // Ensure urgencyResponse and budgetResponse are arrays inside the urgency and budget objects
-//     const urgency = lead.urgency ?? { askedUrgency: "", urgencyResponse: [] };
-//     const budget = lead.budget ?? { askedMax: "", askedMin: "", budgetUnit: "", budgetResponse: [] };
-
-//     // Modify the urgencyResponse array for the vendor
-//     const updatedUrgencyResponse = urgency.urgencyResponse.map((item: any) =>
-//       item.vendorId === vendorId
-//         ? { ...item, response: urgencyResponse }
-//         : item
-//     );
-
-//     // Add a new response if vendorId not found in the urgencyResponse
-//     if (!updatedUrgencyResponse.some((item: any) => item.vendorId === vendorId)) {
-//       updatedUrgencyResponse.push({ vendorId, response: urgencyResponse });
-//     }
-
-//     // Modify the budgetResponse array for the vendor
-//     const updatedBudgetResponse = budget.budgetResponse.map((item: any) =>
-//       item.vendorId === vendorId
-//         ? { ...item, response: budgetResponse }
-//         : item
-//     );
-
-//     // Add a new response if vendorId not found in the budgetResponse
-//     if (!updatedBudgetResponse.some((item: any) => item.vendorId === vendorId)) {
-//       updatedBudgetResponse.push({ vendorId, response: budgetResponse });
-//     }
-
-//     // Update the lead with new urgencyResponse and budgetResponse
-//     const updatedLead = await prisma.rfpForm.update({
-//       where: { id: leadId },
-//       data: {
-//         urgency: {
-//           ...urgency,
-//           urgencyResponse: updatedUrgencyResponse,
-//         },
-//         budget: {
-//           ...budget,
-//           budgetResponse: updatedBudgetResponse,
-//         },
-//       },
-//     });
-
-//     return NextResponse.json({ success: true, data: updatedLead });
-//   } catch (error) {
-//     console.error("Error updating vendor response:", error);
-//     return NextResponse.json(
-//       { success: false, message: "Failed to update response" },
-//       { status: 500 }
-//     );
-//   }
-// }
-// import prisma from '@/lib/prisma';
-// import { NextResponse } from "next/server";
-
-// export async function POST(req: Request) {
-//   try {
-//     const { leadId, vendorId, urgencyResponse, budgetResponse, features } = await req.json();
-
-//     // Fetch the lead to modify
-//     const lead = await prisma.rfpForm.findUnique({
-//       where: { id: leadId },
-//     });
-
-//     if (!lead) {
-//       return NextResponse.json({ success: false, message: "Lead not found" }, { status: 404 });
-//     }
-
-//     // Handle urgency and budget responses (as before)
-//     const urgency = lead.urgency ?? { askedUrgency: "", urgencyResponse: [] };
-//     const budget = lead.budget ?? { askedMax: "", askedMin: "", budgetUnit: "", budgetResponse: [] };
-
-//     const updatedUrgencyResponse = updateResponseArray(urgency.urgencyResponse, vendorId, urgencyResponse);
-//     const updatedBudgetResponse = updateResponseArray(budget.budgetResponse, vendorId, budgetResponse);
-
-//     // Handle features responses
-//     const updatedFeatures = updateFeaturesResponses(lead.features, vendorId, features);
-
-//     // Update the lead with new responses
-//     const updatedLead = await prisma.rfpForm.update({
-//       where: { id: leadId },
-//       data: {
-//         urgency: {
-//           ...urgency,
-//           urgencyResponse: updatedUrgencyResponse,
-//         },
-//         budget: {
-//           ...budget,
-//           budgetResponse: updatedBudgetResponse,
-//         },
-//         features: updatedFeatures,
-//       },
-//     });
-
-//     return NextResponse.json({ success: true, data: updatedLead });
-//   } catch (error) {
-//     console.error("Error updating vendor response:", error);
-//     return NextResponse.json(
-//       { success: false, message: "Failed to update response" },
-//       { status: 500 }
-//     );
-//   }
-// }
-
-// function updateResponseArray(responseArray: any[], vendorId: string, newResponse: string) {
-//   const updatedArray = responseArray.map((item: any) =>
-//     item.vendorId === vendorId
-//       ? { ...item, response: newResponse }
-//       : item
-//   );
-
-//   if (!updatedArray.some((item: any) => item.vendorId === vendorId)) {
-//     updatedArray.push({ vendorId, response: newResponse });
-//   }
-
-//   return updatedArray;
-// }
-
-// function updateFeaturesResponses(features: any, vendorId: string, newResponses: any) {
-//   const updatedFeatures = { ...features };
-
-//   for (const category in newResponses) {
-//     for (const subCategory in newResponses[category]) {
-//       for (const feature in newResponses[category][subCategory]) {
-//         const response = newResponses[category][subCategory][feature];
-        
-//         if (!updatedFeatures[category][subCategory][feature].responses) {
-//           updatedFeatures[category][subCategory][feature].responses = [];
-//         }
-
-//         const responseIndex = updatedFeatures[category][subCategory][feature].responses.findIndex(
-//           (r: any) => r.vendorId === vendorId
-//         );
-
-//         if (responseIndex !== -1) {
-//           updatedFeatures[category][subCategory][feature].responses[responseIndex].response = response;
-//         } else {
-//           updatedFeatures[category][subCategory][feature].responses.push({ vendorId, response });
-//         }
-//       }
-//     }
-//   }
-
-//   return updatedFeatures;
-// }
-import prisma from '@/lib/prisma';
-import { NextResponse } from "next/server";
+import prisma from '@/lib/prisma'; // Adjust the import according to your project structure
 
 export async function POST(req: Request) {
   try {
-    const { leadId, vendorId, urgencyResponse, budgetResponse, features } = await req.json();
+    // Check if prisma client is properly initialized
+   
+    
+    const { rfpId, vendorId, responses } = await req.json();
 
-    // Fetch the lead to modify
-    const lead = await prisma.rfpForm.findUnique({
-      where: { id: leadId },
-    });
-
-    if (!lead) {
-      return NextResponse.json({ success: false, message: "Lead not found" }, { status: 404 });
+    if (!rfpId || !vendorId) {
+      return NextResponse.json({ 
+        success: false, 
+        message: 'RFP ID and Vendor ID are required' 
+      }, { status: 400 });
     }
 
-    // Handle urgency and budget responses
-    const urgency = lead.urgency ?? { askedUrgency: "", urgencyResponse: [] };
-    const budget = lead.budget ?? { askedMax: "", askedMin: "", budgetUnit: "", budgetResponse: [] };
-
-    const updatedUrgencyResponse = updateResponseArray(urgency.urgencyResponse, vendorId, urgencyResponse);
-    const updatedBudgetResponse = updateResponseArray(budget.budgetResponse, vendorId, budgetResponse);
-
-    // Handle features responses
-    const updatedFeatures = updateFeaturesResponses(lead.features, vendorId, features);
-
-    // Update the lead with new responses
-    const updatedLead = await prisma.rfpForm.update({
-      where: { id: leadId },
-      data: {
-        urgency: {
-          ...urgency,
-          urgencyResponse: updatedUrgencyResponse,
-        },
-        budget: {
-          ...budget,
-          budgetResponse: updatedBudgetResponse,
-        },
-        features: updatedFeatures,
-      },
+    // First, retrieve the current RFP data
+    const rfp = await prisma.rfpForms.findUnique({
+      where: {
+        id: rfpId
+      }
     });
 
-    return NextResponse.json({ success: true, data: updatedLead });
+    if (!rfp) {
+      return NextResponse.json({ 
+        success: false, 
+        message: 'RFP not found' 
+      }, { status: 404 });
+    }
+
+    // Check if this vendor has already responded to this RFP
+    const hasVendorResponded = checkVendorHasResponded(rfp, vendorId);
+    
+    if (hasVendorResponded) {
+      return NextResponse.json({ 
+        success: false, 
+        message: 'You have already submitted a response to this RFP' 
+      }, { status: 400 });
+    }
+
+    // Create updated RFP data with vendor responses
+    const updatedRfp = addVendorResponses(rfp, vendorId, responses);
+
+    // Update the RFP in the database
+    const result = await prisma.rfpForms.update({
+      where: {
+        id: rfpId
+      },
+      data: updatedRfp
+    });
+
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Response submitted successfully',
+      data: result
+    }, { status: 200 });
   } catch (error) {
-    console.error("Error updating vendor response:", error);
-    return NextResponse.json(
-      { success: false, message: "Failed to update response" },
-      { status: 500 }
-    );
+    console.error('Error submitting vendor response:', error);
+    
+    let errorMessage = 'Failed to submit response';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    
+    return NextResponse.json({ 
+      success: false, 
+      message: errorMessage 
+    }, { status: 500 });
   }
 }
 
-function updateResponseArray(responseArray: any[], vendorId: string, newResponse: string) {
-  const existingIndex = responseArray.findIndex((item: any) => item.vendorId === vendorId);
+// Helper function to check if vendor has already responded
+function checkVendorHasResponded(rfp, vendorId) {
+  // Check basic fields with responses
+  const basicFields = ['userOrgType', 'userTeamSize', 'keyProblems', 'keyGoals', 'customisation', 'urgency', 'budget'];
   
-  if (existingIndex !== -1) {
-    // Update existing response
-    return responseArray.map((item: any, index: number) =>
-      index === existingIndex ? { ...item, response: newResponse } : item
-    );
-  } else {
-    // Add new response
-    return [...responseArray, { vendorId, response: newResponse }];
+  for (const field of basicFields) {
+    if (rfp[field] && 
+        rfp[field].responses && 
+        Array.isArray(rfp[field].responses) && 
+        rfp[field].responses.some(response => response.vendorId === vendorId)) {
+      return true;
+    }
   }
-}
-
-function updateFeaturesResponses(features: any, vendorId: string, newResponses: any) {
-  const updatedFeatures = JSON.parse(JSON.stringify(features)); // Deep clone
-
-  for (const category in newResponses) {
-    for (const subCategory in newResponses[category]) {
-      for (const feature in newResponses[category][subCategory]) {
-        const response = newResponses[category][subCategory][feature];
+  
+  // Check process lifecycle
+  if (rfp.processLifecycle) {
+    for (const stage in rfp.processLifecycle) {
+      if (rfp.processLifecycle[stage].responses && 
+          Array.isArray(rfp.processLifecycle[stage].responses) && 
+          rfp.processLifecycle[stage].responses.some(response => response.vendorId === vendorId)) {
+        return true;
+      }
+    }
+  }
+  
+  // Check features
+  if (rfp.features) {
+    for (const category in rfp.features) {
+      for (const functionality in rfp.features[category]) {
+        if (functionality === 'selected') continue; // Skip the 'selected' property
         
-        if (!updatedFeatures[category][subCategory][feature].responses) {
-          updatedFeatures[category][subCategory][feature].responses = [];
-        }
-
-        const responseIndex = updatedFeatures[category][subCategory][feature].responses.findIndex(
-          (r: any) => r.vendorId === vendorId
-        );
-
-        if (responseIndex !== -1) {
-          // Update existing response
-          updatedFeatures[category][subCategory][feature].responses[responseIndex].response = response;
-        } else {
-          // Add new response
-          updatedFeatures[category][subCategory][feature].responses.push({ vendorId, response });
+        for (const feature in rfp.features[category][functionality]) {
+          if (feature === 'selected') continue; // Skip the 'selected' property
+          
+          if (rfp.features[category][functionality][feature].responses && 
+              Array.isArray(rfp.features[category][functionality][feature].responses) &&
+              rfp.features[category][functionality][feature].responses.some(response => response.vendorId === vendorId)) {
+            return true;
+          }
         }
       }
     }
   }
+  
+  return false;
+}
 
-  return updatedFeatures;
+// Helper function to add vendor responses to the RFP data
+function addVendorResponses(rfp, vendorId, responses) {
+  const timestamp = new Date().toISOString();
+  const updatedRfp = { ...rfp };
+  
+  // Process basic fields with responses
+  const basicFields = ['userOrgType', 'userTeamSize', 'keyProblems', 'keyGoals', 'customisation'];
+  for (const field of basicFields) {
+    if (responses[field] && rfp[field]) {
+      // Ensure the responses array exists
+      if (!updatedRfp[field].responses) {
+        updatedRfp[field].responses = [];
+      }
+      
+      // Add the vendor's response
+      updatedRfp[field].responses.push({
+        vendorId,
+        response: responses[field].response,
+        timestamp
+      });
+    }
+  }
+  
+  // Process urgency
+  if (responses.urgency && rfp.urgency) {
+    if (!updatedRfp.urgency.responses) {
+      updatedRfp.urgency.responses = [];
+    }
+    
+    updatedRfp.urgency.responses.push({
+      vendorId,
+      meetable: responses.urgency.meetable,
+      proposedTimeline: responses.urgency.proposedTimeline,
+      timestamp
+    });
+  }
+  
+  // Process budget
+  if (responses.budget && rfp.budget) {
+    if (!updatedRfp.budget.responses) {
+      updatedRfp.budget.responses = [];
+    }
+    
+    updatedRfp.budget.responses.push({
+      vendorId,
+      meetable: responses.budget.meetable,
+      quotedAmount: responses.budget.quotedAmount,
+      pricingDetails: responses.budget.pricingDetails,
+      timestamp
+    });
+  }
+  
+  // Process lifecycle stages
+  if (responses.processLifecycle && rfp.processLifecycle) {
+    for (const stage in responses.processLifecycle) {
+      if (updatedRfp.processLifecycle[stage]) {
+        if (!updatedRfp.processLifecycle[stage].responses) {
+          updatedRfp.processLifecycle[stage].responses = [];
+        }
+        
+        updatedRfp.processLifecycle[stage].responses.push({
+          vendorId,
+          available: responses.processLifecycle[stage].available,
+          details: responses.processLifecycle[stage].details,
+          timestamp
+        });
+      }
+    }
+  }
+  
+  // Process features
+  if (responses.features && rfp.features) {
+    for (const category in responses.features) {
+      if (updatedRfp.features[category]) {
+        for (const functionality in responses.features[category]) {
+          if (updatedRfp.features[category][functionality]) {
+            for (const feature in responses.features[category][functionality]) {
+              if (updatedRfp.features[category][functionality][feature] && 
+                 feature !== 'selected') {
+                
+                if (!updatedRfp.features[category][functionality][feature].responses) {
+                  updatedRfp.features[category][functionality][feature].responses = [];
+                }
+                
+                updatedRfp.features[category][functionality][feature].responses.push({
+                  vendorId,
+                  available: responses.features[category][functionality][feature].available,
+                  details: responses.features[category][functionality][feature].details,
+                  timestamp
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  return updatedRfp;
 }

@@ -46,9 +46,9 @@ export async function POST(request: Request) {
   try {
     // Fetch all users where 'type' is 'user'
     const users = await prisma.user.findMany({
-      where: {
-        type: 'user',
-      },
+      // where: {
+      //   type: 'user',
+      // },
     });
 
     return new Response(

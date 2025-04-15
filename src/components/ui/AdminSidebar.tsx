@@ -121,6 +121,22 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
                 >
                   All Vendors
                 </li>
+                <li
+                  onClick={() => onMenuItemClick("VendorsPage")}
+                  className={`text-slate-300 hover:cursor-pointer ${
+                    selectedMenu === "VendorsPage" ? "text-white" : ""
+                  }`}
+                >
+                  Vendors Management
+                </li>
+                <li
+                  onClick={() => onMenuItemClick("UsersPage ")}
+                  className={`text-slate-300 hover:cursor-pointer ${
+                    selectedMenu === "UsersPage " ? "text-white" : ""
+                  }`}
+                >
+                  Users Management
+                </li>
               </ul>
             </li>
 

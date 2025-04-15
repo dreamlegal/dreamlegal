@@ -378,20 +378,23 @@ model Features {
   @@map("features") // The table is now called "features"
 }
 
-model RfpForm {
-  id            String  @id @default(uuid())
-  userID        String? // User ID
-  userOrgType   String? // Organization Type
-  userTeamSize  String? // Team Size
-  customisation String? // Customization requests
 
-  urgency  Json? // Urgency details stored as a JSON object
-  budget   Json? // Budget details stored as a JSON object
-  features Json? // Features stored as a JSON object
-  vendors  Json? // Vendors stored as a JSON object
 
-  createdAt DateTime @default(now()) // Timestamp for when the RFP form is created
-  updatedAt DateTime @updatedAt // Timestamp for last update
+model RfpForms {
+  id               String    @id @default(uuid())
+  userID           String?   // User ID
+  userOrgType      Json?     // Has value and responses
+  userTeamSize     Json?     // Has value and responses
+  keyProblems      Json?     // Has value and responses
+  keyGoals         Json?     // Has value and responses
+  customisation    Json?     // Has value and responses
+  selectedCategory String?   // Simple string field
+  processLifecycle Json?     // Selected stages with responses
+  features         Json?     // Hierarchical structure with selected flags and responses
+  urgency          Json?     // Has value and responses
+  budget           Json?     // Has value and responses
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
 
 model workFlowProcess {

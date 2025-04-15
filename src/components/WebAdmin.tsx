@@ -18,6 +18,8 @@ import React, { useState } from "react";
 import { RiMenu2Line } from "react-icons/ri";
 import  AdminBlogs from "@/components/AdminBlogs";
 import AdminProductClaimsPage from "@/components/admin/AdminProductClaimsPage"
+import VendorsPage from "./admin/VendorManagement";
+import UsersPage  from "./admin/UserManagement"
 function WebAdmin() {
   const [selectedMenu, setSelectedMenu] = useState("NewProduct");
   const handleMenuItemClick = (menuName: string) => {
@@ -73,6 +75,8 @@ function WebAdmin() {
               {selectedMenu === "sendNotification" && <SendNotification />}
               {selectedMenu === "adminLeads" && <AdminLeads/>}
               {selectedMenu === "adminblog" && <AdminBlogs/>}
+              {selectedMenu === "VendorsPage" && <VendorsPage/>}
+              {selectedMenu === "UsersPage " && <UsersPage />}
 
               {/* {selectedMenu === "Dashboard" && <VendorDashborad />}
               {selectedMenu === "AddProduct" && <AddProduct />}

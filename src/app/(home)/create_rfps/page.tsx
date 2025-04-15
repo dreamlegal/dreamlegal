@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
+import { X } from "lucide-react";
 import { useAuth } from "@/context/authContext"; // Adjust path as needed
 import { useRouter } from "next/navigation";
 
@@ -26,43 +27,6 @@ const urgencyOptions = [
 
 const currencies = ["USD", "EUR", "GBP", "INR"];
 
-// Process lifecycle options based on category
-const categoryLifecycleOptions = {
-  'Client Relationship Management': [
-    'Intake', 'Assessment', 'Strategize', 'Represent', 'Communication', 'Review'
-  ],
-  'Governance, Risk and Compliance': [
-    'Coverage', 'Assessment', 'Validation', 'Implementation', 'Monitoring', 'Analysis'
-  ],
-  'Contract Lifecycle Management': [
-    'Create', 'Negotiation', 'Authentication', 'Execute', 'Store', 'Tracking'
-  ],
-  'E-Signature': [
-    'Document Preparation', 'Authentication', 'Signing', 'Encryption', 'Verification', 'Distribution'
-  ],
-  'Document Management System': [
-    'Capture', 'Change management', 'Review', 'Organize', 'Access management', 'Retrieval'
-  ],
-  'E-billing and Invoicing': [
-    'Invoice generation', 'Authorization', 'Distribution and Accessibility', 'Payment Faciliation', 'Tracking', 'Analysis'
-  ],
-  'E-discovery': [
-    'Discover', 'Preserve', 'Acquire', 'Examine', 'Evaluate', 'Present'
-  ],
-  'Intellectual Property Management': [
-    'Cataloging', 'Analysis', 'Protection', 'Monitoring', 'Enforcement', 'Reporting'
-  ],
-  'Litigation Management and Analytics': [
-    'Intake', 'Strategize', 'Preparation', 'Litigation Support', 'Analytics', 'Outcome evaluation'
-  ],
-  'Legal Workflow Automation': [
-    'Process Identification', 'Workflow configuration', 'Validation', 'Implementation', 'Tracking', 'Optimization'
-  ],
-  'Legal Research': [
-    'Query Identification', 'Source and Type Selection', 'Filtration and sorting', 'Data extraction', 'Data Analysis and Organization', 'Storage or retrieval'
-  ]
-};
-
 const categoryOptions = {
   'Client Relationship Management': {
     'Internal Collaboration': ['Messaging and Communication', 'Notification', 'Document sharing', 'Real time Document editing'],
@@ -85,6 +49,7 @@ const categoryOptions = {
     'Issue Management': ['Incident reporting', 'Issue assessment', 'Action tracking', 'Response measuring'],
     'Laws, Compliance and Regulatory Tracking': ['Sectoral relevance', 'Compliance applicability', 'Law and compliance updates']
   },
+  // All other categories as in your original code
   'Contract Lifecycle Management': {
     'Internal Collaboration': ['Messaging and Communication', 'Notification', 'Document sharing', 'Real time Document editing'],
     'External Collaboration': ['Messaging and Communication', 'Notification', 'Document sharing', 'Real time Document editing'],
@@ -350,6 +315,43 @@ const categoryOptions = {
   },
 };
 
+// Process lifecycle options based on category
+const categoryLifecycleOptions = {
+  'Client Relationship Management': [
+    'Intake', 'Assessment', 'Strategize', 'Represent', 'Communication', 'Review'
+  ],
+  'Governance, Risk and Compliance': [
+    'Coverage', 'Assessment', 'Validation', 'Implementation', 'Monitoring', 'Analysis'
+  ],
+  'Contract Lifecycle Management': [
+    'Create', 'Negotiation', 'Authentication', 'Execute', 'Store', 'Tracking'
+  ],
+  'E-Signature': [
+    'Document Preparation', 'Authentication', 'Signing', 'Encryption', 'Verification', 'Distribution'
+  ],
+  'Document Management System': [
+    'Capture', 'Change management', 'Review', 'Organize', 'Access management', 'Retrieval'
+  ],
+  'E-billing and Invoicing': [
+    'Invoice generation', 'Authorization', 'Distribution and Accessibility', 'Payment Faciliation', 'Tracking', 'Analysis'
+  ],
+  'E-discovery': [
+    'Discover', 'Preserve', 'Acquire', 'Examine', 'Evaluate', 'Present'
+  ],
+  'Intellectual Property Management': [
+    'Cataloging', 'Analysis', 'Protection', 'Monitoring', 'Enforcement', 'Reporting'
+  ],
+  'Litigation Management and Analytics': [
+    'Intake', 'Strategize', 'Preparation', 'Litigation Support', 'Analytics', 'Outcome evaluation'
+  ],
+  'Legal Workflow Automation': [
+    'Process Identification', 'Workflow configuration', 'Validation', 'Implementation', 'Tracking', 'Optimization'
+  ],
+  'Legal Research': [
+    'Query Identification', 'Source and Type Selection', 'Filtration and sorting', 'Data extraction', 'Data Analysis and Organization', 'Storage or retrieval'
+  ]
+};
+
 const categoryNames = Object.keys(categoryOptions);
 
 // Extract all features for validation (not needed in final form, but keeping structure)
@@ -358,6 +360,7 @@ const allFeatures = Object.values(categoryOptions)
 
 const RfpFormPage = () => {
   const { userId, userType, isLoading } = useAuth();
+  console.log(`User Type: ${userType}, User ID: ${userId}`);
   const router = useRouter();
 
   // Organization details
@@ -396,11 +399,11 @@ const RfpFormPage = () => {
   }, [isLoading, userId, userType]);
 
   // Redirect if not a legal professional
-  useEffect(() => {
-    if (!isLoading && (!userId || userType !== "user")) {
-      router.push("/unauthorized");
-    }
-  }, [isLoading, userId, userType, router]);
+  // useEffect(() => {
+  //   if (!isLoading && (!userId || userType !== "user")) {
+  //     router.push("/unauthorized");
+  //   }
+  // }, [isLoading, userId, userType, router]);
 
   // Fetch user profile data
   const fetchUserData = async () => {
@@ -440,20 +443,6 @@ const RfpFormPage = () => {
         setSelectedFeatures(updatedFeatures);
         return prev.filter(f => f !== functionality);
       } else {
-        // If adding a functionality, auto-select all its features
-        const newFeatures = { ...selectedFeatures };
-        newFeatures[functionality] = {};
-        
-        if (selectedCategory && categoryOptions[selectedCategory][functionality]) {
-          categoryOptions[selectedCategory][functionality].forEach(feature => {
-            newFeatures[functionality][feature] = {
-              selected: true,
-              responses: []
-            };
-          });
-        }
-        
-        setSelectedFeatures(newFeatures);
         return [...prev, functionality];
       }
     });
@@ -469,7 +458,7 @@ const RfpFormPage = () => {
           ...functionalityFeatures,
           [feature]: {
             selected: !functionalityFeatures[feature]?.selected,
-            responses: []
+            responses: [],
           }
         }
       };
@@ -512,117 +501,196 @@ const RfpFormPage = () => {
   };
 
   // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
     
-    if (!validateForm()) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
+  //   if (!validateForm()) {
+  //     window.scrollTo({ top: 0, behavior: 'smooth' });
+  //     return;
+  //   }
     
-    setLoading(true);
+  //   setLoading(true);
     
-    try {
-      // Format the data according to our new JSON structure
-      const formattedLifecycles = {};
-      selectedLifecycleStages.forEach(stage => {
-        formattedLifecycles[stage] = {
-          selected: true,
-          responses: []
-        };
-      });
+  //   try {
+  //     // Format the data in the structure expected by the backend
+  //     const formData = {
+  //       userId,
+  //       userOrgType,
+  //       userTeamSize,
+  //       customisation,
+  //       keyProblems,
+  //       keyGoals,
+  //       processLifecycle: selectedLifecycleStages,
+  //       urgency: {
+  //         askedUrgency: urgency,
+  //         urgencyResponse: [],
+  //       },
+  //       budget: {
+  //         askedMin: budgetMin,
+  //         askedMax: budgetMax,
+  //         budgetUnit,
+  //         budgetResponse: [],
+  //       },
+  //       selectedCategory,
+  //       // Convert the new structure back to what the API expects
+  //       features: {
+  //         [selectedCategory]: selectedFunctionalities.reduce((acc, functionality) => {
+  //           const features = selectedFeatures[functionality] || {};
+  //           return {
+  //             ...acc,
+  //             [functionality]: features
+  //           };
+  //         }, {})
+  //       },
+  //       // Keep the vendors structure for compatibility
+  //       vendors: {
+  //         byProduct: {
+  //           products: [],
+  //           selected: false
+  //         },
+  //         byCategory: {
+  //           vendors: [],
+  //           selected: true
+  //         }
+  //       }
+  //     };
       
-      // Format features with proper structure
-      const formattedFeatures = {};
-      if (selectedCategory) {
-        formattedFeatures[selectedCategory] = {};
-        
-        // Add functionalities with selected flag
-        selectedFunctionalities.forEach(functionality => {
-          formattedFeatures[selectedCategory][functionality] = {
-            selected: true
-          };
-          
-          // Add features with selected flag
-          const functionalityFeatures = selectedFeatures[functionality] || {};
-          Object.keys(functionalityFeatures).forEach(feature => {
-            if (functionalityFeatures[feature]?.selected) {
-              formattedFeatures[selectedCategory][functionality][feature] = {
-                selected: true,
-                responses: []
-              };
-            }
-          });
-        });
-      }
+  //     console.log("Submitting RFP data:", formData);
       
-      // Format the data in the structure expected by the backend
-      const formData = {
-        userId,
-        userOrgType: {
-          value: userOrgType,
-          responses: []
-        },
-        userTeamSize: {
-          value: userTeamSize,
-          responses: []
-        },
-        keyProblems: {
-          value: keyProblems,
-          responses: []
-        },
-        keyGoals: {
-          value: keyGoals,
-          responses: []
-        },
-        customisation: {
-          value: customisation,
-          responses: []
-        },
-        selectedCategory,
-        processLifecycle: formattedLifecycles,
-        features: formattedFeatures,
-        urgency: {
-          value: urgency,
-          responses: []
-        },
-        budget: {
-          value: {
-            min: budgetMin,
-            max: budgetMax,
-            currency: budgetUnit
-          },
-          responses: []
-        }
+  //     const response = await fetch('/api/submit-rfp', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
+
+  //     const result = await response.json();
+
+  //     if (result.success) {
+  //       alert("RFP submitted successfully!");
+  //       router.push("/dashboard"); // Redirect to dashboard or confirmation page
+  //     } else {
+  //       setError(result.msg || "Failed to submit RFP.");
+  //     }
+  //   } catch (err) {
+  //     console.error("Error submitting RFP:", err);
+  //     setError("An error occurred while submitting. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // Handle form submission
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  if (!validateForm()) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  
+  setLoading(true);
+  
+  try {
+    // Format lifecycle stages into the correct structure
+    const formattedLifecycle = {};
+    selectedLifecycleStages.forEach(stage => {
+      formattedLifecycle[stage] = {
+        selected: true,
+        responses: []
       };
+    });
+    
+    // Format features into the correct structure
+    const formattedFeatures = {};
+    if (selectedCategory) {
+      formattedFeatures[selectedCategory] = {};
       
-      // Log the formatted data
-      console.log("Submitting RFP with data:", JSON.stringify(formData, null, 2));
-      
-      const response = await fetch('/api/submit-rfp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+      // Add selected functionalities with "selected: true"
+      selectedFunctionalities.forEach(functionality => {
+        formattedFeatures[selectedCategory][functionality] = {
+          selected: true
+        };
+        
+        // Add the features for each functionality
+        const functionalityFeatures = selectedFeatures[functionality] || {};
+        Object.entries(functionalityFeatures).forEach(([feature, details]) => {
+          if (details.selected) {
+            formattedFeatures[selectedCategory][functionality][feature] = {
+              selected: true,
+              responses: []
+            };
+          }
+        });
       });
-
-      const result = await response.json();
-
-      if (result.success) {
-        alert("RFP submitted successfully!");
-        // router.push("/dashboard"); // Redirect to dashboard or confirmation page
-      } else {
-        setError(result.msg || "Failed to submit RFP.");
-      }
-    } catch (err) {
-      console.error("Error submitting RFP:", err);
-      setError("An error occurred while submitting. Please try again.");
-    } finally {
-      setLoading(false);
     }
-  };
+    
+    // Format the data in the structure expected by the backend
+    const formData = {
+      userId,
+      userOrgType: {
+        value: userOrgType,
+        responses: []
+      },
+      userTeamSize: {
+        value: userTeamSize,
+        responses: []
+      },
+      keyProblems: {
+        value: keyProblems,
+        responses: []
+      },
+      keyGoals: {
+        value: keyGoals,
+        responses: []
+      },
+      customisation: {
+        value: customisation,
+        responses: []
+      },
+      selectedCategory,
+      processLifecycle: formattedLifecycle,
+      features: formattedFeatures,
+      urgency: {
+        value: urgency,
+        responses: []
+      },
+      budget: {
+        value: {
+          min: budgetMin,
+          max: budgetMax,
+          currency: budgetUnit
+        },
+        responses: []
+      }
+    };
+    
+    console.log("Submitting RFP data:", JSON.stringify(formData, null, 2));
+    
+    const response = await fetch('/api/submit-rfp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
 
+    const result = await response.json();
+
+    if (result.success) {
+      alert("RFP submitted successfully!");
+      // router.push("/dashboard"); // Redirect to dashboard or confirmation page
+    } else {
+      setError(result.msg || "Failed to submit RFP.");
+    }
+  } catch (err) {
+    console.error("Error submitting RFP:", err);
+    setError("An error occurred while submitting. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
   // Show loading state
   if (isLoading) {
     return (
@@ -740,127 +808,9 @@ const RfpFormPage = () => {
                 </div>
               </div>
               
-              {/* Budget & Timeline */}
-              <div className="mb-8">
-                <h3 className="text-xl font-semibold text-[#334155] mb-4">Budget & Timeline</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
-                  {/* Budget Min */}
-                  <div>
-                    <label className="block text-[#2d2d2d] mb-2" htmlFor="budgetMin">
-                      Minimum Budget*
-                    </label>
-                    <input
-                      type="text"
-                      id="budgetMin"
-                      value={budgetMin}
-                      onChange={(e) => setBudgetMin(e.target.value)}
-                      placeholder="Enter minimum budget"
-                      className={`w-full p-2 border ${errors.budgetMin ? 'border-red-500' : 'border-gray-300'} rounded`}
-                    />
-                    {errors.budgetMin && (
-                      <p className="text-red-500 text-sm mt-1">{errors.budgetMin}</p>
-                    )}
-                  </div>
-                  
-                  {/* Budget Max */}
-                  <div>
-                    <label className="block text-[#2d2d2d] mb-2" htmlFor="budgetMax">
-                      Maximum Budget*
-                    </label>
-                    <input
-                      type="text"
-                      id="budgetMax"
-                      value={budgetMax}
-                      onChange={(e) => setBudgetMax(e.target.value)}
-                      placeholder="Enter maximum budget"
-                      className={`w-full p-2 border ${errors.budgetMax ? 'border-red-500' : 'border-gray-300'} rounded`}
-                    />
-                    {errors.budgetMax && (
-                      <p className="text-red-500 text-sm mt-1">{errors.budgetMax}</p>
-                    )}
-                  </div>
-                  
-                  {/* Budget Unit */}
-                  <div>
-                    <label className="block text-[#2d2d2d] mb-2" htmlFor="budgetUnit">
-                      Currency*
-                    </label>
-                    <select
-                      id="budgetUnit"
-                      value={budgetUnit}
-                      onChange={(e) => setBudgetUnit(e.target.value)}
-                      className={`w-full p-2 border ${errors.budgetUnit ? 'border-red-500' : 'border-gray-300'} rounded`}
-                    >
-                      <option value="">Select currency</option>
-                      {currencies.map((currency) => (
-                        <option key={currency} value={currency}>{currency}</option>
-                      ))}
-                    </select>
-                    {errors.budgetUnit && (
-                      <p className="text-red-500 text-sm mt-1">{errors.budgetUnit}</p>
-                    )}
-                  </div>
-                  
-                  {/* Urgency */}
-                  <div>
-                    <label className="block text-[#2d2d2d] mb-2" htmlFor="urgency">
-                      Urgency Level*
-                    </label>
-                    <select
-                      id="urgency"
-                      value={urgency}
-                      onChange={(e) => setUrgency(e.target.value)}
-                      className={`w-full p-2 border ${errors.urgency ? 'border-red-500' : 'border-gray-300'} rounded`}
-                    >
-                      <option value="">Select urgency</option>
-                      {urgencyOptions.map((option) => (
-                        <option key={option} value={option}>{option}</option>
-                      ))}
-                    </select>
-                    {errors.urgency && (
-                      <p className="text-red-500 text-sm mt-1">{errors.urgency}</p>
-                    )}
-                  </div>
-                </div>
-              </div>
-              
-              {/* Key Problems and Goals */}
-              <div className="mb-8">
-                <h3 className="text-xl font-semibold text-[#334155] mb-4">Project Details</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Key Problems */}
-                  <div>
-                    <label className="block text-[#2d2d2d] mb-2" htmlFor="keyProblems">
-                      Key Problems
-                    </label>
-                    <textarea
-                      id="keyProblems"
-                      value={keyProblems}
-                      onChange={(e) => setKeyProblems(e.target.value)}
-                      placeholder="Describe the key problems you're trying to solve"
-                      className="w-full p-2 border border-gray-300 rounded min-h-[120px]"
-                    />
-                  </div>
-                  
-                  {/* Key Goals */}
-                  <div>
-                    <label className="block text-[#2d2d2d] mb-2" htmlFor="keyGoals">
-                      Key Goals
-                    </label>
-                    <textarea
-                      id="keyGoals"
-                      value={keyGoals}
-                      onChange={(e) => setKeyGoals(e.target.value)}
-                      placeholder="Describe your key goals for this project"
-                      className="w-full p-2 border border-gray-300 rounded min-h-[120px]"
-                    />
-                  </div>
-                </div>
-              </div>
-              
               {/* Category Selection */}
               <div className="mb-8">
-                <h3 className="text-xl font-semibold text-[#334155] mb-4">Solution Category</h3>
+                <h3 className="text-xl font-semibold text-[#334155] mb-4">Category</h3>
                 <div>
                   <label className="block text-[#2d2d2d] mb-2" htmlFor="category">
                     Select Category*
@@ -887,21 +837,42 @@ const RfpFormPage = () => {
                 </div>
               </div>
               
-              {/* Customization Requirements */}
-              <div className="mb-8">
-                <label className="block text-[#2d2d2d] mb-2" htmlFor="customisation">
-                  Specific Customisation Requirements
-                </label>
-                <textarea
-                  id="customisation"
-                  value={customisation}
-                  onChange={(e) => setCustomisation(e.target.value)}
-                  placeholder="Describe any specific customization requirements you have"
-                  className="w-full p-2 border border-gray-300 rounded min-h-[120px]"
-                />
-              </div>
+              {/* Key Problems and Goals */}
+              {selectedCategory && (
+                <div className="mb-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Key Problems */}
+                    <div>
+                      <label className="block text-[#2d2d2d] mb-2" htmlFor="keyProblems">
+                        Key Problems
+                      </label>
+                      <textarea
+                        id="keyProblems"
+                        value={keyProblems}
+                        onChange={(e) => setKeyProblems(e.target.value)}
+                        placeholder="Describe the key problems you're trying to solve"
+                        className="w-full p-2 border border-gray-300 rounded min-h-[120px]"
+                      />
+                    </div>
+                    
+                    {/* Key Goals */}
+                    <div>
+                      <label className="block text-[#2d2d2d] mb-2" htmlFor="keyGoals">
+                        Key Goals
+                      </label>
+                      <textarea
+                        id="keyGoals"
+                        value={keyGoals}
+                        onChange={(e) => setKeyGoals(e.target.value)}
+                        placeholder="Describe your key goals for this project"
+                        className="w-full p-2 border border-gray-300 rounded min-h-[120px]"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
               
-              {/* Process Lifecycle - Only shown after category selection */}
+              {/* Process Lifecycle */}
               {selectedCategory && categoryLifecycleOptions[selectedCategory] && (
                 <div className="mb-8">
                   <h3 className="text-xl font-semibold text-[#334155] mb-4">Process Lifecycle</h3>
@@ -949,7 +920,7 @@ const RfpFormPage = () => {
                 </div>
               )}
               
-              {/* Functionality Selection - Only shown after category selection */}
+              {/* Functionality Selection */}
               {selectedCategory && (
                 <div className="mb-8">
                   <h3 className="text-xl font-semibold text-[#334155] mb-4">Functionality</h3>
@@ -963,11 +934,7 @@ const RfpFormPage = () => {
                     {Object.keys(categoryOptions[selectedCategory]).map((functionality) => (
                       <div 
                         key={functionality}
-                        className={`border rounded p-3 cursor-pointer hover:border-[#7cc6ee] transition-colors ${
-                          selectedFunctionalities.includes(functionality) 
-                            ? 'bg-[#7cc6ee] bg-opacity-10 border-[#7cc6ee]' 
-                            : 'bg-[#f5f7fa]'
-                        }`}
+                        className="border rounded p-3 bg-[#f5f7fa] cursor-pointer hover:border-[#7cc6ee] transition-colors"
                         onClick={() => handleFunctionalityChange(functionality)}
                       >
                         <div className="flex items-start">
@@ -991,11 +958,11 @@ const RfpFormPage = () => {
                 </div>
               )}
               
-              {/* Features Selection - Only shown after functionality selection */}
+              {/* Features Selection */}
               {selectedFunctionalities.length > 0 && (
                 <div className="mb-8">
                   <h3 className="text-xl font-semibold text-[#334155] mb-4">Features</h3>
-                  <p className="text-[#2d2d2d] mb-4">Adjust the selected features for each functionality</p>
+                  <p className="text-[#2d2d2d] mb-4">Select specific features for each functionality</p>
                   
                   {errors.features && (
                     <p className="text-red-500 text-sm mb-3">{errors.features}</p>
@@ -1027,6 +994,104 @@ const RfpFormPage = () => {
                   ))}
                 </div>
               )}
+              
+              {/* Budget & Timeline */}
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-[#334155] mb-4">Budget & Timeline</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
+                  {/* Urgency */}
+                  <div>
+                    <label className="block text-[#2d2d2d] mb-2" htmlFor="urgency">
+                      Urgency Level*
+                    </label>
+                    <select
+                      id="urgency"
+                      value={urgency}
+                      onChange={(e) => setUrgency(e.target.value)}
+                      className={`w-full p-2 border ${errors.urgency ? 'border-red-500' : 'border-gray-300'} rounded`}
+                    >
+                      <option value="">Select urgency</option>
+                      {urgencyOptions.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                    {errors.urgency && (
+                      <p className="text-red-500 text-sm mt-1">{errors.urgency}</p>
+                    )}
+                  </div>
+                  
+                  {/* Budget Unit */}
+                  <div>
+                    <label className="block text-[#2d2d2d] mb-2" htmlFor="budgetUnit">
+                      Currency*
+                    </label>
+                    <select
+                      id="budgetUnit"
+                      value={budgetUnit}
+                      onChange={(e) => setBudgetUnit(e.target.value)}
+                      className={`w-full p-2 border ${errors.budgetUnit ? 'border-red-500' : 'border-gray-300'} rounded`}
+                    >
+                      <option value="">Select currency</option>
+                      {currencies.map((currency) => (
+                        <option key={currency} value={currency}>{currency}</option>
+                      ))}
+                    </select>
+                    {errors.budgetUnit && (
+                      <p className="text-red-500 text-sm mt-1">{errors.budgetUnit}</p>
+                    )}
+                  </div>
+                  
+                  {/* Budget Min */}
+                  <div>
+                    <label className="block text-[#2d2d2d] mb-2" htmlFor="budgetMin">
+                      Minimum Budget*
+                    </label>
+                    <input
+                      type="text"
+                      id="budgetMin"
+                      value={budgetMin}
+                      onChange={(e) => setBudgetMin(e.target.value)}
+                      placeholder="Enter minimum budget"
+                      className={`w-full p-2 border ${errors.budgetMin ? 'border-red-500' : 'border-gray-300'} rounded`}
+                    />
+                    {errors.budgetMin && (
+                      <p className="text-red-500 text-sm mt-1">{errors.budgetMin}</p>
+                    )}
+                  </div>
+                  
+                  {/* Budget Max */}
+                  <div>
+                    <label className="block text-[#2d2d2d] mb-2" htmlFor="budgetMax">
+                      Maximum Budget*
+                    </label>
+                    <input
+                      type="text"
+                      id="budgetMax"
+                      value={budgetMax}
+                      onChange={(e) => setBudgetMax(e.target.value)}
+                      placeholder="Enter maximum budget"
+                      className={`w-full p-2 border ${errors.budgetMax ? 'border-red-500' : 'border-gray-300'} rounded`}
+                    />
+                    {errors.budgetMax && (
+                      <p className="text-red-500 text-sm mt-1">{errors.budgetMax}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Customization Requirements */}
+              <div className="mb-8">
+                <label className="block text-[#2d2d2d] mb-2" htmlFor="customisation">
+                  Specific Customisation Requirements
+                </label>
+                <textarea
+                  id="customisation"
+                  value={customisation}
+                  onChange={(e) => setCustomisation(e.target.value)}
+                  placeholder="Describe any specific customization requirements you have"
+                  className="w-full p-2 border border-gray-300 rounded min-h-[120px]"
+                />
+              </div>
               
               {/* Submit Button */}
               <button 

@@ -1,3 +1,12 @@
+
+
+// type PredefinedCategories = {
+//   userCategories: string[];
+//   industries: string[];
+//   practiceAreas: string[];
+//   teamSizes: string[];
+// };
+
 // const predefinedCategories = {
 //   userCategories: [
 //     "Individual Practitioner",
@@ -96,17 +105,12 @@
 //     "Trust",
 //     "Other",
 //   ],
-//   teamSizes: [
-//     "1",
-//     "2-20",
-//     "21-50",
-//     "51-200",
-//     "201-500",
-//     "500+",
-//   ],
+//   teamSizes: ["1", "2-20", "21-50", "51-200", "201-500", "500+"],
 // };
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faUndoAlt } from "@fortawesome/free-solid-svg-icons";
 
-// import React, { useState } from "react";
+// import React, { useState, useEffect } from "react";
 // import { Card, CardContent } from "@/components/ui/card";
 // import { Label } from "@/components/ui/label";
 // import { Input } from "@/components/ui/input";
@@ -121,19 +125,32 @@
 // } from "@/components/ui/select";
 // import { X, Lock, Unlock } from "lucide-react";
 // import { useCustomerSegmentStore } from "./UserCustomerSegmentStore";
+// import { ProductInfo } from "@/store/useStore";
 
-// type CategoryType = "userCategories" | "industries" | "practiceAreas" | "teamSizes";
+// // ... keep the predefinedCategories object as is
+
+// type CategoryType =
+//   | "userCategories"
+//   | "industries"
+//   | "practiceAreas"
+//   | "teamSizes";
 
 // export default function ProductCustomerSegment() {
-//   const { customerSegment, addCategory, removeCategory, updatePercentage, toggleLock, validateAndSave } = useCustomerSegmentStore();
-//   const [customCategory, setCustomCategory] = useState<{
-//     [key in CategoryType]: string;
-//   }>({
-//     userCategories: "",
-//     industries: "",
-//     practiceAreas: "",
-//     teamSizes: "",
-//   });
+//   const {
+//     customerSegment,
+//     addCategory,
+//     removeCategory,
+//     updatePercentage,
+//     toggleLock,
+//     validateAndSave,
+//     reset, // Add this function in your store
+//     initializeFromGlobalStore,
+//   } = useCustomerSegmentStore();
+
+//   const [yes, setYes] = useState(false);
+//   const [activeCategory, setActiveCategory] = useState<CategoryType | null>(
+//     null
+//   );
 
 //   const handleSelectChange = (type: CategoryType, value: string) => {
 //     if (value === "Other") {
@@ -141,6 +158,8 @@
 //     } else {
 //       addCategory(type, value);
 //     }
+//     setYes(true);
+//     setActiveCategory(type); // Set the active category
 //   };
 
 //   const handleCustomCategorySubmit = (
@@ -152,6 +171,9 @@
 //       addCategory(type, customCategory[type]);
 //       setCustomCategory((prev) => ({ ...prev, [type]: "" }));
 //     }
+//   };
+//   const handleReset = () => {
+//     reset(); // This should reset the customer segment data in your store
 //   };
 
 //   const renderCategorySection = (type: CategoryType, title: string) => (
@@ -170,6 +192,7 @@
 //             ))}
 //           </SelectContent>
 //         </Select>
+
 //         {customCategory[type] !== "" && (
 //           <form
 //             onSubmit={(e) => handleCustomCategorySubmit(e, type)}
@@ -189,6 +212,12 @@
 //           </form>
 //         )}
 //       </div>
+
+//       {yes && activeCategory === type && (
+//         <p className="italic text-sm font-gray-500">
+//           (Mention the existing distribution)
+//         </p>
+//       )}
 //       {customerSegment[type].map((category) => (
 //         <div key={category.name} className="">
 //           <div className="flex justify-between items-center">
@@ -199,7 +228,11 @@
 //                 size="icon"
 //                 onClick={() => toggleLock(type, category.name)}
 //               >
-//                 {category.locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+//                 {category.locked ? (
+//                   <Lock className="h-4 w-4" />
+//                 ) : (
+//                   <Unlock className="h-4 w-4" />
+//                 )}
 //               </Button>
 //               <Button
 //                 variant="ghost"
@@ -208,6 +241,9 @@
 //               >
 //                 <X className="h-4 w-4" />
 //               </Button>
+//               {/* <button onClick={() => reset('userCategories')}>
+//               Reset
+//             </button> */}
 //             </div>
 //           </div>
 //           <div className="flex items-center">
@@ -227,7 +263,11 @@
 //               max="100"
 //               value={category.percentage}
 //               onChange={(e) =>
-//                 updatePercentage(type, category.name, parseInt(e.target.value) || 0)
+//                 updatePercentage(
+//                   type,
+//                   category.name,
+//                   parseInt(e.target.value) || 0
+//                 )
 //               }
 //               className="w-16"
 //               disabled={category.locked}
@@ -239,28 +279,99 @@
 //     </div>
 //   );
 
-//   const handleSubmit = () => {
-//     if (validateAndSave()) {
-//       alert('Data saved successfully!');
+//   const [customCategory, setCustomCategory] = useState<{
+//     [key in CategoryType]: string;
+//   }>({
+//     userCategories: "",
+//     industries: "",
+//     practiceAreas: "",
+//     teamSizes: "",
+//   });
+
+//   useEffect(() => {
+//     console.log("Component mounted, checking for existing data");
+//     const globalStore = ProductInfo.getState();
+//     console.log("Global Store Data:", globalStore);
+
+//     if (
+//       globalStore.userCategory?.length ||
+//       globalStore.industry?.length ||
+//       globalStore.practiceAreas?.length ||
+//       globalStore.teamSize?.length
+//     ) {
+//       console.log("Existing data found, initializing from global store");
+//       initializeFromGlobalStore();
 //     } else {
-//       alert('Validation failed. Please check your inputs.');
+//       console.log("No existing data found");
+//     }
+//   }, [initializeFromGlobalStore]);
+
+//   useEffect(() => {
+//     console.log("Customer Segment updated:", customerSegment);
+//   }, [customerSegment]);
+
+//   // ... keep the rest of your component logic (handleSelectChange, handleCustomCategorySubmit, etc.) as is
+
+//   const handleSubmit = () => {
+//     console.log("Attempting to save data");
+//     if (validateAndSave()) {
+//       console.log("Data saved successfully");
+//       alert("Data saved successfully!");
+//     } else {
+//       console.log("Validation failed");
+//       alert("Validation failed. Please check your inputs.");
 //     }
 //   };
 
+//   // ... keep the renderCategorySection function as is
+
 //   return (
 //     <Card className="w-full max-w-4xl mx-auto mt-4">
-//       <span className="text-red-500 italic font-bold text-xs">All Fields Are Required </span>
+//       <span className="text-red-500 italic font-bold text-xs">
+//         All Fields Are Required{" "}
+//       </span>
 
 //       <CardContent className="space-y-8 mt-4">
-//         {renderCategorySection("userCategories", "Target User Categories")}
+//         {renderCategorySection("userCategories", "Target Users")}
 //         {renderCategorySection("industries", "Target Industries")}
 //         {renderCategorySection("practiceAreas", "Target Practice Areas")}
 //         {renderCategorySection("teamSizes", "Target Client Team Sizes")}
-//         <Button className="w-full bg-blue-500 text-white font-semibold " onClick={handleSubmit}>Save Customer Segments </Button>
+//         <Button
+//           className="w-full bg-blue-500 text-white font-semibold "
+//           onClick={handleSubmit}
+//         >
+//           Save Customer Segments
+//         </Button>
+//         <Button
+//           className="w-full bg-gray-500 text-white font-semibold"
+//           onClick={handleReset}
+//         >
+//           Reset
+//         </Button>
 //       </CardContent>
 //     </Card>
 //   );
 // }
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUndoAlt } from "@fortawesome/free-solid-svg-icons";
+
+import React, { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { X, Lock, Unlock } from "lucide-react";
+import { useCustomerSegmentStore } from "./UserCustomerSegmentStore";
+import { ProductInfo } from "@/store/useStore";
 
 type PredefinedCategories = {
   userCategories: string[];
@@ -369,27 +480,6 @@ const predefinedCategories = {
   ],
   teamSizes: ["1", "2-20", "21-50", "51-200", "201-500", "500+"],
 };
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUndoAlt } from "@fortawesome/free-solid-svg-icons";
-
-import React, { useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { X, Lock, Unlock } from "lucide-react";
-import { useCustomerSegmentStore } from "./UserCustomerSegmentStore";
-import { ProductInfo } from "@/store/useStore";
-
-// ... keep the predefinedCategories object as is
 
 type CategoryType =
   | "userCategories"
@@ -405,7 +495,7 @@ export default function ProductCustomerSegment() {
     updatePercentage,
     toggleLock,
     validateAndSave,
-    reset, // Add this function in your store
+    reset,
     initializeFromGlobalStore,
   } = useCustomerSegmentStore();
 
@@ -503,9 +593,6 @@ export default function ProductCustomerSegment() {
               >
                 <X className="h-4 w-4" />
               </Button>
-              {/* <button onClick={() => reset('userCategories')}>
-              Reset
-            </button> */}
             </div>
           </div>
           <div className="flex items-center">
@@ -572,27 +659,16 @@ export default function ProductCustomerSegment() {
     console.log("Customer Segment updated:", customerSegment);
   }, [customerSegment]);
 
-  // ... keep the rest of your component logic (handleSelectChange, handleCustomCategorySubmit, etc.) as is
-
   const handleSubmit = () => {
     console.log("Attempting to save data");
-    if (validateAndSave()) {
-      console.log("Data saved successfully");
-      alert("Data saved successfully!");
-    } else {
-      console.log("Validation failed");
-      alert("Validation failed. Please check your inputs.");
-    }
+    // Always save without validation
+    validateAndSave();
+    console.log("Data saved successfully");
+    alert("Data saved successfully!");
   };
-
-  // ... keep the renderCategorySection function as is
 
   return (
     <Card className="w-full max-w-4xl mx-auto mt-4">
-      <span className="text-red-500 italic font-bold text-xs">
-        All Fields Are Required{" "}
-      </span>
-
       <CardContent className="space-y-8 mt-4">
         {renderCategorySection("userCategories", "Target Users")}
         {renderCategorySection("industries", "Target Industries")}

@@ -1,6 +1,4 @@
 
-
-
 // import React, { useState, useEffect } from 'react';
 // import { ProductInfo } from '@/store/useStore';
 // import ProductInformation from './ProductForms/ProductInformation';
@@ -247,6 +245,8 @@
 //   const [submissionStatus, setSubmissionStatus] = useState("");
 //   const { toast } = useToast();
 //   const [activeStepIndex, setActiveStepIndex] = useState(0);
+  
+//   // Set all steps to always be complete - no validation required
 //   const [completedSteps, setCompletedSteps] = useState({
 //     productInformation: false,
 //     productOverview: false,
@@ -258,82 +258,6 @@
 //     productPostImplementationService: false,
 //     productReference: false,
 //   });
-  
-//   // Effect to track completed steps
-//   useEffect(() => {
-//     // Check product information completeness
-//     const productInformationComplete = productName && 
-//                                      category?.length > 0 && 
-//                                      deployment?.length > 0 && 
-//                                      adoptionPeriod > 0 && 
-//                                      adoptionPeriodUnit && 
-//                                      focusCountries?.length > 0 && 
-//                                      languages?.length > 0;
-    
-//     // Check product overview completeness
-//     const productOverviewComplete = description && 
-//                                    usp && 
-//                                    upcomingUpdates && 
-//                                    painPointAddressed;
-    
-//     // Check service and support completeness
-//     const SAndSresult = demo?.length > 0 && 
-//                        support?.length > 0 && 
-//                        training?.length > 0 && 
-//                        storage && 
-//                        fileSize;
-    
-//     // Check process lifecycle completeness
-//     const processLifecycleComplete = Object.keys(processLifecycle || {}).length > 0;
-    
-//     // Check pricing completeness
-//     const productPricingComplete = freeTrial !== undefined && 
-//                                  timePeriod && 
-//                                  freeVersion !== undefined && 
-//                                  pricingModel && 
-//                                  contractPeriod && 
-//                                  pricingParams;
-    
-//     // Check post-implementation services completeness
-//     const PIServices = maintenance && 
-//                       reqForChange && 
-//                       trainingReq && 
-//                       dataMigration;
-    
-//     // Check product reference completeness
-//     const productReferenceFields = imagesUrl && imagesUrl.length > 0;
-    
-//     // Check customer segments completeness
-//     const productCustomerSegmentsCompletion = userCategory?.length > 0 && 
-//                                             industry?.length > 0 && 
-//                                             practiceAreas?.length > 0 && 
-//                                             teamSize?.length > 0;
-    
-//     // Check features completeness
-//     const productFeaturesComplete = Object.keys(features || {}).length > 0;
-    
-//     // Update completed steps state
-//     setCompletedSteps({
-//       productInformation: productInformationComplete && logoUrl,
-//       productOverview: productOverviewComplete,
-//       productPostImplementationService: PIServices,
-//       productSAndS: SAndSresult,
-//       productReference: productReferenceFields,
-//       productPricing: productPricingComplete,
-//       productLifeCycle: processLifecycleComplete,
-//       productFeatures: productFeaturesComplete,
-//       productCustomerSegments: productCustomerSegmentsCompletion,
-//     });
-//   }, [
-//     productName, category, deployment, adoptionPeriod, adoptionPeriodUnit, 
-//     focusCountries, languages, logoUrl, websiteUrl, securityCertificate,
-//     description, usp, upcomingUpdates, painPointAddressed,
-//     maintenance, reqForChange, trainingReq, dataMigration,
-//     demo, support, training, storage, fileSize,
-//     processLifecycle, freeTrial, timePeriod, freeVersion, pricingModel,
-//     contractPeriod, pricingParams, imagesUrl, features,
-//     userCategory, industry, practiceAreas, teamSize
-//   ]);
   
 //   const steps = [
 //     { key: 'productInformation', title: 'Product Information', component: ProductInformation },
@@ -381,65 +305,57 @@
     
 //     if (editing === false) {
 //       const userId = vendorId;
-//       if (!userId) {
-//         toast({
-//           title: "Error",
-//           description: "Something went wrong. Please login again.",
-//           variant: "destructive",
-//         });
-//         return;
-//       }
-     
+//       console.log(userId)
 //       try {
 //         const FormValues = {
 //           userId: userId,
 //           prname: productName,
-//           logoUrl: logoUrl,
-//           category: category,
-//           deployment: deployment,
-//           mobileAccessibility: mobileAvailable,
-//           adoptionPeriod: adoptionPeriod,
-//           adoptionPeriodUnit: adoptionPeriodUnit,
-//           securityCertificate: securityCertificate,
-//           focusCountries: focusCountries,
-//           languages: languages,
-//           description: description,
-//           usp: usp,
-//           upcomingUpdates: upcomingUpdates,
-//           painPointAddressed: painPointAddressed,
-//           websiteUrl: websiteUrl,
-//           userCategory: userCategory,
-//           industry: industry,
-//           practiceAreas: practiceAreas,
-//           teamSize: teamSize,
-//           processLifecycle: processLifecycle,
-//           features: features,
-//           integrations: integrations,
-//           freeTrial: freeTrial,
-//           timePeriod: timePeriod,
-//           freeVersion: freeVersion,
-//           pricingModel: pricingModel,
-//           contractPeriod: contractPeriod,
-//           nameofPlan: nameofPlan,
-//           validity: validity,
-//           price: price,
-//           pricingParams: [pricingParams],
-//           Demo: demo,
-//           support: support,
-//           training: training,
-//           fileSize: [fileSize],
-//           storage: [storage],
-//           maintenance: maintenance,
-//           reqForChange: reqForChange,
-//           trainingReq: trainingReq,
-//           dataMigration: dataMigration,
-//           ImagesUrl: imagesUrl || "image.png",
-//           attachmentUrl: attachmentsUrl || "undefined",
-//           instagramUrl: instagramUrl,
-//           videoUrl: videoUrl,
-//           linkedinUrl: linkedinUrl,
-//           twitterUrl: twitterUrl,
-//           youtubeUrl: youtubeUrl,
+//           logoUrl: logoUrl || "placeholder.png",
+//           category: category || [],
+//           deployment: deployment || [],
+//           mobileAccessibility: mobileAvailable || "No",
+//           adoptionPeriod: adoptionPeriod || 0,
+//           adoptionPeriodUnit: adoptionPeriodUnit || "days",
+//           securityCertificate: securityCertificate || "",
+//           focusCountries: focusCountries || [],
+//           languages: languages || [],
+//           description: description || "",
+//           usp: usp || "",
+//           upcomingUpdates: upcomingUpdates || "",
+//           painPointAddressed: painPointAddressed || "",
+//           websiteUrl: websiteUrl || "",
+//           userCategory: userCategory || [],
+//           industry: industry || [],
+//           practiceAreas: practiceAreas || [],
+//           teamSize: teamSize || [],
+//           processLifecycle: processLifecycle || {},
+//           features: features || {},
+//           integrations: integrations || [],
+//           freeTrial: freeTrial || "No",
+//           timePeriod: timePeriod || "",
+//           freeVersion: freeVersion || "No",
+//           pricingModel: pricingModel || [],
+//           contractPeriod: contractPeriod || "",
+//           nameofPlan: nameofPlan || [],
+//           validity: validity || [],
+//           price: price || [],
+//           pricingParams: [pricingParams || ""],
+//           Demo: demo || [],
+//           support: support || [],
+//           training: training || [],
+//           fileSize: [fileSize || ""],
+//           storage: [storage || ""],
+//           maintenance: maintenance || "",
+//           reqForChange: reqForChange || "",
+//           trainingReq: trainingReq || "",
+//           dataMigration: dataMigration || "",
+//           ImagesUrl: imagesUrl || ["image.png"],
+//           attachmentUrl: attachmentsUrl || [],
+//           instagramUrl: instagramUrl || "",
+//           videoUrl: videoUrl || "",
+//           linkedinUrl: linkedinUrl || "",
+//           twitterUrl: twitterUrl || "",
+//           youtubeUrl: youtubeUrl || "",
 //           active: "draft",
 //           featured: false
 //         };
@@ -489,53 +405,53 @@
 //         const FormValues = {
 //           id: productId,
 //           userId: userId,
-//           prname: productName,
-//           logoUrl: logoUrl,
-//           category: category,
-//           deployment: deployment,
-//           mobileAccessibility: mobileAvailable,
-//           adoptionPeriod: adoptionPeriod,
-//           adoptionPeriodUnit: adoptionPeriodUnit,
-//           securityCertificate: securityCertificate,
-//           focusCountries: focusCountries,
-//           languages: languages,
-//           description: description,
-//           usp: usp,
-//           upcomingUpdates: upcomingUpdates,
-//           painPointAddressed: painPointAddressed,
-//           websiteUrl: websiteUrl,
-//           userCategory: userCategory,
-//           industry: industry,
-//           practiceAreas: practiceAreas,
-//           teamSize: teamSize,
-//           processLifecycle: processLifecycle,
-//           features: features,
-//           integrations: integrations,
-//           freeTrial: freeTrial,
-//           timePeriod: timePeriod,
-//           freeVersion: freeVersion,
-//           pricingModel: pricingModel,
-//           contractPeriod: contractPeriod,
-//           nameofPlan: nameofPlan,
-//           validity: validity,
-//           price: price,
-//           pricingParams: normalizeToArray(pricingParams),
-//           Demo: demo,
-//           support: support,
-//           training: training,
-//           fileSize: normalizeToArray(fileSize),
-//           storage: normalizeToArray(storage),
-//           maintenance: maintenance,
-//           reqForChange: reqForChange,
-//           trainingReq: trainingReq,
-//           dataMigration: dataMigration,
-//           ImageUrl: imagesUrl,
-//           attachmentUrl: attachmentsUrl,
-//           instagramUrl: instagramUrl,
-//           videoUrl: videoUrl,
-//           linkedinUrl: linkedinUrl,
-//           twitterUrl: twitterUrl,
-//           youtubeUrl: youtubeUrl,
+//           prname: productName || "",
+//           logoUrl: logoUrl || "",
+//           category: category || [],
+//           deployment: deployment || [],
+//           mobileAccessibility: mobileAvailable || "No",
+//           adoptionPeriod: adoptionPeriod || 0,
+//           adoptionPeriodUnit: adoptionPeriodUnit || "days",
+//           securityCertificate: securityCertificate || "",
+//           focusCountries: focusCountries || [],
+//           languages: languages || [],
+//           description: description || "",
+//           usp: usp || "",
+//           upcomingUpdates: upcomingUpdates || "",
+//           painPointAddressed: painPointAddressed || "",
+//           websiteUrl: websiteUrl || "",
+//           userCategory: userCategory || [],
+//           industry: industry || [],
+//           practiceAreas: practiceAreas || [],
+//           teamSize: teamSize || [],
+//           processLifecycle: processLifecycle || {},
+//           features: features || {},
+//           integrations: integrations || [],
+//           freeTrial: freeTrial || "No",
+//           timePeriod: timePeriod || "",
+//           freeVersion: freeVersion || "No",
+//           pricingModel: pricingModel || [],
+//           contractPeriod: contractPeriod || "",
+//           nameofPlan: nameofPlan || [],
+//           validity: validity || [],
+//           price: price || [],
+//           pricingParams: normalizeToArray(pricingParams || ""),
+//           Demo: demo || [],
+//           support: support || [],
+//           training: training || [],
+//           fileSize: normalizeToArray(fileSize || ""),
+//           storage: normalizeToArray(storage || ""),
+//           maintenance: maintenance || "",
+//           reqForChange: reqForChange || "",
+//           trainingReq: trainingReq || "",
+//           dataMigration: dataMigration || "",
+//           ImageUrl: imagesUrl || ["image.png"],
+//           attachmentUrl: attachmentsUrl || [],
+//           instagramUrl: instagramUrl || "",
+//           videoUrl: videoUrl || "",
+//           linkedinUrl: linkedinUrl || "",
+//           twitterUrl: twitterUrl || "",
+//           youtubeUrl: youtubeUrl || "",
 //           featured: false
 //         };
 
@@ -1314,19 +1230,20 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
                   </button>
                 )}
                 
-                {activeStepIndex < steps.length - 1 ? (
+                {/* Add Publish button to every step */}
+                <button
+                  onClick={handleSubmit}
+                  className="px-5 py-2 bg-green-600 text-white rounded-md text-sm hover:bg-green-700"
+                >
+                  Publish
+                </button>
+                
+                {activeStepIndex < steps.length - 1 && (
                   <button
                     onClick={() => setActiveStepIndex(activeStepIndex + 1)}
                     className="px-5 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
                   >
                     Continue
-                  </button>
-                ) : (
-                  <button
-                    onClick={handleSubmit}
-                    className="px-5 py-2 bg-green-600 text-white rounded-md text-sm hover:bg-green-700"
-                  >
-                    {editing ? 'Update' : 'Submit'}
                   </button>
                 )}
               </div>

@@ -320,7 +320,7 @@ export async function middleware(request: NextRequest) {
           return NextResponse.redirect(new URL('/legal_professionals/dashboard', request.url));
         }
         // For any other unauthorized access
-        return NextResponse.redirect(new URL('/unauthorized', request.url));
+        // return NextResponse.redirect(new URL('/unauthorized', request.url));
       }
 
     } catch (error) {

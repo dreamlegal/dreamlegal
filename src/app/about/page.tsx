@@ -11,5 +11,6 @@ function page() {
 export default page;
 
 export const metadata = {
-  title: 'About us - Dreamlegal'
+  title: 'About us- DreamLegal: Using Technology to Help Legal teams Succeed',
+  description: 'Driving digital transformation for legal teams with our platforms and strategy'
 };

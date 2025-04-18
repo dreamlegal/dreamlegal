@@ -13,8 +13,7 @@ export default async function Home() {
     </>
   );
 }
-
 export const metadata = {
-  title: 'DreamLegal - Legal Tech Directory | Trusted Strategy Law Firm',
- 
+  title: 'Home - Premier Legal Tech Directory & Strategy Company is DreamLegal.',
+  description: 'DreamLegal is a leading legal technology marketplace and strategy firm. the best answers and tactical direction for legal teams in digital transformation',
 }

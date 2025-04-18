@@ -28,5 +28,6 @@ const SolutionsPage: React.FC = () => {
 export default SolutionsPage;
 
 export const metadata = {
-  title: 'Ai powered legal solution - Dreamlegal',
+  title: 'Solution - Examine DreamLegal\'s AI-Powered Legal Solutions.',
+  description: 'AI-powered legal solutions offered by DreamLegal. See how state-of-the-art technology increases efficiency and streamline legal procedures.',
 };

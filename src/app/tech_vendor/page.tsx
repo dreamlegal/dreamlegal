@@ -10,6 +10,6 @@ export default async function Home() {
 }
 
 export const metadata = {
-  title: 'Partnering with Legal Tech Companies for Growth',
-  description: 'We collaborate with legal tech vendors to boost innovation, drive growth, and deliver advanced legal solutions.',
+  title: 'Tech vendor - Providing Improved Legal Solutions by Working with Vendors',
+  description: 'Gain access to innovative legal remedies. Our vendor partnerships foster creativity and provide exceptional outcomes for your legal requirements.',
 };

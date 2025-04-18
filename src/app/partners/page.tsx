@@ -28,8 +28,7 @@ const PartnersPage: React.FC = () => {
 };
 
 export default PartnersPage;
-
 export const metadata = {
-  title: 'Legal tradition partnership with collaboration - Dreamlegal',
-  
+  title: 'Partnership- Relationships Based on Collaborative Innovation and Legal Tradition',
+  description: 'Study the dynamic interplay of legal tradition and innovative collaboration. Learn how they shape modern interactions and propel growth.',
 };

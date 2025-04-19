@@ -124,11 +124,7 @@ const handleLogin = async (e) => {
         showAlert("Success", "Redirecting to dashboard");
         
         setTimeout(() => {
-          if (data.type === 'vendor') {
-            router.push('/tech_vendor/dashboard');
-          } else {
-            router.push('/legal_professionals/dashboard');
-          }
+          window.location.href = data.type === 'vendor' ? '/tech_vendor/dashboard' : '/legal_professionals/dashboard';
         }, 1500);
       } else {
         showAlert('Error', data?.error || 'Failed to sign in');

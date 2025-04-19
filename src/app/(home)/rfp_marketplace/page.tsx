@@ -1,3 +1,4 @@
+
 // "use client"
 
 // import React, { useEffect, useState } from "react";
@@ -37,6 +38,27 @@
 //       <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
 //         <ChevronDown className="h-4 w-4 text-gray-400" />
 //       </div>
+//     </div>
+//   );
+// };
+
+// // Tab Select Component (replaces dropdown with clickable tabs)
+// const TabSelect = ({ options, value, onChange, className = "" }) => {
+//   return (
+//     <div className={`flex flex-wrap gap-2 ${className}`}>
+//       {options.map((option) => (
+//         <button
+//           key={option.value}
+//           onClick={() => onChange({ target: { value: option.value } })}
+//           className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+//             value === option.value 
+//               ? 'bg-indigo-100 text-indigo-700 border border-indigo-200' 
+//               : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
+//           }`}
+//         >
+//           {option.label}
+//         </button>
+//       ))}
 //     </div>
 //   );
 // };
@@ -95,6 +117,23 @@
 //   );
 // };
 
+// // Form Field Row Component (new)
+// const FormFieldRow = ({ label, value, children, className = "" }) => {
+//   return (
+//     <div className={`flex flex-col md:flex-row items-start gap-4 mb-4 ${className}`}>
+//       <div className="w-full md:w-1/3 space-y-1">
+//         <p className="text-sm font-medium text-gray-700">{label}</p>
+//         <div className="bg-gray-50 p-3 rounded-lg">
+//           <p className="text-sm text-gray-600">{value}</p>
+//         </div>
+//       </div>
+//       <div className="w-full md:w-2/3">
+//         {children}
+//       </div>
+//     </div>
+//   );
+// };
+
 // function RfpMarketplacePage() {
 //   const { vendorId, userType } = useAuth();
 //   const [rfps, setRfps] = useState([]);
@@ -105,7 +144,6 @@
 //   const [categoryFilter, setCategoryFilter] = useState("");
 //   const [orgTypeFilter, setOrgTypeFilter] = useState("");
 //   const [responses, setResponses] = useState({});
-//   const [expandedCategory, setExpandedCategory] = useState(null);
 //   const [respondedRfps, setRespondedRfps] = useState([]);
   
 //   // Get all categories and org types from RFPs for the filters
@@ -572,111 +610,85 @@
 //                     <div className="space-y-6">
 //                       {/* Project Details Section */}
 //                       <Section title="Project Details" icon={FileText} defaultOpen={true}>
-//                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-//                           {/* Key Problems */}
-//                           {(rfp.keyProblems?.value || rfp.keyProblems) && (
+//                         {/* Key Problems */}
+//                         {(rfp.keyProblems?.value || rfp.keyProblems) && (
+//                           <FormFieldRow
+//                             label="Key Problems"
+//                             value={rfp.keyProblems?.value || rfp.keyProblems}
+//                           >
 //                             <div className="space-y-2">
-//                               <h4 className="text-sm font-medium text-gray-900 flex items-center gap-2">
-//                                 <AlertTriangle className="w-4 h-4 text-orange-500" />
-//                                 Key Problems
-//                               </h4>
-//                               <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
-//                                 {rfp.keyProblems?.value || rfp.keyProblems}
-//                               </p>
-//                               <div className="mt-4">
-//                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-//                                   Your Response
-//                                 </label>
-//                                 <textarea
-//                                   className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
-//                                   placeholder="Explain how your solution addresses these problems..."
-//                                   onChange={(e) => handleBasicFieldResponse(rfp.id, 'keyProblems', e.target.value)}
-//                                 />
-//                               </div>
+//                               <textarea
+//                                 className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
+//                                 placeholder="Explain how your solution addresses these problems..."
+//                                 onChange={(e) => handleBasicFieldResponse(rfp.id, 'keyProblems', e.target.value)}
+//                               />
 //                             </div>
-//                           )}
-                          
-//                           {/* Key Goals */}
-//                           {(rfp.keyGoals?.value || rfp.keyGoals) && (
+//                           </FormFieldRow>
+//                         )}
+                        
+//                         {/* Key Goals */}
+//                         {(rfp.keyGoals?.value || rfp.keyGoals) && (
+//                           <FormFieldRow
+//                             label="Key Goals"
+//                             value={rfp.keyGoals?.value || rfp.keyGoals}
+//                           >
 //                             <div className="space-y-2">
-//                               <h4 className="text-sm font-medium text-gray-900 flex items-center gap-2">
-//                                 <Target className="w-4 h-4 text-green-500" />
-//                                 Key Goals
-//                               </h4>
-//                               <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
-//                                 {rfp.keyGoals?.value || rfp.keyGoals}
-//                               </p>
-//                               <div className="mt-4">
-//                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-//                                   Your Response
-//                                 </label>
-//                                 <textarea
-//                                   className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
-//                                   placeholder="Explain how your solution helps achieve these goals..."
-//                                   onChange={(e) => handleBasicFieldResponse(rfp.id, 'keyGoals', e.target.value)}
-//                                 />
-//                               </div>
+//                               <textarea
+//                                 className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
+//                                 placeholder="Explain how your solution helps achieve these goals..."
+//                                 onChange={(e) => handleBasicFieldResponse(rfp.id, 'keyGoals', e.target.value)}
+//                               />
 //                             </div>
-//                           )}
-//                         </div>
+//                           </FormFieldRow>
+//                         )}
                         
 //                         {/* Customization Requirements */}
 //                         {(rfp.customisation?.value || rfp.customisation) && (
-//                           <div className="space-y-2">
-//                             <h4 className="text-sm font-medium text-gray-900 flex items-center gap-2">
-//                               <Settings className="w-4 h-4 text-indigo-500" />
-//                               Customization Requirements
-//                             </h4>
-//                             <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
-//                               {rfp.customisation?.value || rfp.customisation}
-//                             </p>
-//                             <div className="mt-4">
-//                               <label className="block text-sm font-medium text-gray-700 mb-2">
-//                                 Your Response
-//                               </label>
+//                           <FormFieldRow
+//                             label="Customization Requirements"
+//                             value={rfp.customisation?.value || rfp.customisation}
+//                           >
+//                             <div className="space-y-2">
 //                               <textarea
 //                                 className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
 //                                 placeholder="Explain your customization capabilities..."
 //                                 onChange={(e) => handleBasicFieldResponse(rfp.id, 'customisation', e.target.value)}
 //                               />
 //                             </div>
-//                           </div>
+//                           </FormFieldRow>
 //                         )}
 //                       </Section>
                       
 //                       {/* Budget & Timeline Section */}
 //                       <Section title="Budget & Timeline" icon={Clock} defaultOpen={true}>
-//                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//                           {/* Budget Response */}
-//                           <div className="space-y-3">
-//                             <h4 className="text-sm font-medium text-gray-900">Budget Requirements</h4>
-//                             <div className="bg-gray-50 p-3 rounded-lg">
-//                               <p className="text-sm text-gray-600">
-//                                 {rfp.budget?.value?.min || rfp.budget?.askedMin} - {rfp.budget?.value?.max || rfp.budget?.askedMax} {rfp.budget?.value?.currency || rfp.budget?.budgetUnit}
-//                               </p>
+//                         {/* Budget Response */}
+//                         <FormFieldRow
+//                           label="Budget Requirements"
+//                           value={`${rfp.budget?.value?.min || rfp.budget?.askedMin} - ${rfp.budget?.value?.max || rfp.budget?.askedMax} ${rfp.budget?.value?.currency || rfp.budget?.budgetUnit}`}
+//                         >
+//                           <div className="space-y-4">
+//                             <div>
+//                               <label className="block text-sm font-medium text-gray-700 mb-2">
+//                                 Can you meet this budget?
+//                               </label>
+//                               <TabSelect
+//                                 options={[
+//                                   { value: "yes", label: "Yes, within budget" },
+//                                   { value: "partial", label: "Partially, with limitations" },
+//                                   { value: "premium", label: "Yes, but premium pricing" },
+//                                   { value: "no", label: "No, budget is too low" }
+//                                 ]}
+//                                 value={responses[rfp.id]?.budget?.meetable === false ? "no" : responses[rfp.id]?.budget?.meetable === true ? "yes" : ""}
+//                                 onChange={(e) => handleBudgetResponse(
+//                                   rfp.id, 
+//                                   e.target.value !== "no", 
+//                                   responses[rfp.id]?.budget?.quotedAmount || ""
+//                                 )}
+//                               />
 //                             </div>
                             
-//                             <div className="space-y-3 mt-4">
-//                               <div>
-//                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-//                                   Can you meet this budget?
-//                                 </label>
-//                                 <CustomSelect
-//                                   options={[
-//                                     { value: "yes", label: "Yes, within budget" },
-//                                     { value: "partial", label: "Partially, with limitations" },
-//                                     { value: "premium", label: "Yes, but premium pricing" },
-//                                     { value: "no", label: "No, budget is too low" }
-//                                   ]}
-//                                   onChange={(e) => handleBudgetResponse(
-//                                     rfp.id, 
-//                                     e.target.value !== "no", 
-//                                     responses[rfp.id]?.budget?.quotedAmount || ""
-//                                   )}
-//                                 />
-//                               </div>
-                              
-//                               <div>
+//                             <div className="flex gap-4">
+//                               <div className="w-1/2">
 //                                 <label className="block text-sm font-medium text-gray-700 mb-2">
 //                                   Your Quoted Amount
 //                                 </label>
@@ -699,12 +711,12 @@
 //                                 </div>
 //                               </div>
                               
-//                               <div>
+//                               <div className="w-1/2">
 //                                 <label className="block text-sm font-medium text-gray-700 mb-2">
 //                                   Pricing Details
 //                                 </label>
 //                                 <textarea
-//                                   className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
+//                                   className="w-full min-h-[40px] rounded-lg border border-gray-200 p-2 text-sm"
 //                                   placeholder="Explain your pricing structure..."
 //                                   onChange={(e) => handleBudgetResponse(
 //                                     rfp.id,
@@ -718,182 +730,160 @@
 //                               </div>
 //                             </div>
 //                           </div>
-                          
-//                           {/* Urgency Response */}
-//                           <div className="space-y-3">
-//                             <h4 className="text-sm font-medium text-gray-900">Urgency Requirements</h4>
-//                             <div className="bg-gray-50 p-3 rounded-lg">
-//                               <p className="text-sm text-gray-600">
-//                                 {rfp.urgency?.value || rfp.urgency?.askedUrgency}
-//                               </p>
+//                         </FormFieldRow>
+                        
+//                         {/* Urgency Response */}
+//                         <FormFieldRow
+//                           label="Urgency Requirements"
+//                           value={rfp.urgency?.value || rfp.urgency?.askedUrgency}
+//                         >
+//                           <div className="space-y-4">
+//                             <div>
+//                               <label className="block text-sm font-medium text-gray-700 mb-2">
+//                                 Can you meet this timeline?
+//                               </label>
+//                               <TabSelect
+//                                 options={[
+//                                   { value: "yes", label: "Yes, can meet timeline" },
+//                                   { value: "partial", label: "Partially, phased approach" },
+//                                   { value: "premium", label: "Yes, with expedited service" },
+//                                   { value: "no", label: "No, timeline is too aggressive" }
+//                                 ]}
+//                                 value={responses[rfp.id]?.urgency?.meetable === false ? "no" : responses[rfp.id]?.urgency?.meetable === true ? "yes" : ""}
+//                                 onChange={(e) => handleUrgencyResponse(
+//                                   rfp.id, 
+//                                   e.target.value !== "no",
+//                                   responses[rfp.id]?.urgency?.proposedTimeline || ""
+//                                 )}
+//                               />
 //                             </div>
                             
-//                             <div className="space-y-3 mt-4">
-//                               <div>
-//                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-//                                   Can you meet this timeline?
-//                                 </label>
-//                                 <CustomSelect
-//                                   options={[
-//                                     { value: "yes", label: "Yes, can meet timeline" },
-//                                     { value: "partial", label: "Partially, phased approach" },
-//                                     { value: "premium", label: "Yes, with expedited service" },
-//                                     { value: "no", label: "No, timeline is too aggressive" }
-//                                   ]}
-//                                   onChange={(e) => handleUrgencyResponse(
-//                                     rfp.id, 
-//                                     e.target.value !== "no",
-//                                     responses[rfp.id]?.urgency?.proposedTimeline || ""
-//                                   )}
-//                                 />
-//                               </div>
-                              
-//                               <div>
-//                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-//                                   Your Proposed Timeline
-//                                 </label>
-//                                 <textarea
-//                                   className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
-//                                   placeholder="Detail your implementation timeline..."
-//                                   onChange={(e) => handleUrgencyResponse(
-//                                     rfp.id,
-//                                     responses[rfp.id]?.urgency?.meetable !== undefined 
-//                                       ? responses[rfp.id]?.urgency?.meetable 
-//                                       : true,
-//                                     e.target.value
-//                                   )}
-//                                 />
-//                               </div>
+//                             <div>
+//                               <label className="block text-sm font-medium text-gray-700 mb-2">
+//                                 Your Proposed Timeline
+//                               </label>
+//                               <textarea
+//                                 className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
+//                                 placeholder="Detail your implementation timeline..."
+//                                 onChange={(e) => handleUrgencyResponse(
+//                                   rfp.id,
+//                                   responses[rfp.id]?.urgency?.meetable !== undefined 
+//                                     ? responses[rfp.id]?.urgency?.meetable 
+//                                     : true,
+//                                   e.target.value
+//                                 )}
+//                               />
 //                             </div>
 //                           </div>
-//                         </div>
+//                         </FormFieldRow>
 //                       </Section>
                       
 //                       {/* Process Lifecycle Section */}
 //                       {rfp.processLifecycle && Object.keys(rfp.processLifecycle).length > 0 && (
 //                         <Section title="Process Lifecycle" icon={BarChart} defaultOpen={true}>
 //                           <div className="space-y-4">
-//                             <h4 className="text-sm font-medium text-gray-900">Client's Required Stages</h4>
-//                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//                               {Object.entries(rfp.processLifecycle).map(([stage, details]) => (
-//                                 <div key={stage} className="border border-gray-200 rounded-lg p-4">
-//                                   <div className="flex items-start justify-between mb-3">
-//                                     <h5 className="text-sm font-medium text-gray-900">{stage}</h5>
-//                                     <StatusBadge status={details.selected ? "new" : "closed"} />
+//                             <h4 className="text-sm font-medium text-gray-900 mb-4">Client's Required Stages</h4>
+                            
+//                             {Object.entries(rfp.processLifecycle).map(([stage, details]) => (
+//                               <FormFieldRow
+//                                 key={stage}
+//                                 label={stage}
+//                                 value={details.selected ? "Required" : "Optional"}
+//                               >
+//                                 <div className="space-y-4">
+//                                   <div>
+//                                     <label className="block text-sm font-medium text-gray-700 mb-2">
+//                                       Available in your solution?
+//                                     </label>
+//                                     <TabSelect
+//                                       options={[
+//                                         { value: "full", label: "Yes, full support" },
+//                                         { value: "partial", label: "Partial support" },
+//                                         { value: "premium", label: "Available as premium" },
+//                                         { value: "roadmap", label: "On our roadmap" },
+//                                         { value: "no", label: "Not available" }
+//                                       ]}
+//                                       value={responses[rfp.id]?.processLifecycle?.[stage]?.available === false ? "no" : responses[rfp.id]?.processLifecycle?.[stage]?.available === true ? "full" : ""}
+//                                       onChange={(e) => handleLifecycleResponse(
+//                                         rfp.id, 
+//                                         stage, 
+//                                         e.target.value !== "no",
+//                                         responses[rfp.id]?.processLifecycle?.[stage]?.details || ""
+//                                       )}
+//                                     />
 //                                   </div>
                                   
-//                                   <div className="space-y-3 mt-4">
-//                                     <div>
-//                                       <label className="block text-sm font-medium text-gray-700 mb-2">
-//                                         Available in your solution?
-//                                       </label>
-//                                       <CustomSelect
-//                                         options={[
-//                                           { value: "full", label: "Yes, full support" },
-//                                           { value: "partial", label: "Partial support" },
-//                                           { value: "premium", label: "Available as premium" },
-//                                           { value: "roadmap", label: "On our roadmap" },
-//                                           { value: "no", label: "Not available" }
-//                                         ]}
-//                                         onChange={(e) => handleLifecycleResponse(
-//                                           rfp.id, 
-//                                           stage, 
-//                                           e.target.value !== "no",
-//                                           responses[rfp.id]?.processLifecycle?.[stage]?.details || ""
-//                                         )}
-//                                       />
-//                                     </div>
-                                    
-//                                     <div>
-//                                       <label className="block text-sm font-medium text-gray-700 mb-2">
-//                                         Details
-//                                       </label>
-//                                       <textarea
-//                                         className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
-//                                         placeholder="Describe your capabilities for this stage..."
-//                                         onChange={(e) => handleLifecycleResponse(
-//                                           rfp.id,
-//                                           stage,
-//                                           responses[rfp.id]?.processLifecycle?.[stage]?.available !== undefined 
-//                                             ? responses[rfp.id]?.processLifecycle?.[stage]?.available 
-//                                             : true,
-//                                           e.target.value
-//                                         )}
-//                                       />
-//                                     </div>
+//                                   <div>
+//                                     <label className="block text-sm font-medium text-gray-700 mb-2">
+//                                       Details
+//                                     </label>
+//                                     <textarea
+//                                       className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
+//                                       placeholder="Describe your capabilities for this stage..."
+//                                       onChange={(e) => handleLifecycleResponse(
+//                                         rfp.id,
+//                                         stage,
+//                                         responses[rfp.id]?.processLifecycle?.[stage]?.available !== undefined 
+//                                           ? responses[rfp.id]?.processLifecycle?.[stage]?.available 
+//                                           : true,
+//                                         e.target.value
+//                                       )}
+//                                     />
 //                                   </div>
 //                                 </div>
-//                               ))}
-//                             </div>
+//                               </FormFieldRow>
+//                             ))}
 //                           </div>
 //                         </Section>
 //                       )}
                       
-//                       {/* Features Section */}
+//                       {/* Features Section - All expanded by default */}
 //                       {rfp.features && Object.keys(rfp.features).length > 0 && (
 //                         <Section title="Features & Functionality" icon={CheckSquare} defaultOpen={true}>
 //                           <div className="space-y-6">
 //                             {Object.entries(rfp.features).map(([category, functionalities]) => (
 //                               <div key={category} className="space-y-4">
-//                                 <h4 className="text-sm font-medium text-gray-900">{category}</h4>
+//                                 <h4 className="text-sm font-medium text-gray-900 border-b border-gray-200 pb-2">{category}</h4>
                                 
 //                                 {Object.entries(functionalities).map(([functionality, features]) => (
-//                                   <div key={functionality} className="border border-gray-200 rounded-lg overflow-hidden">
-//                                     <div 
-//                                       className="bg-gray-50 p-3 cursor-pointer flex items-center justify-between"
-//                                       onClick={() => setExpandedCategory(
-//                                         expandedCategory === `${category}-${functionality}` 
-//                                           ? null 
-//                                           : `${category}-${functionality}`
-//                                       )}
-//                                     >
-//                                       <span className="text-sm font-medium">{functionality}</span>
-//                                       {expandedCategory === `${category}-${functionality}` ? 
-//                                         <ChevronUp className="w-4 h-4 text-gray-500" /> : 
-//                                         <ChevronDown className="w-4 h-4 text-gray-500" />
-//                                       }
-//                                     </div>
+//                                   <div key={functionality} className="border border-gray-200 rounded-lg p-4 mb-4">
+//                                     <h5 className="text-sm font-medium text-gray-900 mb-4 border-b border-gray-100 pb-2">{functionality}</h5>
                                     
-//                                     {expandedCategory === `${category}-${functionality}` && (
-//                                       <div className="p-4 space-y-4">
-//                                         {Object.entries(features).filter(([feature, details]) => 
-//                                           feature !== 'selected' && typeof details === 'object'
-//                                         ).map(([feature, details]) => (
-//                                           <div key={feature} className="border-b border-gray-100 pb-4 last:border-b-0 last:pb-0">
-//                                             <div className="flex items-center justify-between mb-2">
-//                                               <span className="text-sm">{feature}</span>
-//                                               {details.selected !== undefined && (
-//                                                 <StatusBadge status={details.selected ? "new" : "closed"} />
+//                                     <div className="space-y-4">
+//                                       {Object.entries(features).filter(([feature, details]) => 
+//                                         feature !== 'selected' && typeof details === 'object'
+//                                       ).map(([feature, details]) => (
+//                                         <FormFieldRow
+//                                           key={feature}
+//                                           label={feature}
+//                                           value={details.selected ? "Required" : "Optional"}
+//                                           className="pb-3 border-b border-gray-100 last:border-b-0 last:pb-0"
+//                                         >
+//                                           <div>
+//                                             <label className="block text-sm font-medium text-gray-700 mb-2">
+//                                               Available in your solution?
+//                                             </label>
+//                                             <TabSelect
+//                                               options={[
+//                                                 { value: "full", label: "Yes, full support" },
+//                                                 { value: "partial", label: "Partial support" },
+//                                                 { value: "premium", label: "Available as premium" },
+//                                                 { value: "roadmap", label: "On our roadmap" },
+//                                                 { value: "no", label: "Not available" }
+//                                               ]}
+//                                               value={responses[rfp.id]?.features?.[category]?.[functionality]?.[feature]?.available === false ? "no" : responses[rfp.id]?.features?.[category]?.[functionality]?.[feature]?.available === true ? "full" : ""}
+//                                               onChange={(e) => handleFeatureResponse(
+//                                                 rfp.id,
+//                                                 category,
+//                                                 functionality,
+//                                                 feature,
+//                                                 e.target.value
 //                                               )}
-//                                             </div>
-                                            
-//                                             <div className="space-y-3 mt-3">
-//                                               <div>
-//                                                 <label className="block text-xs font-medium text-gray-700 mb-1">
-//                                                   Available in your solution?
-//                                                 </label>
-//                                                 <CustomSelect
-//                                                   options={[
-//                                                     { value: "full", label: "Yes, full support" },
-//                                                     { value: "partial", label: "Partial support" },
-//                                                     { value: "premium", label: "Available as premium" },
-//                                                     { value: "roadmap", label: "On our roadmap" },
-//                                                     { value: "no", label: "Not available" }
-//                                                   ]}
-//                                                   onChange={(e) => handleFeatureResponse(
-//                                                     rfp.id,
-//                                                     category,
-//                                                     functionality,
-//                                                     feature,
-//                                                     e.target.value
-//                                                   )}
-//                                                 />
-//                                               </div>
-//                                             </div>
+//                                             />
 //                                           </div>
-//                                         ))}
-//                                       </div>
-//                                     )}
+//                                         </FormFieldRow>
+//                                       ))}
+//                                     </div>
 //                                   </div>
 //                                 ))}
 //                               </div>
@@ -938,6 +928,7 @@
 // }
 
 // export default RfpMarketplacePage;
+
 "use client"
 
 import React, { useEffect, useState } from "react";
@@ -981,22 +972,36 @@ const CustomSelect = ({ options, value, onChange, className = "", placeholder = 
   );
 };
 
-// Tab Select Component (replaces dropdown with clickable tabs)
-const TabSelect = ({ options, value, onChange, className = "" }) => {
+// Checkbox Select Component
+const CheckboxSelect = ({ options, value, onChange, className = "" }) => {
   return (
     <div className={`flex flex-wrap gap-2 ${className}`}>
       {options.map((option) => (
-        <button
+        <label
           key={option.value}
-          onClick={() => onChange({ target: { value: option.value } })}
-          className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+          className={`flex items-center px-3 py-1.5 text-xs font-medium rounded-md cursor-pointer transition-colors border ${
             value === option.value 
-              ? 'bg-indigo-100 text-indigo-700 border border-indigo-200' 
-              : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
+              ? 'bg-indigo-50 text-indigo-700 border-indigo-200' 
+              : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'
           }`}
         >
+          <input
+            type="radio"
+            checked={value === option.value}
+            onChange={() => onChange({ target: { value: option.value } })}
+            className="sr-only"
+          />
+          <span className={`w-3 h-3 mr-2 rounded-full border flex-shrink-0 ${
+            value === option.value 
+              ? 'bg-indigo-500 border-indigo-500' 
+              : 'bg-white border-gray-300'
+          }`}>
+            {value === option.value && (
+              <span className="block w-1 h-1 mx-auto mt-1 rounded-full bg-white" />
+            )}
+          </span>
           {option.label}
-        </button>
+        </label>
       ))}
     </div>
   );
@@ -1056,15 +1061,12 @@ const StatusBadge = ({ status }) => {
   );
 };
 
-// Form Field Row Component (new)
-const FormFieldRow = ({ label, value, children, className = "" }) => {
+// Form Field Row Component (improved)
+const FormFieldRow = ({ label, children, className = "" }) => {
   return (
     <div className={`flex flex-col md:flex-row items-start gap-4 mb-4 ${className}`}>
-      <div className="w-full md:w-1/3 space-y-1">
+      <div className="w-full md:w-1/3">
         <p className="text-sm font-medium text-gray-700">{label}</p>
-        <div className="bg-gray-50 p-3 rounded-lg">
-          <p className="text-sm text-gray-600">{value}</p>
-        </div>
       </div>
       <div className="w-full md:w-2/3">
         {children}
@@ -1083,6 +1085,7 @@ function RfpMarketplacePage() {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [orgTypeFilter, setOrgTypeFilter] = useState("");
   const [responses, setResponses] = useState({});
+  const [expandedCategory, setExpandedCategory] = useState(null);
   const [respondedRfps, setRespondedRfps] = useState([]);
   
   // Get all categories and org types from RFPs for the filters
@@ -1099,6 +1102,28 @@ function RfpMarketplacePage() {
     const matchesOrgType = !orgTypeFilter || orgType === orgTypeFilter;
     return matchesCategory && matchesOrgType;
   });
+
+  // Feature options without "Available as premium"
+  const featureOptions = [
+    { value: "full", label: "Yes, full support" },
+    { value: "partial", label: "Partial support" },
+    { value: "roadmap", label: "On our roadmap" },
+    { value: "no", label: "Not available" }
+  ];
+  
+  // Budget options
+  const budgetOptions = [
+    { value: "yes", label: "Yes, within budget" },
+    { value: "partial", label: "Partially, with limitations" },
+    { value: "no", label: "No, budget is too low" }
+  ];
+  
+  // Timeline options
+  const timelineOptions = [
+    { value: "yes", label: "Yes, can meet timeline" },
+    { value: "partial", label: "Partially, phased approach" },
+    { value: "no", label: "No, timeline is too aggressive" }
+  ];
 
   // Fetch all RFPs 
   const fetchAllRfps = async () => {
@@ -1551,11 +1576,13 @@ function RfpMarketplacePage() {
                       <Section title="Project Details" icon={FileText} defaultOpen={true}>
                         {/* Key Problems */}
                         {(rfp.keyProblems?.value || rfp.keyProblems) && (
-                          <FormFieldRow
-                            label="Key Problems"
-                            value={rfp.keyProblems?.value || rfp.keyProblems}
-                          >
+                          <FormFieldRow label="Key Problems">
                             <div className="space-y-2">
+                              <div className="bg-gray-50 p-3 rounded-lg mb-2">
+                                <p className="text-sm text-gray-600">
+                                  {rfp.keyProblems?.value || rfp.keyProblems}
+                                </p>
+                              </div>
                               <textarea
                                 className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
                                 placeholder="Explain how your solution addresses these problems..."
@@ -1567,11 +1594,13 @@ function RfpMarketplacePage() {
                         
                         {/* Key Goals */}
                         {(rfp.keyGoals?.value || rfp.keyGoals) && (
-                          <FormFieldRow
-                            label="Key Goals"
-                            value={rfp.keyGoals?.value || rfp.keyGoals}
-                          >
+                          <FormFieldRow label="Key Goals">
                             <div className="space-y-2">
+                              <div className="bg-gray-50 p-3 rounded-lg mb-2">
+                                <p className="text-sm text-gray-600">
+                                  {rfp.keyGoals?.value || rfp.keyGoals}
+                                </p>
+                              </div>
                               <textarea
                                 className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
                                 placeholder="Explain how your solution helps achieve these goals..."
@@ -1583,11 +1612,13 @@ function RfpMarketplacePage() {
                         
                         {/* Customization Requirements */}
                         {(rfp.customisation?.value || rfp.customisation) && (
-                          <FormFieldRow
-                            label="Customization Requirements"
-                            value={rfp.customisation?.value || rfp.customisation}
-                          >
+                          <FormFieldRow label="Customization Requirements">
                             <div className="space-y-2">
+                              <div className="bg-gray-50 p-3 rounded-lg mb-2">
+                                <p className="text-sm text-gray-600">
+                                  {rfp.customisation?.value || rfp.customisation}
+                                </p>
+                              </div>
                               <textarea
                                 className="w-full min-h-[80px] rounded-lg border border-gray-200 p-2 text-sm"
                                 placeholder="Explain your customization capabilities..."
@@ -1601,22 +1632,20 @@ function RfpMarketplacePage() {
                       {/* Budget & Timeline Section */}
                       <Section title="Budget & Timeline" icon={Clock} defaultOpen={true}>
                         {/* Budget Response */}
-                        <FormFieldRow
-                          label="Budget Requirements"
-                          value={`${rfp.budget?.value?.min || rfp.budget?.askedMin} - ${rfp.budget?.value?.max || rfp.budget?.askedMax} ${rfp.budget?.value?.currency || rfp.budget?.budgetUnit}`}
-                        >
+                        <FormFieldRow label="Budget Requirements">
                           <div className="space-y-4">
+                            <div className="bg-gray-50 p-3 rounded-lg mb-2">
+                              <p className="text-sm text-gray-600">
+                                {rfp.budget?.value?.min || rfp.budget?.askedMin} - {rfp.budget?.value?.max || rfp.budget?.askedMax} {rfp.budget?.value?.currency || rfp.budget?.budgetUnit}
+                              </p>
+                            </div>
+                            
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Can you meet this budget?
                               </label>
-                              <TabSelect
-                                options={[
-                                  { value: "yes", label: "Yes, within budget" },
-                                  { value: "partial", label: "Partially, with limitations" },
-                                  { value: "premium", label: "Yes, but premium pricing" },
-                                  { value: "no", label: "No, budget is too low" }
-                                ]}
+                              <CheckboxSelect
+                                options={budgetOptions}
                                 value={responses[rfp.id]?.budget?.meetable === false ? "no" : responses[rfp.id]?.budget?.meetable === true ? "yes" : ""}
                                 onChange={(e) => handleBudgetResponse(
                                   rfp.id, 
@@ -1672,22 +1701,20 @@ function RfpMarketplacePage() {
                         </FormFieldRow>
                         
                         {/* Urgency Response */}
-                        <FormFieldRow
-                          label="Urgency Requirements"
-                          value={rfp.urgency?.value || rfp.urgency?.askedUrgency}
-                        >
+                        <FormFieldRow label="Urgency Requirements">
                           <div className="space-y-4">
+                            <div className="bg-gray-50 p-3 rounded-lg mb-2">
+                              <p className="text-sm text-gray-600">
+                                {rfp.urgency?.value || rfp.urgency?.askedUrgency}
+                              </p>
+                            </div>
+                            
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Can you meet this timeline?
                               </label>
-                              <TabSelect
-                                options={[
-                                  { value: "yes", label: "Yes, can meet timeline" },
-                                  { value: "partial", label: "Partially, phased approach" },
-                                  { value: "premium", label: "Yes, with expedited service" },
-                                  { value: "no", label: "No, timeline is too aggressive" }
-                                ]}
+                              <CheckboxSelect
+                                options={timelineOptions}
                                 value={responses[rfp.id]?.urgency?.meetable === false ? "no" : responses[rfp.id]?.urgency?.meetable === true ? "yes" : ""}
                                 onChange={(e) => handleUrgencyResponse(
                                   rfp.id, 
@@ -1727,21 +1754,14 @@ function RfpMarketplacePage() {
                               <FormFieldRow
                                 key={stage}
                                 label={stage}
-                                value={details.selected ? "Required" : "Optional"}
                               >
                                 <div className="space-y-4">
                                   <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                       Available in your solution?
                                     </label>
-                                    <TabSelect
-                                      options={[
-                                        { value: "full", label: "Yes, full support" },
-                                        { value: "partial", label: "Partial support" },
-                                        { value: "premium", label: "Available as premium" },
-                                        { value: "roadmap", label: "On our roadmap" },
-                                        { value: "no", label: "Not available" }
-                                      ]}
+                                    <CheckboxSelect
+                                      options={featureOptions}
                                       value={responses[rfp.id]?.processLifecycle?.[stage]?.available === false ? "no" : responses[rfp.id]?.processLifecycle?.[stage]?.available === true ? "full" : ""}
                                       onChange={(e) => handleLifecycleResponse(
                                         rfp.id, 
@@ -1795,21 +1815,11 @@ function RfpMarketplacePage() {
                                         <FormFieldRow
                                           key={feature}
                                           label={feature}
-                                          value={details.selected ? "Required" : "Optional"}
                                           className="pb-3 border-b border-gray-100 last:border-b-0 last:pb-0"
                                         >
                                           <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                              Available in your solution?
-                                            </label>
-                                            <TabSelect
-                                              options={[
-                                                { value: "full", label: "Yes, full support" },
-                                                { value: "partial", label: "Partial support" },
-                                                { value: "premium", label: "Available as premium" },
-                                                { value: "roadmap", label: "On our roadmap" },
-                                                { value: "no", label: "Not available" }
-                                              ]}
+                                            <CheckboxSelect
+                                              options={featureOptions}
                                               value={responses[rfp.id]?.features?.[category]?.[functionality]?.[feature]?.available === false ? "no" : responses[rfp.id]?.features?.[category]?.[functionality]?.[feature]?.available === true ? "full" : ""}
                                               onChange={(e) => handleFeatureResponse(
                                                 rfp.id,
@@ -1867,3 +1877,115 @@ function RfpMarketplacePage() {
 }
 
 export default RfpMarketplacePage;
+
+// import React, { useState } from 'react';
+
+// Single option component
+const RadioOption = ({ value, label, isSelected, onChange }) => {
+  return (
+    <label
+      className={`flex items-center px-3 py-1.5 text-xs font-medium rounded-md cursor-pointer transition-colors border ${
+        isSelected 
+          ? 'bg-indigo-50 text-indigo-700 border-indigo-200' 
+          : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'
+      }`}
+    >
+      <input
+        type="radio"
+        checked={isSelected}
+        onChange={() => onChange(value)}
+        className="sr-only"
+      />
+      <span className={`w-3 h-3 mr-2 rounded-full border flex-shrink-0 ${
+        isSelected 
+          ? 'bg-indigo-500 border-indigo-500' 
+          : 'bg-white border-gray-300'
+      }`}>
+        {isSelected && (
+          <span className="block w-1 h-1 mx-auto mt-1 rounded-full bg-white" />
+        )}
+      </span>
+      {label}
+    </label>
+  );
+};
+
+// Checkbox/radio select group component
+const OptionGroup = ({ options, selected, onChange }) => {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {options.map(option => (
+        <RadioOption
+          key={option.value}
+          value={option.value}
+          label={option.label}
+          isSelected={selected === option.value}
+          onChange={onChange}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Example feature section
+const FeatureSection = () => {
+  const [notification, setNotification] = useState('');
+  const [workflow, setWorkflow] = useState('');
+  const [reporting, setReporting] = useState('');
+  
+  const options = [
+    { value: "full", label: "Yes, full support" },
+    { value: "partial", label: "Partial support" },
+    { value: "roadmap", label: "On our roadmap" },
+    { value: "no", label: "Not available" }
+  ];
+
+  return (
+    <div className="p-6 bg-white rounded-xl shadow-md space-y-6">
+      <h2 className="text-xl font-bold text-gray-900 mb-6">Feature Availability</h2>
+      
+      {/* Notification Feature */}
+      <div className="flex flex-col md:flex-row items-start gap-4 mb-6 pb-4 border-b border-gray-100">
+        <div className="w-full md:w-1/3">
+          <p className="text-sm font-medium text-gray-700">Notification</p>
+        </div>
+        <div className="w-full md:w-2/3">
+          <OptionGroup 
+            options={options} 
+            selected={notification} 
+            onChange={setNotification} 
+          />
+        </div>
+      </div>
+      
+      {/* Workflow Feature */}
+      <div className="flex flex-col md:flex-row items-start gap-4 mb-6 pb-4 border-b border-gray-100">
+        <div className="w-full md:w-1/3">
+          <p className="text-sm font-medium text-gray-700">Workflow</p>
+        </div>
+        <div className="w-full md:w-2/3">
+          <OptionGroup 
+            options={options} 
+            selected={workflow} 
+            onChange={setWorkflow} 
+          />
+        </div>
+      </div>
+      
+      {/* Reporting Feature */}
+      <div className="flex flex-col md:flex-row items-start gap-4 mb-6">
+        <div className="w-full md:w-1/3">
+          <p className="text-sm font-medium text-gray-700">Reporting</p>
+        </div>
+        <div className="w-full md:w-2/3">
+          <OptionGroup 
+            options={options} 
+            selected={reporting} 
+            onChange={setReporting} 
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+

@@ -1556,7 +1556,7 @@
 //     doc.setFontSize(10);
 //     doc.text("Website: www.dreamlegal.in", margin, yPos);
 //     yPos += 8;
-//     doc.text("Email: contact@dreamlegal.in", margin, yPos);
+//     doc.text("Email: ranjan@dreamlegal.in", margin, yPos);
 //     yPos += 8;
 //     doc.text("Book a 15-minute consultation: calendly.com/dreamlegal", margin, yPos);
     

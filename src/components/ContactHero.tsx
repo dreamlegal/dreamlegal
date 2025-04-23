@@ -53,11 +53,11 @@ function ContactHero() {
                 <div className="inline-flex flex-col overflow-hidden">
                   <h3 className="text-xs text-[#334155]">Send us an email</h3>
                   <a 
-                    href="mailto:contact@dreamlegal.in" 
+                    href="mailto:ranjan@dreamlegal.in" 
                     className="group-hover:text-[#7cc6ee] transition-colors duration-300 truncate"
                   >
                     <span className="text-xs md:text-sm font-bold text-[#1e2556] group-hover:text-[#7cc6ee]">
-                      contact@dreamlegal.in
+                      ranjan@dreamlegal.in
                     </span>
                   </a>
                 </div>
@@ -71,7 +71,7 @@ function ContactHero() {
                 <div className="inline-flex flex-col">
                   <h3 className="text-xs text-[#334155]">Give us a call</h3>
                   <span className="text-xs md:text-sm font-bold text-[#1e2556] group-hover:text-[#7cc6ee] transition-colors duration-300">
-                    +91-93401-74001
+                  +919109507900
                   </span>
                 </div>
               </div>

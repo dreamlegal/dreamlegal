@@ -179,8 +179,8 @@ export default function CookiePolicy() {
             <h2 className="text-[#1e2556] text-2xl font-bold mb-4">Where can I get further information?</h2>
             <p className="text-[#2d2d2d] mb-4 font-semibold">
               If you have any questions about our use of cookies or other technologies, please contact us at:{" "}
-              <a href="mailto:contact@dreamlegal.in" className="text-[#7cc6ee] hover:underline">
-                contact@dreamlegal.in
+              <a href="mailto:ranjan@dreamlegal.in" className="text-[#7cc6ee] hover:underline">
+                ranjan@dreamlegal.in
               </a>
             </p>
           </section>

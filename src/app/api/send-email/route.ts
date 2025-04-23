@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
     const mailOptions = {
       from: email,
-      to: 'contact@dreamlegal.in',
+      to: 'ranjan@dreamlegal.in',
       subject: 'New Contact Form Submission',
       text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nOrganization: ${organization}\nMessage: ${message}`,
     };

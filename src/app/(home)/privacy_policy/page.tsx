@@ -144,8 +144,8 @@ export default function PrivacyPolicy() {
               </li>
               <li>
                 <strong>Account Deletion</strong>: You may request account deletion by contacting us at{" "}
-                <a href="mailto:contact@dreamlegal.in" className="text-[#7cc6ee] hover:underline">
-                  contact@dreamlegal.in
+                <a href="mailto:ranjan@dreamlegal.in" className="text-[#7cc6ee] hover:underline">
+                  ranjan@dreamlegal.in
                 </a>.
               </li>
               <li>
@@ -178,8 +178,8 @@ export default function PrivacyPolicy() {
               <p className="font-bold mb-2">KYLT Automation Services Pvt. Ltd.</p>
               <p className="mb-2">
                 <strong>Email:</strong>{" "}
-                <a href="mailto:contact@dreamlegal.in" className="text-[#7cc6ee] hover:underline">
-                  contact@dreamlegal.in
+                <a href="mailto:ranjan@dreamlegal.in" className="text-[#7cc6ee] hover:underline">
+                  ranjan@dreamlegal.in
                 </a>
               </p>
               <p>

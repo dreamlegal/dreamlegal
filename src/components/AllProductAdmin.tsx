@@ -1,58 +1,7 @@
-// "use client";
-// import React, { useEffect, useState } from 'react'
-// import AdminProductCard from './AdminProductCard'
-
-// function AllProductAdmin() {
-//   const [products, setProducts] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-  
-//     const fetchProducts = async () => {
-//       try {
-//         const response = await fetch('/api/get-publish-product', {
-//           method: 'POST', // Use POST instead of GET
-//         });
-    
-//         if (!response.ok) {
-//           throw new Error('Network response was not ok');
-//         }
-    
-//         const data = await response.json();
-//         setProducts(data.products);
-//       } catch (error) {
-//         console.error('Error fetching products:', error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-    
-
-//     fetchProducts();
-//   }, []); // Empty dependency array means this runs once after the initial render
-
-//   if (loading) {
-//     return <div>Loading...</div>;
-//   }
-//   return (
-//     <div>
-//       {products.length > 0 ? (
-//         products.map((product, index) => (
-//           <AdminProductCard key={index} product={product} />
-//         ))
-//       ) : (
-//         <div>No published products available</div>
-//       )}
-//     </div>
-//   )
-// }
-
-// export default AllProductAdmin
 
 // "use client";
 // import React, { useState, useEffect } from 'react';
-// import { Search, Package, Check, Loader2, X } from 'lucide-react';
+// import { Search, Package, Trash2, Check, Loader2, X } from 'lucide-react';
 // import { Button } from '@/components/ui/button';
 // import Link from 'next/link';
 
@@ -81,6 +30,7 @@
 //   const [totalPages, setTotalPages] = useState(1);
 //   const [selectedProducts, setSelectedProducts] = useState(new Set());
 //   const [unpublishingProducts, setUnpublishingProducts] = useState(false);
+//   const [deletingProducts, setDeletingProducts] = useState(false);
 //   const [notification, setNotification] = useState(null);
 //   const [searchTimeout, setSearchTimeout] = useState(null);
 
@@ -189,6 +139,35 @@
 //     }
 //   };
 
+//   // Handle bulk delete
+//   const handleBulkDelete = async () => {
+//     if (selectedProducts.size === 0) return;
+    
+//     if (!confirm('Are you sure you want to delete the selected products? This action cannot be undone.')) return;
+    
+//     setDeletingProducts(true);
+//     try {
+//       const response = await fetch('/api/bulk-delete-published', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ ids: Array.from(selectedProducts) })
+//       });
+
+//       if (!response.ok) {
+//         throw new Error('Failed to delete products');
+//       }
+
+//       await fetchProducts(currentPage, searchTerm);
+//       setSelectedProducts(new Set());
+//       showNotification('Selected products have been deleted successfully');
+//     } catch (error) {
+//       console.error('Error deleting products:', error);
+//       showNotification('Failed to delete products', 'error');
+//     } finally {
+//       setDeletingProducts(false);
+//     }
+//   };
+
 //   // Handle page change
 //   const handlePageChange = (newPage) => {
 //     setCurrentPage(newPage);
@@ -250,18 +229,32 @@
 //                 </Button>
 
 //                 {selectedProducts.size > 0 && (
-//                   <Button
-//                     onClick={handleBulkUnpublish}
-//                     disabled={unpublishingProducts}
-//                     variant="destructive"
-//                   >
-//                     {unpublishingProducts ? (
-//                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-//                     ) : (
-//                       <Check className="w-4 h-4 mr-2" />
-//                     )}
-//                     Unpublish ({selectedProducts.size})
-//                   </Button>
+//                   <>
+//                     <Button
+//                       onClick={handleBulkUnpublish}
+//                       disabled={unpublishingProducts || deletingProducts}
+//                       className="bg-yellow-500 hover:bg-yellow-600 text-white"
+//                     >
+//                       {unpublishingProducts ? (
+//                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+//                       ) : (
+//                         <Check className="w-4 h-4 mr-2" />
+//                       )}
+//                       Unpublish ({selectedProducts.size})
+//                     </Button>
+//                     <Button
+//                       onClick={handleBulkDelete}
+//                       disabled={deletingProducts || unpublishingProducts}
+//                       variant="destructive"
+//                     >
+//                       {deletingProducts ? (
+//                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+//                       ) : (
+//                         <Trash2 className="w-4 h-4 mr-2" />
+//                       )}
+//                       Delete ({selectedProducts.size})
+//                     </Button>
+//                   </>
 //                 )}
 //               </div>
 //             </div>
@@ -293,7 +286,7 @@
 //                       onChange={() => toggleProductSelection(product.id)}
 //                       className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
 //                     />
-//                    <img
+//                     <img
 //                       src={product.logoUrl}
 //                       alt={product.name}
 //                       className="h-16 w-16 object-contain rounded-lg"
@@ -428,12 +421,12 @@
 // };
 
 // export default AllProductAdmin;
-
 "use client";
 import React, { useState, useEffect } from 'react';
-import { Search, Package, Trash2, Check, Loader2, X } from 'lucide-react';
+import { Search, Package, Trash2, Check, Loader2, X, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+// import MetadataModal from '@/components/MetadataModal'; // Import the MetadataModal component
 
 const ITEMS_PER_PAGE = 10;
 
@@ -463,6 +456,10 @@ const AllProductAdmin = () => {
   const [deletingProducts, setDeletingProducts] = useState(false);
   const [notification, setNotification] = useState(null);
   const [searchTimeout, setSearchTimeout] = useState(null);
+  
+  // New state for metadata modal
+  const [metadataModalOpen, setMetadataModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   // Show notification helper
   const showNotification = (message, type = 'success') => {
@@ -604,6 +601,28 @@ const AllProductAdmin = () => {
     fetchProducts(newPage, searchTerm);
   };
 
+  // New handlers for metadata editing
+  const handleOpenMetadataModal = (product) => {
+    setSelectedProduct(product);
+    setMetadataModalOpen(true);
+  };
+
+  const handleCloseMetadataModal = () => {
+    setMetadataModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const handleMetadataSave = (updatedProduct) => {
+    // Update the product in the local state
+    setProducts(prevProducts => 
+      prevProducts.map(p => p.id === updatedProduct.id ? updatedProduct : p)
+    );
+    setFilteredProducts(prevProducts => 
+      prevProducts.map(p => p.id === updatedProduct.id ? updatedProduct : p)
+    );
+    showNotification('Metadata updated successfully');
+  };
+
   // Initial fetch
   useEffect(() => {
     fetchProducts();
@@ -621,6 +640,15 @@ const AllProductAdmin = () => {
           message={notification.message}
           type={notification.type}
           onClose={() => setNotification(null)}
+        />
+      )}
+      
+      {/* Metadata Modal */}
+      {metadataModalOpen && selectedProduct && (
+        <MetadataModal
+          product={selectedProduct}
+          onClose={handleCloseMetadataModal}
+          onSave={handleMetadataSave}
         />
       )}
       
@@ -752,6 +780,14 @@ const AllProductAdmin = () => {
                       >
                         Edit
                       </Link>
+                      {/* New Metadata button */}
+                      <Button
+                        onClick={() => handleOpenMetadataModal(product)}
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                      >
+                        <FileText className="w-4 h-4 mr-2" />
+                        Metadata
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -851,3 +887,193 @@ const AllProductAdmin = () => {
 };
 
 export default AllProductAdmin;
+
+
+
+const MetadataModal = ({ product, onClose, onSave }) => {
+  const [formData, setFormData] = useState({
+    metaTitle: product.metaTitle || '',
+    metaDescription: product.metaDescription || '',
+    ogTitle: product.ogTitle || '',
+    ogDescription: product.ogDescription || '',
+    ogImage: product.ogImage || ''
+  });
+  
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const response = await fetch('/api/update-product-metadata', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: product.id,
+          ...formData
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update metadata');
+      }
+
+      const data = await response.json();
+      onSave(data.product);
+      onClose();
+    } catch (err) {
+      setError('Failed to update metadata. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-auto">
+        <div className="flex justify-between items-center p-4 border-b">
+          <h2 className="text-xl font-semibold">Edit SEO Metadata - {product.name}</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {error && (
+            <div className="bg-red-50 text-red-600 p-3 rounded-md">
+              {error}
+            </div>
+          )}
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Meta Title (SEO)
+              </label>
+              <input
+                type="text"
+                name="metaTitle"
+                value={formData.metaTitle}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="SEO optimized title (50-60 characters)"
+              />
+              <p className="mt-1 text-sm text-gray-500">
+                {formData.metaTitle.length} characters (recommended: 50-60)
+              </p>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Meta Description (SEO)
+              </label>
+              <textarea
+                name="metaDescription"
+                value={formData.metaDescription}
+                onChange={handleChange}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="SEO optimized description (150-160 characters)"
+              />
+              <p className="mt-1 text-sm text-gray-500">
+                {formData.metaDescription.length} characters (recommended: 150-160)
+              </p>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                OG Title (Social Sharing)
+              </label>
+              <input
+                type="text"
+                name="ogTitle"
+                value={formData.ogTitle}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="Open Graph title for social sharing"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                OG Description (Social Sharing)
+              </label>
+              <textarea
+                name="ogDescription"
+                value={formData.ogDescription}
+                onChange={handleChange}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="Open Graph description for social sharing"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                OG Image URL (Social Sharing)
+              </label>
+              <input
+                type="text"
+                name="ogImage"
+                value={formData.ogImage}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="URL for Open Graph image"
+              />
+              {formData.ogImage && (
+                <div className="mt-2 border p-2 rounded-md">
+                  <p className="text-sm text-gray-500 mb-2">Image Preview:</p>
+                  <img 
+                    src={formData.ogImage} 
+                    alt="OG Image Preview" 
+                    className="max-h-32 object-contain"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://placehold.co/600x400?text=Invalid+Image+URL";
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <div className="flex justify-end gap-3 pt-4 border-t">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              disabled={loading}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                'Save Metadata'
+              )}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};

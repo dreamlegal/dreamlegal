@@ -237,6 +237,11 @@ model Product {
   ByAdminWebsite          String?
   claims     ProductClaim[]  // Add this line
   region                  String?
+  metaTitle               String? // SEO optimized title 
+  metaDescription         String? // SEO optimized description (150-160 chars)
+  ogTitle                 String? // Open Graph title for social sharing 
+  ogDescription           String? // Open Graph description for social sharing 
+  ogImage                 String? // Open Graph image URL for social sharing
 }
 
 model Review {

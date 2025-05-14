@@ -105,7 +105,7 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
 
             <li className="ml-10">
               <ul className={`space-y-2 ${Vendors ? "block" : "hidden"}`}>
-                <li
+                {/* <li
                   onClick={() => onMenuItemClick("NewVendor")}
                   className={`text-slate-300 hover:cursor-pointer ${
                     selectedMenu === "NewVendor" ? "text-white" : ""
@@ -120,7 +120,7 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
                   }`}
                 >
                   All Vendors
-                </li>
+                </li> */}
                 <li
                   onClick={() => onMenuItemClick("VendorsPage")}
                   className={`text-slate-300 hover:cursor-pointer ${
@@ -140,7 +140,7 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
               </ul>
             </li>
 
-            <li
+            {/* <li
               onClick={() => setUsers(!Users)}
               className={`flex justify-between text-sm items-center px-4 py-4 rounded-md transition-all duration-200 hover:cursor-pointer ${
                 Users ? "text-white bg-[#034b8a]" : "text-slate-300"
@@ -151,9 +151,9 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
                 Users
               </span>
               <FaChevronDown />
-            </li>
+            </li> */}
 
-            <li className="ml-10">
+            {/* <li className="ml-10">
               <ul className={`space-y-2 ${Users ? "block" : "hidden"}`}>
                 <li
                   onClick={() => onMenuItemClick("allUsers")}
@@ -164,7 +164,7 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
                   All Users
                 </li>
               </ul>
-            </li>
+            </li> */}
 
             <li
               onClick={() => setAdmins(!Admins)}
@@ -181,22 +181,22 @@ function AdminSidebar({ onMenuItemClick, selectedMenu }: any) {
 
             <li className="ml-10">
               <ul className={`space-y-2 ${Admins ? "block" : "hidden"}`}>
-                <li
+                {/* <li
                   onClick={() => onMenuItemClick("addAdmin")}
                   className={`text-slate-300 hover:cursor-pointer ${
                     selectedMenu === "addAdmin" ? "text-white" : ""
                   }`}
                 >
                   Add Admin
-                </li>
-                <li
+                </li> */}
+                {/* <li
                   onClick={() => onMenuItemClick("allAdmins")}
                   className={`text-slate-300 hover:cursor-pointer ${
                     selectedMenu === "allAdmins" ? "text-white" : ""
                   }`}
                 >
                   All Admins
-                </li>
+                </li> */}
 
                 <li
                   onClick={() => onMenuItemClick("addAnalytics")}

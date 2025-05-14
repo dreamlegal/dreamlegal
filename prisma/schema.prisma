@@ -307,7 +307,17 @@ model Admins {
   password String
   user     String?
 }
-
+model Admin {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  password     String
+  name         String?
+  role         String    @default("editor") // super_admin, product_admin, seo_admin, etc.
+  permissions  Json      @default("{}")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  lastLoginAt  DateTime?
+}
 model Interest {
   id                  String   @id @default(cuid())
   userId              String

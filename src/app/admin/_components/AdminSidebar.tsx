@@ -1577,7 +1577,7 @@ const AdminSidebar = () => {
             </div>
             <div>
               <h1 className="font-semibold text-white">Admin Panel</h1>
-              <p className="text-xs text-slate-300">Head of Tech</p>
+              <p className="text-xs text-slate-300">{adminData.name || "Head of Tech"}</p>
             </div>
           </div>
           <div className="bg-[#1e2556] rounded-full p-1 hover:bg-[#7cc6ee] hover:bg-opacity-20 transition-colors">

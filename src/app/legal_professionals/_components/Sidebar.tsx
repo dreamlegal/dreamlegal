@@ -14,7 +14,8 @@ import {
   UserCircle,
   LogOut,
   ChevronRight,
-  X
+  X,
+  File
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/context/authContext';
@@ -159,6 +160,11 @@ const Sidebar = ({ isOpen, setIsOpen, isMobile }) => {
       icon: Shuffle, 
       text: 'Change Management', 
       path: '/legal_professionals/dashboard/change_management' 
+    },
+    { 
+      icon: File, 
+      text: 'Create RFPs', 
+      path: '/legal_professionals/dashboard/create_rfps' 
     },
     { 
       icon: Star, 

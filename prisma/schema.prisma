@@ -589,3 +589,16 @@ model ProductClaim {
 
   @@unique([productId, vendorId]) // Prevent duplicate claims
 }
+
+
+model TechVendorLeads {
+  id           String   @id @default(cuid())
+  fullName     String
+  organization String
+  email        String
+  phone        String?
+  interestAreas String  // Store as JSON string or comma-separated
+  createdAt    DateTime @default(now())
+
+  @@map("tech_vendor_leads")
+}

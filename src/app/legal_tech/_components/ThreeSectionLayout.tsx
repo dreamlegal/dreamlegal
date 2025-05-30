@@ -225,7 +225,7 @@ const ThreeSectionLayout = () => {
             <div className="relative order-1 lg:order-1">
               <div className="bg-white rounded-lg shadow-2xl overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                  src="images/one.png" 
                   alt="Software Image" 
                   className="w-full aspect-[16/10] sm:aspect-[16/9] object-cover rounded-lg" 
                 />
@@ -277,7 +277,7 @@ const ThreeSectionLayout = () => {
             <div className="relative order-2">
               <div 
                 className="aspect-[16/10] sm:aspect-[16/9] bg-cover bg-center bg-no-repeat rounded-lg shadow-2xl" 
-                style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")' }}
+                style={{ backgroundImage: 'url("images/two.png")' }}
               >
               </div>
             </div>
@@ -294,7 +294,7 @@ const ThreeSectionLayout = () => {
               <div className="bg-white rounded-lg shadow-2xl overflow-hidden">
                 <div 
                   className="aspect-[16/10] sm:aspect-[16/9] bg-cover bg-center bg-no-repeat rounded-lg" 
-                  style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")' }}
+                  style={{ backgroundImage: 'url("/images/three.png")' }}
                 >
                 </div>
               </div>

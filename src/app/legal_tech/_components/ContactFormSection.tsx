@@ -716,7 +716,7 @@ const ContactFormSection = () => {
         </div>
 
         {/* Form */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-[#7cc6ee]/20">
+        <div id="contact" className="bg-white/70 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-[#7cc6ee]/20">
           <div className="space-y-6 sm:space-y-8">
             {/* Name and Organization Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">

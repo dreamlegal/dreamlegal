@@ -120,19 +120,20 @@ const HeroSection = () => {
 
           {/* CTA Button */}
           <div className="mb-8 text-left">
-            <button 
+            <a 
+              href="#contact" 
               className="inline-flex items-center px-10 py-5 text-xl font-semibold text-white rounded-md transition-all duration-300 hover:opacity-90 hover:scale-105 hover:shadow-2xl shadow-lg"
               style={{ backgroundColor: '#1e2556' }}
             >
               Talk to us
-            </button>
+            </a>
           </div>
 
           {/* Secondary Link */}
           <div className="text-white/85 text-left">
             <span className="text-lg">Don't have a profile yet? </span>
             <a 
-              href="#" 
+              href="/auth/vendor/signup" 
               className="text-lg font-medium hover:underline transition-all duration-300 inline-flex items-center group underline-offset-4"
               style={{ color: '#7cc6ee' }}
             >

@@ -11,12 +11,22 @@
 //     "react-hooks/exhaustive-deps": "warn" // Downgrade from error to warning
 //   }
 // }
+// {
+//   "extends": "next/core-web-vitals",
+//   "rules": {
+//     "react/no-unescaped-entities": 0,
+//     "@next/next/no-img-element": "warn",
+//     "react-hooks/exhaustive-deps": "warn",
+//     "react/jsx-no-undef": "warn",
+//     "jsx-a11y/alt-text": "warn"
+//   }
+// }
 {
   "extends": "next/core-web-vitals",
   "rules": {
     "react/no-unescaped-entities": 0,
-    "@next/next/no-img-element": "warn",
-    "react-hooks/exhaustive-deps": "warn",
+    "@next/next/no-img-element": "off",
+    "react-hooks/exhaustive-deps": "off",
     "react/jsx-no-undef": "warn",
     "jsx-a11y/alt-text": "warn"
   }

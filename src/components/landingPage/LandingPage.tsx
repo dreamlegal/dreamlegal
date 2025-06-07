@@ -110,7 +110,7 @@ const LandingPage = () => {
 <Testimonial/>
 <LegalServicesSection/>
 <SectionFour/>
-<SectionFive/>
+{/* <SectionFive/> */}
       <ITServicesSection/>
      
       {/* <DigitalServicesSection/> */}

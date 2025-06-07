@@ -5,13 +5,16 @@ import React, { useState } from 'react';
 import { Users, Zap, BarChart3, LineChart, Layout, BrainCircuit, } from 'lucide-react';
 import VideoPlayer  from "@/app/tech_vendor/HomaPageComponents/VideoPlayer"
 import ITServicesSection from "./SectionTwo"
-import DigitalServicesSection from "./SectionThree"
+// import DigitalServicesSection from "./SectionThree"
 import ContactFaq from "@/components/ContactFaq"
 import SectionSix from "./SectionSix"
 import SectionFour from "./SectionFour"
 import SectionFive from "./SectionFive"
 import SectionSeven from "./SectionSeven"
 import SectionOne from "./SectionOne"
+import Testimonial from "./Testimonial"
+import LegalServicesSection from "./SectionThree"
+import CTASection from "./FinalCta"
 const LandingPage = () => {
   const [email, setEmail] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -104,12 +107,17 @@ const LandingPage = () => {
       {/* Floating particles */}
     
 <SectionOne/>
+<Testimonial/>
+<LegalServicesSection/>
+<SectionFour/>
+<SectionFive/>
       <ITServicesSection/>
-     <SectionFive/>
-      <DigitalServicesSection/>
-     <SectionFour/>
+     
+      {/* <DigitalServicesSection/> */}
+     
       <SectionSix/>
-      <SectionSeven/>
+      <CTASection/>
+      {/* <SectionSeven/> */}
     {/* <ContactFaq/> */}
 
       {/* <LegalProblemsSection/>

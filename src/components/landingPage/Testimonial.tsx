@@ -141,7 +141,7 @@ const Testimonial = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 5000) // Change slide every 5 seconds
+    }, 1000) // Change slide every 5 seconds
 
     return () => clearInterval(interval)
   }, [testimonials.length])

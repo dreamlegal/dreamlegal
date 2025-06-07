@@ -195,7 +195,7 @@ const Sidebar = ({ isOpen, setIsOpen, isMobile }) => {
       <div className="absolute top-0 left-0 right-0 bg-white/80 backdrop-blur-md px-4 py-5 z-20">
         <div className="flex items-center justify-between">
           <Link 
-            href="/legal_professionals"
+            href="/"
             className="flex items-center gap-3 group px-2" 
             onClick={() => isMobile && setIsOpen(false)}
           >

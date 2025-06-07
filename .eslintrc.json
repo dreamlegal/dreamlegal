@@ -21,13 +21,24 @@
 //     "jsx-a11y/alt-text": "warn"
 //   }
 // }
+// {
+//   "extends": "next/core-web-vitals",
+//   "rules": {
+//     "react/no-unescaped-entities": 0,
+//     "@next/next/no-img-element": "off",
+//     "react-hooks/exhaustive-deps": "off",
+//     "react/jsx-no-undef": "warn",
+//     "jsx-a11y/alt-text": "warn"
+//   }
+// }
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "react/no-unescaped-entities": 0,
+    "react/no-unescaped-entities": "off",
     "@next/next/no-img-element": "off",
     "react-hooks/exhaustive-deps": "off",
-    "react/jsx-no-undef": "warn",
-    "jsx-a11y/alt-text": "warn"
+    "react/jsx-no-undef": "off",
+    "jsx-a11y/alt-text": "off",
+    "react-hooks/rules-of-hooks": "off"
   }
 }

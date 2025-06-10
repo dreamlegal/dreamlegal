@@ -602,3 +602,36 @@ model TechVendorLeads {
 
   @@map("tech_vendor_leads")
 }
+
+
+
+model CompanyAnalysis {
+  id                String @id @default(cuid())
+  companyName       String
+  totalArticlesCount Int
+  keyInsights       String[] // Array of key insight bullet points
+  reviews           Json     // Reviews object with positive/negative/neutral arrays + raw content
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  articles          AnalyzedArticle[]
+  
+  @@index([companyName])
+  @@index([createdAt])
+  @@map("company_analyses")
+}
+
+model AnalyzedArticle {
+  id          String @id @default(cuid())
+  title       String
+  url         String
+  category    String @default("Uncategorized") // Funding, Partnerships, etc. or "Uncategorized"
+  
+  // Relations
+  analysisId  String
+  analysis    CompanyAnalysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+  
+  @@index([category])
+  @@map("analyzed_articles")
+}

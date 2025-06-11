@@ -1,7 +1,9 @@
 
 "use client"
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search,Calendar,Book, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
+import { Clock } from 'lucide-react';
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -254,6 +256,18 @@ const BlogSection = ({ selectedCategory, searchQuery, setSearchQuery, currentPag
     // "buyer-perspective-report": { bg: "bg-purple-100", text: "text-purple-800" },
     // "inspiration-stories": { bg: "bg-yellow-100", text: "text-yellow-800" }
   };
+  
+  // Calculate read time
+  const calculateReadTime = (content) => {
+    if (!content) return 1;
+    const wordsPerMinute = 200;
+    const wordCount = content.replace(/<[^>]*>/g, '').trim().split(/\s+/).length;
+    const readTime = Math.ceil(wordCount / wordsPerMinute);
+    return readTime < 1 ? 1 : readTime;
+  };
+  const navigateToBlog = (blogSlug) => {
+    window.location.href = `/blog/${blogSlug}`;
+  };
 
   return (
     <section id="blogs-section" ref={sectionRef} className="py-16 bg-white">
@@ -301,57 +315,127 @@ const BlogSection = ({ selectedCategory, searchQuery, setSearchQuery, currentPag
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog, index) => (
-              <div
-                key={blog.id}
-                className={`bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 transform
-                          ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                <a href={`/blog/${blog.slug}`} className="block h-full">
-                  <div className="relative overflow-hidden rounded-t-xl">
-                    <div className="aspect-w-16 aspect-h-9">
-                      <img 
-                        src={blog.bannerImage || "/api/placeholder/600/340"} 
-                        alt={blog.title} 
-                        className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  </div>
+              // <div
+              //   key={blog.id}
+              //   className={`bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 transform
+              //             ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+              //   style={{ transitionDelay: `${index * 100}ms` }}
+              // >
+              //   <a href={`/blog/${blog.slug}`} className="block h-full">
+              //     <div className="relative overflow-hidden rounded-t-xl">
+              //       <div className="aspect-w-16 aspect-h-9">
+              //         <img 
+              //           src={blog.bannerImage || "/api/placeholder/600/340"} 
+              //           alt={blog.title} 
+              //           className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+              //         />
+              //       </div>
+              //     </div>
                   
-                  <div className="p-6">
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {blog.category.filter(cat => cat !== 'blog').map((category) => {
-                        const badge = topicBadges[category] || { bg: "bg-gray-100", text: "text-gray-800" };
-                        return (
-                          <span key={category} className={`px-2.5 py-1 text-xs font-medium ${badge.bg} ${badge.text} rounded-full`}>
-                            {category.includes('-') 
-                              ? category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-                              : category}
-                          </span>
-                        );
-                      })}
-                    </div>
+              //     <div className="p-6">
+              //       <div className="flex flex-wrap gap-2 mb-3">
+              //         {blog.category.filter(cat => cat !== 'blog').map((category) => {
+              //           const badge = topicBadges[category] || { bg: "bg-gray-100", text: "text-gray-800" };
+              //           return (
+              //             <span key={category} className={`px-2.5 py-1 text-xs font-medium ${badge.bg} ${badge.text} rounded-full`}>
+              //               {category.includes('-') 
+              //                 ? category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+              //                 : category}
+              //             </span>
+              //           );
+              //         })}
+              //       </div>
                     
-                    <h3 className="text-xl font-bold text-[#1e2556] mb-2 line-clamp-2 hover:text-[#7cc6ee] transition-colors">
-                      {blog.title}
-                    </h3>
+              //       <h3 className="text-xl font-bold text-[#1e2556] mb-2 line-clamp-2 hover:text-[#7cc6ee] transition-colors">
+              //         {blog.title}
+              //       </h3>
                     
-                    <p className="text-[#334155] mb-4 line-clamp-3">
-                      {blog.metaDescription || 'No description available'}
-                    </p>
+              //       <p className="text-[#334155] mb-4 line-clamp-3">
+              //         {blog.metaDescription || 'No description available'}
+              //       </p>
                     
-                    <div className="mt-auto pt-4 flex justify-between items-center border-t border-gray-100">
-                      <span className="text-sm text-gray-500">
-                        {blog.publishedAt ? formatDate(blog.publishedAt) : 'No date'}
-                      </span>
-                      <span className="text-[#7cc6ee] font-medium flex items-center gap-1 group">
-                        Read more 
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              </div>
+              //       <div className="mt-auto pt-4 flex justify-between items-center border-t border-gray-100">
+              //         <span className="text-sm text-gray-500">
+              //           {blog.publishedAt ? formatDate(blog.publishedAt) : 'No date'}
+              //         </span>
+              //         <span className="text-[#7cc6ee] font-medium flex items-center gap-1 group">
+              //           Read more 
+              //           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              //         </span>
+              //       </div>
+              //     </div>
+              //   </a>
+              // </div>
+              <div
+  key={blog.id}
+  className={`group bg-[#f5f7fa] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full
+            ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+  style={{ transitionDelay: `${index * 100}ms` }}
+>
+  <div className="relative h-56 w-full overflow-hidden">
+    {blog.bannerImage ? (
+      <Image
+        src={blog.bannerImage}
+        alt={blog.title}
+        fill
+        className="object-cover transition-transform duration-700 group-hover:scale-110"
+      />
+    ) : (
+      <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-[#7cc6ee]/10 to-[#7cc6ee]/20">
+        <Book className="w-16 h-16 text-[#7cc6ee]" />
+      </div>
+    )}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  </div>
+  
+  <div className="p-6 flex-grow flex flex-col">
+    <div className="flex items-center gap-4 text-sm text-[#334155] mb-3">
+      <div className="flex items-center gap-1">
+        <Calendar className="w-4 h-4 text-[#7cc6ee]" />
+        <span>{blog.publishedAt ? formatDate(blog.publishedAt) : formatDate(blog.createdAt)}</span>
+      </div>
+      {blog.content && (
+        <div className="flex items-center gap-1 p-1 border-4 border-[#f5f7fa] rounded-full bg-[#7cc6ee]">
+          <Clock className="w-4 h-4 text-white font-semibold" />
+          <span className="text-white font-semibold">{calculateReadTime(blog.content)} min read</span>
+        </div>
+      )}
+    </div>
+
+    {/* Categories from second blog */}
+    <div className="flex flex-wrap gap-2 mb-3">
+      {blog.category.filter(cat => cat !== 'blog').map((category) => {
+        const badge = topicBadges[category] || { bg: "bg-gray-100", text: "text-gray-800" };
+        return (
+          <span key={category} className={`px-2.5 py-1 text-xs font-medium ${badge.bg} ${badge.text} rounded-full`}>
+            {category.includes('-') 
+              ? category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+              : category}
+          </span>
+        );
+      })}
+    </div>
+    
+    <h3 className="text-xl font-semibold text-[#1e2556] mb-3 line-clamp-2 hover:text-[#7cc6ee] transition-colors group-hover:text-[#7cc6ee]">
+      {blog.title}
+    </h3>
+
+    {/* Meta description from second blog */}
+    {/* <p className="text-[#334155] mb-4 line-clamp-3 flex-grow">
+      {blog.metaDescription || 'No description available'}
+    </p> */}
+    
+    <div className="mt-auto pt-4">
+      <button 
+        onClick={() => navigateToBlog(blog.slug)}
+        className="flex items-center justify-between w-full px-4 py-2 border border-[#7cc6ee]/30 rounded-lg text-[#7cc6ee] font-medium transition-all hover:bg-[#7cc6ee]/10 group-hover:border-[#7cc6ee]"
+      >
+        <span>Read more</span>
+        <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+      </button>
+    </div>
+  </div>
+</div>
             ))}
           </div>
         )}

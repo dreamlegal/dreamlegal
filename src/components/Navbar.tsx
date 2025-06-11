@@ -88,32 +88,33 @@ const Navbar = () => {
       title: 'For technology companies',
       icon: <Cpu size={16} />,
       hasDropdown: false,
-      href: '/tech_vendor'
+      href: '/legal_tech'
     },
     {
       title: 'Resources',
       icon: <BookOpen size={16} />,
-      hasDropdown: true,
-      dropdownItems: [
-        { 
-          title: 'Learning hub', 
-          description: 'Content hub for legal tech beginners.',
-          icon: <BookOpen size={16} />,
-          href: '/learning_hub' 
-        },
-        { 
-          title: 'Insights and leadership', 
-          description: 'Trends, strategies, and industry insights, market maps.',
-          icon: <LineChart size={16} />,
-          href: '/resources' 
-        },
-        { 
-          title: 'Digital readiness evaluation', 
-          description: 'Assess your efficiency and tech readiness in minutes.',
-          icon: <FileText size={16} />,
-          href: '/digital_readiness_test' 
-        }
-      ]
+      hasDropdown: false,
+      href: '/resources'
+      // dropdownItems: [
+      //   { 
+      //     title: 'Learning hub', 
+      //     description: 'Content hub for legal tech beginners.',
+      //     icon: <BookOpen size={16} />,
+      //     href: '/learning_hub' 
+      //   },
+      //   { 
+      //     title: 'Insights and leadership', 
+      //     description: 'Trends, strategies, and industry insights, market maps.',
+      //     icon: <LineChart size={16} />,
+      //     href: '/resources' 
+      //   },
+      //   { 
+      //     title: 'Digital readiness evaluation', 
+      //     description: 'Assess your efficiency and tech readiness in minutes.',
+      //     icon: <FileText size={16} />,
+      //     href: '/digital_readiness_test' 
+      //   }
+      // ]
     },
     {
       title: 'Company',

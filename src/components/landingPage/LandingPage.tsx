@@ -111,11 +111,12 @@ const LandingPage = () => {
 <LegalServicesSection/>
 <SectionFour/>
 {/* <SectionFive/> */}
-      <ITServicesSection/>
+     
      
       {/* <DigitalServicesSection/> */}
      
       <SectionSix/>
+      <ITServicesSection/>
       <CTASection/>
       {/* <SectionSeven/> */}
     {/* <ContactFaq/> */}

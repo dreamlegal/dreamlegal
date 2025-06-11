@@ -134,6 +134,12 @@ const Testimonial = () => {
       name: "Rahul Hingmire",
       position: "Managing Partner at Vis Legis Law Practice",
       image: "/images/review3.jpg"
+    },
+    {
+      quote: "I 'm thrilled to recommend Mr. Ranjan Singhania, Co-Founder of Dream Legal. Ranjan's expertise in legal tech and innovation has been instrumental in reshaping our approach at Tuhin & Partners.  DreamLegal's partnership has been invaluable in our journey to becoming a tech-powered firm. Mr. Ranjan is the ideal collaborator if you want to innovate and thrive in the legal sector.",
+      name: "Osman Gani Tuhin",
+      position: "CEO Tuhin & Partners",
+      image: "/images/review4.jpg"
     }
   ]
 
@@ -141,7 +147,7 @@ const Testimonial = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 1000) // Change slide every 5 seconds
+    }, 3000) // Change slide every 5 seconds
 
     return () => clearInterval(interval)
   }, [testimonials.length])

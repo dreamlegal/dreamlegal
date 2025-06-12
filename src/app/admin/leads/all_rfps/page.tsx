@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useAdmin } from '../_components/AdminContext';
+import { useAdmin } from '../../_components/AdminContext';
 import { useRouter } from 'next/navigation';
 import AdminLeads from "@/components/AdminLeads";
 import LegalTechLeads from  "@/app/admin/_components/LegalTechLeads"

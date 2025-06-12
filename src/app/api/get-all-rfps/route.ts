@@ -1,20 +1,3 @@
-// // app/api/rfpforms/route.ts
-// import { NextResponse } from 'next/server';
-
-// import prisma from "@/lib/prisma";
-
-// export async function GET() {
-//   try {
-//     const allRfpForms = await prisma.rfpForms.findMany({
-//       orderBy: { createdAt: 'desc' }, // optional sorting
-//     });
-
-//     return NextResponse.json({ success: true, data: allRfpForms }, { status: 200 });
-//   } catch (error) {
-//     console.error('[RFP_FETCH_ERROR]', error);
-//     return NextResponse.json({ success: false, error: 'Failed to fetch RFP forms' }, { status: 500 });
-//   }
-// }
 
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma'; // Assuming prisma is set up in lib/prisma.ts

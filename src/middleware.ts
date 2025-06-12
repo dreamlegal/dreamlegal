@@ -72,15 +72,42 @@
 //           return NextResponse.redirect(new URL('/admin/login', request.url));
 //         }
         
-//         // For super_admin, always grant access
+//         // If user is super_admin, allow access everywhere
 //         if (adminAuthData.role === 'super_admin') {
 //           return NextResponse.next();
+//         }
+
+//         // SPECIAL HANDLING FOR ROOT ADMIN PATH
+//         // If a non-super_admin tries to access the main dashboard (/admin),
+//         // redirect them to a section they have permission for
+//         if (path === '/admin' || path === '/admin/') {
+//           const permissions = adminAuthData.permissions?.components || {};
+          
+//           // Check permissions and redirect accordingly
+//           if (permissions['AllProduct']) {
+//             return NextResponse.redirect(new URL('/admin/products', request.url));
+//           } else if (permissions['VendorsPage']) {
+//             return NextResponse.redirect(new URL('/admin/vendors', request.url));
+//           } else if (permissions['UsersPage']) {
+//             return NextResponse.redirect(new URL('/admin/users', request.url));
+//           } else if (permissions['adminblog']) {
+//             return NextResponse.redirect(new URL('/admin/blog', request.url));
+//           } else if (permissions['addAnalytics']) {
+//             return NextResponse.redirect(new URL('/admin/analytics', request.url));
+//           } else if (permissions['sendNotification']) {
+//             return NextResponse.redirect(new URL('/admin/notifications', request.url));
+//           } else if (permissions['adminLeads']) {
+//             return NextResponse.redirect(new URL('/admin/leads', request.url));
+//           } else {
+//             // If they don't have permission for any specific area, redirect to login
+//             return NextResponse.redirect(new URL('/admin/login?access=denied', request.url));
+//           }
 //         }
         
 //         // Extract section from URL (e.g., /admin/products -> products)
 //         const section = path.split('/')[2];
         
-//         // Skip permission check for base admin path
+//         // If no section (base admin path), already handled above
 //         if (!section) {
 //           return NextResponse.next();
 //         }
@@ -101,18 +128,19 @@
 //         if (section === 'products') {
 //           const subsection = path.split('/')[3];
 //           if (subsection === 'claims' && !adminAuthData.permissions?.components?.['AdminProductClaimsPage']) {
-//             return NextResponse.redirect(new URL('/admin', request.url));
+//             // Redirect to an area they have permission for
+//             return redirectToPermittedArea(adminAuthData, request);
 //           }
 //           if (subsection === 'new' && !adminAuthData.permissions?.components?.['NewProduct']) {
-//             return NextResponse.redirect(new URL('/admin', request.url));
+//             return redirectToPermittedArea(adminAuthData, request);
 //           }
 //           if (subsection === 'create' && !adminAuthData.permissions?.components?.['AdminProductCreation']) {
-//             return NextResponse.redirect(new URL('/admin', request.url));
+//             return redirectToPermittedArea(adminAuthData, request);
 //           }
 //         } else if (section === 'blog') {
 //           const subsection = path.split('/')[3];
 //           if (subsection === 'new' && !adminAuthData.permissions?.components?.['CreateBlog']) {
-//             return NextResponse.redirect(new URL('/admin', request.url));
+//             return redirectToPermittedArea(adminAuthData, request);
 //           }
 //         }
         
@@ -122,7 +150,7 @@
 //         // If we have a mapping for this path, check component permission
 //         if (requiredPermission && adminAuthData.permissions) {
 //           if (!adminAuthData.permissions.components?.[requiredPermission]) {
-//             return NextResponse.redirect(new URL('/admin', request.url));
+//             return redirectToPermittedArea(adminAuthData, request);
 //           }
 //         } 
 //         // If no specific mapping, fall back to tab permission check
@@ -130,12 +158,13 @@
 //           // Check tab permission (capitalize first letter)
 //           const formattedSection = section.charAt(0).toUpperCase() + section.slice(1);
 //           if (!adminAuthData.permissions.tabs?.[formattedSection]) {
-//             return NextResponse.redirect(new URL('/admin', request.url));
+//             return redirectToPermittedArea(adminAuthData, request);
 //           }
 //         }
         
 //         // Admin is authenticated and has proper permissions, proceed
 //         return NextResponse.next();
+        
 //       } catch (error) {
 //         console.error('Error parsing admin auth cookie:', error);
 //         return NextResponse.redirect(new URL('/admin/login', request.url));
@@ -213,6 +242,30 @@
 //     console.error('Middleware error:', error);
 //     // On any error, redirect to homepage
 //     return NextResponse.redirect(new URL('/', request.url));
+//   }
+// }
+
+// // Helper function to redirect admin to a section they have permission for
+// function redirectToPermittedArea(adminAuthData, request) {
+//   const permissions = adminAuthData.permissions?.components || {};
+  
+//   if (permissions['AllProduct']) {
+//     return NextResponse.redirect(new URL('/admin/products', request.url));
+//   } else if (permissions['VendorsPage']) {
+//     return NextResponse.redirect(new URL('/admin/vendors', request.url));
+//   } else if (permissions['UsersPage']) {
+//     return NextResponse.redirect(new URL('/admin/users', request.url));
+//   } else if (permissions['adminblog']) {
+//     return NextResponse.redirect(new URL('/admin/blog', request.url));
+//   } else if (permissions['addAnalytics']) {
+//     return NextResponse.redirect(new URL('/admin/analytics', request.url));
+//   } else if (permissions['sendNotification']) {
+//     return NextResponse.redirect(new URL('/admin/notifications', request.url));
+//   } else if (permissions['adminLeads']) {
+//     return NextResponse.redirect(new URL('/admin/leads', request.url));
+//   } else {
+//     // If they don't have permission for any specific area, redirect to login
+//     return NextResponse.redirect(new URL('/admin/login?access=denied', request.url));
 //   }
 // }
 
@@ -319,6 +372,10 @@ export async function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL('/admin/users', request.url));
           } else if (permissions['adminblog']) {
             return NextResponse.redirect(new URL('/admin/blog', request.url));
+          } else if (permissions['AllRfps']) {
+            return NextResponse.redirect(new URL('/admin/leads/all_rfps', request.url));
+          } else if (permissions['LegalTechLeads']) {
+            return NextResponse.redirect(new URL('/admin/leads/legal_tech_leads', request.url));
           } else if (permissions['addAnalytics']) {
             return NextResponse.redirect(new URL('/admin/analytics', request.url));
           } else if (permissions['sendNotification']) {
@@ -341,7 +398,6 @@ export async function middleware(request: NextRequest) {
         
         // Map URL paths to the permission keys used in the sidebar
         const componentPermissionMap = {
-          'leads': 'adminLeads',
           'notifications': 'sendNotification',
           'users': 'UsersPage',
           'analytics': 'addAnalytics',
@@ -369,6 +425,21 @@ export async function middleware(request: NextRequest) {
           if (subsection === 'new' && !adminAuthData.permissions?.components?.['CreateBlog']) {
             return redirectToPermittedArea(adminAuthData, request);
           }
+        } else if (section === 'leads') {
+          // Handle leads subsections
+          const subsection = path.split('/')[3];
+          if (subsection === 'all_rfps' && !adminAuthData.permissions?.components?.['AllRfps']) {
+            return redirectToPermittedArea(adminAuthData, request);
+          }
+          if (subsection === 'legal_tech_leads' && !adminAuthData.permissions?.components?.['LegalTechLeads']) {
+            return redirectToPermittedArea(adminAuthData, request);
+          }
+          // If accessing base leads path, check if they have any leads permission
+          if (!subsection && !adminAuthData.permissions?.components?.['AllRfps'] && 
+              !adminAuthData.permissions?.components?.['LegalTechLeads'] && 
+              !adminAuthData.permissions?.components?.['adminLeads']) {
+            return redirectToPermittedArea(adminAuthData, request);
+          }
         }
         
         // Get the required permission based on the path
@@ -380,6 +451,16 @@ export async function middleware(request: NextRequest) {
             return redirectToPermittedArea(adminAuthData, request);
           }
         } 
+        // Special handling for leads section
+        else if (section === 'leads' && adminAuthData.permissions) {
+          // Check if they have access to the Leads tab or any leads-related permissions
+          if (!adminAuthData.permissions.tabs?.['Leads'] && 
+              !adminAuthData.permissions.components?.['AllRfps'] && 
+              !adminAuthData.permissions.components?.['LegalTechLeads'] &&
+              !adminAuthData.permissions.components?.['adminLeads']) {
+            return redirectToPermittedArea(adminAuthData, request);
+          }
+        }
         // If no specific mapping, fall back to tab permission check
         else if (adminAuthData.permissions) {
           // Check tab permission (capitalize first letter)
@@ -484,6 +565,10 @@ function redirectToPermittedArea(adminAuthData, request) {
     return NextResponse.redirect(new URL('/admin/users', request.url));
   } else if (permissions['adminblog']) {
     return NextResponse.redirect(new URL('/admin/blog', request.url));
+  } else if (permissions['AllRfps']) {
+    return NextResponse.redirect(new URL('/admin/leads/all_rfps', request.url));
+  } else if (permissions['LegalTechLeads']) {
+    return NextResponse.redirect(new URL('/admin/leads/legal_tech_leads', request.url));
   } else if (permissions['addAnalytics']) {
     return NextResponse.redirect(new URL('/admin/analytics', request.url));
   } else if (permissions['sendNotification']) {

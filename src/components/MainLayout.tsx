@@ -18,7 +18,9 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   const showNavbarAndFooter = !pathname?.startsWith("/tech_vendor/dashboard") && 
                              !pathname?.startsWith("/web-admin") && 
                              !pathname?.startsWith("/admin") && 
-                             !pathname?.startsWith("/workflow")
+                             !pathname?.startsWith("/workflow") 
+                            //  &&
+                            //  !pathname?.startsWith("/product")
 
   // Add a loading state wrapper
   if (isLoading) {

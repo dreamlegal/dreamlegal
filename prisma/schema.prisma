@@ -49,6 +49,7 @@ model User {
   Post          Post[]
   bookmarkPost  String[]
   productClaims ProductClaim[]
+  usingSoftwareIds String[]
 }
 
 model userAccount {

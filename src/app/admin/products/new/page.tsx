@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useAdmin } from '../../_components/AdminContext';
 import { useRouter } from 'next/navigation';
-import NewProductAdmin from "@/components/NewProductAdmin";
+import NewProductAdmin from "../../_components/NewProductAdmin";
 
 export default function NewProductPage() {
   const { hasPermission, isLoading } = useAdmin();

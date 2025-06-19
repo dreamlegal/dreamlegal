@@ -367,18 +367,13 @@ import React, { useState, useEffect } from 'react';
 import { ProductInfo } from '@/store/useStore';
 
 const categoryOptions = {
-  'Client Relationship Management': {
-    'Intake and Lead Management': ['Tracking and capture', 'Lead assignment', 'Follow Up'],
-    'Client Portal': ['Profile Management', 'Appointment Management', 'Task Tracking', 'Client Communication'],
-    'Document Management': ['Document creation', 'Document Templatization', 'Version control', 'Granular permissions'],
-    'Case Alerts': ['Event based notifications', 'Case schedules updates', 'Document changes alert'],
-    'Budget, Expense and Time Tracking': ['Budget Management', 'Time tracking', 'Approval Management'],
-    'Client Billing and Invoicing': ['Multiple fee arrangement', 'Invoice creation', 'Automated Invoicing']
-  },
-  'Governance, Risk and Compliance': {
-    'Policy Management': ['Policy creation', 'Centralized repository', 'Version control', 'Policy reviews', 'Policy monitoring'],
-    'Issue Management': ['Incident reporting', 'Issue assessment', 'Action tracking', 'Response measuring'],
-    'Laws, Compliance and Regulatory Tracking': ['Sectoral relevance', 'Compliance applicability', 'Law and compliance updates']
+  'Legal AI': {
+    'Drafting and Document Automation': ['-Template based drafting', '-Precedent based drafting', '-Legal style and consistency check', '-Smart summarization', '-Clause and language optimization'],
+    'Data Processing and Manipulation': ['-command-based data extraction', '-OCR and text recognition', '-Data comparison', '-reference-based search', '-Automated redaction'],
+    'Contract Specific Capabilities': ['-Contract generation', '-Contract review and assessment', '-Obligation tracking', '-Negotiation intelligence', '-Clause library and standarization'],
+    'Compliance and Risk Management': ['-Regulatory monitoring', '-Automated policy drafting', '-Risk scoring and alerts'],
+    'Research and Litigation': ['-Case analysis', '-Smart legal research', '-Predictive analysis for outcome', '-Automated e-discovery', '-Argument builder'],
+    'Workflow Automation': ['-Task allocation', '-Lifecycle automation'],
   },
   'Contract Lifecycle Management': {
     'Contract Creation and Authoring': [
@@ -411,29 +406,7 @@ const categoryOptions = {
       'Version control for clauses',
     ],
   },
-  'E-Signature': {
-    'Fields Creation': [
-      'Signature fields',
-      'Multiple signature styles',
-      'Data fields',
-      'Customization and labelling',
-    ],
-    'Tracking and Validity': [
-      'Legal validity',
-      'Audit trail',
-      'Document recording and retention',
-    ],
-    'Document Management and Templates': [
-      'Document creation',
-      'Version control',
-      'Granular permission for collaborators',
-    ],
-    'Document Capturing': [
-      'Document uploads',
-      'Multiple file supports',
-      'OCR',
-    ],
-  },
+ 
   'Legal Research': {
     'Case Law Research': [
       'Comprehensive case law databases',
@@ -485,27 +458,7 @@ const categoryOptions = {
       'Task tracking',
     ],
   },
-  'E-billing and Invoicing': {
-    'Budgeting, Expense and Time Tracking': [
-      'Budget management',
-      'Time tracking',
-      'Multiple fee arrangements',
-      'Approval management',
-    ],
-    'Client Management': [
-      'Central client repository',
-      'Client communications',
-      'Billing schedules',
-      'Payment processing',
-    ],
-    'Invoice Generation and Review': [
-      'Customizable invoice templates',
-      'Automated invoice generation',
-      'Multiple currencies',
-      'Tax entries and calculations',
-      'Payment tracking and recording',
-    ],
-  },
+ 
   'E-discovery': {
     'Data Identification and Collection': [
       'Data source identification',
@@ -582,31 +535,7 @@ const categoryOptions = {
       'Customized docket entries',
     ],
   },
-  'Legal Workflow Automation': {
-    'Workflow Design and Configuration': [
-      'Workflow designer',
-      'Branching',
-      'Task management',
-      'Data routing',
-      'Workflow templates',
-    ],
-    'Assignment Allotment and Tracking': [
-      'Task creation',
-      'Task allotment',
-      'Task tracking',
-    ],
-    'Document Creation and Management': [
-      'Document creation',
-      'Templatization',
-      'Indexing and tagging of documents',
-      'Document search and retrieval',
-    ],
-    'Laws, Compliance and Regulatory Tracking': [
-      'Sectoral differentiation',
-      'Compliance applicability',
-      'Law and compliance updates',
-    ],
-  },
+  
 };
 
 const commonFeaturesOptions = {

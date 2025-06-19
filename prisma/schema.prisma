@@ -635,3 +635,89 @@ model AnalyzedArticle {
   @@index([category])
   @@map("analyzed_articles")
 }
+
+
+// Legal Software information model matching the JSON structure
+model LegalSoftware {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Section 1: Product Overview - Sidebar Information
+  slug        String?
+  logoUrl     String
+  productName String
+  category    SoftwareCategory
+  description String @db.Text // 140 words max
+
+  // Section 1: Product Overview - Company Information
+  companyName  String
+  headquarters String
+  founded      String
+  founders     String?
+
+  // Section 1: Product Overview - Contact Information
+  phone       String?
+  website     String?
+  email       String?
+  socialMedia String? // JSON string for multiple platforms
+
+  // Section 2: Detailed Overview
+  briefDescription    String @db.Text // 200 words max
+  targetUsers         String @db.Text
+  primaryPurpose      String @db.Text
+  technologyStack     String @db.Text
+  deploymentOptions   String @db.Text
+
+  // Section 3: Functionality and Features
+  coreFunctionalities String[] // Array of strings: ["Functionality 1", "Functionality 2"]
+  keyFeatures         Json     // Array of objects: [{"heading": "...", "description": "..."}, ...]
+  lifecycleStages     Json     // Array of lifecycle stage objects with stage_number, stage_name, impact_level, feature_impact_description
+
+  // Section 4: Pricing
+  pricingTier     PricingTier
+  startingPrice   String?
+  pricingModel    String?
+  freeTrial       String?
+  customPricing   String?
+
+  // Section 5: Market Perception
+  bestKnownFor      String[] // Array of strings: ["Point 1", "Point 2", ...]
+  criticalOpinions  String[] // Array of strings: ["Criticism 1", "Criticism 2", ...]
+  topUseCases       String[] // Array of strings: ["Use case 1", "Use case 2", ...]
+  userSatisfaction  String @db.Text
+
+  sources           Json
+
+  metaTitle               String? // SEO optimized title 
+  metaDescription         String? // SEO optimized description (150-160 chars)
+  ogTitle                 String? // Open Graph title for social sharing 
+  ogDescription           String? // Open Graph description for social sharing 
+  ogImage                 String? // Open Graph image URL for social sharing
+
+
+  @@map("legal_software")
+}
+
+// Enum for software categories to ensure data consistency
+enum SoftwareCategory {
+  CONTRACT_LIFECYCLE_MANAGEMENT
+  LEGAL_AI
+  DOCUMENT_MANAGEMENT_SYSTEM
+  LITIGATION_MANAGEMENT_AND_ANALYTICS
+  IP_MANAGEMENT
+  LEGAL_RESEARCH
+  E_DISCOVERY
+
+  @@map("software_category")
+}
+
+// Enum for pricing tiers
+enum PricingTier {
+  BUDGET      // $
+  MID_RANGE   // $$
+  PREMIUM     // $$$
+  ENTERPRISE  // $$$+
+
+  @@map("pricing_tier")
+}

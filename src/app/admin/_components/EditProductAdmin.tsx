@@ -1,10 +1,15 @@
-
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, ChevronUp, Upload, Save, Image as ImageIcon, X } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { ChevronDown, ChevronUp, Upload, Save, Image as ImageIcon, X, Loader2 } from 'lucide-react';
 
-const NewProductAdmin = () => {
+const EditProductAdmin = () => {
+  const params = useParams();
+  const productId = params.id;
+  
+  const [isLoading, setIsLoading] = useState(true);
   const [jsonInput, setJsonInput] = useState('');
   const [formData, setFormData] = useState(null);
+  const [originalSlug, setOriginalSlug] = useState(''); // Store original slug
   const [expandedSections, setExpandedSections] = useState({
     section1: true,
     section2: true,
@@ -26,10 +31,79 @@ const NewProductAdmin = () => {
   const [uploadedVideos, setUploadedVideos] = useState([]);
   const [isUploadingMedia, setIsUploadingMedia] = useState(false);
 
-  // Function to check if slug exists
+  // Fetch product data on component mount
+  useEffect(() => {
+    if (productId) {
+      fetchProductData();
+    }
+  }, [productId]);
+
+  const fetchProductData = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`/api/legal-software?id=${productId}`);
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch product data');
+      }
+      
+      const data = await response.json();
+      
+      // Transform the data to match form structure
+      const transformedData = {
+        logoUrl: data.logoUrl || '',
+        productName: data.productName || '',
+        slug: data.slug || '',
+        category: data.category || '',
+        description: data.description || '',
+        companyName: data.companyName || '',
+        headquarters: data.headquarters || '',
+        founded: data.founded || '',
+        founders: data.founders || '',
+        phone: data.phone || '',
+        website: data.website || '',
+        email: data.email || '',
+        socialMedia: data.socialMedia || '',
+        briefDescription: data.briefDescription || '',
+        targetUsers: data.targetUsers || '',
+        primaryPurpose: data.primaryPurpose || '',
+        technologyStack: data.technologyStack || '',
+        deploymentOptions: data.deploymentOptions || '',
+        coreFunctionalities: data.coreFunctionalities || [],
+        keyFeatures: data.keyFeatures || [],
+        lifecycleStages: data.lifecycleStages || [],
+        pricingTier: data.pricingTier || 'MID_RANGE',
+        startingPrice: data.startingPrice || '',
+        pricingModel: data.pricingModel || '',
+        freeTrial: data.freeTrial || '',
+        customPricing: data.customPricing || '',
+        bestKnownFor: data.bestKnownFor || [],
+        criticalOpinions: data.criticalOpinions || [],
+        topUseCases: data.topUseCases || [],
+        userSatisfaction: data.userSatisfaction || '',
+        sources: data.sources || {},
+        images: data.images || [],
+        videos: data.videos || [],
+        faqs: data.faqs || []
+      };
+      
+      setFormData(transformedData);
+      setOriginalSlug(data.slug); // Store the original slug
+      setImagePreview(data.logoUrl || '');
+      setUploadedImages(data.images || []);
+      setUploadedVideos(data.videos || []);
+    } catch (error) {
+      console.error('Error fetching product:', error);
+      setErrors({ fetch: error.message });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Function to check if slug exists (excluding current product)
   const checkSlugExists = async (slug) => {
     try {
-      const response = await fetch(`/api/legal-software/check-slug?slug=${encodeURIComponent(slug)}`);
+      const response = await fetch(`/api/legal-software/check-slug?slug=${encodeURIComponent(slug)}&excludeId=${productId}`);
       const data = await response.json();
       return data.exists;
     } catch (error) {
@@ -43,12 +117,12 @@ const NewProductAdmin = () => {
     setIsCheckingSlug(true);
     let slug = name.toLowerCase().replace(/ /g, "-");
     
-    // Check if the slug already exists
+    // Check if the slug already exists (excluding current product)
     let exists = await checkSlugExists(slug);
     
-    // If the slug exists, append a number to make it unique
+    // If the slug exists and it's not the original slug, append a number
     let counter = 1;
-    while (exists) {
+    while (exists && slug !== originalSlug) {
       slug = `${name.toLowerCase().replace(/ /g, "-")}-${counter}`;
       exists = await checkSlugExists(slug);
       counter++;
@@ -63,65 +137,125 @@ const NewProductAdmin = () => {
       const parsed = JSON.parse(jsonInput);
       setErrors({});
       
-      const productName = parsed.section1_product_overview?.sidebar_information?.product_name || '';
-      const slug = await generateUniqueSlug(productName);
+      const productName = parsed.section1_product_overview?.sidebar_information?.product_name || formData.productName;
+      let slug = formData.slug; // Keep existing slug by default
       
-      // Transform the JSON data to match our form structure
-      const transformedData = {
-        // Section 1: Product Overview
-        logoUrl: '', // Logo will be uploaded separately
-        productName: productName,
-        slug: slug, // Auto-generated unique slug
-        category: parsed.section1_product_overview?.sidebar_information?.category?.toUpperCase().replace(/ /g, '_') || '',
-        description: parsed.section1_product_overview?.sidebar_information?.description || '',
+      // Only generate new slug if product name changed
+      if (productName !== formData.productName) {
+        slug = await generateUniqueSlug(productName);
+      }
+      
+      // Merge JSON data with existing form data
+      const mergedData = {
+        // Keep existing data as defaults
+        ...formData,
         
-        companyName: parsed.section1_product_overview?.company_information?.company_name || '',
-        headquarters: parsed.section1_product_overview?.company_information?.headquarters || '',
-        founded: parsed.section1_product_overview?.company_information?.founded || '',
-        founders: parsed.section1_product_overview?.company_information?.founders || '',
+        // Section 1: Product Overview - Update if present in JSON
+        ...(parsed.section1_product_overview?.sidebar_information?.product_name && {
+          productName: parsed.section1_product_overview.sidebar_information.product_name,
+          slug: slug
+        }),
+        ...(parsed.section1_product_overview?.sidebar_information?.category && {
+          category: parsed.section1_product_overview.sidebar_information.category.toUpperCase().replace(/ /g, '_')
+        }),
+        ...(parsed.section1_product_overview?.sidebar_information?.description && {
+          description: parsed.section1_product_overview.sidebar_information.description
+        }),
         
-        phone: parsed.section1_product_overview?.contact_information?.phone || '',
-        website: parsed.section1_product_overview?.contact_information?.website || '',
-        email: parsed.section1_product_overview?.contact_information?.email || '',
-        socialMedia: parsed.section1_product_overview?.contact_information?.social_media || '',
+        ...(parsed.section1_product_overview?.company_information?.company_name && {
+          companyName: parsed.section1_product_overview.company_information.company_name
+        }),
+        ...(parsed.section1_product_overview?.company_information?.headquarters && {
+          headquarters: parsed.section1_product_overview.company_information.headquarters
+        }),
+        ...(parsed.section1_product_overview?.company_information?.founded && {
+          founded: parsed.section1_product_overview.company_information.founded
+        }),
+        ...(parsed.section1_product_overview?.company_information?.founders && {
+          founders: parsed.section1_product_overview.company_information.founders
+        }),
+        
+        ...(parsed.section1_product_overview?.contact_information?.phone && {
+          phone: parsed.section1_product_overview.contact_information.phone
+        }),
+        ...(parsed.section1_product_overview?.contact_information?.website && {
+          website: parsed.section1_product_overview.contact_information.website
+        }),
+        ...(parsed.section1_product_overview?.contact_information?.email && {
+          email: parsed.section1_product_overview.contact_information.email
+        }),
+        ...(parsed.section1_product_overview?.contact_information?.social_media && {
+          socialMedia: parsed.section1_product_overview.contact_information.social_media
+        }),
         
         // Section 2: Detailed Overview
-        briefDescription: parsed.section2_detailed_overview?.brief_description || '',
-        targetUsers: parsed.section2_detailed_overview?.target_users || '',
-        primaryPurpose: parsed.section2_detailed_overview?.primary_purpose || '',
-        technologyStack: parsed.section2_detailed_overview?.technology_stack || '',
-        deploymentOptions: parsed.section2_detailed_overview?.deployment_options || '',
+        ...(parsed.section2_detailed_overview?.brief_description && {
+          briefDescription: parsed.section2_detailed_overview.brief_description
+        }),
+        ...(parsed.section2_detailed_overview?.target_users && {
+          targetUsers: parsed.section2_detailed_overview.target_users
+        }),
+        ...(parsed.section2_detailed_overview?.primary_purpose && {
+          primaryPurpose: parsed.section2_detailed_overview.primary_purpose
+        }),
+        ...(parsed.section2_detailed_overview?.technology_stack && {
+          technologyStack: parsed.section2_detailed_overview.technology_stack
+        }),
+        ...(parsed.section2_detailed_overview?.deployment_options && {
+          deploymentOptions: parsed.section2_detailed_overview.deployment_options
+        }),
         
         // Section 3: Functionality and Features
-        coreFunctionalities: parsed.section3_functionality_and_features?.core_functionalities || [],
-        keyFeatures: parsed.section3_functionality_and_features?.key_features || [],
-        lifecycleStages: parsed.section3_functionality_and_features?.lifecycle_stages_supported || [],
+        ...(parsed.section3_functionality_and_features?.core_functionalities && {
+          coreFunctionalities: parsed.section3_functionality_and_features.core_functionalities
+        }),
+        ...(parsed.section3_functionality_and_features?.key_features && {
+          keyFeatures: parsed.section3_functionality_and_features.key_features
+        }),
+        ...(parsed.section3_functionality_and_features?.lifecycle_stages_supported && {
+          lifecycleStages: parsed.section3_functionality_and_features.lifecycle_stages_supported
+        }),
         
         // Section 4: Pricing
-        pricingTier: parsed.section4_pricing?.pricing_tier || '',
-        startingPrice: parsed.section4_pricing?.pricing_details?.starting_price || '',
-        pricingModel: parsed.section4_pricing?.pricing_details?.pricing_model || '',
-        freeTrial: parsed.section4_pricing?.pricing_details?.free_trial || '',
-        customPricing: parsed.section4_pricing?.pricing_details?.custom_pricing || '',
+        ...(parsed.section4_pricing?.pricing_tier && {
+          pricingTier: parsed.section4_pricing.pricing_tier
+        }),
+        ...(parsed.section4_pricing?.pricing_details?.starting_price && {
+          startingPrice: parsed.section4_pricing.pricing_details.starting_price
+        }),
+        ...(parsed.section4_pricing?.pricing_details?.pricing_model && {
+          pricingModel: parsed.section4_pricing.pricing_details.pricing_model
+        }),
+        ...(parsed.section4_pricing?.pricing_details?.free_trial && {
+          freeTrial: parsed.section4_pricing.pricing_details.free_trial
+        }),
+        ...(parsed.section4_pricing?.pricing_details?.custom_pricing && {
+          customPricing: parsed.section4_pricing.pricing_details.custom_pricing
+        }),
         
         // Section 5: Market Perception
-        bestKnownFor: parsed.section5_market_perception?.best_known_for || [],
-        criticalOpinions: parsed.section5_market_perception?.critical_opinions || [],
-        topUseCases: parsed.section5_market_perception?.top_use_cases || [],
-        userSatisfaction: parsed.section5_market_perception?.user_satisfaction || '',
+        ...(parsed.section5_market_perception?.best_known_for && {
+          bestKnownFor: parsed.section5_market_perception.best_known_for
+        }),
+        ...(parsed.section5_market_perception?.critical_opinions && {
+          criticalOpinions: parsed.section5_market_perception.critical_opinions
+        }),
+        ...(parsed.section5_market_perception?.top_use_cases && {
+          topUseCases: parsed.section5_market_perception.top_use_cases
+        }),
+        ...(parsed.section5_market_perception?.user_satisfaction && {
+          userSatisfaction: parsed.section5_market_perception.user_satisfaction
+        }),
         
         // Section 6: Sources
-        sources: parsed.section6_sources || {},
-        
-        // Section 7: Media (not from JSON, initialized empty)
-        images: [],
-        videos: [],
-        
-        // Section 8: FAQs (not from JSON, initialized empty)
-        faqs: []
+        ...(parsed.section6_sources && {
+          sources: parsed.section6_sources
+        })
       };
       
-      setFormData(transformedData);
+      setFormData(mergedData);
+      setSuccessMessage('JSON data merged successfully!');
+      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
       setErrors({ json: 'Invalid JSON format. Please check your input.' });
     }
@@ -305,14 +439,16 @@ const NewProductAdmin = () => {
       slug: formattedSlug
     }));
     
-    // Check if this slug already exists
-    if (formattedSlug) {
+    // Check if this slug already exists (excluding current product)
+    if (formattedSlug && formattedSlug !== originalSlug) {
       const exists = await checkSlugExists(formattedSlug);
       if (exists) {
         setErrors({ ...errors, slug: 'This slug already exists. Please choose a different one.' });
       } else {
         setErrors({ ...errors, slug: null });
       }
+    } else {
+      setErrors({ ...errors, slug: null });
     }
   };
 
@@ -441,7 +577,7 @@ const NewProductAdmin = () => {
     setSuccessMessage('');
 
     try {
-      // Upload image first if present
+      // Upload image first if a new one is selected
       let logoUrl = formData.logoUrl;
       if (imageFile) {
         const uploadedUrl = await uploadImage();
@@ -460,6 +596,7 @@ const NewProductAdmin = () => {
       };
 
       const transformedData = {
+        id: productId,
         ...formData,
         logoUrl: logoUrl,
         pricingTier: pricingTierMap[formData.pricingTier] || formData.pricingTier,
@@ -479,7 +616,7 @@ const NewProductAdmin = () => {
       };
 
       const response = await fetch('/api/legal-software', {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -489,19 +626,13 @@ const NewProductAdmin = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to save product');
+        throw new Error(data.error || 'Failed to update product');
       }
 
-      setSuccessMessage('Product saved successfully!');
-      // Reset form after successful submission
+      setSuccessMessage('Product updated successfully!');
+      // Don't reset form on edit, just show success message
       setTimeout(() => {
-        setFormData(null);
-        setJsonInput('');
         setSuccessMessage('');
-        setImageFile(null);
-        setImagePreview('');
-        setUploadedImages([]);
-        setUploadedVideos([]);
       }, 3000);
     } catch (error) {
       setErrors({ submit: error.message });
@@ -527,23 +658,50 @@ const NewProductAdmin = () => {
     { value: 'ENTERPRISE', label: '$$$+' }
   ];
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" style={{ color: '#1e2556' }} />
+          <p className="text-gray-600">Loading product data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (errors.fetch) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+            <p className="text-red-600 font-medium">Error loading product</p>
+            <p className="text-red-500 mt-2">{errors.fetch}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold mb-8" style={{ color: '#1e2556' }}>
-          Add Legal Software Product
+          Edit Legal Software Product
         </h1>
 
         {/* JSON Upload Section */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <h2 className="text-2xl font-semibold mb-4" style={{ color: '#1e2556' }}>
-            Upload Product JSON
+            Update Product via JSON (Optional)
           </h2>
+          <p className="text-gray-600 mb-4">
+            Upload a JSON file to update multiple fields at once. Only fields present in the JSON will be updated.
+          </p>
           <div className="space-y-4">
             <textarea
               value={jsonInput}
               onChange={(e) => setJsonInput(e.target.value)}
-              placeholder="Paste your product JSON here..."
+              placeholder="Paste your product JSON here to update fields..."
               className="w-full h-64 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               style={{ color: '#2d2d2d' }}
             />
@@ -557,7 +715,7 @@ const NewProductAdmin = () => {
               style={{ backgroundColor: '#1e2556' }}
             >
               <Upload size={20} />
-              {isCheckingSlug ? 'Generating unique slug...' : 'Parse JSON'}
+              {isCheckingSlug ? 'Checking slug...' : 'Update Fields from JSON'}
             </button>
           </div>
         </div>
@@ -1602,7 +1760,7 @@ const NewProductAdmin = () => {
                 style={{ backgroundColor: '#1e2556' }}
               >
                 <Save size={20} />
-                {isSubmitting ? 'Saving...' : 'Save Product'}
+                {isSubmitting ? 'Updating...' : 'Update Product'}
               </button>
             </div>
           </div>
@@ -1612,4 +1770,4 @@ const NewProductAdmin = () => {
   );
 };
 
-export default NewProductAdmin;
+export default EditProductAdmin;

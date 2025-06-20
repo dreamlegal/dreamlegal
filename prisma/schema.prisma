@@ -696,6 +696,15 @@ model LegalSoftware {
   ogDescription           String? // Open Graph description for social sharing 
   ogImage                 String? // Open Graph image URL for social sharing
 
+  
+  // Section 7: Media (Images and Videos)
+  images            String[] // Array of S3 URLs for images
+  videos            String[] // Array of S3 URLs for videos
+
+  // Section 8: FAQs
+  faqs              Json?     // Array of objects: [{"heading": "...", "answer": "..."}, ...]
+
+
 
   @@map("legal_software")
 }

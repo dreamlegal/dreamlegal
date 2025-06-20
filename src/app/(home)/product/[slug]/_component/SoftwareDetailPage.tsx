@@ -1,7 +1,6 @@
 
 
 
-
 // 'use client';
 
 // import { useState, useEffect } from 'react';
@@ -21,6 +20,11 @@
 //   const [sidebarOpen, setSidebarOpen] = useState(false);
 //   const [showInfoTooltip, setShowInfoTooltip] = useState(false);
 //   const [isRfpFormOpen, setIsRfpFormOpen] = useState(false);
+  
+//   // New states for user toggle feature
+//   const [isUserUsing, setIsUserUsing] = useState(false);
+//   const [userCount, setUserCount] = useState(0);
+//   const [isTogglingUser, setIsTogglingUser] = useState(false);
   
 //   const { userId, vendorId, userType, isLoading: authLoading } = useAuth();
 //   const isAuthenticated = !!(userId || vendorId);
@@ -66,6 +70,71 @@
 //       fetchSoftware();
 //     }
 //   }, [slug]);
+
+//   // Fetch user status when component mounts or auth changes
+//   useEffect(() => {
+//     const fetchUserStatus = async () => {
+//       if (!slug) return;
+      
+//       try {
+//         const queryParams = userId ? `?userId=${userId}` : '';
+//         const response = await fetch(`/api/software/${slug}/user-status${queryParams}`);
+//         if (response.ok) {
+//           const data = await response.json();
+//           setIsUserUsing(data.isUserUsing);
+//           setUserCount(data.userCount);
+//         }
+//       } catch (error) {
+//         console.error('Error fetching user status:', error);
+//       }
+//     };
+
+//     fetchUserStatus();
+//   }, [slug, userId]);
+
+//   const handleUserToggle = async () => {
+//     // Check if it's a vendor
+//     if (vendorId && !userId) {
+//       alert('Vendors cannot save products');
+//       return;
+//     }
+
+//     if (!userId) {
+//       // You might want to show a login modal or redirect to login
+//       alert('Please login to mark yourself as a user');
+//       return;
+//     }
+
+//     setIsTogglingUser(true);
+    
+//     try {
+//       const response = await fetch(`/api/software/${slug}/user-status`, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ 
+//           isUsing: !isUserUsing,
+//           userId: userId,
+//           vendorId: vendorId 
+//         }),
+//       });
+
+//       if (response.ok) {
+//         const data = await response.json();
+//         setIsUserUsing(data.isUserUsing);
+//         setUserCount(data.userCount);
+//       } else {
+//         const error = await response.json();
+//         alert(error.error || 'Failed to update status');
+//       }
+//     } catch (error) {
+//       console.error('Error toggling user status:', error);
+//       alert('Failed to update status');
+//     } finally {
+//       setIsTogglingUser(false);
+//     }
+//   };
 
 //   useEffect(() => {
 //     const handleScroll = () => {
@@ -209,6 +278,68 @@
 //     );
 //   };
 
+//   // User Toggle Component
+//   const UserToggleButton = () => {
+//     // If it's a vendor, show a different UI
+//     if (vendorId && !userId) {
+//       return (
+//         <div className="bg-gray-50 rounded-lg p-3">
+//           <div className="text-center p-2 bg-gray-100 rounded-md">
+//             <svg className="w-5 h-5 text-gray-400 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+//             </svg>
+//             <p className="text-xs text-gray-600">Vendors cannot save products</p>
+//           </div>
+//           <div className="mt-2 text-center">
+//             <p className="text-xs text-gray-600">
+//               <span className="font-semibold text-sm" style={{ color: '#1e2556' }}>{userCount}</span> {userCount === 1 ? 'person is' : 'people are'} using this product
+//             </p>
+//           </div>
+//         </div>
+//       );
+//     }
+
+//     return (
+//       <div className="bg-gray-50 rounded-lg p-3">
+//         <button
+//           onClick={handleUserToggle}
+//           disabled={isTogglingUser}
+//           className={`w-full flex items-center justify-between p-2 rounded-md transition-all duration-200 ${
+//             isUserUsing 
+//               ? 'bg-green-100 hover:bg-green-200 border border-green-300' 
+//               : 'bg-white hover:bg-gray-100 border border-gray-300'
+//           } ${isTogglingUser ? 'opacity-50 cursor-not-allowed' : ''}`}
+//         >
+//           <span className="flex items-center space-x-2">
+//             {isUserUsing ? (
+//               <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+//                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+//               </svg>
+//             ) : (
+//               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+//               </svg>
+//             )}
+//             <span className={`text-sm font-medium ${isUserUsing ? 'text-green-700' : 'text-gray-700'}`}>
+//               {isUserUsing ? "I'm using this" : "I am a user"}
+//             </span>
+//           </span>
+//           <div className={`text-xs px-2 py-1 rounded-full ${
+//             isUserUsing ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600'
+//           }`}>
+//             {isUserUsing ? 'Yes' : 'No'}
+//           </div>
+//         </button>
+        
+//         <div className="mt-2 text-center">
+//           <p className="text-xs text-gray-600">
+//             <span className="font-semibold text-sm" style={{ color: '#1e2556' }}>{userCount}</span> {userCount === 1 ? 'person is' : 'people are'} using this product
+//           </p>
+//         </div>
+//       </div>
+//     );
+//   };
+
 //   if (loading || authLoading) {
 //     return (
 //       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#f5f7fa' }}>
@@ -307,6 +438,11 @@
 //                     style={{ backgroundColor: '#7cc6ee' }}>
 //                 {formatCategoryName(displaySoftware.category)}
 //               </span>
+//             </div>
+
+//             {/* User Toggle Button - Below Category */}
+//             <div className="mb-3">
+//               <UserToggleButton />
 //             </div>
 
 //             {/* Description with Show More */}
@@ -491,9 +627,12 @@
 //                   </div>
 //                 </div>
                 
+//                 {/* User Toggle Button in Mobile View */}
+//                 <UserToggleButton />
+                
 //                 <button 
 //                   onClick={() => setIsRfpFormOpen(true)}
-//                   className="w-full mb-2 px-4 py-2 bg-[#7cc6ee] text-white rounded-md font-medium text-sm hover:bg-[#5eb6e0] transition-all duration-200"
+//                   className="w-full mt-3 mb-2 px-4 py-2 bg-[#7cc6ee] text-white rounded-md font-medium text-sm hover:bg-[#5eb6e0] transition-all duration-200"
 //                 >
 //                   Share Requirements
 //                 </button>
@@ -862,6 +1001,9 @@ const SoftwareDetailPage = ({ slug }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showInfoTooltip, setShowInfoTooltip] = useState(false);
   const [isRfpFormOpen, setIsRfpFormOpen] = useState(false);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const [similarProducts, setSimilarProducts] = useState([]);
+  const [expandedFaq, setExpandedFaq] = useState(null);
   
   // New states for user toggle feature
   const [isUserUsing, setIsUserUsing] = useState(false);
@@ -900,6 +1042,11 @@ const SoftwareDetailPage = ({ slug }) => {
         
         const data = await response.json();
         setSoftware(data);
+        
+        // Fetch similar products
+        if (data.similarProducts) {
+          setSimilarProducts(data.similarProducts);
+        }
       } catch (error) {
         console.error('Error fetching software:', error);
         setError('Network error. Please check your connection.');
@@ -980,7 +1127,7 @@ const SoftwareDetailPage = ({ slug }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['overview', 'features', 'pricing', 'reviews', 'sources'];
+      const sections = ['overview', 'features', 'pricing', 'reviews', 'media', 'faqs', 'sources', 'alternatives'];
       const scrollPosition = window.scrollY + 120;
 
       for (const section of sections) {
@@ -1100,24 +1247,20 @@ const SoftwareDetailPage = ({ slug }) => {
     return socialLinks;
   };
 
-  const BlurredContent = ({ children, isBlurred }) => {
-    if (!isBlurred) return children;
-    
-    return (
-      <div className="relative">
-        <div className="blur-sm select-none pointer-events-none">
-          {children}
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70">
-          <div className="text-center">
-            <svg className="w-8 h-8 mx-auto mb-2" style={{ color: '#334155' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-            <p className="text-sm font-medium" style={{ color: '#1e2556' }}>Login to view this content</p>
-          </div>
-        </div>
-      </div>
-    );
+  // Media Navigation
+  const allMedia = [...(software?.images || []), ...(software?.videos || [])];
+  const totalMedia = allMedia.length;
+
+  const nextMedia = () => {
+    setCurrentMediaIndex((prev) => (prev + 1) % totalMedia);
+  };
+
+  const prevMedia = () => {
+    setCurrentMediaIndex((prev) => (prev - 1 + totalMedia) % totalMedia);
+  };
+
+  const isVideo = (index) => {
+    return index >= (software?.images || []).length;
   };
 
   // User Toggle Component
@@ -1241,11 +1384,15 @@ const SoftwareDetailPage = ({ slug }) => {
     { id: 'features', label: 'Features' },
     { id: 'pricing', label: 'Pricing' },
     { id: 'reviews', label: 'Reviews' },
-    { id: 'sources', label: 'Sources' }
+    ...(allMedia.length > 0 ? [{ id: 'media', label: 'Media' }] : []),
+    ...(software.faqs && software.faqs.length > 0 ? [{ id: 'faqs', label: 'FAQs' }] : []),
+    { id: 'sources', label: 'Sources' },
+    ...(similarProducts.length > 0 ? [{ id: 'alternatives', label: 'Alternatives' }] : [])
   ];
 
   const displaySoftware = software;
   const socialMediaLinks = parseSocialMedia(displaySoftware.socialMedia);
+  const productTitle = displaySoftware.ogTitle || displaySoftware.productName;
 
   return (
     <div className="min-h-screen pt-16" style={{ backgroundColor: '#f5f7fa' }}>
@@ -1276,8 +1423,8 @@ const SoftwareDetailPage = ({ slug }) => {
                 />
               </div>
               <h1 className="text-base font-bold mb-1" style={{ color: '#1e2556' }}>{displaySoftware.productName}</h1>
-              <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-white"
-                    style={{ backgroundColor: '#7cc6ee' }}>
+              <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium"
+                    style={{ backgroundColor: '#f5f7fa', color: '#1e2556' }}>
                 {formatCategoryName(displaySoftware.category)}
               </span>
             </div>
@@ -1419,7 +1566,7 @@ const SoftwareDetailPage = ({ slug }) => {
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                     }`}
                     style={{ 
-                      backgroundColor: activeSection === section.id ? '#1e2556' : 'transparent'
+                      backgroundColor: activeSection === section.id ? '#7cc6ee' : 'transparent'
                     }}
                   >
                     {section.label}
@@ -1431,8 +1578,8 @@ const SoftwareDetailPage = ({ slug }) => {
               {!isMobile && (
                 <button 
                   onClick={() => setIsRfpFormOpen(true)}
-                  className="group whitespace-nowrap px-4 py-1.5 bg-[#7cc6ee] 
-                          text-white rounded-md font-medium hover:bg-[#5eb6e0] 
+                  className="group whitespace-nowrap px-4 py-1.5 bg-[#1e2556] 
+                          text-white rounded-md font-medium hover:bg-[#0f1729] 
                           transition-all duration-200 flex items-center 
                           justify-center gap-2 shadow-sm hover:shadow-md text-xs
                           hover:scale-105 active:scale-95"
@@ -1462,19 +1609,16 @@ const SoftwareDetailPage = ({ slug }) => {
                   </div>
                   <div className="flex-1">
                     <h1 className="text-sm font-bold" style={{ color: '#1e2556' }}>{displaySoftware.productName}</h1>
-                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-white mt-1"
-                          style={{ backgroundColor: '#7cc6ee' }}>
+                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium mt-1"
+                          style={{ backgroundColor: '#f5f7fa', color: '#1e2556' }}>
                       {formatCategoryName(displaySoftware.category)}
                     </span>
                   </div>
                 </div>
                 
-                {/* User Toggle Button in Mobile View */}
-                <UserToggleButton />
-                
                 <button 
                   onClick={() => setIsRfpFormOpen(true)}
-                  className="w-full mt-3 mb-2 px-4 py-2 bg-[#7cc6ee] text-white rounded-md font-medium text-sm hover:bg-[#5eb6e0] transition-all duration-200"
+                  className="w-full mb-2 px-4 py-2 bg-[#1e2556] text-white rounded-md font-medium text-sm hover:bg-[#0f1729] transition-all duration-200"
                 >
                   Share Requirements
                 </button>
@@ -1484,14 +1628,17 @@ const SoftwareDetailPage = ({ slug }) => {
                   className="w-full px-4 py-2 border border-gray-300 rounded-md font-medium text-sm hover:bg-gray-50 transition-all duration-200"
                   style={{ color: '#1e2556' }}
                 >
-                  View All Details
+                  View Company Details
                 </button>
               </div>
             )}
 
+            {/* Product Title */}
+            <h1 className="text-2xl font-bold mb-6" style={{ color: '#1e2556' }}>{productTitle}</h1>
+
             {/* Section 1: Overview */}
             <section id="overview" className="mb-8 scroll-mt-24">
-              <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>Overview</h2>
+              <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>{displaySoftware.productName} Overview</h2>
               
               <div className="grid grid-cols-1 gap-4">
                 <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
@@ -1525,16 +1672,12 @@ const SoftwareDetailPage = ({ slug }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
                     <h3 className="text-sm font-bold mb-2" style={{ color: '#1e2556' }}>Technology Stack</h3>
-                    <BlurredContent isBlurred={!isAuthenticated}>
-                      <p className="text-xs leading-relaxed" style={{ color: '#2d2d2d' }}>{displaySoftware.technologyStack}</p>
-                    </BlurredContent>
+                    <p className="text-xs leading-relaxed" style={{ color: '#2d2d2d' }}>{displaySoftware.technologyStack}</p>
                   </div>
 
                   <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
                     <h3 className="text-sm font-bold mb-2" style={{ color: '#1e2556' }}>Deployment Options</h3>
-                    <BlurredContent isBlurred={!isAuthenticated}>
-                      <p className="text-xs leading-relaxed" style={{ color: '#2d2d2d' }}>{displaySoftware.deploymentOptions}</p>
-                    </BlurredContent>
+                    <p className="text-xs leading-relaxed" style={{ color: '#2d2d2d' }}>{displaySoftware.deploymentOptions}</p>
                   </div>
                 </div>
               </div>
@@ -1542,7 +1685,7 @@ const SoftwareDetailPage = ({ slug }) => {
 
             {/* Section 2: Features and Functionalities */}
             <section id="features" className="mb-8 scroll-mt-24">
-              <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>Features & Functionalities</h2>
+              <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>{displaySoftware.productName} Features & Functionalities</h2>
               
               <div className="space-y-4">
                 {/* Core Functionalities */}
@@ -1574,35 +1717,33 @@ const SoftwareDetailPage = ({ slug }) => {
                 {/* Impact on Process Lifecycle */}
                 <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
                   <h3 className="text-sm font-bold mb-3" style={{ color: '#1e2556' }}>Impact on Process Lifecycle</h3>
-                  <BlurredContent isBlurred={!isAuthenticated}>
-                    <div className="space-y-2">
-                      {displaySoftware.lifecycleStages
-                        .sort((a, b) => a.stage_number - b.stage_number)
-                        .map((stage, index) => (
-                          <div key={index} className="flex items-start space-x-3 p-3 bg-white rounded-md border border-gray-100 hover:shadow-sm transition-all duration-300">
-                            <div className="flex-shrink-0 w-6 h-6 text-white rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: '#1e2556' }}>
-                              {stage.stage_number}
-                            </div>
-                            <div className="flex-grow">
-                              <div className="flex items-center space-x-2 mb-1">
-                                <h4 className="text-sm font-semibold" style={{ color: '#1e2556' }}>{stage.stage_name}</h4>
-                                <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getImpactLevelColor(stage.impact_level)}`}>
-                                  {stage.impact_level}
-                                </span>
-                              </div>
-                              <p className="text-xs leading-relaxed" style={{ color: '#2d2d2d' }}>{stage.feature_impact_description}</p>
-                            </div>
+                  <div className="space-y-2">
+                    {displaySoftware.lifecycleStages
+                      .sort((a, b) => a.stage_number - b.stage_number)
+                      .map((stage, index) => (
+                        <div key={index} className="flex items-start space-x-3 p-3 bg-white rounded-md border border-gray-100 hover:shadow-sm transition-all duration-300">
+                          <div className="flex-shrink-0 w-6 h-6 text-white rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: '#1e2556' }}>
+                            {stage.stage_number}
                           </div>
-                        ))}
-                    </div>
-                  </BlurredContent>
+                          <div className="flex-grow">
+                            <div className="flex items-center space-x-2 mb-1">
+                              <h4 className="text-sm font-semibold" style={{ color: '#1e2556' }}>{stage.stage_name}</h4>
+                              <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getImpactLevelColor(stage.impact_level)}`}>
+                                {stage.impact_level}
+                              </span>
+                            </div>
+                            <p className="text-xs leading-relaxed" style={{ color: '#2d2d2d' }}>{stage.feature_impact_description}</p>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
                 </div>
               </div>
             </section>
 
             {/* Section 3: Pricing Plans */}
             <section id="pricing" className="mb-8 scroll-mt-24">
-              <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>Pricing Plans</h2>
+              <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>{displaySoftware.productName} Pricing Plans</h2>
               
               <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1671,7 +1812,7 @@ const SoftwareDetailPage = ({ slug }) => {
 
             {/* Section 4: Reviews */}
             <section id="reviews" className="mb-8 scroll-mt-24">
-              <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>Reviews</h2>
+              <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>{displaySoftware.productName} Reviews</h2>
               
               <div className="space-y-4">
                 {/* User Satisfaction */}
@@ -1703,44 +1844,182 @@ const SoftwareDetailPage = ({ slug }) => {
                   {/* Critical Opinions */}
                   <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
                     <h3 className="text-sm font-bold mb-3" style={{ color: '#1e2556' }}>User Feedback</h3>
-                    <BlurredContent isBlurred={!isAuthenticated}>
-                      <div className="space-y-2">
-                        {displaySoftware.criticalOpinions.map((opinion, index) => (
-                          <div key={index} className="flex items-start space-x-2">
-                            <div className="w-3 h-3 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                            </div>
-                            <p className="text-xs leading-relaxed" style={{ color: '#2d2d2d' }}>{opinion}</p>
+                    <div className="space-y-2">
+                      {displaySoftware.criticalOpinions.map((opinion, index) => (
+                        <div key={index} className="flex items-start space-x-2">
+                          <div className="w-3 h-3 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
                           </div>
-                        ))}
-                      </div>
-                    </BlurredContent>
+                          <p className="text-xs leading-relaxed" style={{ color: '#2d2d2d' }}>{opinion}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Best Known For */}
                   <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
                     <h3 className="text-sm font-bold mb-3" style={{ color: '#1e2556' }}>Best Known For</h3>
-                    <BlurredContent isBlurred={!isAuthenticated}>
-                      <div className="space-y-2">
-                        {displaySoftware.bestKnownFor.map((feature, index) => (
-                          <div key={index} className="flex items-start space-x-2">
-                            <svg className="w-3 h-3 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                            <p className="text-xs" style={{ color: '#2d2d2d' }}>{feature}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </BlurredContent>
+                    <div className="space-y-2">
+                      {displaySoftware.bestKnownFor.map((feature, index) => (
+                        <div key={index} className="flex items-start space-x-2">
+                          <svg className="w-3 h-3 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                          <p className="text-xs" style={{ color: '#2d2d2d' }}>{feature}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* Section 5: Sources */}
-            <section id="sources" className="mb-4 scroll-mt-24">
+            {/* Section 5: Images and Videos */}
+            {allMedia.length > 0 && (
+  <section id="media" className="mb-8 scroll-mt-24">
+    <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>{displaySoftware.productName} Media</h2>
+    
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+      <div className="relative">
+        {/* Responsive grid: 1 column on mobile, 2 on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
+          {allMedia.slice(currentMediaIndex, currentMediaIndex + (window.innerWidth >= 768 ? 2 : 1)).map((media, index) => (
+            <div key={currentMediaIndex + index} className="aspect-video relative overflow-hidden rounded-lg bg-gray-100">
+              {isVideo(currentMediaIndex + index) ? (
+                <video
+                  controls
+                  className="w-full h-full object-contain"
+                  src={media}
+                >
+                  Your browser does not support the video tag.
+                </video>
+              ) : (
+                <div className="relative w-full h-full">
+                  <Image
+                    src={media}
+                    alt={`${displaySoftware.productName} screenshot ${currentMediaIndex + index + 1}`}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        
+        {/* Navigation Arrows - show only if needed */}
+        {totalMedia > 1 && (
+          <>
+            <button
+              onClick={prevMedia}
+              className="absolute left-1 md:left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-1 md:p-2 rounded-full shadow-md transition-all"
+            >
+              <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={nextMedia}
+              className="absolute right-1 md:right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-1 md:p-2 rounded-full shadow-md transition-all"
+            >
+              <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </>
+        )}
+      </div>
+      
+      {/* Compact Thumbnail Navigation - responsive */}
+      {totalMedia > 1 && (
+        <div className="flex gap-1 overflow-x-auto pb-2 justify-center">
+          {allMedia.map((media, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentMediaIndex(index)}
+              className={`relative flex-shrink-0 w-8 h-8 md:w-12 md:h-12 rounded-md overflow-hidden border-2 transition-all ${
+                currentMediaIndex === index || (window.innerWidth >= 768 && Math.floor(currentMediaIndex / 2) === Math.floor(index / 2)) ? 'border-[#7cc6ee]' : 'border-gray-200'
+              }`}
+            >
+              {isVideo(index) ? (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <svg className="w-3 h-3 md:w-4 md:h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+              ) : (
+                <Image
+                  src={media}
+                  alt={`Thumbnail ${index + 1}`}
+                  fill
+                  className="object-cover"
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+)}
+            {/* Section 6: FAQs */}
+            {software.faqs && software.faqs.length > 0 && (
+  <section id="faqs" className="mb-8 scroll-mt-24">
+    <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>{displaySoftware.productName} FAQs</h2>
+    
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+      <div className="space-y-2">
+        {software.faqs.map((faq, index) => (
+          <div 
+            key={index} 
+            className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-sm transition-shadow"
+          >
+            <button
+              onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+              className="w-full p-3 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+            >
+              <h3 className="text-sm font-semibold pr-3" style={{ color: '#1e2556' }}>
+                {faq.heading}
+              </h3>
+              <div className="flex-shrink-0">
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${
+                  expandedFaq === index ? 'bg-[#7cc6ee] rotate-180' : 'bg-gray-200 hover:bg-[#7cc6ee]'
+                }`}>
+                  <svg
+                    className={`w-3 h-3 transition-colors ${
+                      expandedFaq === index ? 'text-white' : 'text-gray-600'
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+            </button>
+            
+            {expandedFaq === index && (
+              <div className="px-3 pb-3">
+                <div className="border-t border-gray-100 pt-2">
+                  <p className="text-sm leading-relaxed text-gray-700">
+                    {faq.answer}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+            {/* Section 7: Sources */}
+            <section id="sources" className="mb-8 scroll-mt-24">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold" style={{ color: '#1e2556' }}>Sources</h2>
+                <h2 className="text-xl font-bold" style={{ color: '#1e2556' }}>{displaySoftware.productName} Sources</h2>
                 <div className="relative">
                   <button
                     onClick={() => setShowInfoTooltip(!showInfoTooltip)}
@@ -1799,7 +2078,46 @@ const SoftwareDetailPage = ({ slug }) => {
               </div>
             </section>
 
-            {/* Mobile Action Button - Removed, replaced with info box at top */}
+            {/* Section 8: Similar Products */}
+            {similarProducts.length > 0 && (
+              <section id="alternatives" className="mb-4 scroll-mt-24">
+                <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>{displaySoftware.productName} Alternatives</h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {similarProducts.map((product, index) => (
+                    <div key={index} className="bg-white rounded-lg p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                      <div className="flex items-center space-x-3 mb-3">
+                        <div className="w-12 h-12 relative rounded-lg overflow-hidden shadow-sm flex-shrink-0">
+                          <Image
+                            src={product.logoUrl || '/placeholder-logo.png'}
+                            alt={`${product.productName} logo`}
+                            fill
+                            className="object-contain p-1"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-sm font-semibold" style={{ color: '#1e2556' }}>{product.productName}</h3>
+                          <p className="text-xs" style={{ color: '#334155' }}>{product.companyName}</p>
+                        </div>
+                      </div>
+                      <p className="text-xs mb-3 line-clamp-2" style={{ color: '#2d2d2d' }}>
+                        {product.description}
+                      </p>
+                      <Link
+                        href={`/product/${product.slug}`}
+                        className="inline-flex items-center space-x-2 text-xs font-medium hover:underline"
+                        style={{ color: '#7cc6ee' }}
+                      >
+                        <span>View Product</span>
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
         </div>
       </div>

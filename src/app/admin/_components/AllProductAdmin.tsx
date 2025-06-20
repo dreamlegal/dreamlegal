@@ -308,7 +308,7 @@ const AllProductAdmin = () => {
                         View
                       </Link>
                       <Link
-                        href={`/admin/product/edit/${item.id}`}
+                        href={`/admin/products/edit/${item.id}`}
                         className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                       >
                         Edit

@@ -1553,7 +1553,7 @@ const SoftwareDetailPage = ({ slug }) => {
         {/* Right Main Content */}
         <div className={`flex-1 ${isMobile ? 'ml-0' : 'ml-[336px]'}`}>
           {/* Compact Sticky Navigation */}
-          <div className={`sticky ${isMobile ? 'top-0' : 'top-16'} bg-white shadow-md z-30 border-b border-gray-100`}>
+          {/* <div className={`sticky ${isMobile ? 'top-0' : 'top-16'} bg-white shadow-md z-30 border-b border-gray-100`}>
             <div className="flex items-center justify-between px-4 md:px-6 py-2">
               <div className={`flex ${isMobile ? 'overflow-x-auto scrollbar-hide' : 'space-x-1'}`}>
                 {sections.map((section) => (
@@ -1574,7 +1574,7 @@ const SoftwareDetailPage = ({ slug }) => {
                 ))}
               </div>
               
-              {/* Action Button */}
+              
               {!isMobile && (
                 <button 
                   onClick={() => setIsRfpFormOpen(true)}
@@ -1591,7 +1591,45 @@ const SoftwareDetailPage = ({ slug }) => {
                 </button>
               )}
             </div>
-          </div>
+          </div> */}
+          <div className={`sticky ${isMobile ? 'top-0' : 'top-16'} bg-white shadow-md z-30 border-b border-gray-100`}>
+  <div className="flex items-center justify-between px-4 md:px-6 py-2">
+    <div className={`${isMobile ? 'flex flex-wrap gap-1' : 'flex space-x-1'} ${isMobile ? 'max-w-[calc(100vw-8rem)]' : ''}`}>
+      {sections.map((section, index) => (
+        <button
+          key={section.id}
+          onClick={() => scrollToSection(section.id)}
+          className={`px-3 py-1.5 rounded-md font-medium transition-all duration-300 text-xs whitespace-nowrap ${
+            activeSection === section.id
+              ? 'text-white shadow-sm'
+              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+          } ${isMobile && index >= 4 ? 'mt-1' : ''}`}
+          style={{
+            backgroundColor: activeSection === section.id ? '#7cc6ee' : 'transparent'
+          }}
+        >
+          {section.label}
+        </button>
+      ))}
+    </div>
+    
+    {!isMobile && (
+      <button
+        onClick={() => setIsRfpFormOpen(true)}
+        className="group whitespace-nowrap px-4 py-1.5 bg-[#1e2556]
+                   text-white rounded-md font-medium hover:bg-[#0f1729]
+                   transition-all duration-200 flex items-center
+                   justify-center gap-2 shadow-sm hover:shadow-md text-xs
+                   hover:scale-105 active:scale-95"
+      >
+        Share Requirements
+        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
+    )}
+  </div>
+</div>
 
           {/* Content Sections with proper spacing */}
           <div className="p-4 md:p-6 max-w-6xl">
@@ -1962,9 +2000,9 @@ const SoftwareDetailPage = ({ slug }) => {
       )}
     </div>
   </section>
-)}
+ )} 
             {/* Section 6: FAQs */}
-            {software.faqs && software.faqs.length > 0 && (
+             {software.faqs && software.faqs.length > 0 && ( 
   <section id="faqs" className="mb-8 scroll-mt-24">
     <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>{displaySoftware.productName} FAQs</h2>
     
@@ -2015,7 +2053,6 @@ const SoftwareDetailPage = ({ slug }) => {
     </div>
   </section>
 )}
-
             {/* Section 7: Sources */}
             <section id="sources" className="mb-8 scroll-mt-24">
               <div className="flex items-center justify-between mb-4">

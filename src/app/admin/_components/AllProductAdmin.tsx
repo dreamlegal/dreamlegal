@@ -1,10 +1,8 @@
-
 "use client";
 import React, { useState, useEffect } from 'react';
-import { Search, Package, Trash2, Check, Loader2, X, FileText } from 'lucide-react';
+import { Search, Package, Trash2, Loader2, X, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-// import MetadataModal from '@/components/MetadataModal'; // Import the MetadataModal component
 
 const ITEMS_PER_PAGE = 10;
 
@@ -22,22 +20,21 @@ const Notification = ({ message, type, onClose }) => (
 
 const AllProductAdmin = () => {
   // State management
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [software, setSoftware] = useState([]);
+  const [filteredSoftware, setFilteredSoftware] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [selectedProducts, setSelectedProducts] = useState(new Set());
-  const [unpublishingProducts, setUnpublishingProducts] = useState(false);
-  const [deletingProducts, setDeletingProducts] = useState(false);
+  const [selectedItems, setSelectedItems] = useState(new Set());
+  const [deletingItems, setDeletingItems] = useState(false);
   const [notification, setNotification] = useState(null);
   const [searchTimeout, setSearchTimeout] = useState(null);
   
-  // New state for metadata modal
+  // State for metadata modal
   const [metadataModalOpen, setMetadataModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedSoftware, setSelectedSoftware] = useState(null);
 
   // Show notification helper
   const showNotification = (message, type = 'success') => {
@@ -45,11 +42,11 @@ const AllProductAdmin = () => {
     setTimeout(() => setNotification(null), 3000);
   };
 
-  // Fetch products with pagination
-  const fetchProducts = async (page = 1, search = '') => {
+  // Fetch legal software with pagination
+  const fetchSoftware = async (page = 1, search = '') => {
     try {
       setLoading(true);
-      const endpoint = search ? '/api/search-published-products' : '/api/get-publish-product';
+      const endpoint = search ? '/api/search-legal-software' : '/api/get-legal-software';
       
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -61,17 +58,17 @@ const AllProductAdmin = () => {
         })
       });
 
-      if (!response.ok) throw new Error('Failed to fetch products');
+      if (!response.ok) throw new Error('Failed to fetch legal software');
 
       const data = await response.json();
       
-      setProducts(data.products);
-      setFilteredProducts(data.products);
+      setSoftware(data.software);
+      setFilteredSoftware(data.software);
       setTotalPages(Math.ceil(data.total / ITEMS_PER_PAGE));
       setError(null);
     } catch (err) {
-      setError('Failed to load products. Please try again.');
-      showNotification('Failed to load products', 'error');
+      setError('Failed to load legal software. Please try again.');
+      showNotification('Failed to load legal software', 'error');
     } finally {
       setLoading(false);
     }
@@ -87,20 +84,20 @@ const AllProductAdmin = () => {
 
     const newTimeout = setTimeout(() => {
       setCurrentPage(1);
-      fetchProducts(1, term);
+      fetchSoftware(1, term);
     }, 300);
 
     setSearchTimeout(newTimeout);
   };
 
-  // Handle product selection
-  const toggleProductSelection = (productId) => {
-    setSelectedProducts(prev => {
+  // Handle software selection
+  const toggleSoftwareSelection = (softwareId) => {
+    setSelectedItems(prev => {
       const newSelection = new Set(prev);
-      if (newSelection.has(productId)) {
-        newSelection.delete(productId);
+      if (newSelection.has(softwareId)) {
+        newSelection.delete(softwareId);
       } else {
-        newSelection.add(productId);
+        newSelection.add(softwareId);
       }
       return newSelection;
     });
@@ -108,102 +105,73 @@ const AllProductAdmin = () => {
 
   // Handle bulk select/deselect
   const handleSelectAll = () => {
-    if (selectedProducts.size === filteredProducts.length) {
-      setSelectedProducts(new Set());
+    if (selectedItems.size === filteredSoftware.length) {
+      setSelectedItems(new Set());
     } else {
-      setSelectedProducts(new Set(filteredProducts.map(p => p.id)));
-    }
-  };
-
-  // Handle bulk unpublish
-  const handleBulkUnpublish = async () => {
-    if (selectedProducts.size === 0) return;
-    
-    if (!confirm('Are you sure you want to unpublish the selected products?')) return;
-    
-    setUnpublishingProducts(true);
-    try {
-      const response = await fetch('/api/bulk-unpublish-products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ids: Array.from(selectedProducts) })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to unpublish products');
-      }
-
-      await fetchProducts(currentPage, searchTerm);
-      setSelectedProducts(new Set());
-      showNotification('Selected products have been unpublished successfully');
-    } catch (error) {
-      console.error('Error unpublishing products:', error);
-      showNotification('Failed to unpublish products', 'error');
-    } finally {
-      setUnpublishingProducts(false);
+      setSelectedItems(new Set(filteredSoftware.map(s => s.id)));
     }
   };
 
   // Handle bulk delete
   const handleBulkDelete = async () => {
-    if (selectedProducts.size === 0) return;
+    if (selectedItems.size === 0) return;
     
-    if (!confirm('Are you sure you want to delete the selected products? This action cannot be undone.')) return;
+    if (!confirm('Are you sure you want to delete the selected legal software? This action cannot be undone.')) return;
     
-    setDeletingProducts(true);
+    setDeletingItems(true);
     try {
-      const response = await fetch('/api/bulk-delete-published', {
+      const response = await fetch('/api/bulk-delete-legal-software', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ids: Array.from(selectedProducts) })
+        body: JSON.stringify({ ids: Array.from(selectedItems) })
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete products');
+        throw new Error('Failed to delete legal software');
       }
 
-      await fetchProducts(currentPage, searchTerm);
-      setSelectedProducts(new Set());
-      showNotification('Selected products have been deleted successfully');
+      await fetchSoftware(currentPage, searchTerm);
+      setSelectedItems(new Set());
+      showNotification('Selected legal software have been deleted successfully');
     } catch (error) {
-      console.error('Error deleting products:', error);
-      showNotification('Failed to delete products', 'error');
+      console.error('Error deleting legal software:', error);
+      showNotification('Failed to delete legal software', 'error');
     } finally {
-      setDeletingProducts(false);
+      setDeletingItems(false);
     }
   };
 
   // Handle page change
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
-    fetchProducts(newPage, searchTerm);
+    fetchSoftware(newPage, searchTerm);
   };
 
-  // New handlers for metadata editing
-  const handleOpenMetadataModal = (product) => {
-    setSelectedProduct(product);
+  // Handlers for metadata editing
+  const handleOpenMetadataModal = (software) => {
+    setSelectedSoftware(software);
     setMetadataModalOpen(true);
   };
 
   const handleCloseMetadataModal = () => {
     setMetadataModalOpen(false);
-    setSelectedProduct(null);
+    setSelectedSoftware(null);
   };
 
-  const handleMetadataSave = (updatedProduct) => {
-    // Update the product in the local state
-    setProducts(prevProducts => 
-      prevProducts.map(p => p.id === updatedProduct.id ? updatedProduct : p)
+  const handleMetadataSave = (updatedSoftware) => {
+    // Update the software in the local state
+    setSoftware(prevSoftware => 
+      prevSoftware.map(s => s.id === updatedSoftware.id ? updatedSoftware : s)
     );
-    setFilteredProducts(prevProducts => 
-      prevProducts.map(p => p.id === updatedProduct.id ? updatedProduct : p)
+    setFilteredSoftware(prevSoftware => 
+      prevSoftware.map(s => s.id === updatedSoftware.id ? updatedSoftware : s)
     );
     showNotification('Metadata updated successfully');
   };
 
   // Initial fetch
   useEffect(() => {
-    fetchProducts();
+    fetchSoftware();
     return () => {
       if (searchTimeout) {
         clearTimeout(searchTimeout);
@@ -222,9 +190,9 @@ const AllProductAdmin = () => {
       )}
       
       {/* Metadata Modal */}
-      {metadataModalOpen && selectedProduct && (
+      {metadataModalOpen && selectedSoftware && (
         <MetadataModal
-          product={selectedProduct}
+          software={selectedSoftware}
           onClose={handleCloseMetadataModal}
           onSave={handleMetadataSave}
         />
@@ -235,7 +203,7 @@ const AllProductAdmin = () => {
         <div className="mb-8">
           <div className="bg-white rounded-2xl border border-blue-100 shadow-xl p-6">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">
-              Published Products Admin
+              Legal Software Admin
             </h1>
             
             {/* Search and Actions */}
@@ -245,7 +213,7 @@ const AllProductAdmin = () => {
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Search published products..."
+                    placeholder="Search legal software..."
                     value={searchTerm}
                     onChange={handleSearchChange}
                     className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500"
@@ -259,49 +227,35 @@ const AllProductAdmin = () => {
                   variant="outline"
                   className="whitespace-nowrap"
                 >
-                  {selectedProducts.size === filteredProducts.length 
+                  {selectedItems.size === filteredSoftware.length 
                     ? 'Deselect All' 
                     : 'Select All'}
                 </Button>
 
-                {selectedProducts.size > 0 && (
-                  <>
-                    <Button
-                      onClick={handleBulkUnpublish}
-                      disabled={unpublishingProducts || deletingProducts}
-                      className="bg-yellow-500 hover:bg-yellow-600 text-white"
-                    >
-                      {unpublishingProducts ? (
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      ) : (
-                        <Check className="w-4 h-4 mr-2" />
-                      )}
-                      Unpublish ({selectedProducts.size})
-                    </Button>
-                    <Button
-                      onClick={handleBulkDelete}
-                      disabled={deletingProducts || unpublishingProducts}
-                      variant="destructive"
-                    >
-                      {deletingProducts ? (
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      ) : (
-                        <Trash2 className="w-4 h-4 mr-2" />
-                      )}
-                      Delete ({selectedProducts.size})
-                    </Button>
-                  </>
+                {selectedItems.size > 0 && (
+                  <Button
+                    onClick={handleBulkDelete}
+                    disabled={deletingItems}
+                    variant="destructive"
+                  >
+                    {deletingItems ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Trash2 className="w-4 h-4 mr-2" />
+                    )}
+                    Delete ({selectedItems.size})
+                  </Button>
                 )}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Products List */}
+        {/* Software List */}
         {loading ? (
           <div className="text-center py-12">
             <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading products...</p>
+            <p className="text-gray-600">Loading legal software...</p>
           </div>
         ) : error ? (
           <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6">
@@ -309,58 +263,58 @@ const AllProductAdmin = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {filteredProducts.map((product) => (
+            {filteredSoftware.map((item) => (
               <div 
-                key={product.id}
+                key={item.id}
                 className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden"
               >
                 <div className="p-6">
                   <div className="flex items-center gap-4">
                     <input
                       type="checkbox"
-                      checked={selectedProducts.has(product.id)}
-                      onChange={() => toggleProductSelection(product.id)}
+                      checked={selectedItems.has(item.id)}
+                      onChange={() => toggleSoftwareSelection(item.id)}
                       className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     />
                     <img
-                      src={product.logoUrl}
-                      alt={product.name}
+                      src={item.logoUrl}
+                      alt={item.productName}
                       className="h-16 w-16 object-contain rounded-lg"
                     />
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold text-gray-900">
-                        {product.name}
+                        {item.productName}
                       </h3>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {item.companyName}
+                      </p>
                       <p className="text-sm text-gray-500 mt-1">
-                        {product.description}
+                        {item.description}
                       </p>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {product.category?.map((cat, idx) => (
-                          <span
-                            key={idx}
-                            className="px-2 py-1 text-xs font-medium bg-blue-50 text-blue-600 rounded-full"
-                          >
-                            {cat}
-                          </span>
-                        ))}
+                        <span className="px-2 py-1 text-xs font-medium bg-blue-50 text-blue-600 rounded-full">
+                          {item.category?.replace(/_/g, ' ')}
+                        </span>
+                        <span className="px-2 py-1 text-xs font-medium bg-green-50 text-green-600 rounded-full">
+                          {item.pricingTier?.replace(/_/g, ' ')}
+                        </span>
                       </div>
                     </div>
                     <div className="flex gap-2">
                       <Link
-                        href={`/product/${product.slug}`}
+                        href={`/product/${item.slug}`}
                         className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                       >
                         View
                       </Link>
                       <Link
-                        href={`/admin/products/edit/${product.id}`}
+                        href={`/admin/product/edit/${item.id}`}
                         className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                       >
                         Edit
                       </Link>
-                      {/* New Metadata button */}
                       <Button
-                        onClick={() => handleOpenMetadataModal(product)}
+                        onClick={() => handleOpenMetadataModal(item)}
                         className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                       >
                         <FileText className="w-4 h-4 mr-2" />
@@ -372,14 +326,14 @@ const AllProductAdmin = () => {
               </div>
             ))}
 
-            {filteredProducts.length === 0 && (
+            {filteredSoftware.length === 0 && (
               <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
                 <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  No products found
+                  No legal software found
                 </h3>
                 <p className="text-gray-600">
-                  {searchTerm ? 'Try adjusting your search' : 'No published products available'}
+                  {searchTerm ? 'Try adjusting your search' : 'No legal software available'}
                 </p>
               </div>
             )}
@@ -464,17 +418,14 @@ const AllProductAdmin = () => {
   );
 };
 
-export default AllProductAdmin;
-
-
-
-const MetadataModal = ({ product, onClose, onSave }) => {
+// Metadata Modal Component
+const MetadataModal = ({ software, onClose, onSave }) => {
   const [formData, setFormData] = useState({
-    metaTitle: product.metaTitle || '',
-    metaDescription: product.metaDescription || '',
-    ogTitle: product.ogTitle || '',
-    ogDescription: product.ogDescription || '',
-    ogImage: product.ogImage || ''
+    metaTitle: software.metaTitle || '',
+    metaDescription: software.metaDescription || '',
+    ogTitle: software.ogTitle || '',
+    ogDescription: software.ogDescription || '',
+    ogImage: software.ogImage || ''
   });
   
   const [loading, setLoading] = useState(false);
@@ -494,11 +445,11 @@ const MetadataModal = ({ product, onClose, onSave }) => {
     setError(null);
     
     try {
-      const response = await fetch('/api/update-product-metadata', {
+      const response = await fetch('/api/update-legal-software-metadata', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          productId: product.id,
+          softwareId: software.id,
           ...formData
         })
       });
@@ -508,7 +459,7 @@ const MetadataModal = ({ product, onClose, onSave }) => {
       }
 
       const data = await response.json();
-      onSave(data.product);
+      onSave(data.software);
       onClose();
     } catch (err) {
       setError('Failed to update metadata. Please try again.');
@@ -521,7 +472,7 @@ const MetadataModal = ({ product, onClose, onSave }) => {
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-auto">
         <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-xl font-semibold">Edit SEO Metadata - {product.name}</h2>
+          <h2 className="text-xl font-semibold">Edit SEO Metadata - {software.productName}</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
             <X className="w-6 h-6" />
           </button>
@@ -655,3 +606,5 @@ const MetadataModal = ({ product, onClose, onSave }) => {
     </div>
   );
 };
+
+export default AllProductAdmin;

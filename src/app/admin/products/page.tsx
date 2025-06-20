@@ -3,8 +3,8 @@
 import { useEffect } from 'react';
 import { useAdmin } from '../_components/AdminContext';
 import { useRouter } from 'next/navigation';
-import AllProductAdmin from "@/components/AllProductAdmin";
-
+// import AllProductAdmin from "@/components/AllProductAdmin";
+import AllProductAdmin from '../_components/AllProductAdmin';
 export default function ProductsPage() {
   const { hasPermission, isLoading } = useAdmin();
   const router = useRouter();

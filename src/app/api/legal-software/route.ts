@@ -280,7 +280,7 @@ export async function POST(request) {
     const body = await request.json();
 
     // Validate required fields
-    if (!body.productName || !body.category || !body.description || !body.logoUrl || !body.slug) {
+    if (!body.productName || !body.category || !body.description || !body.slug) {
       return NextResponse.json(
         { error: 'Product name, category, description, logo, and slug are required' },
         { status: 400 }

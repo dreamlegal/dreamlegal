@@ -200,7 +200,7 @@ const Navbar = () => {
   return (
     <>
       {/* Fixed navbar with z-index */}
-      <div className={`${navbarClasses} z-[9999] transition-all duration-300`}>
+      <div className={`${navbarClasses} z-[9998] transition-all duration-300`}>
         <nav className={innerNavbarClasses}>
           <div className="max-w-7xl mx-auto px-8 sm:px-10 lg:px-12">
             <div className="flex items-center justify-between h-16">

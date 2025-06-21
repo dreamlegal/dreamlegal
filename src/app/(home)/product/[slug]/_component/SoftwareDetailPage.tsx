@@ -1390,6 +1390,238 @@ const SoftwareDetailPage = ({ slug }) => {
     ...(similarProducts.length > 0 ? [{ id: 'alternatives', label: 'Alternatives' }] : [])
   ];
 
+  const getVideoType = (url) => {
+    if (!url || typeof url !== 'string') return 'unknown';
+    
+    // Check for YouTube
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      return 'youtube';
+    }
+    
+    // Check for Vimeo
+    if (url.includes('vimeo.com')) {
+      return 'vimeo';
+    }
+    
+    // Check for Dailymotion
+    if (url.includes('dailymotion.com') || url.includes('dai.ly')) {
+      return 'dailymotion';
+    }
+    
+    // Check for Twitch
+    if (url.includes('twitch.tv')) {
+      return 'twitch';
+    }
+    
+    // Check for direct video files
+    const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.mkv'];
+    if (videoExtensions.some(ext => url.toLowerCase().includes(ext))) {
+      return 'direct';
+    }
+    
+    // Check for image files
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+    if (imageExtensions.some(ext => url.toLowerCase().includes(ext))) {
+      return 'image';
+    }
+    
+    return 'unknown';
+  };
+  
+  const getYouTubeEmbedUrl = (url) => {
+    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+  };
+  
+  const getVimeoEmbedUrl = (url) => {
+    const regex = /(?:https?:\/\/)?(?:www\.)?vimeo\.com\/(\d+)/;
+    const match = url.match(regex);
+    return match ? `https://player.vimeo.com/video/${match[1]}` : null;
+  };
+  
+  const getDailymotionEmbedUrl = (url) => {
+    const regex = /(?:https?:\/\/)?(?:www\.)?(?:dailymotion\.com\/video\/|dai\.ly\/)([a-zA-Z0-9]+)/;
+    const match = url.match(regex);
+    return match ? `https://www.dailymotion.com/embed/video/${match[1]}` : null;
+  };
+  
+  const getTwitchEmbedUrl = (url) => {
+    const regex = /(?:https?:\/\/)?(?:www\.)?twitch\.tv\/videos\/(\d+)/;
+    const match = url.match(regex);
+    if (match) {
+      return `https://player.twitch.tv/?video=${match[1]}&parent=${window.location.hostname}`;
+    }
+    
+    const channelRegex = /(?:https?:\/\/)?(?:www\.)?twitch\.tv\/([a-zA-Z0-9_]+)/;
+    const channelMatch = url.match(channelRegex);
+    if (channelMatch) {
+      return `https://player.twitch.tv/?channel=${channelMatch[1]}&parent=${window.location.hostname}`;
+    }
+    
+    return null;
+  };
+  
+  const renderMediaContent = (media, index) => {
+    const videoType = getVideoType(media);
+    
+    switch (videoType) {
+      case 'youtube':
+        const youtubeUrl = getYouTubeEmbedUrl(media);
+        return youtubeUrl ? (
+          <iframe
+            src={youtubeUrl}
+            className="w-full h-full"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title={`YouTube video ${index + 1}`}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-red-100 text-red-600">
+            Invalid YouTube URL
+          </div>
+        );
+        
+      case 'vimeo':
+        const vimeoUrl = getVimeoEmbedUrl(media);
+        return vimeoUrl ? (
+          <iframe
+            src={vimeoUrl}
+            className="w-full h-full"
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            title={`Vimeo video ${index + 1}`}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-red-100 text-red-600">
+            Invalid Vimeo URL
+          </div>
+        );
+        
+      case 'dailymotion':
+        const dailymotionUrl = getDailymotionEmbedUrl(media);
+        return dailymotionUrl ? (
+          <iframe
+            src={dailymotionUrl}
+            className="w-full h-full"
+            frameBorder="0"
+            allow="autoplay; fullscreen"
+            allowFullScreen
+            title={`Dailymotion video ${index + 1}`}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-red-100 text-red-600">
+            Invalid Dailymotion URL
+          </div>
+        );
+        
+      case 'twitch':
+        const twitchUrl = getTwitchEmbedUrl(media);
+        return twitchUrl ? (
+          <iframe
+            src={twitchUrl}
+            className="w-full h-full"
+            frameBorder="0"
+            allowFullScreen
+            title={`Twitch video ${index + 1}`}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-red-100 text-red-600">
+            Invalid Twitch URL
+          </div>
+        );
+        
+      case 'direct':
+        return (
+          <video
+            controls
+            className="w-full h-full object-contain"
+            src={media}
+          >
+            Your browser does not support the video tag.
+          </video>
+        );
+        
+      case 'image':
+        return (
+          <div className="relative w-full h-full">
+            <Image
+              src={media}
+              alt={`${displaySoftware.productName} screenshot ${index + 1}`}
+              fill
+              className="object-contain"
+            />
+          </div>
+        );
+        
+      default:
+        return (
+          <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-600">
+            <div className="text-center">
+              <svg className="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.291-1.007-5.824-2.503M15 17.414A3.99 3.99 0 0112 18a3.99 3.99 0 01-3-1.586" />
+              </svg>
+              <p className="text-sm">Unsupported media format</p>
+            </div>
+          </div>
+        );
+    }
+  };
+  
+  const renderThumbnail = (media, index) => {
+    const videoType = getVideoType(media);
+    
+    switch (videoType) {
+      case 'youtube':
+        const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        const youtubeMatch = media.match(youtubeRegex);
+        if (youtubeMatch) {
+          return (
+            <Image
+              src={`https://img.youtube.com/vi/${youtubeMatch[1]}/mqdefault.jpg`}
+              alt={`YouTube thumbnail ${index + 1}`}
+              fill
+              className="object-cover"
+            />
+          );
+        }
+        break;
+        
+      case 'vimeo':
+      case 'dailymotion':
+      case 'twitch':
+      case 'direct':
+        return (
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+            <svg className="w-3 h-3 md:w-4 md:h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+        );
+        
+      case 'image':
+        return (
+          <Image
+            src={media}
+            alt={`Thumbnail ${index + 1}`}
+            fill
+            className="object-cover"
+          />
+        );
+        
+      default:
+        return (
+          <div className="w-full h-full bg-gray-300 flex items-center justify-center">
+            <svg className="w-3 h-3 md:w-4 md:h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+            </svg>
+          </div>
+        );
+    }
+  };
   const displaySoftware = software;
   const socialMediaLinks = parseSocialMedia(displaySoftware.socialMedia);
   const productTitle = displaySoftware.ogTitle || displaySoftware.productName;
@@ -1592,7 +1824,7 @@ const SoftwareDetailPage = ({ slug }) => {
               )}
             </div>
           </div> */}
-          <div className={`sticky ${isMobile ? 'top-0' : 'top-16'} bg-white shadow-md z-30 border-b border-gray-100`}>
+          <div className={`sticky ${isMobile ? 'top-0' : 'top-16'} bg-white shadow-md z-9999 border-b border-gray-100`}>
   <div className="flex items-center justify-between px-4 md:px-6 py-2">
     <div className={`${isMobile ? 'flex flex-wrap gap-1' : 'flex space-x-1'} ${isMobile ? 'max-w-[calc(100vw-8rem)]' : ''}`}>
       {sections.map((section, index) => (
@@ -1923,24 +2155,7 @@ const SoftwareDetailPage = ({ slug }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
           {allMedia.slice(currentMediaIndex, currentMediaIndex + (window.innerWidth >= 768 ? 2 : 1)).map((media, index) => (
             <div key={currentMediaIndex + index} className="aspect-video relative overflow-hidden rounded-lg bg-gray-100">
-              {isVideo(currentMediaIndex + index) ? (
-                <video
-                  controls
-                  className="w-full h-full object-contain"
-                  src={media}
-                >
-                  Your browser does not support the video tag.
-                </video>
-              ) : (
-                <div className="relative w-full h-full">
-                  <Image
-                    src={media}
-                    alt={`${displaySoftware.productName} screenshot ${currentMediaIndex + index + 1}`}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              )}
+              {renderMediaContent(media, currentMediaIndex + index)}
             </div>
           ))}
         </div>
@@ -1950,7 +2165,7 @@ const SoftwareDetailPage = ({ slug }) => {
           <>
             <button
               onClick={prevMedia}
-              className="absolute left-1 md:left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-1 md:p-2 rounded-full shadow-md transition-all"
+              className="absolute left-1 md:left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-1 md:p-2 rounded-full shadow-md transition-all z-10"
             >
               <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -1958,7 +2173,7 @@ const SoftwareDetailPage = ({ slug }) => {
             </button>
             <button
               onClick={nextMedia}
-              className="absolute right-1 md:right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-1 md:p-2 rounded-full shadow-md transition-all"
+              className="absolute right-1 md:right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-1 md:p-2 rounded-full shadow-md transition-all z-10"
             >
               <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -1979,28 +2194,15 @@ const SoftwareDetailPage = ({ slug }) => {
                 currentMediaIndex === index || (window.innerWidth >= 768 && Math.floor(currentMediaIndex / 2) === Math.floor(index / 2)) ? 'border-[#7cc6ee]' : 'border-gray-200'
               }`}
             >
-              {isVideo(index) ? (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <svg className="w-3 h-3 md:w-4 md:h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-              ) : (
-                <Image
-                  src={media}
-                  alt={`Thumbnail ${index + 1}`}
-                  fill
-                  className="object-cover"
-                />
-              )}
+              {renderThumbnail(media, index)}
             </button>
           ))}
         </div>
       )}
     </div>
   </section>
- )} 
+)}
+
             {/* Section 6: FAQs */}
              {software.faqs && software.faqs.length > 0 && ( 
   <section id="faqs" className="mb-8 scroll-mt-24">

@@ -2127,6 +2127,8 @@ const NewProductAdmin = () => {
     'E_DISCOVERY'
   ];
 
+
+  
   const pricingTierOptions = [
     { value: 'BUDGET', label: '$' },
     { value: 'MID_RANGE', label: '$$' },

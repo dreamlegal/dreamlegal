@@ -147,7 +147,7 @@ const DirectoryLanding = () => {
 
 </div>
     <CategoriesProducts/>
-    <ProductCategories />
+    {/* <ProductCategories /> */}
     <LandingSections />
   </>
   );

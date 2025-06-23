@@ -1,3 +1,4 @@
+
 // // /app/api/paid-listing-products/route.ts
 // import prisma from "@/lib/prisma";
 // import { NextRequest, NextResponse } from "next/server";
@@ -25,14 +26,14 @@
 //     }
 
 //     // Fetch products that match the category
-//     // Using array containment operator for Prisma
+//     // Note: active is "publish" (not "published")
 //     const products = await prisma.product.findMany({
 //       where: {
 //         category: {
-//           hasSome: [category]  // Changed from 'has' to 'hasSome' with array
+//           has: category  // Using 'has' for exact match in array
 //         },
-//         active: "published", // Only get published products
-       
+//         active: "publish", // Changed from "published" to "publish"
+//         // Removed isVendorVerified filter as it might not be needed
 //       },
 //       select: {
 //         id: true,
@@ -52,9 +53,36 @@
 
 //     console.log(`Found ${products.length} products for category ${category}`);
     
-//     // For debugging - log the first few products if any
+//     // For debugging - log some info about the found products
 //     if (products.length > 0) {
-//       console.log(`Sample product categories: ${JSON.stringify(products[0].category)}`);
+//       products.forEach((product, index) => {
+//         if (index < 3) { // Only log first 3 to avoid console spam
+//           console.log(`- Product: ${product.name}, Categories: ${JSON.stringify(product.category)}`);
+//         }
+//       });
+//     } else {
+//       // If no products found, check if any products exist at all
+//       const totalProducts = await prisma.product.count({
+//         where: {
+//           active: "publish"
+//         }
+//       });
+//       console.log(`No products found for category "${category}". Total active products in DB: ${totalProducts}`);
+      
+//       // Try a more lenient search if no products found
+//       const fuzzyProducts = await prisma.product.findMany({
+//         where: {
+//           active: "publish"
+//         },
+//         select: {
+//           id: true,
+//           name: true,
+//           category: true
+//         },
+//         take: 5
+//       });
+//       console.log("Sample products in DB:");
+//       fuzzyProducts.forEach(p => console.log(`- ${p.name}: ${JSON.stringify(p.category)}`));
 //     }
 
 //     // Process user categories for each product
@@ -72,17 +100,12 @@
 //     }, { status: 500 });
 //   }
 // }
+
 // /app/api/paid-listing-products/route.ts
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-// Helper function to process user categories
-function processUserCategories(categories) {
-  if (!categories || !Array.isArray(categories)) return [];
-  return categories;
-}
-
-// Handle GET requests to fetch products by category
+// Handle GET requests to fetch legal software by category
 export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);
@@ -98,29 +121,42 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Fetch products that match the category
-    // Note: active is "publish" (not "published")
-    const products = await prisma.product.findMany({
+    // Validate that the category is a valid enum value
+    const validCategories = [
+      'CONTRACT_LIFECYCLE_MANAGEMENT',
+      'LEGAL_AI',
+      'DOCUMENT_MANAGEMENT_SYSTEM',
+      'LITIGATION_MANAGEMENT_AND_ANALYTICS',
+      'IP_MANAGEMENT',
+      'LEGAL_RESEARCH',
+      'E_DISCOVERY'
+    ];
+
+    if (!validCategories.includes(category)) {
+      console.log(`Invalid category: ${category}`);
+      return NextResponse.json({ 
+        error: "Invalid category parameter",
+        products: [] 
+      }, { status: 400 });
+    }
+
+    // Fetch legal software that matches the category
+    const products = await prisma.legalSoftware.findMany({
       where: {
-        category: {
-          has: category  // Using 'has' for exact match in array
-        },
-        active: "publish", // Changed from "published" to "publish"
-        // Removed isVendorVerified filter as it might not be needed
+        category: category as any, // Cast to enum type
       },
       select: {
         id: true,
-        name: true,
+        productName: true,
         logoUrl: true,
-        userCategory: true,
         category: true,
         slug: true,
-        // Add any other fields you want to return
+        companyName: true,
+        description: true,
       },
       take: 9, // Limit to 9 products
       orderBy: {
-        // Order by featured first, then creation date
-        featured: 'desc',
+        createdAt: 'desc', // Order by most recently created
       },
     });
 
@@ -130,43 +166,30 @@ export async function GET(request: NextRequest) {
     if (products.length > 0) {
       products.forEach((product, index) => {
         if (index < 3) { // Only log first 3 to avoid console spam
-          console.log(`- Product: ${product.name}, Categories: ${JSON.stringify(product.category)}`);
+          console.log(`- Product: ${product.productName}, Category: ${product.category}`);
         }
       });
     } else {
       // If no products found, check if any products exist at all
-      const totalProducts = await prisma.product.count({
-        where: {
-          active: "publish"
-        }
-      });
-      console.log(`No products found for category "${category}". Total active products in DB: ${totalProducts}`);
+      const totalProducts = await prisma.legalSoftware.count();
+      console.log(`No products found for category "${category}". Total products in DB: ${totalProducts}`);
       
-      // Try a more lenient search if no products found
-      const fuzzyProducts = await prisma.product.findMany({
-        where: {
-          active: "publish"
-        },
+      // Try to get a sample of products to see what categories exist
+      const sampleProducts = await prisma.legalSoftware.findMany({
         select: {
           id: true,
-          name: true,
+          productName: true,
           category: true
         },
         take: 5
       });
       console.log("Sample products in DB:");
-      fuzzyProducts.forEach(p => console.log(`- ${p.name}: ${JSON.stringify(p.category)}`));
+      sampleProducts.forEach(p => console.log(`- ${p.productName}: ${p.category}`));
     }
 
-    // Process user categories for each product
-    const processedProducts = products.map(product => ({
-      ...product,
-      userCategory: processUserCategories(product.userCategory),
-    }));
-
-    return NextResponse.json({ products: processedProducts });
+    return NextResponse.json({ products });
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error("Error fetching legal software:", error);
     return NextResponse.json({ 
       error: "Failed to fetch products",
       products: [] 

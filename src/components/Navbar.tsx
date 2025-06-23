@@ -65,22 +65,22 @@ const Navbar = () => {
       hasDropdown: true,
       dropdownItems: [
         { 
-          title: 'Technology discovery platform', 
-          description: 'Technology discovery and evaluation for legal teams.',
+          title: 'Explore Market Place', 
+          // description: 'Technology discovery and evaluation for legal teams.',
           icon: <Cpu size={16} />,
           href: '/directory' 
         },
         { 
-          title: 'Legal Technology community', 
-          description: 'Digital hangout for legal tech enthusiasts.',
+          title: 'Share Requirements', 
+          // description: 'Digital hangout for legal tech enthusiasts.',
           icon: <Users size={16} />,
-          href: '/community' 
-        },
+          href: '/create_rfps' 
+        }, 
         { 
-          title: 'Legal technology advisory', 
-          description: 'Partner with us for technology strategy and implementation.',
+          title: 'Explore Resources', 
+          // description: 'Partner with us for technology strategy and implementation.',
           icon: <FileText size={16} />,
-          href: '/solutions' 
+          href: '/resources' 
         }
       ]
     },

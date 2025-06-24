@@ -65,7 +65,7 @@ const Navbar = () => {
       hasDropdown: true,
       dropdownItems: [
         { 
-          title: 'Explore Market Place', 
+          title: 'Explore MarketPlace', 
           description: 'Technology discovery and evaluation for legal teams.',
           icon: <Send size={16} />,
           href: '/directory' 

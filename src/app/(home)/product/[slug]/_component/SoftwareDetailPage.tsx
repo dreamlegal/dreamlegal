@@ -2074,41 +2074,41 @@ const SoftwareDetailPage = ({ slug }) => {
             
             {/* Mobile Navigation Header */}
             {isMobile && (
-              <div className="sticky top-0 bg-white shadow-sm border-b border-gray-100 mb-6 -mx-4 z-50">
-                <div className="relative">
+              <div className="sticky top-0 bg-white shadow-sm border-b border-gray-100 mb-6 z-50">
+                <div className="px-4 py-3">
                   <div 
-                    className="flex overflow-x-auto gap-2 py-3 px-4" 
+                    className="overflow-x-auto"
                     style={{ 
+                      width: '300px', // Fixed width to show ~3 headings
+                      maxWidth: 'calc(100vw - 32px)', // Never exceed screen width
                       scrollbarWidth: 'none',
                       msOverflowStyle: 'none'
                     }}
                   >
-                    {sections.map((section, index) => (
-                      <button
-                        key={section.id}
-                        onClick={() => scrollToSection(section.id)}
-                        className={`flex-shrink-0 px-3 py-1.5 rounded-md font-medium transition-all duration-300 text-xs whitespace-nowrap ${
-                          activeSection === section.id
-                            ? 'text-white shadow-sm'
-                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                        }`}
-                        style={{
-                          backgroundColor: activeSection === section.id ? '#7cc6ee' : 'transparent',
-                          minWidth: 'fit-content'
-                        }}
-                      >
-                        {section.label}
-                      </button>
-                    ))}
+                    <div className="flex gap-2" style={{ width: 'max-content' }}>
+                      {sections.map((section, index) => (
+                        <button
+                          key={section.id}
+                          onClick={() => scrollToSection(section.id)}
+                          className={`flex-shrink-0 px-3 py-1.5 rounded-md font-medium transition-all duration-300 text-xs whitespace-nowrap ${
+                            activeSection === section.id
+                              ? 'text-white shadow-sm'
+                              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                          }`}
+                          style={{
+                            backgroundColor: activeSection === section.id ? '#7cc6ee' : 'transparent'
+                          }}
+                        >
+                          {section.label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  
-                  {/* Right fade gradient to indicate more items */}
-                  <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
                 </div>
                 
-                {/* Hide scrollbar with CSS */}
+                {/* Hide scrollbars */}
                 <style jsx>{`
-                  .flex.overflow-x-auto::-webkit-scrollbar {
+                  div[style*="width: 300px"]::-webkit-scrollbar {
                     display: none;
                   }
                 `}</style>

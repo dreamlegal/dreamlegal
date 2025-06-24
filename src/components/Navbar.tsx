@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { 
-  Menu, X, ChevronDown, Bell, Search, User, Bookmark, LogOut, MessageCircle, 
+  Send,Share,Plus, Menu, X, ChevronDown, Bell, Search, User, Bookmark, LogOut, MessageCircle, 
   Home, Users, Briefcase, BookOpen, LineChart, Cpu, FileText, Building, Mail, Handshake
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -66,19 +66,19 @@ const Navbar = () => {
       dropdownItems: [
         { 
           title: 'Explore Market Place', 
-          // description: 'Technology discovery and evaluation for legal teams.',
-          icon: <Cpu size={16} />,
+          description: 'Technology discovery and evaluation for legal teams.',
+          icon: <Send size={16} />,
           href: '/directory' 
         },
         { 
           title: 'Share Requirements', 
-          // description: 'Digital hangout for legal tech enthusiasts.',
-          icon: <Users size={16} />,
+          description: 'Submit an RFP to connect with legal tech providers.',
+          icon: <Plus size={16} />,
           href: '/create_rfps' 
         }, 
         { 
           title: 'Explore Resources', 
-          // description: 'Partner with us for technology strategy and implementation.',
+          description: 'Discover curated resources for your legal teams.',
           icon: <FileText size={16} />,
           href: '/resources' 
         }

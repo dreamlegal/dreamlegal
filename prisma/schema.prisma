@@ -50,6 +50,8 @@ model User {
   bookmarkPost  String[]
   productClaims ProductClaim[]
   usingSoftwareIds String[]
+  legalSoftwareClaimRequests LegalSoftwareClaimRequest[] 
+
 }
 
 model userAccount {
@@ -704,6 +706,19 @@ model LegalSoftware {
   // Section 8: FAQs
   faqs              Json?     // Array of objects: [{"heading": "...", "answer": "..."}, ...]
 
+  //vendorId
+
+  vendorId               String?
+  claimRequests          LegalSoftwareClaimRequest[]
+
+  //premium fields
+  isPremium              Boolean @default(false)
+  tag                    String?
+  caseStudies            Json?
+  valueMetrics           Json?
+  vendorComments         Json?
+
+
 
 
   @@map("legal_software")
@@ -730,4 +745,21 @@ enum PricingTier {
   ENTERPRISE  // $$$+
 
   @@map("pricing_tier")
+}
+
+
+model LegalSoftwareClaimRequest {
+  id               String   @id @default(cuid())
+  legalSoftwareId  String
+  vendorId         String   // The vendor requesting to claim the legal software
+  status           String   @default("pending") // "pending", "approved", "rejected"
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  // Relations
+  legalSoftware    LegalSoftware @relation(fields: [legalSoftwareId], references: [id], onDelete: Cascade)
+  vendor           User          @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@unique([legalSoftwareId, vendorId]) // Prevent duplicate claims
+  @@map("legal_software_claim_requests")
 }

@@ -1,20 +1,26 @@
-//product claims api
+// app/api/admin/claims/route.js
 import prisma from "@/lib/prisma";
 import { NextResponse } from 'next/server';
 
 export async function POST() {
   try {
-    // Fetch all product claims with related product and vendor information
-    const claims = await prisma.productClaim.findMany({
+    // Fetch all legal software claims with related software and vendor information
+    const claims = await prisma.legalSoftwareClaimRequest.findMany({
+      where: {
+        status: 'pending' // Only fetch pending claims for admin review
+      },
       include: {
-        product: {
+        legalSoftware: {
           select: {
             id: true,
-            name: true,
+            productName: true,
             logoUrl: true,
             slug: true,
             description: true,
-            category: true
+            category: true,
+            companyName: true,
+            headquarters: true,
+            website: true
           }
         },
         vendor: {
@@ -36,9 +42,9 @@ export async function POST() {
     });
 
   } catch (error) {
-    console.error('Error fetching product claims:', error);
+    console.error('Error fetching legal software claims:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to fetch product claims' },
+      { success: false, message: 'Failed to fetch legal software claims' },
       { status: 500 }
     );
   }

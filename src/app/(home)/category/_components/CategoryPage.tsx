@@ -1,32 +1,137 @@
+// "use client";
+
+// import { usePathname, useRouter } from "next/navigation";
+// import { useEffect, useState } from "react";
+// import { data } from "./data";
+
+// interface CategoryData {
+//   slug: string;
+//   name: string;
+//   description: string;
+//   image: string;
+// }
+
+// const CategoryPage = () => {
+//   const [loading, setLoading] = useState(true);
+//   const [categoryData, setCategoryData] = useState<CategoryData | null>(null);
+//   const pathname = usePathname();
+//   const router = useRouter();
+
+//   useEffect(() => {
+//     setLoading(true);
+//     if (pathname) {
+//       const category = pathname.split("/category/")[1];
+      
+//       // Find the category in the new nested data structure
+//       let foundCategory: CategoryData | null = null;
+      
+//       // Loop through each main category
+//       for (const mainCategory of data) {
+//         // Loop through each key in the main category object
+//         for (const key in mainCategory) {
+//           const categoryArray = mainCategory[key];
+//           // Find matching category by slug
+//           const match = categoryArray.find((item: CategoryData) => item.slug === category);
+//           if (match) {
+//             foundCategory = match;
+//             break;
+//           }
+//         }
+//         if (foundCategory) break;
+//       }
+      
+//       if (foundCategory) {
+//         setCategoryData(foundCategory);
+//       } else {
+//         router.replace("/");
+//       }
+//     }
+//     setLoading(false);
+//   }, [pathname]);
+  
+//   if (loading) {
+//     return (
+//       <div className="flex justify-center items-center min-h-[400px]">
+//         <p className="text-lg" style={{ color: '#334155' }}>Loading...</p>
+//       </div>
+//     );
+//   }
+
+//   if (!categoryData) {
+//     return (
+//       <div className="flex justify-center items-center min-h-[400px]">
+//         <p className="text-lg" style={{ color: '#334155' }}>Category not found</p>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <main className="min-h-screen bg-white">
+//       {/* Add top padding to account for navbar */}
+//       <div className="pt-16 md:pt-20 lg:pt-24">
+//         <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 font-clarity">
+//           {/* Header Section */}
+//           <div className="space-y-6 md:space-y-8 lg:space-y-10">
+//             {/* Title */}
+//             <div className="text-center md:text-left">
+//               <h1 
+//                 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
+//                 style={{ color: '#1e2556' }}
+//               >
+//                 {categoryData.name}
+//               </h1>
+//             </div>
+            
+//             {/* Image */}
+//             <div className="w-full max-w-4xl mx-auto md:mx-0">
+//               <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+//                 <img
+//                   src={categoryData.image}
+//                   alt={categoryData.name}
+//                   className="absolute inset-0 w-full h-full object-cover rounded-lg shadow-lg"
+//                 />
+//               </div>
+//             </div>
+            
+//             {/* Description */}
+//             <div className="max-w-4xl mx-auto md:mx-0">
+//               <p 
+//                 className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-justify md:text-left"
+//                 style={{ color: '#2d2d2d' }}
+//               >
+//                 {categoryData.description}
+//               </p>
+//             </div>
+//           </div>
+
+//           {/* Additional Section */}
+//           <div className="mt-12 md:mt-16 lg:mt-20">
+//             {/* Additional content can be added here if needed */}
+//           </div>
+//         </div>
+//       </div>
+//     </main>
+//   );
+// };
+
+// export default CategoryPage;
 "use client";
 
-import FeaturedProduct from "@/components/FeaturedProduct";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { data } from "./data";
-import { Button } from "@/components/ui/button";
+import ProductsSection from "./ProductsSection"; // Import the new component
 
-interface Product {
-  id: string;
-  logoUrl: string;
+interface CategoryData {
+  slug: string;
   name: string;
   description: string;
-  category: string;
-  userCategory: string;
-  active: string;
-  featured: boolean;
-}
-
-interface DataState {
-  products: Product[];
+  image: string;
 }
 
 const CategoryPage = () => {
-  const [dataState, setDataState] = useState<DataState | null>(null);
-  const [featureProduct, setFeatureProduct] = useState<Product[]>([]);
-  const [latestProduct, setLatestProduct] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [categoryData, setCategoryData] = useState<any | null>(null);
+  const [categoryData, setCategoryData] = useState<CategoryData | null>(null);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -34,168 +139,138 @@ const CategoryPage = () => {
     setLoading(true);
     if (pathname) {
       const category = pathname.split("/category/")[1];
-      const foundCategory = data.find((item) => item.slug === category);
+      
+      // Find the category in the new nested data structure
+      let foundCategory: CategoryData | null = null;
+      
+      // Loop through each main category
+      for (const mainCategory of data) {
+        // Loop through each key in the main category object
+        for (const key in mainCategory) {
+          const categoryArray = mainCategory[key];
+          // Find matching category by slug
+          const match = categoryArray.find((item: CategoryData) => item.slug === category);
+          if (match) {
+            foundCategory = match;
+            break;
+          }
+        }
+        if (foundCategory) break;
+      }
+      
       if (foundCategory) {
-        setCategoryData(foundCategory || null);
+        setCategoryData(foundCategory);
       } else {
         router.replace("/");
       }
     }
     setLoading(false);
   }, [pathname]);
-
-  useEffect(() => {
-    async function getData() {
-      const response = await fetch("/api/get-all-products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ number: 10 }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-
-      return response.json();
-    }
-
-    getData().then((data) => {
-      setDataState(data);
-      setLoading(false);
-    });
-  }, []);
-
- 
-  useEffect(() => {
-    if (dataState && categoryData) {
-      console.log("Category Data Slug: ", categoryData.slug);
-      console.log("All Products: ", dataState.products);
-  
-      // Normalize the category slug (convert to lowercase, replace dashes with spaces)
-      const categorySlug = categoryData.slug.replace(/-/g, ' ').toLowerCase();
-      console.log("Normalized Category Slug: ", categorySlug);
-  
-      // Filter the products based on matching categories and active status
-      const matchedProducts = dataState.products.filter(product => {
-        // Check if product is published
-        const isPublished = product.active === 'publish';
-  
-        // Check if product categories include the target category
-        const isInCategory = product.category.some(cat => {
-          const normalizedCategory = cat.toLowerCase();
-          return normalizedCategory.includes(categorySlug);
-        });
-  
-        return isPublished && isInCategory;
-      });
-  
-      console.log("Matched Products: ", matchedProducts);
-      setFeatureProduct(matchedProducts);
-    }
-  }, [dataState, categoryData]);
   
   if (loading) {
     return (
-      <div className="text-center">
-        <p>Loading...</p>
+      <div className="flex justify-center items-center min-h-[400px]">
+        <p className="text-lg" style={{ color: '#334155' }}>Loading...</p>
       </div>
     );
   }
+
+  if (!categoryData) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <p className="text-lg" style={{ color: '#334155' }}>Category not found</p>
+      </div>
+    );
+  }
+
   return (
-    <main className="px-4 py-8 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 font-clarity space-y-12">
-      <div className="space-y-6">
-        <h2 className=" text-2xl md:text-3xl font-bold">
-          {categoryData && categoryData?.name}
-        </h2>
-        <div>
-          <img
-            src={categoryData && categoryData?.image}
-            alt=""
-            className="w-96"
-          />
+    <main className="min-h-screen bg-white">
+     
+      {/* <div className="pt-16 md:pt-20 lg:pt-24">
+        <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 font-clarity">
+          
+          <div className="space-y-6 md:space-y-8 lg:space-y-10">
+            
+            <div className="text-center md:text-left">
+              <h1 
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
+                style={{ color: '#1e2556' }}
+              >
+                {categoryData.name}
+              </h1>
+            </div>
+            
+           
+            <div className="w-full max-w-4xl mx-auto md:mx-0">
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <img
+                  src={categoryData.image}
+                  alt={categoryData.name}
+                  className="absolute inset-0 w-full h-full object-cover rounded-lg shadow-lg"
+                />
+              </div>
+            </div>
+            
+           
+            <div className="max-w-4xl mx-auto md:mx-0">
+              <p 
+                className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-justify md:text-left"
+                style={{ color: '#2d2d2d' }}
+              >
+                {categoryData.description}
+              </p>
+            </div>
+          </div>
         </div>
+      </div> */}
+      <div className="pt-16 md:pt-20 lg:pt-24 bg-[#1e2556] text-white relative overflow-hidden">
+  <div className="absolute inset-0 bg-[#1e2556]" />
+  <div className="absolute inset-0 opacity-30 bg-[#7cc6ee]/10" />
+  <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 font-clarity relative z-10">
+    {/* Header Section */}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-center">
+      {/* Content - Left Side */}
+      <div className="lg:col-span-2 space-y-6">
+        {/* Title */}
         <div>
-          <p className="text-base text-slate-500 text-justify">
-            {categoryData && categoryData?.description} -
-            <strong>{categoryData && categoryData.desciptionClosure}</strong>
-          </p>
+          <h1 
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white"
+          >
+            {categoryData.name}
+          </h1>
         </div>
+        
+        {/* Description */}
         <div>
-          <p className="text-base text-slate-500 text-justify">
-            {categoryData && categoryData?.blogLabel} -{" "}
-            <a
-              className="text-primary"
-              target="_blank"
-              href={categoryData?.blogHref}
-            >
-              Click Here
-            </a>
+          <p 
+            className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-white/90"
+          >
+            {categoryData.description}
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
-        {/* {categoryData &&
-          categoryData?.labels.map((label: string) => (
-            <div key={label}>{label}</div>
-          ))} */}
-        {categoryData &&
-          categoryData?.labels
-            .sort(() => Math.random() - 0.5)
-            .map((label: string) => (
-              <Button variant={"outline"} className="mx-2" key={label}>
-                {label}
-              </Button>
-            ))}
+      
+      {/* Image - Right Side */}
+      <div className="lg:col-span-1">
+        <div className="w-full max-w-sm mx-auto lg:mx-0 lg:ml-auto">
+          <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+            <img
+              src={categoryData.image}
+              alt={categoryData.name}
+              className="absolute inset-0 w-full h-full object-cover rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
       </div>
-      <div>
-        {loading && (
-          <div className="text-center">
-            <p>Loading...</p>
-          </div>
-        )}
-        {featureProduct.length === 0 && (
-          <div className="text-center">
-            <p>No products found in this category.</p>
-          </div>
-        )}
-        {/* {!loading &&
-          featureProduct.length > 0 &&
-          featureProduct
-            .slice(0, 8)
-            .map((product: any) => (
-              <FeaturedProduct
-                key={product.id}
-                id={product.id}
-                image={product.logoUrl}
-                title={product.name}
-                description={product.description}
-                category={product.category}
-                userCategory={product.userCategory}
-                product={product}
-              />
-            ))} */}
-            <div className="flex flex-wrap gap-8">
-  {!loading &&
-    featureProduct.length > 0 &&
-    featureProduct
-      .slice(0, 8)
-      .map((product: any) => (
-        <FeaturedProduct
-          key={product.id}
-          id={product.id}
-          image={product.logoUrl}
-          title={product.name}
-          description={product.description}
-          category={product.category}
-          userCategory={product.userCategory}
-          product={product}
-        />
-      ))}
+    </div>
+  </div>
 </div>
 
-      </div>
+      {/* Products Section */}
+      <ProductsSection 
+        categorySlug={categoryData.slug} 
+        categoryName={categoryData.name}
+      />
     </main>
   );
 };

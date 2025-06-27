@@ -1,15 +1,8 @@
 
-// // /app/api/paid-listing-products/route.ts
 // import prisma from "@/lib/prisma";
 // import { NextRequest, NextResponse } from "next/server";
 
-// // Helper function to process user categories
-// function processUserCategories(categories) {
-//   if (!categories || !Array.isArray(categories)) return [];
-//   return categories;
-// }
-
-// // Handle GET requests to fetch products by category
+// // Handle GET requests to fetch legal software by category
 // export async function GET(request: NextRequest) {
 //   try {
 //     const url = new URL(request.url);
@@ -25,29 +18,42 @@
 //       }, { status: 400 });
 //     }
 
-//     // Fetch products that match the category
-//     // Note: active is "publish" (not "published")
-//     const products = await prisma.product.findMany({
+//     // Validate that the category is a valid enum value
+//     const validCategories = [
+//       'CONTRACT_LIFECYCLE_MANAGEMENT',
+//       'LEGAL_AI',
+//       'DOCUMENT_MANAGEMENT_SYSTEM',
+//       'LITIGATION_MANAGEMENT_AND_ANALYTICS',
+//       'IP_MANAGEMENT',
+//       'LEGAL_RESEARCH',
+//       'E_DISCOVERY'
+//     ];
+
+//     if (!validCategories.includes(category)) {
+//       console.log(`Invalid category: ${category}`);
+//       return NextResponse.json({ 
+//         error: "Invalid category parameter",
+//         products: [] 
+//       }, { status: 400 });
+//     }
+
+//     // Fetch legal software that matches the category
+//     const products = await prisma.legalSoftware.findMany({
 //       where: {
-//         category: {
-//           has: category  // Using 'has' for exact match in array
-//         },
-//         active: "publish", // Changed from "published" to "publish"
-//         // Removed isVendorVerified filter as it might not be needed
+//         category: category as any, // Cast to enum type
 //       },
 //       select: {
 //         id: true,
-//         name: true,
+//         productName: true,
 //         logoUrl: true,
-//         userCategory: true,
 //         category: true,
 //         slug: true,
-//         // Add any other fields you want to return
+//         companyName: true,
+//         description: true,
 //       },
 //       take: 9, // Limit to 9 products
 //       orderBy: {
-//         // Order by featured first, then creation date
-//         featured: 'desc',
+//         createdAt: 'desc', // Order by most recently created
 //       },
 //     });
 
@@ -57,51 +63,36 @@
 //     if (products.length > 0) {
 //       products.forEach((product, index) => {
 //         if (index < 3) { // Only log first 3 to avoid console spam
-//           console.log(`- Product: ${product.name}, Categories: ${JSON.stringify(product.category)}`);
+//           console.log(`- Product: ${product.productName}, Category: ${product.category}`);
 //         }
 //       });
 //     } else {
 //       // If no products found, check if any products exist at all
-//       const totalProducts = await prisma.product.count({
-//         where: {
-//           active: "publish"
-//         }
-//       });
-//       console.log(`No products found for category "${category}". Total active products in DB: ${totalProducts}`);
+//       const totalProducts = await prisma.legalSoftware.count();
+//       console.log(`No products found for category "${category}". Total products in DB: ${totalProducts}`);
       
-//       // Try a more lenient search if no products found
-//       const fuzzyProducts = await prisma.product.findMany({
-//         where: {
-//           active: "publish"
-//         },
+//       // Try to get a sample of products to see what categories exist
+//       const sampleProducts = await prisma.legalSoftware.findMany({
 //         select: {
 //           id: true,
-//           name: true,
+//           productName: true,
 //           category: true
 //         },
 //         take: 5
 //       });
 //       console.log("Sample products in DB:");
-//       fuzzyProducts.forEach(p => console.log(`- ${p.name}: ${JSON.stringify(p.category)}`));
+//       sampleProducts.forEach(p => console.log(`- ${p.productName}: ${p.category}`));
 //     }
 
-//     // Process user categories for each product
-//     const processedProducts = products.map(product => ({
-//       ...product,
-//       userCategory: processUserCategories(product.userCategory),
-//     }));
-
-//     return NextResponse.json({ products: processedProducts });
+//     return NextResponse.json({ products });
 //   } catch (error) {
-//     console.error("Error fetching products:", error);
+//     console.error("Error fetching legal software:", error);
 //     return NextResponse.json({ 
 //       error: "Failed to fetch products",
 //       products: [] 
 //     }, { status: 500 });
 //   }
 // }
-
-// /app/api/paid-listing-products/route.ts
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -140,8 +131,8 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Fetch legal software that matches the category
-    const products = await prisma.legalSoftware.findMany({
+    // Fetch all legal software that matches the category
+    const allProducts = await prisma.legalSoftware.findMany({
       where: {
         category: category as any, // Cast to enum type
       },
@@ -153,20 +144,47 @@ export async function GET(request: NextRequest) {
         slug: true,
         companyName: true,
         description: true,
+        isPremium: true,
+        tag: true,
+        createdAt: true,
       },
-      take: 9, // Limit to 9 products
       orderBy: {
-        createdAt: 'desc', // Order by most recently created
+        createdAt: 'desc', // Order by most recently created initially
       },
     });
 
-    console.log(`Found ${products.length} products for category ${category}`);
+    console.log(`Found ${allProducts.length} total products for category ${category}`);
+
+    // Separate premium and non-premium products
+    const premiumProducts = allProducts.filter(product => product.isPremium);
+    const regularProducts = allProducts.filter(product => !product.isPremium);
+
+    console.log(`Premium products: ${premiumProducts.length}, Regular products: ${regularProducts.length}`);
+
+    // Randomize both arrays
+    const shuffleArray = (array: any[]) => {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    };
+
+    const shuffledPremium = shuffleArray(premiumProducts);
+    const shuffledRegular = shuffleArray(regularProducts);
+
+    // Combine: premium first, then regular
+    const sortedProducts = [...shuffledPremium, ...shuffledRegular];
+
+    // Take only first 9 products after prioritization
+    const products = sortedProducts.slice(0, 9);
     
     // For debugging - log some info about the found products
     if (products.length > 0) {
       products.forEach((product, index) => {
         if (index < 3) { // Only log first 3 to avoid console spam
-          console.log(`- Product: ${product.productName}, Category: ${product.category}`);
+          console.log(`- Product: ${product.productName}, Category: ${product.category}, Premium: ${product.isPremium}`);
         }
       });
     } else {
@@ -179,15 +197,25 @@ export async function GET(request: NextRequest) {
         select: {
           id: true,
           productName: true,
-          category: true
+          category: true,
+          isPremium: true
         },
         take: 5
       });
       console.log("Sample products in DB:");
-      sampleProducts.forEach(p => console.log(`- ${p.productName}: ${p.category}`));
+      sampleProducts.forEach(p => console.log(`- ${p.productName}: ${p.category} (Premium: ${p.isPremium})`));
     }
 
-    return NextResponse.json({ products });
+    return NextResponse.json({ 
+      products,
+      debug: {
+        category,
+        totalFound: allProducts.length,
+        premiumCount: premiumProducts.length,
+        regularCount: regularProducts.length,
+        returned: products.length
+      }
+    });
   } catch (error) {
     console.error("Error fetching legal software:", error);
     return NextResponse.json({ 

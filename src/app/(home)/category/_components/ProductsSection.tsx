@@ -244,42 +244,41 @@ const ProductsSection = ({ categorySlug, categoryName }) => {
     <div className="bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 py-12 sm:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
-        <div className="mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#1e2556] mb-4 text-center">
-            {categoryName} Software Solutions
-          </h2>
-          <p className="text-[#334155] mb-6 sm:mb-8 text-sm sm:text-base text-center max-w-3xl mx-auto">
-            Explore our curated selection of {categoryName.toLowerCase()} tools designed to enhance your legal practice
-          </p>
-          
-          {/* Search and Pricing Filter */}
-          <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
-            {/* Search Bar */}
-            <div className="relative flex-1">
-              <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
-              <input
-                type="text"
-                placeholder={`Search ${categoryName.toLowerCase()} software...`}
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="w-full pl-10 sm:pl-12 pr-4 py-3 text-sm sm:text-base rounded-lg border border-gray-200 focus:ring-2 focus:ring-[#7cc6ee] focus:border-transparent"
-              />
-            </div>
+    {/* Header Section */}
+    <div className="mb-8 sm:mb-12">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            {/* Products Heading */}
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#1e2556]">Products</h2>
+            
+            {/* Search and Pricing Filter */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              {/* Search Bar */}
+              <div className="relative flex-1 sm:min-w-[300px]">
+                <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
+                <input
+                  type="text"
+                  placeholder={`Search ${categoryName.toLowerCase()} software...`}
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="w-full pl-10 sm:pl-12 pr-4 py-3 text-sm sm:text-base rounded-lg border border-gray-200 focus:ring-2 focus:ring-[#7cc6ee] focus:border-transparent"
+                />
+              </div>
 
-            {/* Pricing Tier Filter */}
-            <div className="relative md:min-w-[180px]">
-              <select
-                value={selectedPricingTier}
-                onChange={(e) => handlePricingTierChange(e.target.value)}
-                className="appearance-none w-full pl-3 sm:pl-4 pr-8 sm:pr-10 py-3 text-sm sm:text-base rounded-lg border border-gray-200 focus:ring-2 focus:ring-[#7cc6ee] focus:border-transparent bg-white text-[#2d2d2d] cursor-pointer"
-              >
-                {pricingTierOptions.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 pointer-events-none" />
+              {/* Pricing Tier Filter */}
+              <div className="relative sm:min-w-[180px]">
+                <select
+                  value={selectedPricingTier}
+                  onChange={(e) => handlePricingTierChange(e.target.value)}
+                  className="appearance-none w-full pl-3 sm:pl-4 pr-8 sm:pr-10 py-3 text-sm sm:text-base rounded-lg border border-gray-200 focus:ring-2 focus:ring-[#7cc6ee] focus:border-transparent bg-white text-[#2d2d2d] cursor-pointer"
+                >
+                  {pricingTierOptions.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 pointer-events-none" />
+              </div>
             </div>
           </div>
         </div>

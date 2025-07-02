@@ -19,7 +19,7 @@ const useDebounce = (callback, delay) => {
     }, delay);
   }, [callback, delay]);
 };
-
+// . 
 // Map category slugs to enum values
 const categorySlugToEnum = {
   'contract-lifecycle-management': 'CONTRACT_LIFECYCLE_MANAGEMENT',

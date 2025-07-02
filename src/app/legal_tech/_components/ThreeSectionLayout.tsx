@@ -240,9 +240,9 @@ const ThreeSectionLayout = () => {
               <p className="text-base sm:text-lg lg:text-xl leading-relaxed mb-6 sm:mb-8" style={{ color: '#334155' }}>
                 Create your free DreamLegal profile to present your product with clarity. Share what you offer, how you're different, and why they should trust you. Verified reviews, transparent features, and accessible insights — all in one place.
               </p>
-              <button className="inline-flex items-center px-5 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white rounded-full transition-all duration-300 hover:opacity-90 hover:scale-105 border-2 sm:border-4 border-black w-full sm:w-auto justify-center sm:justify-start" style={{ backgroundColor: '#1e2556' }}>
+              <a href="#contact" className="inline-flex items-center px-5 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white rounded-full transition-all duration-300 hover:opacity-90 hover:scale-105 border-2 sm:border-4 border-black w-full sm:w-auto justify-center sm:justify-start" style={{ backgroundColor: '#1e2556' }}>
                 Claim your free product profile
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -263,7 +263,7 @@ const ThreeSectionLayout = () => {
               
               <div className="space-y-4">
                 <a 
-                  href="/auth/vendor/signup" 
+                  href="#contact" 
                   className="inline-flex items-center gap-2 sm:gap-3 text-base sm:text-lg font-medium hover:underline transition-all duration-300 group" 
                   style={{ color: '#7cc6ee' }}
                 >
@@ -309,9 +309,9 @@ const ThreeSectionLayout = () => {
                 Catch market trends, competitive intel, and buyer preference with real-time intelligence from the DreamLegal marketplace and 100+ trusted web sources. Better product roadmaps, client proposals and competitive edge
               </p>
 
-              <button className="inline-flex items-center px-5 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold bg-white rounded-full transition-all duration-300 hover:opacity-90 hover:scale-105 border-2 sm:border-4 border-black w-full sm:w-auto justify-center sm:justify-start" style={{ color: '#1e2556' }}>
+              <a href="#contact" className="inline-flex items-center px-5 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold bg-white rounded-full transition-all duration-300 hover:opacity-90 hover:scale-105 border-2 sm:border-4 border-black w-full sm:w-auto justify-center sm:justify-start" style={{ color: '#1e2556' }}>
                 Book a demo
-              </button>
+              </a>
             </div>
           </div>
         </div>

@@ -86,7 +86,7 @@ const AnimatedAchievements = () => {
       metric: "130",
       suffix: "%",
       title: "Optimize Client Engagement",
-      description: "Reduce client nurturing costs by automating and streamlining communication processes.",
+      description: "Reduce client nurturing cost by engaging warm and high intent leads.",
       accentColor: "bg-[#7cc6ee]"
     },
     {

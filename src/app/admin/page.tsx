@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardStats from './_components/DashboardStats';
 import { useAdmin } from './_components/AdminContext';
-
+import MarketIntelligenceDashboard from './_components/MarketIntelligenceDashboard';
 export default function AdminDashboard() {
   const { loading } = useAdmin();
   
@@ -16,5 +16,6 @@ export default function AdminDashboard() {
     );
   }
 
-  return <DashboardStats />;
+  return <MarketIntelligenceDashboard />;
+  // return <DashboardStats />;
 }

@@ -763,3 +763,16 @@ model LegalSoftwareClaimRequest {
   @@unique([legalSoftwareId, vendorId]) // Prevent duplicate claims
   @@map("legal_software_claim_requests")
 }
+
+model MarketIntelligence {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  
+  dashboardData  Json?     
+  insights       Json?     
+ 
+  miData         Json?     
+
+}

@@ -65,7 +65,7 @@ function isMatch(str1: string, str2: string): boolean {
   
   if (!normalized1 || !normalized2) return false;
   
-  // Strategy 1: Exact match
+  // Strategy 1: ct match
   if (normalized1 === normalized2) return true;
   
   // Strategy 2: One contains the other (for cases like "MikeLegal IP Suite" vs "mike legal")

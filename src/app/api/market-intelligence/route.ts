@@ -90,30 +90,54 @@ export async function PUT(request) {
   }
 }
 
-export async function DELETE(request) {
+// export async function DELETE(request) {
+//   try {
+//     const { searchParams } = new URL(request.url);
+//     const id = searchParams.get('id');
+
+//     if (!id) {
+//       return NextResponse.json(
+//         { error: 'ID is required' },
+//         { status: 400 }
+//       );
+//     }
+
+//     await prisma.marketIntelligence.delete({
+//       where: { id }
+//     });
+
+//     return NextResponse.json(
+//       { message: 'Market Intelligence deleted successfully' },
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     console.error('Error deleting market intelligence:', error);
+//     return NextResponse.json(
+//       { error: 'Failed to delete market intelligence' },
+//       { status: 500 }
+//     );
+//   }
+// }
+
+export async function DELETE() {
   try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+    // Delete all records from MarketIntelligence table
+    const deletedRecords = await prisma.marketIntelligence.deleteMany({});
 
-    if (!id) {
-      return NextResponse.json(
-        { error: 'ID is required' },
-        { status: 400 }
-      );
-    }
-
-    await prisma.marketIntelligence.delete({
-      where: { id }
-    });
+    console.log(`Deleted ${deletedRecords.count} market intelligence records`);
 
     return NextResponse.json(
-      { message: 'Market Intelligence deleted successfully' },
+      { 
+        message: 'All market intelligence records deleted successfully',
+        deletedCount: deletedRecords.count,
+        timestamp: new Date().toISOString()
+      },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error deleting market intelligence:', error);
+    console.error('Error deleting all market intelligence records:', error);
     return NextResponse.json(
-      { error: 'Failed to delete market intelligence' },
+      { error: 'Failed to delete all records' },
       { status: 500 }
     );
   }

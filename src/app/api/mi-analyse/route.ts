@@ -56,43 +56,80 @@ class AdvancedAIAnalysisWorkflow {
   }
 
   // Graph format specifications
-  getGraphFormat(type) {
-    const formats = {
-      'bar': {
-        format: 'Tool1: 10, Tool2: 8, Tool3: 6, Tool4: 4',
-        instruction: 'Provide data as "Name: Value" pairs separated by commas. Values should be numbers.',
-        example: 'SpotDraft: 25, ContractWorks: 18, PandaDoc: 12, DocuSign: 15'
-      },
-      'horizontal-bar': {
-        format: 'Tool1: 10, Tool2: 8, Tool3: 6, Tool4: 4',
-        instruction: 'Provide data as "Name: Value" pairs separated by commas. Values should be numbers.',
-        example: 'SpotDraft: 25, ContractWorks: 18, PandaDoc: 12, DocuSign: 15'
-      },
-      'line': {
-        format: 'Jan: 10, Feb: 12, Mar: 8, Apr: 15, May: 20',
-        instruction: 'Provide time-series data as "Period: Value" pairs separated by commas.',
-        example: 'Q1 2023: 45, Q2 2023: 52, Q3 2023: 48, Q4 2023: 60'
-      },
-      'pie': {
-        format: 'Category1: 35%, Category2: 25%, Category3: 20%, Category4: 20%',
-        instruction: 'Provide data as "Category: Percentage%" pairs. Percentages should add up to 100%.',
-        example: 'CLM: 40%, Legal AI: 25%, Document Mgmt: 20%, E-discovery: 15%'
-      },
-      'scatter': {
-        format: 'Tool1: (8.5, 1000), Tool2: (7.2, 800), Tool3: (9.1, 1200)',
-        instruction: 'Provide data as "Name: (X-value, Y-value)" pairs for two-dimensional plotting.',
-        example: 'SpotDraft: (9.2, 2500), ContractWorks: (7.8, 1800), PandaDoc: (8.1, 2200)'
-      },
-      'area': {
-        format: 'Period1: 100, Period2: 150, Period3: 120, Period4: 180',
-        instruction: 'Provide cumulative or stacked data as "Period: Value" pairs.',
-        example: 'Jan: 120, Feb: 185, Mar: 240, Apr: 310, May: 380'
-      }
-    };
+  // getGraphFormat(type) {
+  //   const formats = {
+  //     'bar': {
+  //       format: 'Tool1: 10, Tool2: 8, Tool3: 6, Tool4: 4',
+  //       instruction: 'Provide data as "Name: Value" pairs separated by commas. Values should be numbers.',
+  //       example: 'SpotDraft: 25, ContractWorks: 18, PandaDoc: 12, DocuSign: 15'
+  //     },
+  //     'horizontal-bar': {
+  //       format: 'Tool1: 10, Too
+  //       l2: 8, Tool3: 6, Tool4: 4',
+  //       instruction: 'Provide data as "Name: Value" pairs separated by commas. Values should be numbers.',
+  //       example: 'SpotDraft: 25, ContractWorks: 18, PandaDoc: 12, DocuSign: 15'
+  //     },
+  //     'line': {
+  //       format: 'Jan: 10, Feb: 12, Mar: 8, Apr: 15, May: 20',
+  //       instruction: 'Provide time-series data as "Period: Value" pairs separated by commas.',
+  //       example: 'Q1 2023: 45, Q2 2023: 52, Q3 2023: 48, Q4 2023: 60'
+  //     },
+  //     'pie': {
+  //       format: 'Category1: 35%, Category2: 25%, Category3: 20%, Category4: 20%',
+  //       instruction: 'Provide data as "Category: Percentage%" pairs. Percentages should add up to 100%.',
+  //       example: 'CLM: 40%, Legal AI: 25%, Document Mgmt: 20%, E-discovery: 15%'
+  //     },
+  //     'scatter': {
+  //       format: 'Tool1: (8.5, 1000), Tool2: (7.2, 800), Tool3: (9.1, 1200)',
+  //       instruction: 'Provide data as "Name: (X-value, Y-value)" pairs for two-dimensional plotting.',
+  //       example: 'SpotDraft: (9.2, 2500), ContractWorks: (7.8, 1800), PandaDoc: (8.1, 2200)'
+  //     },
+  //     'area': {
+  //       format: 'Period1: 100, Period2: 150, Period3: 120, Period4: 180',
+  //       instruction: 'Provide cumulative or stacked data as "Period: Value" pairs.',
+  //       example: 'Jan: 120, Feb: 185, Mar: 240, Apr: 310, May: 380'
+  //     }
+  //   };
     
-    return formats[type] || formats['bar'];
-  }
-
+  //   return formats[type] || formats['bar'];
+  // }
+// Graph format specifications
+getGraphFormat(type: string) {
+  const formats = {
+    'bar': {
+      format: 'Tool1: 10, Tool2: 8, Tool3: 6, Tool4: 4',
+      instruction: 'Provide data as "Name: Value" pairs separated by commas. Values should be numbers.',
+      example: 'SpotDraft: 25, ContractWorks: 18, PandaDoc: 12, DocuSign: 15'
+    },
+    'horizontal-bar': {
+      format: 'Tool1: 10, Tool2: 8, Tool3: 6, Tool4: 4',
+      instruction: 'Provide data as "Name: Value" pairs separated by commas. Values should be numbers.',
+      example: 'SpotDraft: 25, ContractWorks: 18, PandaDoc: 12, DocuSign: 15'
+    },
+    'line': {
+      format: 'Jan: 10, Feb: 12, Mar: 8, Apr: 15, May: 20',
+      instruction: 'Provide time-series data as "Period: Value" pairs separated by commas.',
+      example: 'Q1 2023: 45, Q2 2023: 52, Q3 2023: 48, Q4 2023: 60'
+    },
+    'pie': {
+      format: 'Category1: 35%, Category2: 25%, Category3: 20%, Category4: 20%',
+      instruction: 'Provide data as "Category: Percentage%" pairs. Percentages should add up to 100%.',
+      example: 'CLM: 40%, Legal AI: 25%, Document Mgmt: 20%, E-discovery: 15%'
+    },
+    'scatter': {
+      format: 'Tool1: (8.5, 1000), Tool2: (7.2, 800), Tool3: (9.1, 1200)',
+      instruction: 'Provide data as "Name: (X-value, Y-value)" pairs for two-dimensional plotting.',
+      example: 'SpotDraft: (9.2, 2500), ContractWorks: (7.8, 1800), PandaDoc: (8.1, 2200)'
+    },
+    'area': {
+      format: 'Period1: 100, Period2: 150, Period3: 120, Period4: 180',
+      instruction: 'Provide cumulative or stacked data as "Period: Value" pairs.',
+      example: 'Jan: 120, Feb: 185, Mar: 240, Apr: 310, May: 380'
+    }
+  };
+  
+  return formats[type] || formats['bar'];
+}
   // Download PDF from URL using fetch
   async downloadPDF(pdfUrl, tempDir) {
     try {
@@ -553,121 +590,245 @@ RESPONSE:`;
   }
 
   // Format response based on type
-  formatResponse(ragResponse, dbResponse, type) {
-    switch (type) {
-      case 'bar':
-      case 'horizontal-bar':
-      case 'line':
-      case 'pie':
-      case 'scatter':
-      case 'area':
-        // For graph types, combine and clean the responses
-        const combinedGraphData = `${ragResponse}\n${dbResponse}`;
+  // formatResponse(ragResponse, dbResponse, type) {
+  //   switch (type) {
+  //     case 'bar':
+  //     case 'horizontal-bar':
+  //     case 'line':
+  //     case 'pie':
+  //     case 'scatter':
+  //     case 'area':
+  //       // For graph types, combine and clean the responses
+  //       const combinedGraphData = `${ragResponse}\n${dbResponse}`;
         
-        // Extract the best formatted data
-        const lines = combinedGraphData.split('\n').filter(line => line.trim());
-        let bestMatch = '';
+  //       // Extract the best formatted data
+  //       const lines = combinedGraphData.split('\n').filter(line => line.trim());
+  //       let bestMatch = '';
         
-        // Look for lines that match the expected format
-        for (const line of lines) {
-          if (type === 'pie' && line.includes('%')) {
+  //       // Look for lines that match the expected format
+  //       for (const line of lines) {
+  //         if (type === 'pie' && line.includes('%')) {
+  //           bestMatch = line.trim();
+  //           break;
+  //         } else if (type === 'scatter' && line.includes('(') && line.includes(')')) {
+  //           bestMatch = line.trim();
+  //           break;
+  //         } else if ((type === 'bar' || type === 'horizontal-bar' || type === 'line' || type === 'area') && line.includes(':')) {
+  //           // Check if it has the right format "Name: Number"
+  //           const pairs = line.split(',').map(pair => pair.trim());
+  //           const validPairs = pairs.filter(pair => {
+  //             const parts = pair.split(':');
+  //             return parts.length === 2 && !isNaN(parseFloat(parts[1].trim()));
+  //           });
+  //           if (validPairs.length >= 3) {
+  //             bestMatch = line.trim();
+  //             break;
+  //           }
+  //         }
+  //       }
+        
+  //       // Fallback to generating format based on mock data
+  //       if (!bestMatch) {
+  //         const mockFormats = {
+  //           'bar': 'SpotDraft: 25, Harvey: 18, ContractWorks: 12, PandaDoc: 15, Ironclad: 10',
+  //           'line': 'Q1: 45, Q2: 52, Q3: 48, Q4: 60, Q5: 55',
+  //           'pie': 'CLM: 40%, Legal AI: 25%, Document Mgmt: 20%, E-discovery: 15%',
+  //           'scatter': 'SpotDraft: (9.2, 2500), Harvey: (8.8, 2200), ContractWorks: (7.8, 1800)',
+  //           'area': 'Jan: 120, Feb: 185, Mar: 240, Apr: 310, May: 380'
+  //         };
+  //         bestMatch = mockFormats[type];
+  //       }
+        
+  //       return bestMatch;
+        
+  //     case 'point':
+  //       // Extract bullet points from both responses
+  //       const allPoints = [];
+        
+  //       // Parse RAG response for bullet points
+  //       if (ragResponse && ragResponse !== "No relevant content found in the processed documents for this question.") {
+  //         const ragBullets = ragResponse.split('\n')
+  //           .filter(line => line.trim().startsWith('•') || line.trim().startsWith('-') || line.trim().startsWith('*'))
+  //           .map(line => line.replace(/^[•\-*]\s*/, '').trim())
+  //           .filter(point => point.length > 10);
+          
+  //         allPoints.push(...ragBullets);
+          
+  //         // If no bullet points found, extract sentences
+  //         if (ragBullets.length === 0) {
+  //           const sentences = ragResponse.split(/[.!?]+/)
+  //             .map(s => s.trim())
+  //             .filter(s => s.length > 15 && s.length < 150)
+  //             .slice(0, 3);
+  //           allPoints.push(...sentences);
+  //         }
+  //       }
+        
+  //       // Parse Database response for bullet points
+  //       if (dbResponse && dbResponse.trim().length > 0) {
+  //         const dbBullets = dbResponse.split('\n')
+  //           .filter(line => line.trim().startsWith('•') || line.trim().startsWith('-') || line.trim().startsWith('*'))
+  //           .map(line => line.replace(/^[•\-*]\s*/, '').trim())
+  //           .filter(point => point.length > 10);
+          
+  //         allPoints.push(...dbBullets);
+          
+  //         // If no bullet points found, extract sentences
+  //         if (dbBullets.length === 0) {
+  //           const sentences = dbResponse.split(/[.!?]+/)
+  //             .map(s => s.trim())
+  //             .filter(s => s.length > 15 && s.length < 150)
+  //             .slice(0, 3);
+  //           allPoints.push(...sentences);
+  //         }
+  //       }
+        
+  //       // If still no points, provide defaults
+  //       if (allPoints.length === 0) {
+  //         allPoints.push(
+  //           "Contract Lifecycle Management is the dominant category",
+  //           "AI-powered features are increasingly popular", 
+  //           "Cloud-based SaaS solutions are preferred",
+  //           "Integration capabilities are essential features"
+  //         );
+  //       }
+        
+  //       // Clean up points and return array (max 6 points)
+  //       const cleanPoints = allPoints
+  //         .map(point => point.trim())
+  //         .filter(point => point.length > 0)
+  //         .slice(0, 6);
+        
+  //       return cleanPoints;
+        
+  //     default:
+  //       return `${ragResponse}\n\n${dbResponse}`;
+  //   }
+  // }
+  // Format response based on type
+formatResponse(ragResponse, dbResponse, type) {
+  // Add null/undefined checks
+  const safeRagResponse = ragResponse || '';
+  const safeDbResponse = dbResponse || '';
+  
+  switch (type) {
+    case 'bar':
+    case 'horizontal-bar':
+    case 'line':
+    case 'pie':
+    case 'scatter':
+    case 'area':
+      // For graph types, combine and clean the responses
+      const combinedGraphData = `${safeRagResponse}\n${safeDbResponse}`;
+      
+      // Extract the best formatted data
+      const lines = combinedGraphData.split('\n').filter(line => line && line.trim());
+      let bestMatch = '';
+      
+      // Look for lines that match the expected format
+      for (const line of lines) {
+        if (!line || typeof line !== 'string') continue; // Add safety check
+        
+        if (type === 'pie' && line.includes('%')) {
+          bestMatch = line.trim();
+          break;
+        } else if (type === 'scatter' && line.includes('(') && line.includes(')')) {
+          bestMatch = line.trim();
+          break;
+        } else if ((type === 'bar' || type === 'horizontal-bar' || type === 'line' || type === 'area') && line.includes(':')) {
+          // Check if it has the right format "Name: Number"
+          const pairs = line.split(',').map(pair => pair?.trim()).filter(Boolean); // Add safety checks
+          const validPairs = pairs.filter(pair => {
+            if (!pair || typeof pair !== 'string') return false; // Add safety check
+            const parts = pair.split(':');
+            return parts.length === 2 && !isNaN(parseFloat(parts[1]?.trim()));
+          });
+          if (validPairs && validPairs.length >= 3) { // Add null check
             bestMatch = line.trim();
             break;
-          } else if (type === 'scatter' && line.includes('(') && line.includes(')')) {
-            bestMatch = line.trim();
-            break;
-          } else if ((type === 'bar' || type === 'horizontal-bar' || type === 'line' || type === 'area') && line.includes(':')) {
-            // Check if it has the right format "Name: Number"
-            const pairs = line.split(',').map(pair => pair.trim());
-            const validPairs = pairs.filter(pair => {
-              const parts = pair.split(':');
-              return parts.length === 2 && !isNaN(parseFloat(parts[1].trim()));
-            });
-            if (validPairs.length >= 3) {
-              bestMatch = line.trim();
-              break;
-            }
           }
         }
+      }
+      
+      // Fallback to generating format based on mock data
+      if (!bestMatch) {
+        const mockFormats = {
+          'bar': 'SpotDraft: 25, Harvey: 18, ContractWorks: 12, PandaDoc: 15, Ironclad: 10',
+          'horizontal-bar': 'SpotDraft: 25, Harvey: 18, ContractWorks: 12, PandaDoc: 15, Ironclad: 10', // Add explicit horizontal-bar
+          'line': 'Q1: 45, Q2: 52, Q3: 48, Q4: 60, Q5: 55',
+          'pie': 'CLM: 40%, Legal AI: 25%, Document Mgmt: 20%, E-discovery: 15%',
+          'scatter': 'SpotDraft: (9.2, 2500), Harvey: (8.8, 2200), ContractWorks: (7.8, 1800)',
+          'area': 'Jan: 120, Feb: 185, Mar: 240, Apr: 310, May: 380'
+        };
+        bestMatch = mockFormats[type] || mockFormats['bar'];
+      }
+      
+      return bestMatch;
+      
+    case 'point':
+      // Extract bullet points from both responses
+      const allPoints = [];
+      
+      // Parse RAG response for bullet points
+      if (safeRagResponse && safeRagResponse !== "No relevant content found in the processed documents for this question.") {
+        const ragBullets = safeRagResponse.split('\n')
+          .filter(line => line && line.trim() && (line.trim().startsWith('•') || line.trim().startsWith('-') || line.trim().startsWith('*')))
+          .map(line => line.replace(/^[•\-*]\s*/, '').trim())
+          .filter(point => point && point.length > 10);
         
-        // Fallback to generating format based on mock data
-        if (!bestMatch) {
-          const mockFormats = {
-            'bar': 'SpotDraft: 25, Harvey: 18, ContractWorks: 12, PandaDoc: 15, Ironclad: 10',
-            'line': 'Q1: 45, Q2: 52, Q3: 48, Q4: 60, Q5: 55',
-            'pie': 'CLM: 40%, Legal AI: 25%, Document Mgmt: 20%, E-discovery: 15%',
-            'scatter': 'SpotDraft: (9.2, 2500), Harvey: (8.8, 2200), ContractWorks: (7.8, 1800)',
-            'area': 'Jan: 120, Feb: 185, Mar: 240, Apr: 310, May: 380'
-          };
-          bestMatch = mockFormats[type];
+        allPoints.push(...ragBullets);
+        
+        // If no bullet points found, extract sentences
+        if (ragBullets.length === 0) {
+          const sentences = safeRagResponse.split(/[.!?]+/)
+            .map(s => s?.trim())
+            .filter(s => s && s.length > 15 && s.length < 150)
+            .slice(0, 3);
+          allPoints.push(...sentences);
         }
+      }
+      
+      // Parse Database response for bullet points
+      if (safeDbResponse && safeDbResponse.trim().length > 0) {
+        const dbBullets = safeDbResponse.split('\n')
+          .filter(line => line && line.trim() && (line.trim().startsWith('•') || line.trim().startsWith('-') || line.trim().startsWith('*')))
+          .map(line => line.replace(/^[•\-*]\s*/, '').trim())
+          .filter(point => point && point.length > 10);
         
-        return bestMatch;
+        allPoints.push(...dbBullets);
         
-      case 'point':
-        // Extract bullet points from both responses
-        const allPoints = [];
-        
-        // Parse RAG response for bullet points
-        if (ragResponse && ragResponse !== "No relevant content found in the processed documents for this question.") {
-          const ragBullets = ragResponse.split('\n')
-            .filter(line => line.trim().startsWith('•') || line.trim().startsWith('-') || line.trim().startsWith('*'))
-            .map(line => line.replace(/^[•\-*]\s*/, '').trim())
-            .filter(point => point.length > 10);
-          
-          allPoints.push(...ragBullets);
-          
-          // If no bullet points found, extract sentences
-          if (ragBullets.length === 0) {
-            const sentences = ragResponse.split(/[.!?]+/)
-              .map(s => s.trim())
-              .filter(s => s.length > 15 && s.length < 150)
-              .slice(0, 3);
-            allPoints.push(...sentences);
-          }
+        // If no bullet points found, extract sentences
+        if (dbBullets.length === 0) {
+          const sentences = safeDbResponse.split(/[.!?]+/)
+            .map(s => s?.trim())
+            .filter(s => s && s.length > 15 && s.length < 150)
+            .slice(0, 3);
+          allPoints.push(...sentences);
         }
-        
-        // Parse Database response for bullet points
-        if (dbResponse && dbResponse.trim().length > 0) {
-          const dbBullets = dbResponse.split('\n')
-            .filter(line => line.trim().startsWith('•') || line.trim().startsWith('-') || line.trim().startsWith('*'))
-            .map(line => line.replace(/^[•\-*]\s*/, '').trim())
-            .filter(point => point.length > 10);
-          
-          allPoints.push(...dbBullets);
-          
-          // If no bullet points found, extract sentences
-          if (dbBullets.length === 0) {
-            const sentences = dbResponse.split(/[.!?]+/)
-              .map(s => s.trim())
-              .filter(s => s.length > 15 && s.length < 150)
-              .slice(0, 3);
-            allPoints.push(...sentences);
-          }
-        }
-        
-        // If still no points, provide defaults
-        if (allPoints.length === 0) {
-          allPoints.push(
-            "Contract Lifecycle Management is the dominant category",
-            "AI-powered features are increasingly popular", 
-            "Cloud-based SaaS solutions are preferred",
-            "Integration capabilities are essential features"
-          );
-        }
-        
-        // Clean up points and return array (max 6 points)
-        const cleanPoints = allPoints
-          .map(point => point.trim())
-          .filter(point => point.length > 0)
-          .slice(0, 6);
-        
-        return cleanPoints;
-        
-      default:
-        return `${ragResponse}\n\n${dbResponse}`;
-    }
+      }
+      
+      // If still no points, provide defaults
+      if (allPoints.length === 0) {
+        allPoints.push(
+          "Contract Lifecycle Management is the dominant category",
+          "AI-powered features are increasingly popular", 
+          "Cloud-based SaaS solutions are preferred",
+          "Integration capabilities are essential features"
+        );
+      }
+      
+      // Clean up points and return array (max 6 points)
+      const cleanPoints = allPoints
+        .map(point => point?.trim())
+        .filter(point => point && point.length > 0)
+        .slice(0, 6);
+      
+      return cleanPoints;
+      
+    default:
+      return `${safeRagResponse}\n\n${safeDbResponse}`;
   }
+}
 
   // Process insights structure with new flow
   async processInsights(insights, miData) {

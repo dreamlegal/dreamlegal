@@ -776,3 +776,16 @@ model MarketIntelligence {
   miData         Json?     
 
 }
+
+model BlogReaction {
+  id        String   @id @default(cuid())
+  blogId    String
+  userId    String?  // for regular users
+  vendorId  String?  // for vendors
+  reaction  String   // "like", "love", "helpful", "insightful"
+  createdAt DateTime @default(now())
+  
+  @@unique([blogId, userId, reaction])
+  @@unique([blogId, vendorId, reaction])
+  @@map("blog_reactions")
+}

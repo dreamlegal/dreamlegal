@@ -1,15 +1,12 @@
+
 // 'use client';
 
 // import React, { useState, useCallback, useEffect, useRef } from 'react';
 // import FontSize from '@tiptap/extension-font-size';
 // import { useEditor, EditorContent } from '@tiptap/react';
+// import { Node } from '@tiptap/core';
 // import StarterKit from '@tiptap/starter-kit';
-// import Image from '@tiptap/extension-image';
 // import Placeholder from '@tiptap/extension-placeholder';
-// import Table from '@tiptap/extension-table';
-// import TableRow from '@tiptap/extension-table-row';
-// import TableCell from '@tiptap/extension-table-cell';
-// import TableHeader from '@tiptap/extension-table-header';
 // import Heading from '@tiptap/extension-heading';
 // import Link from '@tiptap/extension-link';
 // import TextStyle from '@tiptap/extension-text-style';
@@ -19,134 +16,87 @@
 // import Dropcursor from '@tiptap/extension-dropcursor';
 // import Typography from '@tiptap/extension-typography';
 // import CharacterCount from '@tiptap/extension-character-count';
+// import Highlight from '@tiptap/extension-highlight';
+// import Subscript from '@tiptap/extension-subscript';
+// import Superscript from '@tiptap/extension-superscript';
+// import Strike from '@tiptap/extension-strike';
+// import Code from '@tiptap/extension-code';
+// import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+// import { lowlight } from 'lowlight/lib/core';
+// import js from 'highlight.js/lib/languages/javascript';
+// import ts from 'highlight.js/lib/languages/typescript';
+// import html from 'highlight.js/lib/languages/xml';
+// import css from 'highlight.js/lib/languages/css';
+// import python from 'highlight.js/lib/languages/python';
+// import java from 'highlight.js/lib/languages/java';
+// import json from 'highlight.js/lib/languages/json';
+// import HorizontalRule from '@tiptap/extension-horizontal-rule';
+// import TaskList from '@tiptap/extension-task-list';
+// import TaskItem from '@tiptap/extension-task-item';
+// import Blockquote from '@tiptap/extension-blockquote';
+// import FontFamily from '@tiptap/extension-font-family';
 // import {
 //   Bold, Italic, Underline as UnderlineIcon, AlignLeft, AlignCenter, AlignRight,
-//   Link2, Image as ImageIcon, Table as TableIcon, List, ListOrdered, RefreshCw, Save,
-//   Upload, X, AlertTriangle
+//   Link2, List, ListOrdered, RefreshCw, Save,
+//   X, Quote, Code as CodeIcon, Strikethrough, 
+//   Subscript as SubIcon, Superscript as SupIcon, Palette, Highlighter,
+//   Minus, CheckSquare, Undo, Redo, Eraser, MoreHorizontal, ChevronDown,
+//   Search, Package, ExternalLink
 // } from 'lucide-react';
 
-// // Enhanced Image Modal with S3 upload capability
-// const ImageModal = ({ onClose, onInsert }) => {
-//   const fileInputRef = useRef(null);
-//   const [imageUrl, setImageUrl] = useState('');
-//   const [width, setWidth] = useState('100%');
-//   const [height, setHeight] = useState('auto');
-//   const [alignment, setAlignment] = useState('center');
-//   const [isValidUrl, setIsValidUrl] = useState(false);
-//   const [isImageLoading, setIsImageLoading] = useState(false);
+// // Register languages for syntax highlighting
+// lowlight.registerLanguage('javascript', js);
+// lowlight.registerLanguage('typescript', ts);
+// lowlight.registerLanguage('html', html);
+// lowlight.registerLanguage('css', css);
+// lowlight.registerLanguage('python', python);
+// lowlight.registerLanguage('java', java);
+// lowlight.registerLanguage('json', json);
 
-//   // S3 Upload States
-//   const [isUploading, setIsUploading] = useState(false);
-//   const [uploadProgress, setUploadProgress] = useState(0);
-//   const [uploadError, setUploadError] = useState('');
+// // Product Search Modal Component
+// const ProductSearchModal = ({ onClose, onInsert, type = 'inline' }) => {
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [products, setProducts] = useState([]);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [selectedProduct, setSelectedProduct] = useState(null);
 
-//   // Check if URL is valid
-//   const checkImageUrl = (url) => {
-//     if (!url) {
-//       setIsValidUrl(false);
+//   // Debounced search function
+//   const searchProducts = useCallback(async (query) => {
+//     if (!query || query.trim().length < 2) {
+//       setProducts([]);
 //       return;
 //     }
 
-//     setIsImageLoading(true);
-
-//     // Use the browser's built-in Image constructor
-//     const imgElement = new window.Image();
-//     imgElement.onload = () => {
-//       setIsValidUrl(true);
-//       setIsImageLoading(false);
-//     };
-//     imgElement.onerror = () => {
-//       setIsValidUrl(false);
-//       setIsImageLoading(false);
-//     };
-//     imgElement.src = url;
-//   };
-
-//   // Handle URL change
-//   const handleUrlChange = (e) => {
-//     const url = e.target.value;
-//     setImageUrl(url);
-//     checkImageUrl(url);
-//   };
-
-//   // Handle file upload to S3
-//   const handleFileUpload = async (e) => {
-//     const file = e.target.files?.[0];
-//     if (!file) return;
-
-//     // Validate file type
-//     const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-//     if (!validTypes.includes(file.type)) {
-//       setUploadError('Please upload a valid image file (JPEG, PNG, GIF, WEBP)');
-//       return;
-//     }
-
-//     // Validate file size (max 5MB)
-//     if (file.size > 5 * 1024 * 1024) {
-//       setUploadError('Image size should be less than 5MB');
-//       return;
-//     }
-
-//     setIsUploading(true);
-//     setUploadProgress(0);
-//     setUploadError('');
-
+//     setIsLoading(true);
 //     try {
-//       const formData = new FormData();
-//       formData.append('file', file);
-
-//       // Setup XHR for progress tracking
-//       const xhr = new XMLHttpRequest();
-
-//       // Track upload progress
-//       xhr.upload.addEventListener('progress', (event) => {
-//         if (event.lengthComputable) {
-//           const percentComplete = Math.round((event.loaded / event.total) * 100);
-//           setUploadProgress(percentComplete);
-//         }
-//       });
-
-//       // Handle response
-//       xhr.onload = () => {
-//         if (xhr.status === 200) {
-//           try {
-//             const response = JSON.parse(xhr.responseText);
-//             setImageUrl(response.url);
-//             setIsValidUrl(true);
-//             setIsUploading(false);
-//           } catch (error) {
-//             setUploadError('Error parsing server response');
-//             setIsUploading(false);
-//           }
-//         } else {
-//           setUploadError('Failed to upload image');
-//           setIsUploading(false);
-//         }
-//       };
-
-//       // Handle errors
-//       xhr.onerror = () => {
-//         setUploadError('Network error occurred during upload');
-//         setIsUploading(false);
-//       };
-
-//       // Send the upload request
-//       xhr.open('POST', '/api/blogs/upload');
-//       xhr.send(formData);
-
-//     } catch (err) {
-//       setUploadError(err.message || 'An unexpected error occurred during upload');
-//       setIsUploading(false);
+//       const response = await fetch(`/api/products/search?q=${encodeURIComponent(query)}`);
+//       const data = await response.json();
+//       setProducts(data.products || []);
+//     } catch (error) {
+//       console.error('Product search error:', error);
+//       setProducts([]);
+//     } finally {
+//       setIsLoading(false);
 //     }
-//   };
+//   }, []);
 
-//   const triggerFileInput = () => {
-//     fileInputRef.current?.click();
+//   // Debounce search queries
+//   useEffect(() => {
+//     const timeoutId = setTimeout(() => {
+//       searchProducts(searchQuery);
+//     }, 300);
+
+//     return () => clearTimeout(timeoutId);
+//   }, [searchQuery, searchProducts]);
+
+//   const handleProductSelect = (product) => {
+//     setSelectedProduct(product);
 //   };
 
 //   const handleInsert = () => {
-//     if (imageUrl && isValidUrl) {
-//       onInsert(imageUrl, width, height, alignment);
+//     if (selectedProduct) {
+//       onInsert(selectedProduct, type);
+//       onClose();
 //     }
 //   };
 
@@ -156,183 +106,136 @@
 //       onClick={onClose}
 //     >
 //       <div
-//         className="bg-white p-6 rounded-lg w-full max-w-xl"
+//         className="bg-white p-6 rounded-lg w-full max-w-2xl max-h-[80vh] overflow-hidden"
 //         onClick={e => e.stopPropagation()}
+//         style={{ backgroundColor: '#f5f7fa' }}
 //       >
-//         <h3 className="text-xl font-bold mb-4 text-gray-800">Insert Image</h3>
-
-//         {/* S3 Image Upload */}
-//         <div className="mb-4">
-//           <label className="block text-sm font-medium mb-1 text-gray-700">Upload Image</label>
-
-//           <div
-//             onClick={triggerFileInput}
-//             className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition bg-gray-50"
+//         <div className="flex items-center justify-between mb-4">
+//           <h3 className="text-xl font-bold" style={{ color: '#1e2556' }}>
+//             {type === 'inline' ? 'Insert Product Reference' : 'Add Product at End'}
+//           </h3>
+//           <button
+//             onClick={onClose}
+//             className="p-2 hover:bg-gray-200 rounded-full transition"
 //           >
-//             <input
-//               type="file"
-//               ref={fileInputRef}
-//               onChange={handleFileUpload}
-//               accept="image/jpeg,image/png,image/gif,image/webp"
-//               className="hidden"
-//             />
+//             <X size={20} />
+//           </button>
+//         </div>
 
-//             {isUploading ? (
-//               <div className="w-full px-8">
-//                 <div className="text-center mb-2">
-//                   <p className="text-gray-600">Uploading... {uploadProgress}%</p>
-//                 </div>
-//                 <div className="w-full bg-gray-200 rounded-full h-2.5">
-//                   <div
-//                     className="bg-blue-600 h-2.5 rounded-full"
-//                     style={{ width: `${uploadProgress}%` }}
-//                   ></div>
-//                 </div>
-//               </div>
-//             ) : (
-//               <>
-//                 <Upload className="h-8 w-8 text-gray-400 mb-2" />
-//                 <p className="text-gray-600 font-medium">Click to upload image</p>
-//                 <p className="text-gray-500 text-sm">JPG, PNG, GIF or WEBP (max. 5MB)</p>
-//               </>
-//             )}
+//         {/* Search Input */}
+//         <div className="relative mb-4">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//             <Search size={20} style={{ color: '#334155' }} />
 //           </div>
+//           <input
+//             type="text"
+//             value={searchQuery}
+//             onChange={(e) => setSearchQuery(e.target.value)}
+//             className="w-full pl-10 pr-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition"
+//             style={{ 
+//               borderColor: '#7cc6ee',
+//               color: '#2d2d2d'
+//             }}
+//             onFocus={(e) => {
+//               e.target.style.borderColor = '#1e2556';
+//               e.target.style.boxShadow = '0 0 0 2px rgba(30, 37, 86, 0.1)';
+//             }}
+//             onBlur={(e) => {
+//               e.target.style.borderColor = '#7cc6ee';
+//               e.target.style.boxShadow = 'none';
+//             }}
+//             placeholder="Search for legal software products..."
+//             autoFocus
+//           />
+//         </div>
 
-//           {uploadError && (
-//             <div className="mt-2 p-2 bg-red-50 text-red-600 rounded text-sm">
-//               <div className="flex items-start">
-//                 <AlertTriangle className="w-4 h-4 mr-1 mt-0.5 flex-shrink-0" />
-//                 <span>{uploadError}</span>
-//               </div>
+//         {/* Search Results */}
+//         <div className="max-h-64 overflow-y-auto mb-4">
+//           {isLoading && (
+//             <div className="text-center py-4">
+//               <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 mx-auto" style={{ borderColor: '#1e2556' }}></div>
+//               <p className="mt-2" style={{ color: '#334155' }}>Searching products...</p>
+//             </div>
+//           )}
+
+//           {!isLoading && searchQuery.length >= 2 && products.length === 0 && (
+//             <div className="text-center py-4">
+//               <Package size={48} className="mx-auto mb-2" style={{ color: '#334155' }} />
+//               <p style={{ color: '#334155' }}>No products found for "{searchQuery}"</p>
+//             </div>
+//           )}
+
+//           {!isLoading && products.length > 0 && (
+//             <div className="space-y-2">
+//               {products.map((product) => (
+//                 <div
+//                   key={product.id}
+//                   onClick={() => handleProductSelect(product)}
+//                   className={`p-3 rounded-lg cursor-pointer transition flex items-center space-x-3 ${
+//                     selectedProduct?.id === product.id 
+//                       ? 'bg-white border-2' 
+//                       : 'bg-white border border-gray-200 hover:shadow-md'
+//                   }`}
+//                   style={{
+//                     borderColor: selectedProduct?.id === product.id ? '#1e2556' : '#e5e7eb'
+//                   }}
+//                 >
+//                   <img
+//                     src={product.logoUrl || '/default-product-logo.png'}
+//                     alt={product.productName}
+//                     className="w-12 h-12 object-contain rounded"
+//                     onError={(e) => {
+//                       e.target.src = '/default-product-logo.png';
+//                     }}
+//                   />
+//                   <div className="flex-1 min-w-0">
+//                     <h4 className="font-semibold truncate" style={{ color: '#1e2556' }}>
+//                       {product.productName}
+//                     </h4>
+//                     <p className="text-sm truncate" style={{ color: '#334155' }}>
+//                       {product.companyName}
+//                     </p>
+//                     <p className="text-xs" style={{ color: '#334155' }}>
+//                       {product.category}
+//                     </p>
+//                   </div>
+//                   {selectedProduct?.id === product.id && (
+//                     <div 
+//                       className="w-6 h-6 rounded-full flex items-center justify-center text-white"
+//                       style={{ backgroundColor: '#1e2556' }}
+//                     >
+//                       ✓
+//                     </div>
+//                   )}
+//                 </div>
+//               ))}
 //             </div>
 //           )}
 //         </div>
 
-//         <div className="mb-4">
-//           <label className="block text-sm font-medium mb-1 text-gray-700">Or Enter Image URL</label>
-//           <input
-//             type="url"
-//             value={imageUrl}
-//             onChange={handleUrlChange}
-//             className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-//             placeholder="https://example.com/image.jpg"
-//           />
-//         </div>
-
-//         {/* Image Preview */}
-//         {imageUrl && (
-//           <div className="mb-4 relative">
-//             {isImageLoading && (
-//               <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-80 rounded">
-//                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-//               </div>
-//             )}
-
-//             {isValidUrl ? (
-//               <div className={`relative p-3 bg-gray-50 rounded border ${alignment === 'center' ? 'text-center' : alignment === 'right' ? 'text-right' : 'text-left'}`}>
-//                 <img
-//                   src={imageUrl}
-//                   alt="Preview"
-//                   className={`img-align-${alignment} rounded max-h-40 border`}
-//                   style={{
-//                     width: width !== '100%' ? width : null,
-//                     height: height !== 'auto' ? height : null,
-//                     maxWidth: '100%',
-//                     objectFit: 'contain'
-//                   }}
-//                 />
-//               </div>
-//             ) : !isImageLoading && (
-//               <div className="p-3 bg-red-50 text-red-700 rounded border border-red-200">
-//                 Unable to load image. Please check the URL.
-//               </div>
-//             )}
-//           </div>
-//         )}
-
-//         <div className="grid grid-cols-2 gap-4 mb-4">
-//           <div>
-//             <label className="block text-sm font-medium mb-1 text-gray-700">Width</label>
-//             <select
-//               value={width}
-//               onChange={e => setWidth(e.target.value)}
-//               className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-//             >
-//               <option value="100%">Full width</option>
-//               <option value="300px">Small (300px)</option>
-//               <option value="500px">Medium (500px)</option>
-//               <option value="700px">Large (700px)</option>
-//               <option value="200px">Extra Small (200px)</option>
-//             </select>
-//           </div>
-
-//           <div>
-//             <label className="block text-sm font-medium mb-1 text-gray-700">Height</label>
-//             <select
-//               value={height}
-//               onChange={e => setHeight(e.target.value)}
-//               className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-//             >
-//               <option value="auto">Auto</option>
-//               <option value="200px">Small (200px)</option>
-//               <option value="300px">Medium (300px)</option>
-//               <option value="400px">Large (400px)</option>
-//               <option value="500px">Extra Large (500px)</option>
-//             </select>
-//           </div>
-//         </div>
-
-//         {/* <div className="mb-6">
-//           <label className="block text-sm font-medium mb-1 text-gray-700">Alignment</label>
-//           <div className="flex gap-2">
-//             <button
-//               type="button"
-//               onClick={() => setAlignment('left')}
-//               className={`px-3 py-2 rounded flex-1 ${alignment === 'left' ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
-//             >
-//               <div className="flex items-center justify-center">
-//                 <AlignLeft size={16} className="mr-1" />
-//                 Left
-//               </div>
-//             </button>
-//             <button
-//               type="button"
-//               onClick={() => setAlignment('center')}
-//               className={`px-3 py-2 rounded flex-1 ${alignment === 'center' ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
-//             >
-//               <div className="flex items-center justify-center">
-//                 <AlignCenter size={16} className="mr-1" />
-//                 Center
-//               </div>
-//             </button>
-//             <button
-//               type="button"
-//               onClick={() => setAlignment('right')}
-//               className={`px-3 py-2 rounded flex-1 ${alignment === 'right' ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
-//             >
-//               <div className="flex items-center justify-center">
-//                 <AlignRight size={16} className="mr-1" />
-//                 Right
-//               </div>
-//             </button>
-//           </div>
-//         </div> */}
-
+//         {/* Action Buttons */}
 //         <div className="flex justify-end gap-3">
 //           <button
-//             type="button"
 //             onClick={onClose}
-//             className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+//             className="px-4 py-2 border rounded-lg hover:bg-gray-100 transition"
+//             style={{ borderColor: '#7cc6ee', color: '#2d2d2d' }}
 //           >
 //             Cancel
 //           </button>
 //           <button
-//             type="button"
 //             onClick={handleInsert}
-//             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-//             disabled={!imageUrl || !isValidUrl}
+//             disabled={!selectedProduct}
+//             className="px-4 py-2 rounded-lg transition text-white flex items-center gap-2 disabled:opacity-50"
+//             style={{ backgroundColor: selectedProduct ? '#1e2556' : '#334155' }}
+//             onMouseEnter={(e) => {
+//               if (selectedProduct) e.target.style.backgroundColor = '#7cc6ee';
+//             }}
+//             onMouseLeave={(e) => {
+//               if (selectedProduct) e.target.style.backgroundColor = '#1e2556';
+//             }}
 //           >
-//             Insert Image
+//             <Package size={16} />
+//             Insert Product
 //           </button>
 //         </div>
 //       </div>
@@ -340,7 +243,215 @@
 //   );
 // };
 
-// // Function to extract headings from the editor content
+// // Custom Product Extension for TipTap
+// const ProductWidget = Node.create({
+//   name: 'productWidget',
+
+//   group: 'inline',
+
+//   content: '',
+
+//   inline: true,
+
+//   atom: true,
+
+//   addAttributes() {
+//     return {
+//       productId: {
+//         default: null,
+//       },
+//       productName: {
+//         default: '',
+//       },
+//       companyName: {
+//         default: '',
+//       },
+//       logoUrl: {
+//         default: '',
+//       },
+//       slug: {
+//         default: '',
+//       },
+//       type: {
+//         default: 'inline', // 'inline' or 'end'
+//       },
+//     };
+//   },
+
+//   parseHTML() {
+//     return [
+//       {
+//         tag: 'div[data-product-widget]',
+//         getAttrs: (element) => ({
+//           productId: element.getAttribute('data-product-id'),
+//           productName: element.getAttribute('data-product-name'),
+//           companyName: element.getAttribute('data-company-name'),
+//           logoUrl: element.getAttribute('data-logo-url'),
+//           slug: element.getAttribute('data-slug'),
+//           type: element.getAttribute('data-type') || 'inline',
+//         }),
+//       },
+//     ];
+//   },
+
+//   renderHTML({ HTMLAttributes }) {
+//     return [
+//       'div',
+//       {
+//         'data-product-widget': true,
+//         'data-product-id': HTMLAttributes.productId,
+//         'data-product-name': HTMLAttributes.productName,
+//         'data-company-name': HTMLAttributes.companyName,
+//         'data-logo-url': HTMLAttributes.logoUrl,
+//         'data-slug': HTMLAttributes.slug,
+//         'data-type': HTMLAttributes.type,
+//         class: `product-widget product-widget-${HTMLAttributes.type}`,
+//       },
+//     ];
+//   },
+
+//   addNodeView() {
+//     return ({ node }) => {
+//       const div = document.createElement('div');
+//       div.className = `product-widget product-widget-${node.attrs.type}`;
+      
+//       if (node.attrs.type === 'inline') {
+//         // Small inline widget - just logo, name, and click icon
+//         div.innerHTML = `
+//           <img src="${node.attrs.logoUrl || '/default-product-logo.png'}" 
+//                alt="${node.attrs.productName}" 
+//                class="product-widget-inline-logo"
+//                onerror="this.src='/default-product-logo.png'">
+//           <span class="product-widget-inline-name">${node.attrs.productName}</span>
+//           <div class="product-widget-inline-action">
+//             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+//               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+//               <polyline points="15,3 21,3 21,9"></polyline>
+//               <line x1="10" y1="14" x2="21" y2="3"></line>
+//             </svg>
+//           </div>
+//         `;
+//       } else {
+//         // Compact end widget - left aligned, smaller
+//         div.innerHTML = `
+//           <div class="product-widget-end-content">
+//             <img src="${node.attrs.logoUrl || '/default-product-logo.png'}" 
+//                  alt="${node.attrs.productName}" 
+//                  class="product-widget-end-logo"
+//                  onerror="this.src='/default-product-logo.png'">
+//             <div class="product-widget-end-info">
+//               <h4 class="product-widget-end-name">${node.attrs.productName}</h4>
+//               <p class="product-widget-end-company">${node.attrs.companyName}</p>
+//             </div>
+//             <div class="product-widget-end-action">
+//               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+//                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+//                 <polyline points="15,3 21,3 21,9"></polyline>
+//                 <line x1="10" y1="14" x2="21" y2="3"></line>
+//               </svg>
+//             </div>
+//           </div>
+//         `;
+//       }
+
+//       div.addEventListener('click', () => {
+//         window.open(`/product/${node.attrs.slug}`, '_blank');
+//       });
+
+//       return {
+//         dom: div,
+//       };
+//     };
+//   },
+// });
+
+// // Color Picker Component
+// const ColorPicker = ({ onColorSelect, type = 'text' }) => {
+//   const colors = [
+//     '#000000', '#374151', '#6B7280', '#9CA3AF', '#D1D5DB', '#F3F4F6',
+//     '#EF4444', '#F97316', '#F59E0B', '#EAB308', '#84CC16', '#22C55E',
+//     '#06B6D4', '#3B82F6', '#6366F1', '#8B5CF6', '#A855F7', '#EC4899',
+//     '#F43F5E', '#DC2626', '#EA580C', '#D97706', '#CA8A04', '#65A30D',
+//     '#059669', '#0891B2', '#2563EB', '#4F46E5', '#7C3AED', '#9333EA'
+//   ];
+
+//   return (
+//     <div className="grid grid-cols-6 gap-1 p-2 bg-white border rounded-lg shadow-lg">
+//       {colors.map((color) => (
+//         <button
+//           key={color}
+//           type="button"
+//           className="w-6 h-6 rounded border border-gray-300 hover:scale-110 transition-transform"
+//           style={{ backgroundColor: color }}
+//           onClick={() => onColorSelect(color)}
+//           title={color}
+//         />
+//       ))}
+//       <button
+//         type="button"
+//         className="w-6 h-6 rounded border border-gray-300 bg-white hover:scale-110 transition-transform relative"
+//         onClick={() => onColorSelect('')}
+//         title="Remove color"
+//       >
+//         <X size={12} className="text-red-500 absolute inset-0 m-auto" />
+//       </button>
+//     </div>
+//   );
+// };
+
+// // Font Family Selector
+// const FontFamilySelector = ({ editor }) => {
+//   const fontFamilies = [
+//     { label: 'Default', value: '' },
+//     { label: 'Inter', value: 'Inter' },
+//     { label: 'Arial', value: 'Arial' },
+//     { label: 'Helvetica', value: 'Helvetica' },
+//     { label: 'Georgia', value: 'Georgia' },
+//     { label: 'Times New Roman', value: 'Times New Roman' },
+//     { label: 'Courier New', value: 'Courier New' },
+//     { label: 'Verdana', value: 'Verdana' },
+//     { label: 'Trebuchet MS', value: 'Trebuchet MS' },
+//     { label: 'Palatino', value: 'Palatino' }
+//   ];
+
+//   const handleFontChange = (fontFamily) => {
+//     if (fontFamily) {
+//       editor.chain().focus().setFontFamily(fontFamily).run();
+//     } else {
+//       editor.chain().focus().unsetFontFamily().run();
+//     }
+//   };
+
+//   return (
+//     <select
+//       className="text-sm border border-gray-300 rounded px-2 py-1 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//       onChange={(e) => handleFontChange(e.target.value)}
+//       defaultValue=""
+//     >
+//       {fontFamilies.map((font) => (
+//         <option 
+//           key={font.value} 
+//           value={font.value}
+//           style={{ fontFamily: font.value }}
+//         >
+//           {font.label}
+//         </option>
+//       ))}
+//     </select>
+//   );
+// };
+
+// // FIXED: Utility function to generate slug from text
+// const generateSlug = (text) => {
+//   return text
+//     .toLowerCase()
+//     .replace(/[^\w\s-]/g, '') // Remove special characters
+//     .replace(/\s+/g, '-')     // Replace spaces with hyphens
+//     .replace(/-+/g, '-')      // Remove multiple consecutive hyphens
+//     .trim();
+// };
+
+// // FIXED: Function to extract headings from the editor content
 // const extractHeadings = (editor) => {
 //   if (!editor) return [];
 
@@ -348,13 +459,19 @@
 //   const content = editor.getJSON();
 
 //   const processNode = (node) => {
-//     if (node.type === 'heading') {
-//       const text = node.content?.[0]?.text || 'Untitled';
-//       const id = text.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
+//     if (node.type === 'heading' && node.content) {
+//       // Extract text content properly
+//       const text = node.content
+//         .filter(child => child.type === 'text')
+//         .map(child => child.text)
+//         .join('') || 'Untitled';
+      
+//       const slug = generateSlug(text);
+      
 //       headings.push({
 //         level: node.attrs.level,
 //         content: text,
-//         id
+//         id: slug
 //       });
 //     }
 
@@ -370,8 +487,40 @@
 //   return headings;
 // };
 
-// // Enhanced toolbar with better styling and organization
-// const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
+// // FIXED: Function to add IDs to headings in HTML content
+// const addIdsToHeadingsInHTML = (htmlContent) => {
+//   if (!htmlContent) return htmlContent;
+  
+//   // More robust regex that handles various heading formats
+//   const headingRegex = /<(h[1-6])([^>]*)>(.*?)<\/\1>/gi;
+  
+//   return htmlContent.replace(headingRegex, (match, tag, attributes, content) => {
+//     // Extract text content (remove any nested HTML tags)
+//     const textContent = content.replace(/<\/?[^>]+(>|$)/g, '').trim();
+    
+//     if (!textContent) return match;
+    
+//     const slug = generateSlug(textContent);
+    
+//     // Check if ID already exists in attributes
+//     if (attributes && attributes.includes('id=')) {
+//       return match; // Don't modify if ID already exists
+//     }
+    
+//     // Add ID to the heading
+//     const newAttributes = attributes ? `${attributes} id="${slug}"` : ` id="${slug}"`;
+//     return `<${tag}${newAttributes}>${content}</${tag}>`;
+//   });
+// };
+
+// // Enhanced toolbar with advanced formatting options
+// const EditorToolbar = ({ editor, onExtractToc }) => {
+//   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
+//   const [showHighlightPicker, setShowHighlightPicker] = useState(false);
+//   const [showAdvancedTools, setShowAdvancedTools] = useState(false);
+//   const [showProductSearch, setShowProductSearch] = useState(false);
+//   const [productSearchType, setProductSearchType] = useState('inline');
+
 //   if (!editor) return null;
 
 //   // Use mousedown instead of click to prevent focus loss
@@ -383,288 +532,488 @@
 
 //   // Function to handle heading application
 //   const applyHeading = (level) => {
-//     // Simpler approach - use the standard toggleHeading
-//     // Headings are block-level elements and will apply to the whole paragraph
 //     editor.chain().focus().toggleHeading({ level }).run();
-    
-//     // Add an informative tooltip that appears temporarily
-//     const toolbarEl = document.querySelector('.editor-toolbar');
-//     if (toolbarEl) {
-//       const tooltip = document.createElement('div');
-//       tooltip.className = 'bg-gray-800 text-white px-3 py-1.5 rounded text-sm absolute -bottom-8 z-20 editor-toolbar-tooltip';
-//       tooltip.innerText = 'Headings apply to entire paragraphs';
-//       tooltip.style.left = '50%';
-//       tooltip.style.transform = 'translateX(-50%)';
-//       toolbarEl.appendChild(tooltip);
-      
-//       // Remove tooltip after 2 seconds
-//       setTimeout(() => {
-//         if (tooltip.parentNode === toolbarEl) {
-//           toolbarEl.removeChild(tooltip);
-//         }
-//       }, 2000);
-//     }
 //   };
 
 //   // Function to apply heading-like styling to selected text only
 //   const applyTextStyle = (fontSize, isBold = true) => {
-//     editor.chain()
-//       .focus()
-//       .setFontSize(fontSize)
-//       .setTextStyle({ fontWeight: isBold ? 'bold' : 'normal' })
-//       .run();
+//     if (isBold) {
+//       editor.chain()
+//         .focus()
+//         .setFontSize(fontSize)
+//         .toggleBold()
+//         .run();
+//     } else {
+//       editor.chain()
+//         .focus()
+//         .setFontSize(fontSize)
+//         .run();
+//     }
+//   };
+
+//   // Handle product insertion
+//   const handleProductInsert = (product, type) => {
+//     editor.chain().focus().insertContent({
+//       type: 'productWidget',
+//       attrs: {
+//         productId: product.id,
+//         productName: product.productName,
+//         companyName: product.companyName,
+//         logoUrl: product.logoUrl,
+//         slug: product.slug,
+//         type: type,
+//       },
+//     }).run();
+//     setShowProductSearch(false);
 //   };
 
 //   return (
-//     <div className="flex flex-wrap gap-2 p-3 mb-2 border-b sticky top-4 bg-white z-10 shadow-sm rounded-t-lg relative editor-toolbar">
-//       <div className="flex gap-1 border-r pr-2 mr-2">
+//     <div className="border-b sticky top-4 bg-white z-10 shadow-sm rounded-t-lg">
+//       {/* Primary Toolbar */}
+//       <div className="flex flex-wrap gap-2 p-3 relative editor-toolbar">
+//         {/* Undo/Redo */}
+//         <div className="flex gap-1 border-r pr-2 mr-2">
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => editor.chain().focus().undo().run())}
+//             className="p-2 rounded bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+//             disabled={!editor.can().undo()}
+//             title="Undo"
+//           >
+//             <Undo size={18} />
+//           </button>
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => editor.chain().focus().redo().run())}
+//             className="p-2 rounded bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+//             disabled={!editor.can().redo()}
+//             title="Redo"
+//           >
+//             <Redo size={18} />
+//           </button>
+//         </div>
+
+//         {/* Font Family */}
+//         <div className="flex items-center border-r pr-2 mr-2">
+//           <FontFamilySelector editor={editor} />
+//         </div>
+
+//         {/* Headings */}
+//         <div className="flex gap-1 border-r pr-2 mr-2">
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => applyHeading(1))}
+//             className={`p-2 rounded ${editor.isActive('heading', { level: 1 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//             title="Heading 1"
+//           >
+//             H1
+//           </button>
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => applyHeading(2))}
+//             className={`p-2 rounded ${editor.isActive('heading', { level: 2 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//             title="Heading 2"
+//           >
+//             H2
+//           </button>
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => applyHeading(3))}
+//             className={`p-2 rounded ${editor.isActive('heading', { level: 3 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//             title="Heading 3"
+//           >
+//             H3
+//           </button>
+//         </div>
+        
+//         {/* Text Style buttons */}
+//         <div className="flex gap-1 border-r pr-2 mr-2">
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => applyTextStyle('24px'))}
+//             className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+//             title="Large text"
+//           >
+//             T1
+//           </button>
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => applyTextStyle('20px'))}
+//             className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+//             title="Medium text"
+//           >
+//             T2
+//           </button>
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => applyTextStyle('16px'))}
+//             className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+//             title="Small text"
+//           >
+//             T3
+//           </button>
+//         </div>
+
+//         {/* Basic Formatting */}
+//         <div className="flex gap-1 border-r pr-2 mr-2">
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => editor.chain().focus().toggleBold().run())}
+//             className={`p-2 rounded ${editor.isActive('bold') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//             title="Bold"
+//           >
+//             <Bold size={18} />
+//           </button>
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => editor.chain().focus().toggleItalic().run())}
+//             className={`p-2 rounded ${editor.isActive('italic') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//             title="Italic"
+//           >
+//             <Italic size={18} />
+//           </button>
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => editor.chain().focus().toggleUnderline().run())}
+//             className={`p-2 rounded ${editor.isActive('underline') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//             title="Underline"
+//           >
+//             <UnderlineIcon size={18} />
+//           </button>
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => editor.chain().focus().toggleStrike().run())}
+//             className={`p-2 rounded ${editor.isActive('strike') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//             title="Strikethrough"
+//           >
+//             <Strikethrough size={18} />
+//           </button>
+//         </div>
+
+//         {/* Colors */}
+//         <div className="flex gap-1 border-r pr-2 mr-2 relative">
+//           <div className="relative">
+//             <button
+//               type="button"
+//               onMouseDown={(e) => {
+//                 e.preventDefault();
+//                 setShowTextColorPicker(!showTextColorPicker);
+//                 setShowHighlightPicker(false);
+//               }}
+//               className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+//               title="Text Color"
+//             >
+//               <Palette size={18} />
+//             </button>
+//             {showTextColorPicker && (
+//               <div className="absolute top-full left-0 mt-1 z-20">
+//                 <ColorPicker
+//                   onColorSelect={(color) => {
+//                     if (color) {
+//                       editor.chain().focus().setColor(color).run();
+//                     } else {
+//                       editor.chain().focus().unsetColor().run();
+//                     }
+//                     setShowTextColorPicker(false);
+//                   }}
+//                   type="text"
+//                 />
+//               </div>
+//             )}
+//           </div>
+//           <div className="relative">
+//             <button
+//               type="button"
+//               onMouseDown={(e) => {
+//                 e.preventDefault();
+//                 setShowHighlightPicker(!showHighlightPicker);
+//                 setShowTextColorPicker(false);
+//               }}
+//               className={`p-2 rounded ${editor.isActive('highlight') ? 'bg-yellow-400 text-black' : 'bg-gray-100 hover:bg-gray-200'}`}
+//               title="Highlight"
+//             >
+//               <Highlighter size={18} />
+//             </button>
+//             {showHighlightPicker && (
+//               <div className="absolute top-full left-0 mt-1 z-20">
+//                 <ColorPicker
+//                   onColorSelect={(color) => {
+//                     if (color) {
+//                       editor.chain().focus().toggleHighlight({ color }).run();
+//                     } else {
+//                       editor.chain().focus().unsetHighlight().run();
+//                     }
+//                     setShowHighlightPicker(false);
+//                   }}
+//                   type="highlight"
+//                 />
+//               </div>
+//             )}
+//           </div>
+//         </div>
+
+//         {/* Alignment */}
+//         <div className="flex gap-1 border-r pr-2 mr-2">
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('left').run())}
+//             className={`p-2 rounded ${editor.isActive({ textAlign: 'left' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//             title="Align Left"
+//           >
+//             <AlignLeft size={18} />
+//           </button>
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('center').run())}
+//             className={`p-2 rounded ${editor.isActive({ textAlign: 'center' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//             title="Align Center"
+//           >
+//             <AlignCenter size={18} />
+//           </button>
+//           <button
+//             type="button"
+//             onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('right').run())}
+//             className={`p-2 rounded ${editor.isActive({ textAlign: 'right' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//             title="Align Right"
+//           >
+//             <AlignRight size={18} />
+//           </button>
+//         </div>
+
+//         {/* Product & Link & Tools */}
+//         <div className="flex gap-1 border-r pr-2 mr-2">
+//           <button
+//             type="button"
+//             onMouseDown={(e) => {
+//               e.preventDefault();
+//               const url = window.prompt('Enter the URL:');
+//               if (url) {
+//                 editor.chain().focus().setLink({ href: url }).run();
+//               }
+//               editor.view.focus();
+//             }}
+//             className={`p-2 rounded ${editor.isActive('link') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//             title="Insert Link"
+//           >
+//             <Link2 size={18} />
+//           </button>
+//           <button
+//             type="button"
+//             onMouseDown={(e) => {
+//               e.preventDefault();
+//               setProductSearchType('inline');
+//               setShowProductSearch(true);
+//             }}             
+//             className="p-2 rounded text-white"
+//             style={{ backgroundColor: '#7cc6ee' }}
+//             onMouseEnter={(e) => {
+//               e.target.style.backgroundColor = '#1e2556';
+//             }}
+//             onMouseLeave={(e) => {
+//               e.target.style.backgroundColor = '#7cc6ee';
+//             }}
+//             title="Insert Inline Product"
+//           >
+//             <Package size={18} />
+//           </button>
+//           <button
+//             type="button"
+//             onMouseDown={(e) => {
+//               e.preventDefault();
+//               setProductSearchType('end');
+//               setShowProductSearch(true);
+//             }}
+//             className="px-3 py-2 rounded text-white flex items-center gap-1"
+//             style={{ backgroundColor: '#1e2556' }}
+//             onMouseEnter={(e) => {
+//               e.target.style.backgroundColor = '#7cc6ee';
+//             }}
+//             onMouseLeave={(e) => {
+//               e.target.style.backgroundColor = '#1e2556';
+//             }}
+//             title="Add Product CTA at End"
+//           >
+//             <Package size={14} />
+//             <span className="text-xs">End CTA</span>
+//           </button>
+//         </div>
+
+//         {/* Show/Hide Advanced Tools */}
 //         <button
 //           type="button"
-//           onMouseDown={handleMouseDown(() => applyHeading(1))}
-//           className={`p-2 rounded ${editor.isActive('heading', { level: 1 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-//           title="Heading 1 - Applies to entire paragraph"
+//           onClick={() => setShowAdvancedTools(!showAdvancedTools)}
+//           className="p-2 rounded bg-gray-100 hover:bg-gray-200 flex items-center gap-1"
+//           title={showAdvancedTools ? "Hide Advanced Tools" : "Show Advanced Tools"}
 //         >
-//           H1
-//         </button>
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => applyHeading(2))}
-//           className={`p-2 rounded ${editor.isActive('heading', { level: 2 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-//           title="Heading 2 - Applies to entire paragraph"
-//         >
-//           H2
-//         </button>
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => applyHeading(3))}
-//           className={`p-2 rounded ${editor.isActive('heading', { level: 3 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-//           title="Heading 3 - Applies to entire paragraph"
-//         >
-//           H3
-//         </button>
-//       </div>
-      
-//       {/* Text Style buttons that work on selections */}
-//       <div className="flex gap-1 border-r pr-2 mr-2">
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => applyTextStyle('24px'))}
-//           className="p-2 rounded bg-gray-100 hover:bg-gray-200"
-//           title="Large text - Applies to selected text only"
-//         >
-//           T1
-//         </button>
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => applyTextStyle('20px'))}
-//           className="p-2 rounded bg-gray-100 hover:bg-gray-200"
-//           title="Medium text - Applies to selected text only"
-//         >
-//           T2
-//         </button>
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => applyTextStyle('16px'))}
-//           className="p-2 rounded bg-gray-100 hover:bg-gray-200"
-//           title="Small text - Applies to selected text only"
-//         >
-//           T3
+//           <MoreHorizontal size={18} />
+//           <ChevronDown size={14} className={`transform transition-transform ${showAdvancedTools ? 'rotate-180' : ''}`} />
 //         </button>
 //       </div>
 
-//       <div className="flex gap-1 border-r pr-2 mr-2">
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => editor.chain().focus().toggleBold().run())}
-//           className={`p-2 rounded ${editor.isActive('bold') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-//           title="Bold"
-//         >
-//           <Bold size={18} />
-//         </button>
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => editor.chain().focus().toggleItalic().run())}
-//           className={`p-2 rounded ${editor.isActive('italic') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-//           title="Italic"
-//         >
-//           <Italic size={18} />
-//         </button>
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => editor.chain().focus().toggleUnderline().run())}
-//           className={`p-2 rounded ${editor.isActive('underline') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-//           title="Underline"
-//         >
-//           <UnderlineIcon size={18} />
-//         </button>
-//       </div>
+//       {/* Advanced Toolbar - Toggleable */}
+//       {showAdvancedTools && (
+//         <div className="flex flex-wrap gap-2 p-3 bg-gray-50 border-t">
+//           {/* Lists and Quote */}
+//           <div className="flex gap-1 border-r pr-2 mr-2">
+//             <button
+//               type="button"
+//               onMouseDown={handleMouseDown(() => editor.chain().focus().toggleBulletList().run())}
+//               className={`p-2 rounded ${editor.isActive('bulletList') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//               title="Bullet List"
+//             >
+//               <List size={18} />
+//             </button>
+//             <button
+//               type="button"
+//               onMouseDown={handleMouseDown(() => editor.chain().focus().toggleOrderedList().run())}
+//               className={`p-2 rounded ${editor.isActive('orderedList') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//               title="Numbered List"
+//             >
+//               <ListOrdered size={18} />
+//             </button>
+//             <button
+//               type="button"
+//               onMouseDown={handleMouseDown(() => editor.chain().focus().toggleTaskList().run())}
+//               className={`p-2 rounded ${editor.isActive('taskList') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//               title="Task List"
+//             >
+//               <CheckSquare size={18} />
+//             </button>
+//             <button
+//               type="button"
+//               onMouseDown={handleMouseDown(() => editor.chain().focus().toggleBlockquote().run())}
+//               className={`p-2 rounded ${editor.isActive('blockquote') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//               title="Quote"
+//             >
+//               <Quote size={18} />
+//             </button>
+//           </div>
 
-//       <div className="flex gap-1 border-r pr-2 mr-2">
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('left').run())}
-//           className={`p-2 rounded ${editor.isActive({ textAlign: 'left' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-//           title="Align Left"
-//         >
-//           <AlignLeft size={18} />
-//         </button>
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('center').run())}
-//           className={`p-2 rounded ${editor.isActive({ textAlign: 'center' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-//           title="Align Center"
-//         >
-//           <AlignCenter size={18} />
-//         </button>
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('right').run())}
-//           className={`p-2 rounded ${editor.isActive({ textAlign: 'right' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-//           title="Align Right"
-//         >
-//           <AlignRight size={18} />
-//         </button>
-//       </div>
+//           {/* Code and Scripts */}
+//           <div className="flex gap-1 border-r pr-2 mr-2">
+//             <button
+//               type="button"
+//               onMouseDown={handleMouseDown(() => editor.chain().focus().toggleCode().run())}
+//               className={`p-2 rounded ${editor.isActive('code') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//               title="Inline Code"
+//             >
+//               <CodeIcon size={18} />
+//             </button>
+//             <button
+//               type="button"
+//               onMouseDown={handleMouseDown(() => editor.chain().focus().toggleCodeBlock().run())}
+//               className={`p-2 rounded ${editor.isActive('codeBlock') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//               title="Code Block"
+//             >
+//               <div className="flex flex-col items-center">
+//                 <CodeIcon size={14} />
+//                 <div className="text-xs">{ }</div>
+//               </div>
+//             </button>
+//             <button
+//               type="button"
+//               onMouseDown={handleMouseDown(() => editor.chain().focus().toggleSubscript().run())}
+//               className={`p-2 rounded ${editor.isActive('subscript') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//               title="Subscript"
+//             >
+//               <SubIcon size={18} />
+//             </button>
+//             <button
+//               type="button"
+//               onMouseDown={handleMouseDown(() => editor.chain().focus().toggleSuperscript().run())}
+//               className={`p-2 rounded ${editor.isActive('superscript') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+//               title="Superscript"
+//             >
+//               <SupIcon size={18} />
+//             </button>
+//           </div>
 
-//       <div className="flex gap-1 border-r pr-2 mr-2">
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => editor.chain().focus().toggleBulletList().run())}
-//           className={`p-2 rounded ${editor.isActive('bulletList') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-//           title="Bullet List"
-//         >
-//           <List size={18} />
-//         </button>
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => editor.chain().focus().toggleOrderedList().run())}
-//           className={`p-2 rounded ${editor.isActive('orderedList') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-//           title="Numbered List"
-//         >
-//           <ListOrdered size={18} />
-//         </button>
-//       </div>
+//           {/* Utilities */}
+//           <div className="flex gap-1 border-r pr-2 mr-2">
+//             <button
+//               type="button"
+//               onMouseDown={handleMouseDown(() => editor.chain().focus().setHorizontalRule().run())}
+//               className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+//               title="Horizontal Rule"
+//             >
+//               <Minus size={18} />
+//             </button>
+//             <button
+//               type="button"
+//               onMouseDown={handleMouseDown(() => editor.chain().focus().clearNodes().unsetAllMarks().run())}
+//               className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+//               title="Clear Formatting"
+//             >
+//               <Eraser size={18} />
+//             </button>
+//           </div>
 
-//       <div className="flex gap-1">
-//         <button
-//           type="button"
-//           onMouseDown={(e) => {
-//             e.preventDefault();
-//             const url = window.prompt('Enter the URL:');
-//             if (url) {
-//               editor.chain().focus().setLink({ href: url }).run();
-//             }
-//             editor.view.focus();
+//           <div className="flex gap-1">
+//             <button
+//               type="button"
+//               onMouseDown={(e) => {
+//                 e.preventDefault();
+//                 if (onExtractToc) {
+//                   const headings = extractHeadings(editor);
+//                   onExtractToc(headings);
+//                 }
+//                 editor.view.focus();
+//               }}
+//               className="px-3 py-2 rounded text-white flex items-center gap-2"
+//               style={{ backgroundColor: '#1e2556' }}
+//               onMouseEnter={(e) => {
+//                 e.target.style.backgroundColor = '#7cc6ee';
+//               }}
+//               onMouseLeave={(e) => {
+//                 e.target.style.backgroundColor = '#1e2556';
+//               }}
+//               title="Update Table of Contents"
+//             >
+//               <RefreshCw size={16} />
+//               Update TOC
+//             </button>
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Click outside to close color pickers */}
+//       {(showTextColorPicker || showHighlightPicker) && (
+//         <div
+//           className="fixed inset-0 z-10"
+//           onClick={() => {
+//             setShowTextColorPicker(false);
+//             setShowHighlightPicker(false);
 //           }}
-//           className={`p-2 rounded ${editor.isActive('link') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-//           title="Insert Link"
-//         >
-//           <Link2 size={18} />
-//         </button>
-//         <button
-//           type="button"
-//           onMouseDown={(e) => {
-//             e.preventDefault();
-//             onImageAdd();
-//           }}
-//           className="p-2 rounded bg-gray-100 hover:bg-gray-200"
-//           title="Insert Image"
-//         >
-//           <ImageIcon size={18} />
-//         </button>
-//         <button
-//           type="button"
-//           onMouseDown={handleMouseDown(() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run())}
-//           className="p-2 rounded bg-gray-100 hover:bg-gray-200"
-//           title="Insert Table"
-//         >
-//           <TableIcon size={18} />
-//         </button>
-//         <button
-//           type="button"
-//           onMouseDown={(e) => {
-//             e.preventDefault();
-//             if (onExtractToc) {
-//               const headings = extractHeadings(editor);
-//               onExtractToc(headings);
-//             }
-//             editor.view.focus();
-//           }}
-//           className="ml-2 px-3 py-2 rounded bg-indigo-600 text-white flex items-center gap-2 hover:bg-indigo-700"
-//           title="Update Table of Contents"
-//         >
-//           <RefreshCw size={16} />
-//           Update TOC
-//         </button>
-//       </div>
+//         />
+//       )}
+
+//       {/* Product Search Modal */}
+//       {showProductSearch && (
+//         <ProductSearchModal
+//           onClose={() => setShowProductSearch(false)}
+//           onInsert={handleProductInsert}
+//           type={productSearchType}
+//         />
+//       )}
 //     </div>
 //   );
 // };
 
-// // Custom Image Extension with proper alignment and size support
-// const CustomImage = Image.extend({
-//   addAttributes() {
-//     return {
-//       ...this.parent?.(),
-//       width: {
-//         default: null,
-//         parseHTML: element => element.getAttribute('width'),
-//         renderHTML: attributes => {
-//           if (!attributes.width) {
-//             return {};
-//           }
-//           return {
-//             width: attributes.width,
-//           };
-//         },
-//       },
-//       height: {
-//         default: null,
-//         parseHTML: element => element.getAttribute('height'),
-//         renderHTML: attributes => {
-//           if (!attributes.height) {
-//             return {};
-//           }
-//           return {
-//             height: attributes.height,
-//           };
-//         },
-//       },
-//       alignment: {
-//         default: 'center',
-//         parseHTML: element => {
-//           const className = element.getAttribute('class') || '';
-//           if (className.includes('img-align-left')) return 'left';
-//           if (className.includes('img-align-center')) return 'center';
-//           if (className.includes('img-align-right')) return 'right';
-//           return 'center';
-//         },
-//         renderHTML: attributes => {
-//           return {
-//             class: `blog-image img-align-${attributes.alignment || 'center'}`,
-//           };
-//         },
-//       },
-//     };
-//   },
-// });
-
-// // CSS for editor styling
+// // Enhanced CSS for editor styling with brand colors
 // const customStyles = `
-// /* Fix for scroll jumping */
 // .ProseMirror {
 //   min-height: 400px;
 //   border-radius: 0.5rem;
 //   position: relative;
 //   padding: 1rem;
+//   color: #2d2d2d;
 // }
 
-// /* Editor toolbar tooltip */
 // .editor-toolbar {
 //   position: relative;
+//   background-color: #f5f7fa;
 // }
 
-// /* Custom tooltip animation */
 // @keyframes fadeInOut {
 //   0% { opacity: 0; }
 //   20% { opacity: 1; }
@@ -683,60 +1032,9 @@
 // .ProseMirror p.is-editor-empty:first-child::before {
 //   content: attr(data-placeholder);
 //   float: left;
-//   color: #adb5bd;
+//   color: #334155;
 //   pointer-events: none;
 //   height: 0;
-// }
-
-// .ProseMirror img {
-//   max-width: 100%;
-//   height: auto;
-//   border-radius: 0.375rem;
-//   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-// }
-
-// /* Image alignment classes */
-// .ProseMirror img.img-align-left {
-//   float: left;
-//   margin-right: 1rem;
-//   margin-bottom: 0.5rem;
-//   clear: left;
-// }
-
-// .ProseMirror img.img-align-center {
-//   display: block !important;
-//   margin-left: auto !important;
-//   margin-right: auto !important;
-//   float: none !important;
-//   clear: both !important;
-// }
-
-// .ProseMirror img.img-align-right {
-//   float: right;
-//   margin-left: 1rem;
-//   margin-bottom: 0.5rem;
-//   clear: right;
-// }
-
-// .ProseMirror table {
-//   border-collapse: collapse;
-//   table-layout: fixed;
-//   width: 100%;
-//   margin: 1rem 0;
-//   overflow: hidden;
-// }
-
-// .ProseMirror table td,
-// .ProseMirror table th {
-//   border: 2px solid #ced4da;
-//   padding: 0.5rem;
-//   position: relative;
-//   vertical-align: top;
-// }
-
-// .ProseMirror table th {
-//   background-color: #f8f9fa;
-//   font-weight: bold;
 // }
 
 // .ProseMirror ul,
@@ -746,44 +1044,335 @@
 
 // .ProseMirror ul li {
 //   list-style-type: disc;
+//   color: #2d2d2d;
 // }
 
 // .ProseMirror ol li {
 //   list-style-type: decimal;
+//   color: #2d2d2d;
+// }
+
+// .ProseMirror ul[data-type="taskList"] {
+//   list-style: none;
+//   padding-left: 0;
+// }
+
+// .ProseMirror ul[data-type="taskList"] li {
+//   display: flex;
+//   align-items: flex-start;
+//   color: #2d2d2d;
+// }
+
+// .ProseMirror ul[data-type="taskList"] li > label {
+//   margin-right: 0.5rem;
+//   user-select: none;
+// }
+
+// .ProseMirror ul[data-type="taskList"] li > div {
+//   flex: 1;
+// }
+
+// .ProseMirror blockquote {
+//   padding-left: 1rem;
+//   border-left: 4px solid #7cc6ee;
+//   margin: 1.5rem 0;
+//   font-style: italic;
+//   color: #334155;
+//   background-color: #f5f7fa;
+//   padding: 1rem;
+//   border-radius: 0.5rem;
 // }
 
 // .ProseMirror h1 {
 //   font-size: 2rem;
 //   margin-top: 1rem;
 //   margin-bottom: 0.5rem;
+//   color: #1e2556;
+//   font-weight: bold;
 // }
 
 // .ProseMirror h2 {
 //   font-size: 1.5rem;
 //   margin-top: 1rem;
 //   margin-bottom: 0.5rem;
+//   color: #1e2556;
+//   font-weight: bold;
 // }
 
 // .ProseMirror h3 {
 //   font-size: 1.25rem;
 //   margin-top: 1rem;
 //   margin-bottom: 0.5rem;
+//   color: #1e2556;
+//   font-weight: bold;
+// }
+
+// .ProseMirror h4,
+// .ProseMirror h5,
+// .ProseMirror h6 {
+//   color: #334155;
+//   font-weight: bold;
 // }
 
 // .ProseMirror p {
 //   margin-bottom: 0.75rem;
+//   color: #2d2d2d;
 // }
 
-// .ProseMirror .selectedCell:after {
-//   background: rgba(200, 200, 255, 0.4);
-//   content: "";
-//   left: 0;
-//   right: 0;
-//   top: 0;
-//   bottom: 0;
-//   pointer-events: none;
-//   position: absolute;
-//   z-index: 2;
+// .ProseMirror a {
+//   color: #7cc6ee;
+//   text-decoration: underline;
+//   transition: color 0.2s ease;
+// }
+
+// .ProseMirror a:hover {
+//   color: #1e2556;
+// }
+
+// .ProseMirror code {
+//   background-color: #f5f7fa;
+//   color: #1e2556;
+//   padding: 0.25rem 0.375rem;
+//   border-radius: 0.25rem;
+//   font-size: 0.875em;
+//   font-family: 'Courier New', monospace;
+//   border: 1px solid #7cc6ee;
+// }
+
+// .ProseMirror pre {
+//   background: #1e2556;
+//   color: #ffffff;
+//   font-family: 'Courier New', monospace;
+//   padding: 1rem;
+//   border-radius: 0.5rem;
+//   overflow-x: auto;
+//   margin: 1rem 0;
+//   border: 2px solid #7cc6ee;
+// }
+
+// .ProseMirror pre code {
+//   background: none;
+//   color: inherit;
+//   padding: 0;
+//   border-radius: 0;
+//   font-size: inherit;
+//   border: none;
+// }
+
+// .ProseMirror hr {
+//   margin: 2rem 0;
+//   border: none;
+//   border-top: 2px solid #7cc6ee;
+// }
+
+// .ProseMirror mark {
+//   background-color: #7cc6ee;
+//   color: #1e2556;
+//   padding: 0.125rem 0.25rem;
+//   border-radius: 0.25rem;
+// }
+
+// /* Toolbar button styling with brand colors */
+// .editor-toolbar button {
+//   transition: all 0.2s ease;
+// }
+
+// .editor-toolbar button:hover {
+//   background-color: #7cc6ee !important;
+//   color: white !important;
+// }
+
+// .editor-toolbar button.bg-blue-600 {
+//   background-color: #1e2556 !important;
+//   color: white !important;
+// }
+
+// .editor-toolbar button.bg-indigo-600 {
+//   background-color: #1e2556 !important;
+//   color: white !important;
+// }
+
+// .editor-toolbar button.bg-indigo-600:hover {
+//   background-color: #7cc6ee !important;
+// }
+
+// .editor-toolbar select {
+//   border-color: #7cc6ee;
+//   color: #2d2d2d;
+// }
+
+// .editor-toolbar select:focus {
+//   border-color: #1e2556;
+//   box-shadow: 0 0 0 2px rgba(30, 37, 86, 0.1);
+// }
+
+// /* Product Widget Styling */
+// .product-widget {
+//   cursor: pointer;
+//   transition: all 0.3s ease;
+//   position: relative;
+//   overflow: hidden;
+// }
+
+// .product-widget:hover {
+//   transform: translateY(-1px);
+// }
+
+// /* Inline Product Widget - Truly Inline */
+// .product-widget-inline {
+//   display: inline-flex;
+//   align-items: center;
+//   gap: 0.375rem;
+//   margin: 0 0.25rem;
+//   padding: 0.25rem 0.5rem;
+//   border-radius: 1rem;
+//   border: 1px solid #7cc6ee;
+//   background-color: #f5f7fa;
+//   vertical-align: middle;
+//   white-space: nowrap;
+//   max-width: 180px;
+//   line-height: 1;
+//   height: 1.5rem;
+// }
+
+// .product-widget-inline:hover {
+//   border-color: #1e2556;
+//   box-shadow: 0 1px 4px rgba(30, 37, 86, 0.15);
+// }
+
+// .product-widget-inline-logo {
+//   width: 1.25rem;
+//   height: 1.25rem;
+//   object-fit: contain;
+//   border-radius: 0.25rem;
+//   background-color: white;
+//   padding: 0.125rem;
+//   flex-shrink: 0;
+// }
+
+// .product-widget-inline-name {
+//   font-size: 0.8rem;
+//   font-weight: 600;
+//   color: #1e2556;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   flex: 1;
+//   min-width: 0;
+// }
+
+// .product-widget-inline-action {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 1rem;
+//   height: 1rem;
+//   background-color: #1e2556;
+//   color: white;
+//   border-radius: 50%;
+//   transition: all 0.3s ease;
+//   flex-shrink: 0;
+// }
+
+// .product-widget-inline:hover .product-widget-inline-action {
+//   background-color: #7cc6ee;
+//   transform: scale(1.1);
+// }
+
+// /* End Product Widget - Compact Left-Aligned */
+// .product-widget-end {
+//   display: inline-block;
+//   margin: 1rem 0;
+//   padding: 0.75rem 1rem;
+//   border-radius: 0.5rem;
+//   border: 2px solid #7cc6ee;
+//   background-color: #f5f7fa;
+//   max-width: 280px;
+//   width: auto;
+//   vertical-align: top;
+// }
+
+// .product-widget-end:hover {
+//   border-color: #1e2556;
+//   background-color: #ffffff;
+//   box-shadow: 0 4px 12px rgba(30, 37, 86, 0.15);
+// }
+
+// .product-widget-end-content {
+//   display: flex;
+//   align-items: center;
+//   gap: 0.75rem;
+//   position: relative;
+// }
+
+// .product-widget-end-logo {
+//   width: 2.5rem;
+//   height: 2.5rem;
+//   object-fit: contain;
+//   border-radius: 0.375rem;
+//   background-color: white;
+//   padding: 0.25rem;
+//   border: 1px solid #7cc6ee;
+//   flex-shrink: 0;
+// }
+
+// .product-widget-end-info {
+//   flex: 1;
+//   min-width: 0;
+// }
+
+// .product-widget-end-name {
+//   font-size: 0.9rem;
+//   font-weight: 700;
+//   color: #1e2556;
+//   margin: 0 0 0.125rem 0;
+//   line-height: 1.3;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+// }
+
+// .product-widget-end-company {
+//   font-size: 0.75rem;
+//   color: #334155;
+//   margin: 0;
+//   line-height: 1.3;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+// }
+
+// .product-widget-end-action {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 1.75rem;
+//   height: 1.75rem;
+//   background-color: #1e2556;
+//   color: white;
+//   border-radius: 50%;
+//   transition: all 0.3s ease;
+//   flex-shrink: 0;
+// }
+
+// .product-widget-end:hover .product-widget-end-action {
+//   background-color: #7cc6ee;
+//   transform: scale(1.1);
+// }
+
+// /* Responsive adjustments */
+// @media (max-width: 640px) {
+//   .product-widget-inline-name {
+//     font-size: 0.75rem;
+//   }
+  
+//   .product-widget-end {
+//     max-width: 240px;
+//   }
+  
+//   .product-widget-end-name {
+//     font-size: 0.85rem;
+//   }
 // }
 // `;
 
@@ -793,66 +1382,28 @@
 //   onTocUpdate,
 //   isSaving = false
 // }) => {
-//   const [content, setContent] = useState('');
-//   const [showImageModal, setShowImageModal] = useState(false);
 //   const editorRef = useRef(null);
-//   const editorWrapperRef = useRef(null);
-
-//   // Add function to add heading IDs
-//   const addHeadingIds = (editor) => {
-//     if (!editor) return;
-
-//     // Wait for the editor to be ready
-//     setTimeout(() => {
-//       const editorElement = document.querySelector('.ProseMirror');
-//       if (!editorElement) return;
-
-//       // Find all heading elements in the editor
-//       const headings = editorElement.querySelectorAll('h1, h2, h3');
-
-//       // Apply IDs to each heading based on its content
-//       headings.forEach(heading => {
-//         if (!heading.id) {
-//           const text = heading.textContent || 'heading';
-//           const id = text.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
-//           heading.id = id;
-//         }
-//       });
-//     }, 100);
-//   };
 
 //   // Initialize editor with all required extensions
 //   const editor = useEditor({
 //     extensions: [
 //       StarterKit.configure({
-//         // Configure history for better paste handling
 //         history: {
 //           depth: 100,
 //           newGroupDelay: 500
 //         },
-//         // Configure heading to be more intelligent with selections
 //         heading: {
 //           levels: [1, 2, 3]
-//         }
+//         },
+//         code: false, // We'll use our custom code extension
+//         codeBlock: false, // We'll use code block lowlight
+//         strike: false, // We'll use the dedicated Strike extension
+//         blockquote: false // We'll use the dedicated Blockquote extension
 //       }),
 //       Placeholder.configure({
 //         placeholder: 'Start writing your blog here...',
 //         emptyEditorClass: 'is-editor-empty',
 //       }),
-//       // Use the CustomImage extension instead of the standard Image
-//       CustomImage.configure({
-//         inline: false,
-//         HTMLAttributes: {
-//           class: 'blog-image',
-//         },
-//       }),
-//       Table.configure({
-//         resizable: true,
-//       }),
-//       TableRow,
-//       TableHeader,
-//       TableCell,
-//       // Custom heading configuration to work better with text selections
 //       Heading.configure({
 //         levels: [1, 2, 3],
 //       }),
@@ -860,26 +1411,56 @@
 //         openOnClick: false,
 //         HTMLAttributes: {
 //           class: 'text-blue-600 underline',
+//           style: 'color: #7cc6ee;',
 //         },
 //       }),
 //       FontSize,
+//       FontFamily.configure({
+//         types: ['textStyle'],
+//       }),
 //       TextStyle,
 //       Color,
 //       Underline,
+//       Strike,
+//       Code.configure({
+//         HTMLAttributes: {
+//           class: 'inline-code',
+//         },
+//       }),
+//       CodeBlockLowlight.configure({
+//         lowlight,
+//         HTMLAttributes: {
+//           class: 'code-block',
+//         },
+//       }),
+//       Highlight.configure({
+//         multicolor: true,
+//       }),
+//       Subscript,
+//       Superscript,
 //       TextAlign.configure({
 //         types: ['heading', 'paragraph', 'image'],
 //       }),
+//       Blockquote.configure({
+//         HTMLAttributes: {
+//           class: 'quote-block',
+//         },
+//       }),
+//       TaskList,
+//       TaskItem.configure({
+//         nested: true,
+//       }),
+//       HorizontalRule,
 //       Dropcursor,
 //       Typography,
 //       CharacterCount.configure({
-//         limit: 50000, // Optional: set a character limit
+//         limit: 50000,
 //       }),
+//       ProductWidget,
 //     ],
 //     content: initialContent,
 //     onUpdate: ({ editor }) => {
-//       setContent(editor.getHTML());
-      
-//       // Extract headings on each update
+//       // FIXED: Extract and update TOC on every content change
 //       if (onTocUpdate) {
 //         const headings = extractHeadings(editor);
 //         onTocUpdate(headings);
@@ -900,99 +1481,47 @@
 //     }
 //   }, [editor]);
 
-//   // Extract TOC when editor is initialized
+//   // FIXED: Update editor content when initialContent changes
+//   useEffect(() => {
+//     if (editor && initialContent && editor.getHTML() !== initialContent) {
+//       editor.commands.setContent(initialContent);
+//     }
+//   }, [editor, initialContent]);
+
+//   // FIXED: Extract TOC when editor is initialized
 //   useEffect(() => {
 //     if (editor && onTocUpdate) {
-//       const headings = extractHeadings(editor);
-//       onTocUpdate(headings);
+//       // Small delay to ensure editor is fully ready
+//       setTimeout(() => {
+//         const headings = extractHeadings(editor);
+//         onTocUpdate(headings);
+//       }, 100);
 //     }
 //   }, [editor, onTocUpdate]);
 
-//   // Apply heading IDs when editor updates
-//   useEffect(() => {
-//     if (editor) {
-//       editor.on('update', () => {
-//         addHeadingIds(editor);
-//       });
-
-//       // Also apply when editor is ready
-//       addHeadingIds(editor);
-//     }
-
-//     return () => {
-//       if (editor) {
-//         editor.off('update');
-//       }
-//     };
-//   }, [editor]);
-
-//   // Set up MutationObserver to track content changes
-//   useEffect(() => {
-//     if (!editor) return;
-
-//     // Set up a MutationObserver to detect changes to the editor content
-//     const editorElement = document.querySelector('.ProseMirror');
-//     if (!editorElement) return;
-
-//     // Store the editor DOM element reference
-//     editorWrapperRef.current = editorElement;
-
-//     const observer = new MutationObserver(() => {
-//       // When content changes, reapply heading IDs
-//       addHeadingIds(editor);
-//     });
-
-//     observer.observe(editorElement, {
-//       childList: true,
-//       subtree: true,
-//       characterData: true
-//     });
-
-//     return () => {
-//       observer.disconnect();
-//     };
-//   }, [editor]);
-
-//   // Handle image insertion with proper attributes
-//   const handleImageInsert = useCallback((url, width, height, alignment) => {
-//     if (!editor || !url) return;
-
-//     // Insert the image with explicit attributes
-//     editor.chain().focus().setImage({
-//       src: url,
-//       alt: 'Blog image',
-//       width: width,
-//       height: height,
-//       alignment: alignment
-//     }).run();
-
-//     setShowImageModal(false);
-//   }, [editor]);
-
-//   function addIdsToHeadingsWithRegex(htmlContent) {
-//     const headingRegex = /<(h[1-6])>(.*?)<\/\1>/gi;
-//     return htmlContent.replace(headingRegex, (match, tag, content) => {
-//       const textContent = content.replace(/<\/?[^>]+(>|$)/g, '').trim();
-//       const slug = textContent
-//         // .toLowerCase()
-//         .replace(/[^\w\s-]/g, '')
-//         .replace(/\s+/g, '-')
-//         .replace(/-+/g, '-');
-//       if (slug) {
-//         return `<${tag} id="${slug}">${content}</${tag}>`;
-//       }
-//       return match;
-//     });
-//   }
-
-//   // Save content and TOC
+//   // FIXED: Save content and TOC
 //   const handleSave = useCallback(() => {
 //     if (onSave && editor) {
+//       console.log('=== TIPTAP SAVE DEBUG ===');
+      
+//       // Get fresh content directly from editor
+//       const freshContent = editor.getHTML();
+//       console.log('Fresh content from editor:', freshContent);
+//       console.log('Content length:', freshContent?.length);
+      
+//       // Extract current headings
 //       const headings = extractHeadings(editor);
-//       const updatedContent = addIdsToHeadingsWithRegex(content);
-//       onSave(updatedContent, headings);
+//       console.log('Extracted headings:', headings);
+      
+//       // Add IDs to headings in the HTML
+//       const contentWithIds = addIdsToHeadingsInHTML(freshContent);
+//       console.log('Content with IDs:', contentWithIds);
+//       console.log('========================');
+      
+//       // Call parent save function with fresh content
+//       onSave(contentWithIds, headings);
 //     }
-//   }, [content, editor, onSave]);
+//   }, [editor, onSave]);
 
 //   if (!editor) {
 //     return <div className="border rounded-lg shadow-md p-4">Loading editor...</div>;
@@ -1004,7 +1533,6 @@
 
 //       <EditorToolbar
 //         editor={editor}
-//         onImageAdd={() => setShowImageModal(true)}
 //         onExtractToc={(headings) => {
 //           if (onTocUpdate) {
 //             onTocUpdate(headings);
@@ -1016,17 +1544,32 @@
 //         <EditorContent editor={editor} />
 //       </div>
 
-//       <div className="flex justify-between p-4 bg-gray-50 border-t">
-//         <div className="text-gray-500 text-sm">
+//       <div className="flex justify-between p-4 bg-gray-50 border-t" style={{ backgroundColor: '#f5f7fa' }}>
+//         <div className="text-sm" style={{ color: '#334155' }}>
 //           {editor.storage.characterCount ? `${editor.storage.characterCount.characters()} characters` : '0 characters'}
 //         </div>
 //         <button
 //           type="button"
 //           onClick={handleSave}
 //           className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition shadow-md flex items-center gap-2"
+//           style={{ 
+//             backgroundColor: '#1e2556',
+//             backgroundImage: 'none'
+//           }}
+//           onMouseEnter={(e) => {
+//             e.target.style.backgroundColor = '#7cc6ee';
+//           }}
+//           onMouseLeave={(e) => {
+//             e.target.style.backgroundColor = '#1e2556';
+//           }}
 //           disabled={isSaving}
 //         >
-//           {isSaving ? 'Saving...' : (
+//           {isSaving ? (
+//             <>
+//               <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-1"></div>
+//               Saving...
+//             </>
+//           ) : (
 //             <>
 //               <Save size={16} />
 //               Save Blog
@@ -1034,13 +1577,6 @@
 //           )}
 //         </button>
 //       </div>
-
-//       {showImageModal && (
-//         <ImageModal
-//           onClose={() => setShowImageModal(false)}
-//           onInsert={handleImageInsert}
-//         />
-//       )}
 //     </div>
 //   );
 // };
@@ -1051,13 +1587,9 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import FontSize from '@tiptap/extension-font-size';
 import { useEditor, EditorContent } from '@tiptap/react';
+import { Node } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
-import Table from '@tiptap/extension-table';
-import TableRow from '@tiptap/extension-table-row';
-import TableCell from '@tiptap/extension-table-cell';
-import TableHeader from '@tiptap/extension-table-header';
 import Heading from '@tiptap/extension-heading';
 import Link from '@tiptap/extension-link';
 import TextStyle from '@tiptap/extension-text-style';
@@ -1067,134 +1599,87 @@ import TextAlign from '@tiptap/extension-text-align';
 import Dropcursor from '@tiptap/extension-dropcursor';
 import Typography from '@tiptap/extension-typography';
 import CharacterCount from '@tiptap/extension-character-count';
+import Highlight from '@tiptap/extension-highlight';
+import Subscript from '@tiptap/extension-subscript';
+import Superscript from '@tiptap/extension-superscript';
+import Strike from '@tiptap/extension-strike';
+import Code from '@tiptap/extension-code';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { lowlight } from 'lowlight/lib/core';
+import js from 'highlight.js/lib/languages/javascript';
+import ts from 'highlight.js/lib/languages/typescript';
+import html from 'highlight.js/lib/languages/xml';
+import css from 'highlight.js/lib/languages/css';
+import python from 'highlight.js/lib/languages/python';
+import java from 'highlight.js/lib/languages/java';
+import json from 'highlight.js/lib/languages/json';
+import HorizontalRule from '@tiptap/extension-horizontal-rule';
+import TaskList from '@tiptap/extension-task-list';
+import TaskItem from '@tiptap/extension-task-item';
+import Blockquote from '@tiptap/extension-blockquote';
+import FontFamily from '@tiptap/extension-font-family';
 import {
   Bold, Italic, Underline as UnderlineIcon, AlignLeft, AlignCenter, AlignRight,
-  Link2, Image as ImageIcon, Table as TableIcon, List, ListOrdered, RefreshCw, Save,
-  Upload, X, AlertTriangle
+  Link2, List, ListOrdered, RefreshCw, Save,
+  X, Quote, Code as CodeIcon, Strikethrough, 
+  Subscript as SubIcon, Superscript as SupIcon, Palette, Highlighter,
+  Minus, CheckSquare, Undo, Redo, Eraser, MoreHorizontal, ChevronDown,
+  Search, Package, ExternalLink
 } from 'lucide-react';
 
-// Enhanced Image Modal with S3 upload capability
-const ImageModal = ({ onClose, onInsert }) => {
-  const fileInputRef = useRef(null);
-  const [imageUrl, setImageUrl] = useState('');
-  const [width, setWidth] = useState('100%');
-  const [height, setHeight] = useState('auto');
-  const [alignment, setAlignment] = useState('center');
-  const [isValidUrl, setIsValidUrl] = useState(false);
-  const [isImageLoading, setIsImageLoading] = useState(false);
+// Register languages for syntax highlighting
+lowlight.registerLanguage('javascript', js);
+lowlight.registerLanguage('typescript', ts);
+lowlight.registerLanguage('html', html);
+lowlight.registerLanguage('css', css);
+lowlight.registerLanguage('python', python);
+lowlight.registerLanguage('java', java);
+lowlight.registerLanguage('json', json);
 
-  // S3 Upload States
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploadError, setUploadError] = useState('');
+// Product Search Modal Component
+const ProductSearchModal = ({ onClose, onInsert, type = 'inline' }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
-  // Check if URL is valid
-  const checkImageUrl = (url) => {
-    if (!url) {
-      setIsValidUrl(false);
+  // Debounced search function
+  const searchProducts = useCallback(async (query) => {
+    if (!query || query.trim().length < 2) {
+      setProducts([]);
       return;
     }
 
-    setIsImageLoading(true);
-
-    // Use the browser's built-in Image constructor
-    const imgElement = new window.Image();
-    imgElement.onload = () => {
-      setIsValidUrl(true);
-      setIsImageLoading(false);
-    };
-    imgElement.onerror = () => {
-      setIsValidUrl(false);
-      setIsImageLoading(false);
-    };
-    imgElement.src = url;
-  };
-
-  // Handle URL change
-  const handleUrlChange = (e) => {
-    const url = e.target.value;
-    setImageUrl(url);
-    checkImageUrl(url);
-  };
-
-  // Handle file upload to S3
-  const handleFileUpload = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Validate file type
-    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    if (!validTypes.includes(file.type)) {
-      setUploadError('Please upload a valid image file (JPEG, PNG, GIF, WEBP)');
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setUploadError('Image size should be less than 5MB');
-      return;
-    }
-
-    setIsUploading(true);
-    setUploadProgress(0);
-    setUploadError('');
-
+    setIsLoading(true);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      // Setup XHR for progress tracking
-      const xhr = new XMLHttpRequest();
-
-      // Track upload progress
-      xhr.upload.addEventListener('progress', (event) => {
-        if (event.lengthComputable) {
-          const percentComplete = Math.round((event.loaded / event.total) * 100);
-          setUploadProgress(percentComplete);
-        }
-      });
-
-      // Handle response
-      xhr.onload = () => {
-        if (xhr.status === 200) {
-          try {
-            const response = JSON.parse(xhr.responseText);
-            setImageUrl(response.url);
-            setIsValidUrl(true);
-            setIsUploading(false);
-          } catch (error) {
-            setUploadError('Error parsing server response');
-            setIsUploading(false);
-          }
-        } else {
-          setUploadError('Failed to upload image');
-          setIsUploading(false);
-        }
-      };
-
-      // Handle errors
-      xhr.onerror = () => {
-        setUploadError('Network error occurred during upload');
-        setIsUploading(false);
-      };
-
-      // Send the upload request
-      xhr.open('POST', '/api/blogs/upload');
-      xhr.send(formData);
-
-    } catch (err) {
-      setUploadError(err.message || 'An unexpected error occurred during upload');
-      setIsUploading(false);
+      const response = await fetch(`/api/products/search?q=${encodeURIComponent(query)}`);
+      const data = await response.json();
+      setProducts(data.products || []);
+    } catch (error) {
+      console.error('Product search error:', error);
+      setProducts([]);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, []);
 
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
+  // Debounce search queries
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      searchProducts(searchQuery);
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery, searchProducts]);
+
+  const handleProductSelect = (product) => {
+    setSelectedProduct(product);
   };
 
   const handleInsert = () => {
-    if (imageUrl && isValidUrl) {
-      onInsert(imageUrl, width, height, alignment);
+    if (selectedProduct) {
+      onInsert(selectedProduct, type);
+      onClose();
     }
   };
 
@@ -1204,151 +1689,487 @@ const ImageModal = ({ onClose, onInsert }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white p-6 rounded-lg w-full max-w-xl"
+        className="bg-white p-6 rounded-lg w-full max-w-2xl max-h-[80vh] overflow-hidden"
         onClick={e => e.stopPropagation()}
+        style={{ backgroundColor: '#f5f7fa' }}
       >
-        <h3 className="text-xl font-bold mb-4 text-gray-800">Insert Image</h3>
-
-        {/* S3 Image Upload */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 text-gray-700">Upload Image</label>
-
-          <div
-            onClick={triggerFileInput}
-            className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition bg-gray-50"
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-bold" style={{ color: '#1e2556' }}>
+            {type === 'inline' ? 'Insert Product Reference' : 'Add Product at End'}
+          </h3>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-200 rounded-full transition"
           >
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileUpload}
-              accept="image/jpeg,image/png,image/gif,image/webp"
-              className="hidden"
-            />
+            <X size={20} />
+          </button>
+        </div>
 
-            {isUploading ? (
-              <div className="w-full px-8">
-                <div className="text-center mb-2">
-                  <p className="text-gray-600">Uploading... {uploadProgress}%</p>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div
-                    className="bg-blue-600 h-2.5 rounded-full"
-                    style={{ width: `${uploadProgress}%` }}
-                  ></div>
-                </div>
-              </div>
-            ) : (
-              <>
-                <Upload className="h-8 w-8 text-gray-400 mb-2" />
-                <p className="text-gray-600 font-medium">Click to upload image</p>
-                <p className="text-gray-500 text-sm">JPG, PNG, GIF or WEBP (max. 5MB)</p>
-              </>
-            )}
+        {/* Search Input */}
+        <div className="relative mb-4">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search size={20} style={{ color: '#334155' }} />
           </div>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition"
+            style={{ 
+              borderColor: '#7cc6ee',
+              color: '#2d2d2d'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#1e2556';
+              e.target.style.boxShadow = '0 0 0 2px rgba(30, 37, 86, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#7cc6ee';
+              e.target.style.boxShadow = 'none';
+            }}
+            placeholder="Search for legal software products..."
+            autoFocus
+          />
+        </div>
 
-          {uploadError && (
-            <div className="mt-2 p-2 bg-red-50 text-red-600 rounded text-sm">
-              <div className="flex items-start">
-                <AlertTriangle className="w-4 h-4 mr-1 mt-0.5 flex-shrink-0" />
-                <span>{uploadError}</span>
-              </div>
+        {/* Search Results */}
+        <div className="max-h-64 overflow-y-auto mb-4">
+          {isLoading && (
+            <div className="text-center py-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 mx-auto" style={{ borderColor: '#1e2556' }}></div>
+              <p className="mt-2" style={{ color: '#334155' }}>Searching products...</p>
+            </div>
+          )}
+
+          {!isLoading && searchQuery.length >= 2 && products.length === 0 && (
+            <div className="text-center py-4">
+              <Package size={48} className="mx-auto mb-2" style={{ color: '#334155' }} />
+              <p style={{ color: '#334155' }}>No products found for "{searchQuery}"</p>
+            </div>
+          )}
+
+          {!isLoading && products.length > 0 && (
+            <div className="space-y-2">
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  onClick={() => handleProductSelect(product)}
+                  className={`p-3 rounded-lg cursor-pointer transition flex items-center space-x-3 ${
+                    selectedProduct?.id === product.id 
+                      ? 'bg-white border-2' 
+                      : 'bg-white border border-gray-200 hover:shadow-md'
+                  }`}
+                  style={{
+                    borderColor: selectedProduct?.id === product.id ? '#1e2556' : '#e5e7eb'
+                  }}
+                >
+                  <img
+                    src={product.logoUrl || '/default-product-logo.png'}
+                    alt={product.productName}
+                    className="w-12 h-12 object-contain rounded"
+                    onError={(e) => {
+                      e.target.src = '/default-product-logo.png';
+                    }}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold truncate" style={{ color: '#1e2556' }}>
+                      {product.productName}
+                    </h4>
+                    <p className="text-sm truncate" style={{ color: '#334155' }}>
+                      {product.companyName}
+                    </p>
+                    <p className="text-xs" style={{ color: '#334155' }}>
+                      {product.category}
+                    </p>
+                  </div>
+                  {selectedProduct?.id === product.id && (
+                    <div 
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-white"
+                      style={{ backgroundColor: '#1e2556' }}
+                    >
+                      ✓
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           )}
         </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 text-gray-700">Or Enter Image URL</label>
-          <input
-            type="url"
-            value={imageUrl}
-            onChange={handleUrlChange}
-            className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="https://example.com/image.jpg"
-          />
-        </div>
-
-        {/* Image Preview */}
-        {imageUrl && (
-          <div className="mb-4 relative">
-            {isImageLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-80 rounded">
-                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-              </div>
-            )}
-
-            {isValidUrl ? (
-              <div className={`relative p-3 bg-gray-50 rounded border ${alignment === 'center' ? 'text-center' : alignment === 'right' ? 'text-right' : 'text-left'}`}>
-                <img
-                  src={imageUrl}
-                  alt="Preview"
-                  className={`img-align-${alignment} rounded max-h-40 border`}
-                  style={{
-                    width: width !== '100%' ? width : null,
-                    height: height !== 'auto' ? height : null,
-                    maxWidth: '100%',
-                    objectFit: 'contain'
-                  }}
-                />
-              </div>
-            ) : !isImageLoading && (
-              <div className="p-3 bg-red-50 text-red-700 rounded border border-red-200">
-                Unable to load image. Please check the URL.
-              </div>
-            )}
-          </div>
-        )}
-
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div>
-            <label className="block text-sm font-medium mb-1 text-gray-700">Width</label>
-            <select
-              value={width}
-              onChange={e => setWidth(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="100%">Full width</option>
-              <option value="300px">Small (300px)</option>
-              <option value="500px">Medium (500px)</option>
-              <option value="700px">Large (700px)</option>
-              <option value="200px">Extra Small (200px)</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1 text-gray-700">Height</label>
-            <select
-              value={height}
-              onChange={e => setHeight(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="auto">Auto</option>
-              <option value="200px">Small (200px)</option>
-              <option value="300px">Medium (300px)</option>
-              <option value="400px">Large (400px)</option>
-              <option value="500px">Extra Large (500px)</option>
-            </select>
-          </div>
-        </div>
-
+        {/* Action Buttons */}
         <div className="flex justify-end gap-3">
           <button
-            type="button"
             onClick={onClose}
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+            className="px-4 py-2 border rounded-lg hover:bg-gray-100 transition"
+            style={{ borderColor: '#7cc6ee', color: '#2d2d2d' }}
           >
             Cancel
           </button>
           <button
-            type="button"
             onClick={handleInsert}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-            disabled={!imageUrl || !isValidUrl}
+            disabled={!selectedProduct}
+            className="px-4 py-2 rounded-lg transition text-white flex items-center gap-2 disabled:opacity-50"
+            style={{ backgroundColor: selectedProduct ? '#1e2556' : '#334155' }}
+            onMouseEnter={(e) => {
+              if (selectedProduct) e.target.style.backgroundColor = '#7cc6ee';
+            }}
+            onMouseLeave={(e) => {
+              if (selectedProduct) e.target.style.backgroundColor = '#1e2556';
+            }}
           >
-            Insert Image
+            <Package size={16} />
+            Insert Product
           </button>
         </div>
       </div>
     </div>
+  );
+};
+
+// Custom Product Extension for TipTap
+const ProductWidget = Node.create({
+  name: 'productWidget',
+
+  group: 'inline',
+
+  content: '',
+
+  inline: true,
+
+  atom: true,
+
+  addAttributes() {
+    return {
+      productId: {
+        default: null,
+      },
+      productName: {
+        default: '',
+      },
+      companyName: {
+        default: '',
+      },
+      logoUrl: {
+        default: '',
+      },
+      slug: {
+        default: '',
+      },
+      type: {
+        default: 'inline', // 'inline' or 'end'
+      },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'div[data-product-widget]',
+        getAttrs: (element) => ({
+          productId: element.getAttribute('data-product-id'),
+          productName: element.getAttribute('data-product-name'),
+          companyName: element.getAttribute('data-company-name'),
+          logoUrl: element.getAttribute('data-logo-url'),
+          slug: element.getAttribute('data-slug'),
+          type: element.getAttribute('data-type') || 'inline',
+        }),
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    const type = HTMLAttributes.type || 'inline';
+    
+    if (type === 'inline') {
+      return [
+        'div',
+        {
+          'data-product-widget': true,
+          'data-product-id': HTMLAttributes.productId,
+          'data-product-name': HTMLAttributes.productName,
+          'data-company-name': HTMLAttributes.companyName,
+          'data-logo-url': HTMLAttributes.logoUrl,
+          'data-slug': HTMLAttributes.slug,
+          'data-type': HTMLAttributes.type,
+          class: `product-widget product-widget-inline`,
+          style: 'display: inline-flex; align-items: center; gap: 0.375rem; margin: 0 0.25rem; padding: 0.25rem 0.5rem; border-radius: 1rem; border: 1px solid #7cc6ee; background-color: #f5f7fa; vertical-align: middle; white-space: nowrap; max-width: 180px; line-height: 1; height: 1.5rem; cursor: pointer; transition: all 0.3s ease;',
+          onclick: `window.open('/product/${HTMLAttributes.slug}', '_blank')`
+        },
+        [
+          'img',
+          {
+            src: HTMLAttributes.logoUrl || '/default-product-logo.png',
+            alt: HTMLAttributes.productName,
+            style: 'width: 1.25rem; height: 1.25rem; object-fit: contain; border-radius: 0.25rem; background-color: white; padding: 0.125rem; flex-shrink: 0;',
+            onerror: "this.src='/default-product-logo.png'"
+          }
+        ],
+        [
+          'span',
+          {
+            style: 'font-size: 0.8rem; font-weight: 600; color: #1e2556; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0;'
+          },
+          HTMLAttributes.productName
+        ],
+        [
+          'div',
+          {
+            style: 'display: flex; align-items: center; justify-content: center; width: 1rem; height: 1rem; background-color: #1e2556; color: white; border-radius: 50%; transition: all 0.3s ease; flex-shrink: 0;'
+          },
+          [
+            'svg',
+            {
+              width: '10',
+              height: '10',
+              viewBox: '0 0 24 24',
+              fill: 'none',
+              stroke: 'currentColor',
+              'stroke-width': '2'
+            },
+            [
+              'path',
+              {
+                d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'
+              }
+            ],
+            [
+              'polyline',
+              {
+                points: '15,3 21,3 21,9'
+              }
+            ],
+            [
+              'line',
+              {
+                x1: '10',
+                y1: '14',
+                x2: '21',
+                y2: '3'
+              }
+            ]
+          ]
+        ]
+      ];
+    } else {
+      return [
+        'div',
+        {
+          'data-product-widget': true,
+          'data-product-id': HTMLAttributes.productId,
+          'data-product-name': HTMLAttributes.productName,
+          'data-company-name': HTMLAttributes.companyName,
+          'data-logo-url': HTMLAttributes.logoUrl,
+          'data-slug': HTMLAttributes.slug,
+          'data-type': HTMLAttributes.type,
+          class: `product-widget product-widget-end`,
+          style: 'display: inline-block; margin: 1rem 0; padding: 0.75rem 1rem; border-radius: 0.5rem; border: 2px solid #7cc6ee; background-color: #f5f7fa; max-width: 280px; width: auto; vertical-align: top; cursor: pointer; transition: all 0.3s ease;',
+          onclick: `window.open('/product/${HTMLAttributes.slug}', '_blank')`
+        },
+        [
+          'div',
+          {
+            style: 'display: flex; align-items: center; gap: 0.75rem; position: relative;'
+          },
+          [
+            'img',
+            {
+              src: HTMLAttributes.logoUrl || '/default-product-logo.png',
+              alt: HTMLAttributes.productName,
+              style: 'width: 2.5rem; height: 2.5rem; object-fit: contain; border-radius: 0.375rem; background-color: white; padding: 0.25rem; border: 1px solid #7cc6ee; flex-shrink: 0;',
+              onerror: "this.src='/default-product-logo.png'"
+            }
+          ],
+          [
+            'div',
+            {
+              style: 'flex: 1; min-width: 0;'
+            },
+            [
+              'h4',
+              {
+                style: 'font-size: 0.9rem; font-weight: 700; color: #1e2556; margin: 0 0 0.125rem 0; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
+              },
+              HTMLAttributes.productName
+            ],
+            [
+              'p',
+              {
+                style: 'font-size: 0.75rem; color: #334155; margin: 0; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
+              },
+              HTMLAttributes.companyName
+            ]
+          ],
+          [
+            'div',
+            {
+              style: 'display: flex; align-items: center; justify-content: center; width: 1.75rem; height: 1.75rem; background-color: #1e2556; color: white; border-radius: 50%; transition: all 0.3s ease; flex-shrink: 0;'
+            },
+            [
+              'svg',
+              {
+                width: '14',
+                height: '14',
+                viewBox: '0 0 24 24',
+                fill: 'none',
+                stroke: 'currentColor',
+                'stroke-width': '2'
+              },
+              [
+                'path',
+                {
+                  d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'
+                }
+              ],
+              [
+                'polyline',
+                {
+                  points: '15,3 21,3 21,9'
+                }
+              ],
+              [
+                'line',
+                {
+                  x1: '10',
+                  y1: '14',
+                  x2: '21',
+                  y2: '3'
+                }
+              ]
+            ]
+          ]
+        ]
+      ];
+    }
+  },
+
+  addNodeView() {
+    return ({ node }) => {
+      const div = document.createElement('div');
+      div.className = `product-widget product-widget-${node.attrs.type}`;
+      
+      if (node.attrs.type === 'inline') {
+        // Small inline widget - just logo, name, and click icon
+        div.innerHTML = `
+          <img src="${node.attrs.logoUrl || '/default-product-logo.png'}" 
+               alt="${node.attrs.productName}" 
+               class="product-widget-inline-logo"
+               onerror="this.src='/default-product-logo.png'">
+          <span class="product-widget-inline-name">${node.attrs.productName}</span>
+          <div class="product-widget-inline-action">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15,3 21,3 21,9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </div>
+        `;
+      } else {
+        // Compact end widget - left aligned, smaller
+        div.innerHTML = `
+          <div class="product-widget-end-content">
+            <img src="${node.attrs.logoUrl || '/default-product-logo.png'}" 
+                 alt="${node.attrs.productName}" 
+                 class="product-widget-end-logo"
+                 onerror="this.src='/default-product-logo.png'">
+            <div class="product-widget-end-info">
+              <h4 class="product-widget-end-name">${node.attrs.productName}</h4>
+              <p class="product-widget-end-company">${node.attrs.companyName}</p>
+            </div>
+            <div class="product-widget-end-action">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15,3 21,3 21,9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </div>
+          </div>
+        `;
+      }
+
+      div.addEventListener('click', () => {
+        window.open(`/product/${node.attrs.slug}`, '_blank');
+      });
+
+      return {
+        dom: div,
+      };
+    };
+  },
+});
+
+// Color Picker Component
+const ColorPicker = ({ onColorSelect, type = 'text' }) => {
+  const colors = [
+    '#000000', '#374151', '#6B7280', '#9CA3AF', '#D1D5DB', '#F3F4F6',
+    '#EF4444', '#F97316', '#F59E0B', '#EAB308', '#84CC16', '#22C55E',
+    '#06B6D4', '#3B82F6', '#6366F1', '#8B5CF6', '#A855F7', '#EC4899',
+    '#F43F5E', '#DC2626', '#EA580C', '#D97706', '#CA8A04', '#65A30D',
+    '#059669', '#0891B2', '#2563EB', '#4F46E5', '#7C3AED', '#9333EA'
+  ];
+
+  return (
+    <div className="grid grid-cols-6 gap-1 p-2 bg-white border rounded-lg shadow-lg">
+      {colors.map((color) => (
+        <button
+          key={color}
+          type="button"
+          className="w-6 h-6 rounded border border-gray-300 hover:scale-110 transition-transform"
+          style={{ backgroundColor: color }}
+          onClick={() => onColorSelect(color)}
+          title={color}
+        />
+      ))}
+      <button
+        type="button"
+        className="w-6 h-6 rounded border border-gray-300 bg-white hover:scale-110 transition-transform relative"
+        onClick={() => onColorSelect('')}
+        title="Remove color"
+      >
+        <X size={12} className="text-red-500 absolute inset-0 m-auto" />
+      </button>
+    </div>
+  );
+};
+
+// Font Family Selector
+const FontFamilySelector = ({ editor }) => {
+  const fontFamilies = [
+    { label: 'Default', value: '' },
+    { label: 'Inter', value: 'Inter' },
+    { label: 'Arial', value: 'Arial' },
+    { label: 'Helvetica', value: 'Helvetica' },
+    { label: 'Georgia', value: 'Georgia' },
+    { label: 'Times New Roman', value: 'Times New Roman' },
+    { label: 'Courier New', value: 'Courier New' },
+    { label: 'Verdana', value: 'Verdana' },
+    { label: 'Trebuchet MS', value: 'Trebuchet MS' },
+    { label: 'Palatino', value: 'Palatino' }
+  ];
+
+  const handleFontChange = (fontFamily) => {
+    if (fontFamily) {
+      editor.chain().focus().setFontFamily(fontFamily).run();
+    } else {
+      editor.chain().focus().unsetFontFamily().run();
+    }
+  };
+
+  return (
+    <select
+      className="text-sm border border-gray-300 rounded px-2 py-1 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      onChange={(e) => handleFontChange(e.target.value)}
+      defaultValue=""
+    >
+      {fontFamilies.map((font) => (
+        <option 
+          key={font.value} 
+          value={font.value}
+          style={{ fontFamily: font.value }}
+        >
+          {font.label}
+        </option>
+      ))}
+    </select>
   );
 };
 
@@ -1424,8 +2245,14 @@ const addIdsToHeadingsInHTML = (htmlContent) => {
   });
 };
 
-// Enhanced toolbar with better styling and organization
-const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
+// Enhanced toolbar with advanced formatting options
+const EditorToolbar = ({ editor, onExtractToc }) => {
+  const [showTextColorPicker, setShowTextColorPicker] = useState(false);
+  const [showHighlightPicker, setShowHighlightPicker] = useState(false);
+  const [showAdvancedTools, setShowAdvancedTools] = useState(false);
+  const [showProductSearch, setShowProductSearch] = useState(false);
+  const [productSearchType, setProductSearchType] = useState('inline');
+
   if (!editor) return null;
 
   // Use mousedown instead of click to prevent focus loss
@@ -1442,258 +2269,481 @@ const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
 
   // Function to apply heading-like styling to selected text only
   const applyTextStyle = (fontSize, isBold = true) => {
-    editor.chain()
-      .focus()
-      .setFontSize(fontSize)
-      .setTextStyle({ fontWeight: isBold ? 'bold' : 'normal' })
-      .run();
+    if (isBold) {
+      editor.chain()
+        .focus()
+        .setFontSize(fontSize)
+        .toggleBold()
+        .run();
+    } else {
+      editor.chain()
+        .focus()
+        .setFontSize(fontSize)
+        .run();
+    }
+  };
+
+  // Handle product insertion
+  const handleProductInsert = (product, type) => {
+    editor.chain().focus().insertContent({
+      type: 'productWidget',
+      attrs: {
+        productId: product.id,
+        productName: product.productName,
+        companyName: product.companyName,
+        logoUrl: product.logoUrl,
+        slug: product.slug,
+        type: type,
+      },
+    }).run();
+    setShowProductSearch(false);
   };
 
   return (
-    <div className="flex flex-wrap gap-2 p-3 mb-2 border-b sticky top-4 bg-white z-10 shadow-sm rounded-t-lg relative editor-toolbar">
-      <div className="flex gap-1 border-r pr-2 mr-2">
+    <div className="border-b sticky top-4 bg-white z-10 shadow-sm rounded-t-lg">
+      {/* Primary Toolbar */}
+      <div className="flex flex-wrap gap-2 p-3 relative editor-toolbar">
+        {/* Undo/Redo */}
+        <div className="flex gap-1 border-r pr-2 mr-2">
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => editor.chain().focus().undo().run())}
+            className="p-2 rounded bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+            disabled={!editor.can().undo()}
+            title="Undo"
+          >
+            <Undo size={18} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => editor.chain().focus().redo().run())}
+            className="p-2 rounded bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+            disabled={!editor.can().redo()}
+            title="Redo"
+          >
+            <Redo size={18} />
+          </button>
+        </div>
+
+        {/* Font Family */}
+        <div className="flex items-center border-r pr-2 mr-2">
+          <FontFamilySelector editor={editor} />
+        </div>
+
+        {/* Headings */}
+        <div className="flex gap-1 border-r pr-2 mr-2">
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => applyHeading(1))}
+            className={`p-2 rounded ${editor.isActive('heading', { level: 1 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Heading 1"
+          >
+            H1
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => applyHeading(2))}
+            className={`p-2 rounded ${editor.isActive('heading', { level: 2 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Heading 2"
+          >
+            H2
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => applyHeading(3))}
+            className={`p-2 rounded ${editor.isActive('heading', { level: 3 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Heading 3"
+          >
+            H3
+          </button>
+        </div>
+        
+        {/* Text Style buttons */}
+        <div className="flex gap-1 border-r pr-2 mr-2">
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => applyTextStyle('24px'))}
+            className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+            title="Large text"
+          >
+            T1
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => applyTextStyle('20px'))}
+            className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+            title="Medium text"
+          >
+            T2
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => applyTextStyle('16px'))}
+            className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+            title="Small text"
+          >
+            T3
+          </button>
+        </div>
+
+        {/* Basic Formatting */}
+        <div className="flex gap-1 border-r pr-2 mr-2">
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => editor.chain().focus().toggleBold().run())}
+            className={`p-2 rounded ${editor.isActive('bold') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Bold"
+          >
+            <Bold size={18} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => editor.chain().focus().toggleItalic().run())}
+            className={`p-2 rounded ${editor.isActive('italic') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Italic"
+          >
+            <Italic size={18} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => editor.chain().focus().toggleUnderline().run())}
+            className={`p-2 rounded ${editor.isActive('underline') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Underline"
+          >
+            <UnderlineIcon size={18} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => editor.chain().focus().toggleStrike().run())}
+            className={`p-2 rounded ${editor.isActive('strike') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Strikethrough"
+          >
+            <Strikethrough size={18} />
+          </button>
+        </div>
+
+        {/* Colors */}
+        <div className="flex gap-1 border-r pr-2 mr-2 relative">
+          <div className="relative">
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                setShowTextColorPicker(!showTextColorPicker);
+                setShowHighlightPicker(false);
+              }}
+              className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+              title="Text Color"
+            >
+              <Palette size={18} />
+            </button>
+            {showTextColorPicker && (
+              <div className="absolute top-full left-0 mt-1 z-20">
+                <ColorPicker
+                  onColorSelect={(color) => {
+                    if (color) {
+                      editor.chain().focus().setColor(color).run();
+                    } else {
+                      editor.chain().focus().unsetColor().run();
+                    }
+                    setShowTextColorPicker(false);
+                  }}
+                  type="text"
+                />
+              </div>
+            )}
+          </div>
+          <div className="relative">
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                setShowHighlightPicker(!showHighlightPicker);
+                setShowTextColorPicker(false);
+              }}
+              className={`p-2 rounded ${editor.isActive('highlight') ? 'bg-yellow-400 text-black' : 'bg-gray-100 hover:bg-gray-200'}`}
+              title="Highlight"
+            >
+              <Highlighter size={18} />
+            </button>
+            {showHighlightPicker && (
+              <div className="absolute top-full left-0 mt-1 z-20">
+                <ColorPicker
+                  onColorSelect={(color) => {
+                    if (color) {
+                      editor.chain().focus().toggleHighlight({ color }).run();
+                    } else {
+                      editor.chain().focus().unsetHighlight().run();
+                    }
+                    setShowHighlightPicker(false);
+                  }}
+                  type="highlight"
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Alignment */}
+        <div className="flex gap-1 border-r pr-2 mr-2">
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('left').run())}
+            className={`p-2 rounded ${editor.isActive({ textAlign: 'left' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Align Left"
+          >
+            <AlignLeft size={18} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('center').run())}
+            className={`p-2 rounded ${editor.isActive({ textAlign: 'center' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Align Center"
+          >
+            <AlignCenter size={18} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('right').run())}
+            className={`p-2 rounded ${editor.isActive({ textAlign: 'right' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Align Right"
+          >
+            <AlignRight size={18} />
+          </button>
+        </div>
+
+        {/* Product & Link & Tools */}
+        <div className="flex gap-1 border-r pr-2 mr-2">
+          <button
+            type="button"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              const url = window.prompt('Enter the URL:');
+              if (url) {
+                editor.chain().focus().setLink({ href: url }).run();
+              }
+              editor.view.focus();
+            }}
+            className={`p-2 rounded ${editor.isActive('link') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Insert Link"
+          >
+            <Link2 size={18} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              setProductSearchType('inline');
+              setShowProductSearch(true);
+            }}             
+            className="p-2 rounded text-white"
+            style={{ backgroundColor: '#7cc6ee' }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = '#1e2556';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = '#7cc6ee';
+            }}
+            title="Insert Inline Product"
+          >
+            <Package size={18} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              setProductSearchType('end');
+              setShowProductSearch(true);
+            }}
+            className="px-3 py-2 rounded text-white flex items-center gap-1"
+            style={{ backgroundColor: '#1e2556' }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = '#7cc6ee';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = '#1e2556';
+            }}
+            title="Add Product CTA at End"
+          >
+            <Package size={14} />
+            <span className="text-xs">End CTA</span>
+          </button>
+        </div>
+
+        {/* Show/Hide Advanced Tools */}
         <button
           type="button"
-          onMouseDown={handleMouseDown(() => applyHeading(1))}
-          className={`p-2 rounded ${editor.isActive('heading', { level: 1 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Heading 1 - Applies to entire paragraph"
+          onClick={() => setShowAdvancedTools(!showAdvancedTools)}
+          className="p-2 rounded bg-gray-100 hover:bg-gray-200 flex items-center gap-1"
+          title={showAdvancedTools ? "Hide Advanced Tools" : "Show Advanced Tools"}
         >
-          H1
-        </button>
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => applyHeading(2))}
-          className={`p-2 rounded ${editor.isActive('heading', { level: 2 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Heading 2 - Applies to entire paragraph"
-        >
-          H2
-        </button>
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => applyHeading(3))}
-          className={`p-2 rounded ${editor.isActive('heading', { level: 3 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Heading 3 - Applies to entire paragraph"
-        >
-          H3
-        </button>
-      </div>
-      
-      {/* Text Style buttons that work on selections */}
-      <div className="flex gap-1 border-r pr-2 mr-2">
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => applyTextStyle('24px'))}
-          className="p-2 rounded bg-gray-100 hover:bg-gray-200"
-          title="Large text - Applies to selected text only"
-        >
-          T1
-        </button>
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => applyTextStyle('20px'))}
-          className="p-2 rounded bg-gray-100 hover:bg-gray-200"
-          title="Medium text - Applies to selected text only"
-        >
-          T2
-        </button>
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => applyTextStyle('16px'))}
-          className="p-2 rounded bg-gray-100 hover:bg-gray-200"
-          title="Small text - Applies to selected text only"
-        >
-          T3
+          <MoreHorizontal size={18} />
+          <ChevronDown size={14} className={`transform transition-transform ${showAdvancedTools ? 'rotate-180' : ''}`} />
         </button>
       </div>
 
-      <div className="flex gap-1 border-r pr-2 mr-2">
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => editor.chain().focus().toggleBold().run())}
-          className={`p-2 rounded ${editor.isActive('bold') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Bold"
-        >
-          <Bold size={18} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => editor.chain().focus().toggleItalic().run())}
-          className={`p-2 rounded ${editor.isActive('italic') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Italic"
-        >
-          <Italic size={18} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => editor.chain().focus().toggleUnderline().run())}
-          className={`p-2 rounded ${editor.isActive('underline') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Underline"
-        >
-          <UnderlineIcon size={18} />
-        </button>
-      </div>
+      {/* Advanced Toolbar - Toggleable */}
+      {showAdvancedTools && (
+        <div className="flex flex-wrap gap-2 p-3 bg-gray-50 border-t">
+          {/* Lists and Quote */}
+          <div className="flex gap-1 border-r pr-2 mr-2">
+            <button
+              type="button"
+              onMouseDown={handleMouseDown(() => editor.chain().focus().toggleBulletList().run())}
+              className={`p-2 rounded ${editor.isActive('bulletList') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              title="Bullet List"
+            >
+              <List size={18} />
+            </button>
+            <button
+              type="button"
+              onMouseDown={handleMouseDown(() => editor.chain().focus().toggleOrderedList().run())}
+              className={`p-2 rounded ${editor.isActive('orderedList') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              title="Numbered List"
+            >
+              <ListOrdered size={18} />
+            </button>
+            <button
+              type="button"
+              onMouseDown={handleMouseDown(() => editor.chain().focus().toggleTaskList().run())}
+              className={`p-2 rounded ${editor.isActive('taskList') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              title="Task List"
+            >
+              <CheckSquare size={18} />
+            </button>
+            <button
+              type="button"
+              onMouseDown={handleMouseDown(() => editor.chain().focus().toggleBlockquote().run())}
+              className={`p-2 rounded ${editor.isActive('blockquote') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              title="Quote"
+            >
+              <Quote size={18} />
+            </button>
+          </div>
 
-      <div className="flex gap-1 border-r pr-2 mr-2">
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('left').run())}
-          className={`p-2 rounded ${editor.isActive({ textAlign: 'left' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Align Left"
-        >
-          <AlignLeft size={18} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('center').run())}
-          className={`p-2 rounded ${editor.isActive({ textAlign: 'center' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Align Center"
-        >
-          <AlignCenter size={18} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => editor.chain().focus().setTextAlign('right').run())}
-          className={`p-2 rounded ${editor.isActive({ textAlign: 'right' }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Align Right"
-        >
-          <AlignRight size={18} />
-        </button>
-      </div>
+          {/* Code and Scripts */}
+          <div className="flex gap-1 border-r pr-2 mr-2">
+            <button
+              type="button"
+              onMouseDown={handleMouseDown(() => editor.chain().focus().toggleCode().run())}
+              className={`p-2 rounded ${editor.isActive('code') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              title="Inline Code"
+            >
+              <CodeIcon size={18} />
+            </button>
+            <button
+              type="button"
+              onMouseDown={handleMouseDown(() => editor.chain().focus().toggleCodeBlock().run())}
+              className={`p-2 rounded ${editor.isActive('codeBlock') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              title="Code Block"
+            >
+              <div className="flex flex-col items-center">
+                <CodeIcon size={14} />
+                <div className="text-xs">{ }</div>
+              </div>
+            </button>
+            <button
+              type="button"
+              onMouseDown={handleMouseDown(() => editor.chain().focus().toggleSubscript().run())}
+              className={`p-2 rounded ${editor.isActive('subscript') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              title="Subscript"
+            >
+              <SubIcon size={18} />
+            </button>
+            <button
+              type="button"
+              onMouseDown={handleMouseDown(() => editor.chain().focus().toggleSuperscript().run())}
+              className={`p-2 rounded ${editor.isActive('superscript') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              title="Superscript"
+            >
+              <SupIcon size={18} />
+            </button>
+          </div>
 
-      <div className="flex gap-1 border-r pr-2 mr-2">
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => editor.chain().focus().toggleBulletList().run())}
-          className={`p-2 rounded ${editor.isActive('bulletList') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Bullet List"
-        >
-          <List size={18} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => editor.chain().focus().toggleOrderedList().run())}
-          className={`p-2 rounded ${editor.isActive('orderedList') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Numbered List"
-        >
-          <ListOrdered size={18} />
-        </button>
-      </div>
+          {/* Utilities */}
+          <div className="flex gap-1 border-r pr-2 mr-2">
+            <button
+              type="button"
+              onMouseDown={handleMouseDown(() => editor.chain().focus().setHorizontalRule().run())}
+              className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+              title="Horizontal Rule"
+            >
+              <Minus size={18} />
+            </button>
+            <button
+              type="button"
+              onMouseDown={handleMouseDown(() => editor.chain().focus().clearNodes().unsetAllMarks().run())}
+              className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+              title="Clear Formatting"
+            >
+              <Eraser size={18} />
+            </button>
+          </div>
 
-      <div className="flex gap-1">
-        <button
-          type="button"
-          onMouseDown={(e) => {
-            e.preventDefault();
-            const url = window.prompt('Enter the URL:');
-            if (url) {
-              editor.chain().focus().setLink({ href: url }).run();
-            }
-            editor.view.focus();
+          <div className="flex gap-1">
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                if (onExtractToc) {
+                  const headings = extractHeadings(editor);
+                  onExtractToc(headings);
+                }
+                editor.view.focus();
+              }}
+              className="px-3 py-2 rounded text-white flex items-center gap-2"
+              style={{ backgroundColor: '#1e2556' }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#7cc6ee';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = '#1e2556';
+              }}
+              title="Update Table of Contents"
+            >
+              <RefreshCw size={16} />
+              Update TOC
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Click outside to close color pickers */}
+      {(showTextColorPicker || showHighlightPicker) && (
+        <div
+          className="fixed inset-0 z-10"
+          onClick={() => {
+            setShowTextColorPicker(false);
+            setShowHighlightPicker(false);
           }}
-          className={`p-2 rounded ${editor.isActive('link') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
-          title="Insert Link"
-        >
-          <Link2 size={18} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={(e) => {
-            e.preventDefault();
-            onImageAdd();
-          }}
-          className="p-2 rounded bg-gray-100 hover:bg-gray-200"
-          title="Insert Image"
-        >
-          <ImageIcon size={18} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={handleMouseDown(() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run())}
-          className="p-2 rounded bg-gray-100 hover:bg-gray-200"
-          title="Insert Table"
-        >
-          <TableIcon size={18} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={(e) => {
-            e.preventDefault();
-            if (onExtractToc) {
-              const headings = extractHeadings(editor);
-              onExtractToc(headings);
-            }
-            editor.view.focus();
-          }}
-          className="ml-2 px-3 py-2 rounded bg-indigo-600 text-white flex items-center gap-2 hover:bg-indigo-700"
-          title="Update Table of Contents"
-        >
-          <RefreshCw size={16} />
-          Update TOC
-        </button>
-      </div>
+        />
+      )}
+
+      {/* Product Search Modal */}
+      {showProductSearch && (
+        <ProductSearchModal
+          onClose={() => setShowProductSearch(false)}
+          onInsert={handleProductInsert}
+          type={productSearchType}
+        />
+      )}
     </div>
   );
 };
 
-// Custom Image Extension with proper alignment and size support
-const CustomImage = Image.extend({
-  addAttributes() {
-    return {
-      ...this.parent?.(),
-      width: {
-        default: null,
-        parseHTML: element => element.getAttribute('width'),
-        renderHTML: attributes => {
-          if (!attributes.width) {
-            return {};
-          }
-          return {
-            width: attributes.width,
-          };
-        },
-      },
-      height: {
-        default: null,
-        parseHTML: element => element.getAttribute('height'),
-        renderHTML: attributes => {
-          if (!attributes.height) {
-            return {};
-          }
-          return {
-            height: attributes.height,
-          };
-        },
-      },
-      alignment: {
-        default: 'center',
-        parseHTML: element => {
-          const className = element.getAttribute('class') || '';
-          if (className.includes('img-align-left')) return 'left';
-          if (className.includes('img-align-center')) return 'center';
-          if (className.includes('img-align-right')) return 'right';
-          return 'center';
-        },
-        renderHTML: attributes => {
-          return {
-            class: `blog-image img-align-${attributes.alignment || 'center'}`,
-          };
-        },
-      },
-    };
-  },
-});
-
-// CSS for editor styling
+// Enhanced CSS for editor styling with brand colors
 const customStyles = `
 .ProseMirror {
   min-height: 400px;
   border-radius: 0.5rem;
   position: relative;
   padding: 1rem;
+  color: #2d2d2d;
 }
 
 .editor-toolbar {
   position: relative;
+  background-color: #f5f7fa;
 }
 
 @keyframes fadeInOut {
@@ -1714,59 +2764,9 @@ const customStyles = `
 .ProseMirror p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;
-  color: #adb5bd;
+  color: #334155;
   pointer-events: none;
   height: 0;
-}
-
-.ProseMirror img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.375rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.ProseMirror img.img-align-left {
-  float: left;
-  margin-right: 1rem;
-  margin-bottom: 0.5rem;
-  clear: left;
-}
-
-.ProseMirror img.img-align-center {
-  display: block !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  float: none !important;
-  clear: both !important;
-}
-
-.ProseMirror img.img-align-right {
-  float: right;
-  margin-left: 1rem;
-  margin-bottom: 0.5rem;
-  clear: right;
-}
-
-.ProseMirror table {
-  border-collapse: collapse;
-  table-layout: fixed;
-  width: 100%;
-  margin: 1rem 0;
-  overflow: hidden;
-}
-
-.ProseMirror table td,
-.ProseMirror table th {
-  border: 2px solid #ced4da;
-  padding: 0.5rem;
-  position: relative;
-  vertical-align: top;
-}
-
-.ProseMirror table th {
-  background-color: #f8f9fa;
-  font-weight: bold;
 }
 
 .ProseMirror ul,
@@ -1776,44 +2776,335 @@ const customStyles = `
 
 .ProseMirror ul li {
   list-style-type: disc;
+  color: #2d2d2d;
 }
 
 .ProseMirror ol li {
   list-style-type: decimal;
+  color: #2d2d2d;
+}
+
+.ProseMirror ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+
+.ProseMirror ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  color: #2d2d2d;
+}
+
+.ProseMirror ul[data-type="taskList"] li > label {
+  margin-right: 0.5rem;
+  user-select: none;
+}
+
+.ProseMirror ul[data-type="taskList"] li > div {
+  flex: 1;
+}
+
+.ProseMirror blockquote {
+  padding-left: 1rem;
+  border-left: 4px solid #7cc6ee;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #334155;
+  background-color: #f5f7fa;
+  padding: 1rem;
+  border-radius: 0.5rem;
 }
 
 .ProseMirror h1 {
   font-size: 2rem;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
+  color: #1e2556;
+  font-weight: bold;
 }
 
 .ProseMirror h2 {
   font-size: 1.5rem;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
+  color: #1e2556;
+  font-weight: bold;
 }
 
 .ProseMirror h3 {
   font-size: 1.25rem;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
+  color: #1e2556;
+  font-weight: bold;
+}
+
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+  color: #334155;
+  font-weight: bold;
 }
 
 .ProseMirror p {
   margin-bottom: 0.75rem;
+  color: #2d2d2d;
 }
 
-.ProseMirror .selectedCell:after {
-  background: rgba(200, 200, 255, 0.4);
-  content: "";
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  pointer-events: none;
-  position: absolute;
-  z-index: 2;
+.ProseMirror a {
+  color: #7cc6ee;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.ProseMirror a:hover {
+  color: #1e2556;
+}
+
+.ProseMirror code {
+  background-color: #f5f7fa;
+  color: #1e2556;
+  padding: 0.25rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: 'Courier New', monospace;
+  border: 1px solid #7cc6ee;
+}
+
+.ProseMirror pre {
+  background: #1e2556;
+  color: #ffffff;
+  font-family: 'Courier New', monospace;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  border: 2px solid #7cc6ee;
+}
+
+.ProseMirror pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  border: none;
+}
+
+.ProseMirror hr {
+  margin: 2rem 0;
+  border: none;
+  border-top: 2px solid #7cc6ee;
+}
+
+.ProseMirror mark {
+  background-color: #7cc6ee;
+  color: #1e2556;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+/* Toolbar button styling with brand colors */
+.editor-toolbar button {
+  transition: all 0.2s ease;
+}
+
+.editor-toolbar button:hover {
+  background-color: #7cc6ee !important;
+  color: white !important;
+}
+
+.editor-toolbar button.bg-blue-600 {
+  background-color: #1e2556 !important;
+  color: white !important;
+}
+
+.editor-toolbar button.bg-indigo-600 {
+  background-color: #1e2556 !important;
+  color: white !important;
+}
+
+.editor-toolbar button.bg-indigo-600:hover {
+  background-color: #7cc6ee !important;
+}
+
+.editor-toolbar select {
+  border-color: #7cc6ee;
+  color: #2d2d2d;
+}
+
+.editor-toolbar select:focus {
+  border-color: #1e2556;
+  box-shadow: 0 0 0 2px rgba(30, 37, 86, 0.1);
+}
+
+/* Product Widget Styling */
+.product-widget {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-widget:hover {
+  transform: translateY(-1px);
+}
+
+/* Inline Product Widget - Truly Inline */
+.product-widget-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin: 0 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  border: 1px solid #7cc6ee;
+  background-color: #f5f7fa;
+  vertical-align: middle;
+  white-space: nowrap;
+  max-width: 180px;
+  line-height: 1;
+  height: 1.5rem;
+}
+
+.product-widget-inline:hover {
+  border-color: #1e2556;
+  box-shadow: 0 1px 4px rgba(30, 37, 86, 0.15);
+}
+
+.product-widget-inline-logo {
+  width: 1.25rem;
+  height: 1.25rem;
+  object-fit: contain;
+  border-radius: 0.25rem;
+  background-color: white;
+  padding: 0.125rem;
+  flex-shrink: 0;
+}
+
+.product-widget-inline-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1e2556;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.product-widget-inline-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  background-color: #1e2556;
+  color: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.product-widget-inline:hover .product-widget-inline-action {
+  background-color: #7cc6ee;
+  transform: scale(1.1);
+}
+
+/* End Product Widget - Compact Left-Aligned */
+.product-widget-end {
+  display: inline-block;
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid #7cc6ee;
+  background-color: #f5f7fa;
+  max-width: 280px;
+  width: auto;
+  vertical-align: top;
+}
+
+.product-widget-end:hover {
+  border-color: #1e2556;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(30, 37, 86, 0.15);
+}
+
+.product-widget-end-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.product-widget-end-logo {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+  border-radius: 0.375rem;
+  background-color: white;
+  padding: 0.25rem;
+  border: 1px solid #7cc6ee;
+  flex-shrink: 0;
+}
+
+.product-widget-end-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-widget-end-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1e2556;
+  margin: 0 0 0.125rem 0;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-widget-end-company {
+  font-size: 0.75rem;
+  color: #334155;
+  margin: 0;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-widget-end-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  background-color: #1e2556;
+  color: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.product-widget-end:hover .product-widget-end-action {
+  background-color: #7cc6ee;
+  transform: scale(1.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .product-widget-inline-name {
+    font-size: 0.75rem;
+  }
+  
+  .product-widget-end {
+    max-width: 240px;
+  }
+  
+  .product-widget-end-name {
+    font-size: 0.85rem;
+  }
 }
 `;
 
@@ -1823,7 +3114,6 @@ const TipTapEditor = ({
   onTocUpdate,
   isSaving = false
 }) => {
-  const [showImageModal, setShowImageModal] = useState(false);
   const editorRef = useRef(null);
 
   // Initialize editor with all required extensions
@@ -1836,24 +3126,16 @@ const TipTapEditor = ({
         },
         heading: {
           levels: [1, 2, 3]
-        }
+        },
+        code: false, // We'll use our custom code extension
+        codeBlock: false, // We'll use code block lowlight
+        strike: false, // We'll use the dedicated Strike extension
+        blockquote: false // We'll use the dedicated Blockquote extension
       }),
       Placeholder.configure({
         placeholder: 'Start writing your blog here...',
         emptyEditorClass: 'is-editor-empty',
       }),
-      CustomImage.configure({
-        inline: false,
-        HTMLAttributes: {
-          class: 'blog-image',
-        },
-      }),
-      Table.configure({
-        resizable: true,
-      }),
-      TableRow,
-      TableHeader,
-      TableCell,
       Heading.configure({
         levels: [1, 2, 3],
       }),
@@ -1861,20 +3143,52 @@ const TipTapEditor = ({
         openOnClick: false,
         HTMLAttributes: {
           class: 'text-blue-600 underline',
+          style: 'color: #7cc6ee;',
         },
       }),
       FontSize,
+      FontFamily.configure({
+        types: ['textStyle'],
+      }),
       TextStyle,
       Color,
       Underline,
+      Strike,
+      Code.configure({
+        HTMLAttributes: {
+          class: 'inline-code',
+        },
+      }),
+      CodeBlockLowlight.configure({
+        lowlight,
+        HTMLAttributes: {
+          class: 'code-block',
+        },
+      }),
+      Highlight.configure({
+        multicolor: true,
+      }),
+      Subscript,
+      Superscript,
       TextAlign.configure({
         types: ['heading', 'paragraph', 'image'],
       }),
+      Blockquote.configure({
+        HTMLAttributes: {
+          class: 'quote-block',
+        },
+      }),
+      TaskList,
+      TaskItem.configure({
+        nested: true,
+      }),
+      HorizontalRule,
       Dropcursor,
       Typography,
       CharacterCount.configure({
         limit: 50000,
       }),
+      ProductWidget,
     ],
     content: initialContent,
     onUpdate: ({ editor }) => {
@@ -1917,22 +3231,7 @@ const TipTapEditor = ({
     }
   }, [editor, onTocUpdate]);
 
-  // Handle image insertion with proper attributes
-  const handleImageInsert = useCallback((url, width, height, alignment) => {
-    if (!editor || !url) return;
-
-    editor.chain().focus().setImage({
-      src: url,
-      alt: 'Blog image',
-      width: width,
-      height: height,
-      alignment: alignment
-    }).run();
-
-    setShowImageModal(false);
-  }, [editor]);
-
-  // FIXED: Save content and TOC - This is the main fix!
+  // FIXED: Save content and TOC
   const handleSave = useCallback(() => {
     if (onSave && editor) {
       console.log('=== TIPTAP SAVE DEBUG ===');
@@ -1966,7 +3265,6 @@ const TipTapEditor = ({
 
       <EditorToolbar
         editor={editor}
-        onImageAdd={() => setShowImageModal(true)}
         onExtractToc={(headings) => {
           if (onTocUpdate) {
             onTocUpdate(headings);
@@ -1978,14 +3276,24 @@ const TipTapEditor = ({
         <EditorContent editor={editor} />
       </div>
 
-      <div className="flex justify-between p-4 bg-gray-50 border-t">
-        <div className="text-gray-500 text-sm">
+      <div className="flex justify-between p-4 bg-gray-50 border-t" style={{ backgroundColor: '#f5f7fa' }}>
+        <div className="text-sm" style={{ color: '#334155' }}>
           {editor.storage.characterCount ? `${editor.storage.characterCount.characters()} characters` : '0 characters'}
         </div>
         <button
           type="button"
           onClick={handleSave}
           className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition shadow-md flex items-center gap-2"
+          style={{ 
+            backgroundColor: '#1e2556',
+            backgroundImage: 'none'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = '#7cc6ee';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = '#1e2556';
+          }}
           disabled={isSaving}
         >
           {isSaving ? (
@@ -2001,13 +3309,6 @@ const TipTapEditor = ({
           )}
         </button>
       </div>
-
-      {showImageModal && (
-        <ImageModal
-          onClose={() => setShowImageModal(false)}
-          onInsert={handleImageInsert}
-        />
-      )}
     </div>
   );
 };

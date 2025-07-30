@@ -295,19 +295,168 @@
 //   },
 
 //   renderHTML({ HTMLAttributes }) {
-//     return [
-//       'div',
-//       {
-//         'data-product-widget': true,
-//         'data-product-id': HTMLAttributes.productId,
-//         'data-product-name': HTMLAttributes.productName,
-//         'data-company-name': HTMLAttributes.companyName,
-//         'data-logo-url': HTMLAttributes.logoUrl,
-//         'data-slug': HTMLAttributes.slug,
-//         'data-type': HTMLAttributes.type,
-//         class: `product-widget product-widget-${HTMLAttributes.type}`,
-//       },
-//     ];
+//     const type = HTMLAttributes.type || 'inline';
+    
+//     if (type === 'inline') {
+//       return [
+//         'div',
+//         {
+//           'data-product-widget': true,
+//           'data-product-id': HTMLAttributes.productId,
+//           'data-product-name': HTMLAttributes.productName,
+//           'data-company-name': HTMLAttributes.companyName,
+//           'data-logo-url': HTMLAttributes.logoUrl,
+//           'data-slug': HTMLAttributes.slug,
+//           'data-type': HTMLAttributes.type,
+//           class: `product-widget product-widget-inline`,
+//           style: 'display: inline-flex; align-items: center; gap: 0.375rem; margin: 0 0.25rem; padding: 0.25rem 0.5rem; border-radius: 1rem; border: 1px solid #7cc6ee; background-color: #f5f7fa; vertical-align: middle; white-space: nowrap; max-width: 180px; line-height: 1; height: 1.5rem; cursor: pointer; transition: all 0.3s ease;',
+//           onclick: `window.open('/product/${HTMLAttributes.slug}', '_blank')`
+//         },
+//         [
+//           'img',
+//           {
+//             src: HTMLAttributes.logoUrl || '/default-product-logo.png',
+//             alt: HTMLAttributes.productName,
+//             style: 'width: 1.25rem; height: 1.25rem; object-fit: contain; border-radius: 0.25rem; background-color: white; padding: 0.125rem; flex-shrink: 0;',
+//             onerror: "this.src='/default-product-logo.png'"
+//           }
+//         ],
+//         [
+//           'span',
+//           {
+//             style: 'font-size: 0.8rem; font-weight: 600; color: #1e2556; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0;'
+//           },
+//           HTMLAttributes.productName
+//         ],
+//         [
+//           'div',
+//           {
+//             style: 'display: flex; align-items: center; justify-content: center; width: 1rem; height: 1rem; background-color: #1e2556; color: white; border-radius: 50%; transition: all 0.3s ease; flex-shrink: 0;'
+//           },
+//           [
+//             'svg',
+//             {
+//               width: '10',
+//               height: '10',
+//               viewBox: '0 0 24 24',
+//               fill: 'none',
+//               stroke: 'currentColor',
+//               'stroke-width': '2'
+//             },
+//             [
+//               'path',
+//               {
+//                 d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'
+//               }
+//             ],
+//             [
+//               'polyline',
+//               {
+//                 points: '15,3 21,3 21,9'
+//               }
+//             ],
+//             [
+//               'line',
+//               {
+//                 x1: '10',
+//                 y1: '14',
+//                 x2: '21',
+//                 y2: '3'
+//               }
+//             ]
+//           ]
+//         ]
+//       ];
+//     } else {
+//       return [
+//         'div',
+//         {
+//           'data-product-widget': true,
+//           'data-product-id': HTMLAttributes.productId,
+//           'data-product-name': HTMLAttributes.productName,
+//           'data-company-name': HTMLAttributes.companyName,
+//           'data-logo-url': HTMLAttributes.logoUrl,
+//           'data-slug': HTMLAttributes.slug,
+//           'data-type': HTMLAttributes.type,
+//           class: `product-widget product-widget-end`,
+//           style: 'display: inline-block; margin: 1rem 0; padding: 0.75rem 1rem; border-radius: 0.5rem; border: 2px solid #7cc6ee; background-color: #f5f7fa; max-width: 280px; width: auto; vertical-align: top; cursor: pointer; transition: all 0.3s ease;',
+//           onclick: `window.open('/product/${HTMLAttributes.slug}', '_blank')`
+//         },
+//         [
+//           'div',
+//           {
+//             style: 'display: flex; align-items: center; gap: 0.75rem; position: relative;'
+//           },
+//           [
+//             'img',
+//             {
+//               src: HTMLAttributes.logoUrl || '/default-product-logo.png',
+//               alt: HTMLAttributes.productName,
+//               style: 'width: 2.5rem; height: 2.5rem; object-fit: contain; border-radius: 0.375rem; background-color: white; padding: 0.25rem; border: 1px solid #7cc6ee; flex-shrink: 0;',
+//               onerror: "this.src='/default-product-logo.png'"
+//             }
+//           ],
+//           [
+//             'div',
+//             {
+//               style: 'flex: 1; min-width: 0;'
+//             },
+//             [
+//               'h4',
+//               {
+//                 style: 'font-size: 0.9rem; font-weight: 700; color: #1e2556; margin: 0 0 0.125rem 0; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
+//               },
+//               HTMLAttributes.productName
+//             ],
+//             [
+//               'p',
+//               {
+//                 style: 'font-size: 0.75rem; color: #334155; margin: 0; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
+//               },
+//               HTMLAttributes.companyName
+//             ]
+//           ],
+//           [
+//             'div',
+//             {
+//               style: 'display: flex; align-items: center; justify-content: center; width: 1.75rem; height: 1.75rem; background-color: #1e2556; color: white; border-radius: 50%; transition: all 0.3s ease; flex-shrink: 0;'
+//             },
+//             [
+//               'svg',
+//               {
+//                 width: '14',
+//                 height: '14',
+//                 viewBox: '0 0 24 24',
+//                 fill: 'none',
+//                 stroke: 'currentColor',
+//                 'stroke-width': '2'
+//               },
+//               [
+//                 'path',
+//                 {
+//                   d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'
+//                 }
+//               ],
+//               [
+//                 'polyline',
+//                 {
+//                   points: '15,3 21,3 21,9'
+//                 }
+//               ],
+//               [
+//                 'line',
+//                 {
+//                   x1: '10',
+//                   y1: '14',
+//                   x2: '21',
+//                   y2: '3'
+//                 }
+//               ]
+//             ]
+//           ]
+//         ]
+//       ];
+//     }
 //   },
 
 //   addNodeView() {
@@ -1589,6 +1738,11 @@ import FontSize from '@tiptap/extension-font-size';
 import { useEditor, EditorContent } from '@tiptap/react';
 import { Node } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
+import Image from '@tiptap/extension-image';
+import Table from '@tiptap/extension-table';
+import TableRow from '@tiptap/extension-table-row';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
 import Placeholder from '@tiptap/extension-placeholder';
 import Heading from '@tiptap/extension-heading';
 import Link from '@tiptap/extension-link';
@@ -1624,7 +1778,8 @@ import {
   X, Quote, Code as CodeIcon, Strikethrough, 
   Subscript as SubIcon, Superscript as SupIcon, Palette, Highlighter,
   Minus, CheckSquare, Undo, Redo, Eraser, MoreHorizontal, ChevronDown,
-  Search, Package, ExternalLink
+  Search, Package, ExternalLink, Image as ImageIcon, Table as TableIcon,
+  Upload, AlertTriangle
 } from 'lucide-react';
 
 // Register languages for syntax highlighting
@@ -1635,6 +1790,337 @@ lowlight.registerLanguage('css', css);
 lowlight.registerLanguage('python', python);
 lowlight.registerLanguage('java', java);
 lowlight.registerLanguage('json', json);
+
+// Enhanced Image Modal with S3 upload capability
+const ImageModal = ({ onClose, onInsert }) => {
+  const fileInputRef = useRef(null);
+  const [imageUrl, setImageUrl] = useState('');
+  const [width, setWidth] = useState('100%');
+  const [height, setHeight] = useState('auto');
+  const [alignment, setAlignment] = useState('center');
+  const [isValidUrl, setIsValidUrl] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(false);
+
+  // S3 Upload States
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadError, setUploadError] = useState('');
+
+  // Check if URL is valid
+  const checkImageUrl = (url) => {
+    if (!url) {
+      setIsValidUrl(false);
+      return;
+    }
+
+    setIsImageLoading(true);
+    const imgElement = new window.Image();
+    imgElement.onload = () => {
+      setIsValidUrl(true);
+      setIsImageLoading(false);
+    };
+    imgElement.onerror = () => {
+      setIsValidUrl(false);
+      setIsImageLoading(false);
+    };
+    imgElement.src = url;
+  };
+
+  // Handle URL change
+  const handleUrlChange = (e) => {
+    const url = e.target.value;
+    setImageUrl(url);
+    checkImageUrl(url);
+  };
+
+  // Handle file upload to S3
+  const handleFileUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      setUploadError('Please upload a valid image file (JPEG, PNG, GIF, WEBP)');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError('Image size should be less than 5MB');
+      return;
+    }
+
+    setIsUploading(true);
+    setUploadProgress(0);
+    setUploadError('');
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      // Setup XHR for progress tracking
+      const xhr = new XMLHttpRequest();
+
+      // Track upload progress
+      xhr.upload.addEventListener('progress', (event) => {
+        if (event.lengthComputable) {
+          const percentComplete = Math.round((event.loaded / event.total) * 100);
+          setUploadProgress(percentComplete);
+        }
+      });
+
+      // Handle response
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          try {
+            const response = JSON.parse(xhr.responseText);
+            setImageUrl(response.url);
+            setIsValidUrl(true);
+            setIsUploading(false);
+          } catch (error) {
+            setUploadError('Error parsing server response');
+            setIsUploading(false);
+          }
+        } else {
+          setUploadError('Failed to upload image');
+          setIsUploading(false);
+        }
+      };
+
+      // Handle errors
+      xhr.onerror = () => {
+        setUploadError('Network error occurred during upload');
+        setIsUploading(false);
+      };
+
+      // Send the upload request
+      xhr.open('POST', '/api/blogs/upload');
+      xhr.send(formData);
+
+    } catch (err) {
+      setUploadError(err.message || 'An unexpected error occurred during upload');
+      setIsUploading(false);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleInsert = () => {
+    if (imageUrl && isValidUrl) {
+      onInsert(imageUrl, width, height, alignment);
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white p-6 rounded-lg w-full max-w-xl"
+        onClick={e => e.stopPropagation()}
+        style={{ backgroundColor: '#f5f7fa' }}
+      >
+        <h3 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>Insert Image</h3>
+
+        {/* S3 Image Upload */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1" style={{ color: '#334155' }}>Upload Image</label>
+
+          <div
+            onClick={triggerFileInput}
+            className="w-full h-32 border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition"
+            style={{ borderColor: '#7cc6ee', backgroundColor: '#ffffff' }}
+            onMouseEnter={(e) => {
+              e.target.style.borderColor = '#1e2556';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.borderColor = '#7cc6ee';
+            }}
+          >
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              accept="image/jpeg,image/png,image/gif,image/webp"
+              className="hidden"
+            />
+
+            {isUploading ? (
+              <div className="w-full px-8">
+                <div className="text-center mb-2">
+                  <p style={{ color: '#334155' }}>Uploading... {uploadProgress}%</p>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                  <div
+                    className="h-2.5 rounded-full"
+                    style={{ 
+                      width: `${uploadProgress}%`,
+                      backgroundColor: '#1e2556'
+                    }}
+                  ></div>
+                </div>
+              </div>
+            ) : (
+              <>
+                <Upload className="h-8 w-8 mb-2" style={{ color: '#334155' }} />
+                <p className="font-medium" style={{ color: '#334155' }}>Click to upload image</p>
+                <p className="text-sm" style={{ color: '#334155' }}>JPG, PNG, GIF or WEBP (max. 5MB)</p>
+              </>
+            )}
+          </div>
+
+          {uploadError && (
+            <div className="mt-2 p-2 bg-red-50 text-red-600 rounded text-sm">
+              <div className="flex items-start">
+                <AlertTriangle className="w-4 h-4 mr-1 mt-0.5 flex-shrink-0" />
+                <span>{uploadError}</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1" style={{ color: '#334155' }}>Or Enter Image URL</label>
+          <input
+            type="url"
+            value={imageUrl}
+            onChange={handleUrlChange}
+            className="w-full p-2 border-2 rounded focus:outline-none focus:ring-2 transition"
+            style={{ 
+              borderColor: '#7cc6ee',
+              color: '#2d2d2d'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#1e2556';
+              e.target.style.boxShadow = '0 0 0 2px rgba(30, 37, 86, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#7cc6ee';
+              e.target.style.boxShadow = 'none';
+            }}
+            placeholder="https://example.com/image.jpg"
+          />
+        </div>
+
+        {/* Image Preview */}
+        {imageUrl && (
+          <div className="mb-4 relative">
+            {isImageLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-80 rounded">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2" style={{ borderColor: '#1e2556' }}></div>
+              </div>
+            )}
+
+            {isValidUrl ? (
+              <div className={`relative p-3 rounded border ${alignment === 'center' ? 'text-center' : alignment === 'right' ? 'text-right' : 'text-left'}`} style={{ backgroundColor: '#ffffff', borderColor: '#7cc6ee' }}>
+                <img
+                  src={imageUrl}
+                  alt="Preview"
+                  className={`img-align-${alignment} rounded max-h-40 border`}
+                  style={{
+                    width: width !== '100%' ? width : null,
+                    height: height !== 'auto' ? height : null,
+                    maxWidth: '100%',
+                    objectFit: 'contain',
+                    borderColor: '#7cc6ee'
+                  }}
+                />
+              </div>
+            ) : !isImageLoading && (
+              <div className="p-3 bg-red-50 text-red-700 rounded border border-red-200">
+                Unable to load image. Please check the URL.
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block text-sm font-medium mb-1" style={{ color: '#334155' }}>Width</label>
+            <select
+              value={width}
+              onChange={e => setWidth(e.target.value)}
+              className="w-full p-2 border-2 rounded focus:outline-none focus:ring-2 transition"
+              style={{ 
+                borderColor: '#7cc6ee',
+                color: '#2d2d2d'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#1e2556';
+                e.target.style.boxShadow = '0 0 0 2px rgba(30, 37, 86, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#7cc6ee';
+                e.target.style.boxShadow = 'none';
+              }}
+            >
+              <option value="100%">Full width</option>
+              <option value="300px">Small (300px)</option>
+              <option value="500px">Medium (500px)</option>
+              <option value="700px">Large (700px)</option>
+              <option value="200px">Extra Small (200px)</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1" style={{ color: '#334155' }}>Height</label>
+            <select
+              value={height}
+              onChange={e => setHeight(e.target.value)}
+              className="w-full p-2 border-2 rounded focus:outline-none focus:ring-2 transition"
+              style={{ 
+                borderColor: '#7cc6ee',
+                color: '#2d2d2d'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#1e2556';
+                e.target.style.boxShadow = '0 0 0 2px rgba(30, 37, 86, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#7cc6ee';
+                e.target.style.boxShadow = 'none';
+              }}
+            >
+              <option value="auto">Auto</option>
+              <option value="200px">Small (200px)</option>
+              <option value="300px">Medium (300px)</option>
+              <option value="400px">Large (400px)</option>
+              <option value="500px">Extra Large (500px)</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-3">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 border-2 rounded-lg hover:bg-gray-100 transition"
+            style={{ borderColor: '#7cc6ee', color: '#2d2d2d' }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleInsert}
+            className="px-4 py-2 rounded-lg transition text-white disabled:opacity-50"
+            style={{ backgroundColor: isValidUrl && imageUrl ? '#1e2556' : '#334155' }}
+            onMouseEnter={(e) => {
+              if (isValidUrl && imageUrl) e.target.style.backgroundColor = '#7cc6ee';
+            }}
+            onMouseLeave={(e) => {
+              if (isValidUrl && imageUrl) e.target.style.backgroundColor = '#1e2556';
+            }}
+            disabled={!imageUrl || !isValidUrl}
+          >
+            Insert Image
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Product Search Modal Component
 const ProductSearchModal = ({ onClose, onInsert, type = 'inline' }) => {
@@ -2097,6 +2583,54 @@ const ProductWidget = Node.create({
   },
 });
 
+// Custom Image Extension with proper alignment and size support
+const CustomImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      width: {
+        default: null,
+        parseHTML: element => element.getAttribute('width'),
+        renderHTML: attributes => {
+          if (!attributes.width) {
+            return {};
+          }
+          return {
+            width: attributes.width,
+          };
+        },
+      },
+      height: {
+        default: null,
+        parseHTML: element => element.getAttribute('height'),
+        renderHTML: attributes => {
+          if (!attributes.height) {
+            return {};
+          }
+          return {
+            height: attributes.height,
+          };
+        },
+      },
+      alignment: {
+        default: 'center',
+        parseHTML: element => {
+          const className = element.getAttribute('class') || '';
+          if (className.includes('img-align-left')) return 'left';
+          if (className.includes('img-align-center')) return 'center';
+          if (className.includes('img-align-right')) return 'right';
+          return 'center';
+        },
+        renderHTML: attributes => {
+          return {
+            class: `blog-image img-align-${attributes.alignment || 'center'}`,
+          };
+        },
+      },
+    };
+  },
+});
+
 // Color Picker Component
 const ColorPicker = ({ onColorSelect, type = 'text' }) => {
   const colors = [
@@ -2223,7 +2757,7 @@ const extractHeadings = (editor) => {
 const addIdsToHeadingsInHTML = (htmlContent) => {
   if (!htmlContent) return htmlContent;
   
-  // More robust regex that handles various heading formats
+  // More robust regex that handles various heading formats including H4-H5
   const headingRegex = /<(h[1-6])([^>]*)>(.*?)<\/\1>/gi;
   
   return htmlContent.replace(headingRegex, (match, tag, attributes, content) => {
@@ -2246,7 +2780,7 @@ const addIdsToHeadingsInHTML = (htmlContent) => {
 };
 
 // Enhanced toolbar with advanced formatting options
-const EditorToolbar = ({ editor, onExtractToc }) => {
+const EditorToolbar = ({ editor, onImageAdd, onExtractToc }) => {
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [showHighlightPicker, setShowHighlightPicker] = useState(false);
   const [showAdvancedTools, setShowAdvancedTools] = useState(false);
@@ -2262,7 +2796,7 @@ const EditorToolbar = ({ editor, onExtractToc }) => {
     editor.view.focus();
   };
 
-  // Function to handle heading application
+  // Function to handle heading application - NOW SUPPORTS 5 LEVELS
   const applyHeading = (level) => {
     editor.chain().focus().toggleHeading({ level }).run();
   };
@@ -2330,7 +2864,7 @@ const EditorToolbar = ({ editor, onExtractToc }) => {
           <FontFamilySelector editor={editor} />
         </div>
 
-        {/* Headings */}
+        {/* Headings - NOW 5 LEVELS! */}
         <div className="flex gap-1 border-r pr-2 mr-2">
           <button
             type="button"
@@ -2355,6 +2889,22 @@ const EditorToolbar = ({ editor, onExtractToc }) => {
             title="Heading 3"
           >
             H3
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => applyHeading(4))}
+            className={`p-2 rounded ${editor.isActive('heading', { level: 4 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Heading 4"
+          >
+            H4
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => applyHeading(5))}
+            className={`p-2 rounded ${editor.isActive('heading', { level: 5 }) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+            title="Heading 5"
+          >
+            H5
           </button>
         </div>
         
@@ -2512,7 +3062,7 @@ const EditorToolbar = ({ editor, onExtractToc }) => {
           </button>
         </div>
 
-        {/* Product & Link & Tools */}
+        {/* Media & Tools */}
         <div className="flex gap-1 border-r pr-2 mr-2">
           <button
             type="button"
@@ -2529,6 +3079,29 @@ const EditorToolbar = ({ editor, onExtractToc }) => {
           >
             <Link2 size={18} />
           </button>
+          <button
+            type="button"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              onImageAdd();
+            }}
+            className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+            title="Insert Image"
+          >
+            <ImageIcon size={18} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={handleMouseDown(() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run())}
+            className="p-2 rounded bg-gray-100 hover:bg-gray-200"
+            title="Insert Table"
+          >
+            <TableIcon size={18} />
+          </button>
+        </div>
+
+        {/* Product & CTA */}
+        <div className="flex gap-1 border-r pr-2 mr-2">
           <button
             type="button"
             onMouseDown={(e) => {
@@ -2731,7 +3304,7 @@ const EditorToolbar = ({ editor, onExtractToc }) => {
   );
 };
 
-// Enhanced CSS for editor styling with brand colors
+// Enhanced CSS for editor styling with brand colors + image + table support
 const customStyles = `
 .ProseMirror {
   min-height: 400px;
@@ -2767,6 +3340,74 @@ const customStyles = `
   color: #334155;
   pointer-events: none;
   height: 0;
+}
+
+/* Image styling */
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.ProseMirror img.img-align-left {
+  float: left;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  clear: left;
+}
+
+.ProseMirror img.img-align-center {
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  float: none !important;
+  clear: both !important;
+}
+
+.ProseMirror img.img-align-right {
+  float: right;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+  clear: right;
+}
+
+/* Table styling */
+.ProseMirror table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 1rem 0;
+  overflow: hidden;
+  border: 2px solid #7cc6ee;
+  border-radius: 0.5rem;
+}
+
+.ProseMirror table td,
+.ProseMirror table th {
+  border: 1px solid #7cc6ee;
+  padding: 0.75rem;
+  position: relative;
+  vertical-align: top;
+  background-color: white;
+}
+
+.ProseMirror table th {
+  background-color: #f5f7fa;
+  font-weight: bold;
+  color: #1e2556;
+}
+
+.ProseMirror table .selectedCell:after {
+  background: rgba(124, 198, 238, 0.3);
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
 }
 
 .ProseMirror ul,
@@ -2815,8 +3456,9 @@ const customStyles = `
   border-radius: 0.5rem;
 }
 
+/* 5 levels of headings with proper sizing */
 .ProseMirror h1 {
-  font-size: 2rem;
+  font-size: 2.25rem;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   color: #1e2556;
@@ -2824,7 +3466,7 @@ const customStyles = `
 }
 
 .ProseMirror h2 {
-  font-size: 1.5rem;
+  font-size: 1.875rem;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   color: #1e2556;
@@ -2832,16 +3474,33 @@ const customStyles = `
 }
 
 .ProseMirror h3 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   color: #1e2556;
   font-weight: bold;
 }
 
-.ProseMirror h4,
-.ProseMirror h5,
+.ProseMirror h4 {
+  font-size: 1.25rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #334155;
+  font-weight: bold;
+}
+
+.ProseMirror h5 {
+  font-size: 1.125rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #334155;
+  font-weight: bold;
+}
+
 .ProseMirror h6 {
+  font-size: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
   color: #334155;
   font-weight: bold;
 }
@@ -3115,8 +3774,9 @@ const TipTapEditor = ({
   isSaving = false
 }) => {
   const editorRef = useRef(null);
+  const [showImageModal, setShowImageModal] = useState(false);
 
-  // Initialize editor with all required extensions
+  // Initialize editor with all required extensions INCLUDING 5 HEADING LEVELS
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -3125,7 +3785,7 @@ const TipTapEditor = ({
           newGroupDelay: 500
         },
         heading: {
-          levels: [1, 2, 3]
+          levels: [1, 2, 3, 4, 5] // NOW 5 LEVELS!
         },
         code: false, // We'll use our custom code extension
         codeBlock: false, // We'll use code block lowlight
@@ -3136,8 +3796,22 @@ const TipTapEditor = ({
         placeholder: 'Start writing your blog here...',
         emptyEditorClass: 'is-editor-empty',
       }),
+      // Enhanced Image with custom attributes
+      CustomImage.configure({
+        inline: false,
+        HTMLAttributes: {
+          class: 'blog-image',
+        },
+      }),
+      // Table support
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
       Heading.configure({
-        levels: [1, 2, 3],
+        levels: [1, 2, 3, 4, 5], // 5 HEADING LEVELS!
       }),
       Link.configure({
         openOnClick: false,
@@ -3231,6 +3905,21 @@ const TipTapEditor = ({
     }
   }, [editor, onTocUpdate]);
 
+  // Handle image insertion with proper attributes
+  const handleImageInsert = useCallback((url, width, height, alignment) => {
+    if (!editor || !url) return;
+
+    editor.chain().focus().setImage({
+      src: url,
+      alt: 'Blog image',
+      width: width,
+      height: height,
+      alignment: alignment
+    }).run();
+
+    setShowImageModal(false);
+  }, [editor]);
+
   // FIXED: Save content and TOC
   const handleSave = useCallback(() => {
     if (onSave && editor) {
@@ -3265,6 +3954,7 @@ const TipTapEditor = ({
 
       <EditorToolbar
         editor={editor}
+        onImageAdd={() => setShowImageModal(true)}
         onExtractToc={(headings) => {
           if (onTocUpdate) {
             onTocUpdate(headings);
@@ -3309,6 +3999,13 @@ const TipTapEditor = ({
           )}
         </button>
       </div>
+
+      {showImageModal && (
+        <ImageModal
+          onClose={() => setShowImageModal(false)}
+          onInsert={handleImageInsert}
+        />
+      )}
     </div>
   );
 };

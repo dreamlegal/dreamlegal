@@ -559,90 +559,90 @@ const LandingSections = () => {
       </section>
       
       {/* 2. Testimonial Slider Section */}
-      <section className="py-20 bg-[#1e2556] text-white relative overflow-hidden">
+      <section className="py-12 md:py-20 bg-[#1e2556] text-white relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-20 w-40 h-40 bg-[#7cc6ee]/10 rounded-full blur-xl"></div>
-          <div className="absolute bottom-20 right-20 w-56 h-56 bg-[#7cc6ee]/5 rounded-full blur-2xl"></div>
-          <div className="absolute top-1/3 right-1/4 w-32 h-32 bg-white/5 rounded-full blur-lg"></div>
-          <div className="absolute bottom-1/3 left-1/4 w-24 h-24 bg-[#7cc6ee]/8 rounded-full blur-xl"></div>
+          <div className="absolute top-10 md:top-20 left-10 md:left-20 w-20 md:w-40 h-20 md:h-40 bg-[#7cc6ee]/10 rounded-full blur-xl"></div>
+          <div className="absolute bottom-10 md:bottom-20 right-10 md:right-20 w-32 md:w-56 h-32 md:h-56 bg-[#7cc6ee]/5 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/3 right-1/4 w-16 md:w-32 h-16 md:h-32 bg-white/5 rounded-full blur-lg"></div>
+          <div className="absolute bottom-1/3 left-1/4 w-12 md:w-24 h-12 md:h-24 bg-[#7cc6ee]/8 rounded-full blur-xl"></div>
         </div>
 
         <div className="relative z-10 w-full">
-          <div className="text-center mb-12 px-4">
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full mb-6">
-              <Sparkles className="w-5 h-5 text-[#7cc6ee]" />
-              <span className="text-sm font-semibold text-[#7cc6ee] uppercase tracking-wider">
+          <div className="text-center mb-8 md:mb-12 px-4">
+            <div className="inline-flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-white/10 backdrop-blur-sm rounded-full mb-4 md:mb-6">
+              <Sparkles className="w-4 md:w-5 h-4 md:h-5 text-[#7cc6ee]" />
+              <span className="text-xs md:text-sm font-semibold text-[#7cc6ee] uppercase tracking-wider">
                 Testimonials
               </span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4 leading-tight">
               What Legal Professionals Say
             </h2>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
               Trusted by thousands of legal teams worldwide
             </p>
           </div>
 
           <div className="relative w-full flex items-center justify-center">
-            {/* Navigation Arrows */}
+            {/* Navigation Arrows - Hidden on mobile, shown on desktop */}
             <button 
               onClick={prevTestimonial}
-              className="absolute left-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/15 hover:bg-white/25 backdrop-blur-md text-white p-4 rounded-full transition-all duration-300 hover:scale-110 shadow-xl"
+              className="hidden md:block absolute left-2 lg:left-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/15 hover:bg-white/25 backdrop-blur-md text-white p-3 lg:p-4 rounded-full transition-all duration-300 hover:scale-110 shadow-xl"
             >
-              <ChevronLeft className="w-6 h-6" />
+              <ChevronLeft className="w-5 lg:w-6 h-5 lg:h-6" />
             </button>
             
             <button 
               onClick={nextTestimonial}
-              className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/15 hover:bg-white/25 backdrop-blur-md text-white p-4 rounded-full transition-all duration-300 hover:scale-110 shadow-xl"
+              className="hidden md:block absolute right-2 lg:right-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/15 hover:bg-white/25 backdrop-blur-md text-white p-3 lg:p-4 rounded-full transition-all duration-300 hover:scale-110 shadow-xl"
             >
-              <ChevronRight className="w-6 h-6" />
+              <ChevronRight className="w-5 lg:w-6 h-5 lg:h-6" />
             </button>
 
             {/* Testimonial Content */}
-            <div className="overflow-hidden w-full max-w-4xl mx-auto">
+            <div className="w-full mx-auto overflow-hidden">
               <div 
                 className="flex transition-transform duration-700 ease-in-out"
                 style={{ transform: `translateX(-${currentTestimonial * 100}%)` }}
               >
                 {testimonials.map((testimonial, index) => (
-                  <div key={index} className="min-w-full flex-shrink-0 px-6">
-                    <div className="flex flex-col items-center text-center">
+                  <div key={index} className="w-full flex-shrink-0">
+                    <div className="flex flex-col items-center text-center px-6 md:px-12 lg:px-16 max-w-4xl mx-auto">
                       {/* Profile Section */}
-                      <div className="flex flex-col items-center mb-8">
-                        <div className="relative mb-4">
-                          <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-4 border-[#7cc6ee]/60 shadow-2xl">
+                      <div className="flex flex-col items-center mb-6 md:mb-8">
+                        <div className="relative mb-3 md:mb-4">
+                          <div className="w-16 md:w-24 lg:w-28 h-16 md:h-24 lg:h-28 rounded-full overflow-hidden border-2 md:border-4 border-[#7cc6ee]/60 shadow-2xl">
                             <img 
                               src={testimonial.image}
                               alt={testimonial.name}
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-[#7cc6ee] rounded-full flex items-center justify-center shadow-xl">
-                            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <div className="absolute -bottom-0.5 md:-bottom-1 -right-0.5 md:-right-1 w-5 md:w-8 h-5 md:h-8 bg-[#7cc6ee] rounded-full flex items-center justify-center shadow-xl">
+                            <svg className="w-2.5 md:w-4 h-2.5 md:h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                               <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                           </div>
                         </div>
-                        <div>
-                          <h4 className="text-xl md:text-2xl font-bold text-white mb-1">
+                        <div className="text-center">
+                          <h4 className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-1 leading-tight">
                             {testimonial.name}
                           </h4>
-                          <p className="text-[#7cc6ee] font-semibold text-sm md:text-base">
+                          <p className="text-[#7cc6ee] font-semibold text-xs md:text-sm lg:text-base leading-tight">
                             {testimonial.position}
                           </p>
                         </div>
                       </div>
                       
                       {/* Quote Section */}
-                      <div className="text-center">
-                        <div className="mb-6">
-                          <svg className="w-12 h-12 text-[#7cc6ee] mx-auto opacity-80" fill="currentColor" viewBox="0 0 24 24">
+                      <div className="text-center w-full">
+                        <div className="mb-4 md:mb-6">
+                          <svg className="w-8 md:w-12 h-8 md:h-12 text-[#7cc6ee] mx-auto opacity-80" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-10zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
                           </svg>
                         </div>
-                        <blockquote className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed text-white max-w-3xl mx-auto">
+                        <blockquote className="text-sm md:text-lg lg:text-xl xl:text-2xl font-medium leading-relaxed text-white">
                           "{testimonial.quote}"
                         </blockquote>
                       </div>
@@ -651,80 +651,88 @@ const LandingSections = () => {
                 ))}
               </div>
             </div>
+          </div>
 
-            {/* Dots Indicator */}
-            <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2">
-              <div className="flex space-x-3">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentTestimonial(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      currentTestimonial === index 
-                        ? 'bg-[#7cc6ee] scale-125 shadow-lg' 
-                        : 'bg-white/40 hover:bg-white/60'
-                    }`}
-                  />
-                ))}
-              </div>
+          {/* Mobile Navigation Controls */}
+          <div className="flex md:hidden items-center justify-center gap-4 mt-6">
+            <button 
+              onClick={prevTestimonial}
+              className="bg-white/15 hover:bg-white/25 backdrop-blur-md text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-xl"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            
+            <span className="text-sm text-white/70 font-medium px-4">
+              {currentTestimonial + 1} / {testimonials.length}
+            </span>
+            
+            <button 
+              onClick={nextTestimonial}
+              className="bg-white/15 hover:bg-white/25 backdrop-blur-md text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-xl"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Dots Indicator */}
+          <div className="flex justify-center mt-8 md:mt-12">
+            <div className="flex space-x-2 md:space-x-3">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentTestimonial(index)}
+                  className={`w-2 md:w-3 h-2 md:h-3 rounded-full transition-all duration-300 ${
+                    currentTestimonial === index 
+                      ? 'bg-[#7cc6ee] scale-125 shadow-lg' 
+                      : 'bg-white/40 hover:bg-white/60'
+                  }`}
+                />
+              ))}
             </div>
           </div>
         </div>
       </section>
-
       {/* 3. Insights Section */}
-      <section className="py-24 bg-gradient-to-br from-[#f5f7fa] to-white relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-[#f5f7fa] to-white relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-20 right-10 w-64 h-64 bg-[#7cc6ee]/5 rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 left-10 w-80 h-80 bg-[#1e2556]/5 rounded-full blur-3xl"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <div className="text-left mb-16">
-            <div className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#7cc6ee]/10 to-[#1e2556]/10 backdrop-blur-sm rounded-full mb-8 border border-[#7cc6ee]/20">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative z-10">
+          <div className="text-left mb-12 md:mb-16">
+            <div className="inline-flex items-center gap-3 px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-[#7cc6ee]/10 to-[#1e2556]/10 backdrop-blur-sm rounded-full mb-6 md:mb-8 border border-[#7cc6ee]/20">
               <div className="w-2 h-2 bg-[#7cc6ee] rounded-full animate-pulse"></div>
-              <Sparkles className="w-5 h-5 text-[#7cc6ee]" />
-              <span className="text-sm font-bold text-[#7cc6ee] uppercase tracking-wider">
+              <Sparkles className="w-4 md:w-5 h-4 md:h-5 text-[#7cc6ee]" />
+              <span className="text-xs md:text-sm font-bold text-[#7cc6ee] uppercase tracking-wider">
                 Latest Insights
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1e2556] mb-6 leading-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1e2556] mb-4 md:mb-6 leading-tight">
               Legal Tech Insights
             </h2>
-            <p className="text-xl text-[#334155] max-w-3xl leading-relaxed">
+            <p className="text-lg md:text-xl text-[#334155] max-w-3xl leading-relaxed">
               Stay ahead with cutting-edge insights, trends, and developments shaping the future of legal technology.
             </p>
           </div>
 
           {blogs.length > 0 && (
-            <div className="relative px-16">
-              {/* Navigation Arrows */}
-              <button 
-                onClick={prevBlog}
-                className="absolute -left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white hover:bg-[#7cc6ee] text-[#1e2556] hover:text-white p-3 rounded-full shadow-xl transition-all duration-300 hover:scale-110 border border-gray-200"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              
-              <button 
-                onClick={nextBlog}
-                className="absolute -right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white hover:bg-[#7cc6ee] text-[#1e2556] hover:text-white p-3 rounded-full shadow-xl transition-all duration-300 hover:scale-110 border border-gray-200"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-
+            <>
               {/* Blog Cards */}
-              <div className="overflow-hidden">
+              <div className="w-full">
                 <div 
-                  className="flex transition-transform duration-700 ease-in-out gap-6"
-                  style={{ transform: `translateX(-${currentBlog * 33.333}%)` }}
+                  className="flex transition-transform duration-700 ease-in-out gap-4 md:gap-8 px-4 md:px-8"
+                  style={{ transform: `translateX(-${currentBlog * (window.innerWidth < 768 ? 100 : 33.333)}%)` }}
                 >
                   {blogs.map((blog, index) => (
-                    <div key={blog.id} className="w-80 flex-shrink-0">
-                      <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl overflow-hidden transition-all duration-500 hover:scale-105 h-full border border-gray-100 group">
+                    <div key={blog.id} className="w-full md:w-80 flex-shrink-0">
+                      <a 
+                        href={`/blog/${blog.slug}`}
+                        className="block bg-white rounded-xl shadow-lg hover:shadow-2xl overflow-hidden transition-all duration-500 h-full border border-gray-100 group hover:-translate-y-2 cursor-pointer"
+                      >
                         {blog.bannerImage && (
-                          <div className="h-40 overflow-hidden relative">
+                          <div className="h-32 md:h-40 overflow-hidden relative">
                             <img 
                               src={blog.bannerImage}
                               alt={blog.title}
@@ -733,7 +741,7 @@ const LandingSections = () => {
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                           </div>
                         )}
-                        <div className="p-5">
+                        <div className="p-4 md:p-5">
                           <div className="flex items-center gap-2 mb-3">
                             <div className="p-1 bg-[#7cc6ee]/10 rounded-full">
                               <Calendar className="w-3 h-3 text-[#7cc6ee]" />
@@ -743,7 +751,7 @@ const LandingSections = () => {
                             </span>
                           </div>
                           
-                          <h3 className="text-lg font-bold text-[#1e2556] mb-3 line-clamp-2 leading-tight group-hover:text-[#7cc6ee] transition-colors duration-300">
+                          <h3 className="text-base md:text-lg font-bold text-[#1e2556] mb-3 line-clamp-2 leading-tight group-hover:text-[#7cc6ee] transition-colors duration-300">
                             {blog.title}
                           </h3>
                           
@@ -765,48 +773,87 @@ const LandingSections = () => {
                               ))}
                             </div>
                             
-                            <a 
-                              href={`/blog/${blog.slug}`}
-                              className="flex items-center gap-1 text-[#7cc6ee] hover:text-[#1e2556] transition-all duration-300 text-xs font-bold group-hover:gap-2"
-                            >
+                            <div className="flex items-center gap-1 text-[#7cc6ee] transition-all duration-300 text-xs font-bold group-hover:gap-2">
                               Read
                               <div className="p-0.5 bg-[#7cc6ee]/10 rounded-full group-hover:bg-[#7cc6ee] transition-colors duration-300">
                                 <ArrowRight className="w-3 h-3 group-hover:text-white" />
                               </div>
-                            </a>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </a>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Progress Indicator */}
-              <div className="flex justify-center mt-12">
+              {/* Navigation Controls & Progress Indicator */}
+              <div className="flex flex-col items-center mt-8 md:mt-12 space-y-6">
+                {/* Navigation Arrows */}
+                <div className="flex items-center justify-center gap-4">
+                  <button 
+                    onClick={prevBlog}
+                    className="bg-white hover:bg-[#7cc6ee] text-[#1e2556] hover:text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 border border-gray-200"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  
+                  <span className="text-sm text-[#334155] font-medium px-4">
+                    <span className="md:hidden">{currentBlog + 1} / {blogs.length}</span>
+                    <span className="hidden md:inline">{Math.floor(currentBlog / 3) + 1} / {Math.ceil(blogs.length / 3)}</span>
+                  </span>
+                  
+                  <button 
+                    onClick={nextBlog}
+                    className="bg-white hover:bg-[#7cc6ee] text-[#1e2556] hover:text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 border border-gray-200"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Progress Indicator */}
                 <div className="flex space-x-2">
-                  {Array.from({ length: Math.ceil(blogs.length / 3) }).map((_, index) => (
-                    <div
-                      key={index}
-                      className={`h-2 rounded-full transition-all duration-300 ${
-                        Math.floor(currentBlog / 1) === index 
-                          ? 'w-8 bg-[#7cc6ee]' 
-                          : 'w-2 bg-gray-300 hover:bg-gray-400'
-                      }`}
-                    />
-                  ))}
+                  {/* Mobile: Show dot for each blog */}
+                  <div className="flex space-x-2 md:hidden">
+                    {blogs.map((_, index) => (
+                      <div
+                        key={index}
+                        className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                          currentBlog === index 
+                            ? 'w-8 bg-[#7cc6ee]' 
+                            : 'w-2 bg-gray-300 hover:bg-gray-400'
+                        }`}
+                        onClick={() => setCurrentBlog(index)}
+                      />
+                    ))}
+                  </div>
+                  
+                  {/* Desktop: Show dot for each page (3 blogs) */}
+                  <div className="hidden md:flex space-x-2">
+                    {Array.from({ length: Math.ceil(blogs.length / 3) }).map((_, index) => (
+                      <div
+                        key={index}
+                        className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                          Math.floor(currentBlog / 3) === index 
+                            ? 'w-8 bg-[#7cc6ee]' 
+                            : 'w-2 bg-gray-300 hover:bg-gray-400'
+                        }`}
+                        onClick={() => setCurrentBlog(index * 3)}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            </>
           )}
 
           {blogs.length === 0 && (
-            <div className="text-center py-20">
-              <div className="w-24 h-24 bg-[#7cc6ee]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <BookOpen className="w-12 h-12 text-[#7cc6ee]" />
+            <div className="text-center py-16 md:py-20">
+              <div className="w-20 md:w-24 h-20 md:h-24 bg-[#7cc6ee]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <BookOpen className="w-10 md:w-12 h-10 md:h-12 text-[#7cc6ee]" />
               </div>
-              <h3 className="text-2xl font-bold text-[#1e2556] mb-4">No Insights Available</h3>
-              <p className="text-[#334155] text-lg">Check back soon for the latest legal tech insights and trends.</p>
+              <h3 className="text-xl md:text-2xl font-bold text-[#1e2556] mb-4">No Insights Available</h3>
+              <p className="text-[#334155] text-base md:text-lg">Check back soon for the latest legal tech insights and trends.</p>
             </div>
           )}
         </div>

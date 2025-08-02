@@ -756,6 +756,21 @@ const SoftwareDetailPage = ({ slug }) => {
       setTimeout(() => setCopySuccess(false), 2000);
     }
   };
+
+  // Remove the signup modal state, we don't need it anymore
+// const [showSignupModal, setShowSignupModal] = useState(false);
+
+// Special slugs configuration with their signup URLs
+const specialSlugsConfig = {
+  'zoho-contracts': 'https://store.zoho.in/ResellerCustomerSignUp.do?id=fa53a66d323346b43ea52de29f92eba1',
+  // Add more slugs and their signup URLs as needed
+  // 'another-slug': 'https://example.com/signup',
+};
+
+const isSpecialSlug = specialSlugsConfig.hasOwnProperty(slug);
+const signupUrl = specialSlugsConfig[slug];
+
+
   return (
     <div className="min-h-screen pt-16" style={{ backgroundColor: '#f5f7fa' }}>
       <div className="flex relative">
@@ -1015,7 +1030,7 @@ const SoftwareDetailPage = ({ slug }) => {
           )}
         </button>
         
-        <button
+        {/* <button
           onClick={() => setIsRfpFormOpen(true)}
           className="group whitespace-nowrap px-4 py-1.5 bg-[#1e2556]
                      text-white rounded-md font-medium hover:bg-[#0f1729]
@@ -1027,7 +1042,30 @@ const SoftwareDetailPage = ({ slug }) => {
           <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>
-        </button>
+        </button> */}
+        {/* Mobile Info Box - Replace the buttons section */}
+{isSpecialSlug ? (
+  <a 
+    href={signupUrl}
+    target="_blank"
+    className="group whitespace-nowrap px-4 py-1.5 bg-[#1e2556]
+    text-white rounded-md font-medium hover:bg-[#0f1729]
+    transition-all duration-200 flex items-center
+    justify-center gap-2 shadow-sm hover:shadow-md text-xs
+    hover:scale-105 active:scale-95"  >
+   Get Started
+  </a>
+) : (
+  <button 
+    onClick={() => setIsRfpFormOpen(true)}
+    className="group whitespace-nowrap px-4 py-1.5 bg-[#1e2556]
+    text-white rounded-md font-medium hover:bg-[#0f1729]
+    transition-all duration-200 flex items-center
+    justify-center gap-2 shadow-sm hover:shadow-md text-xs
+    hover:scale-105 active:scale-95"  >
+    Share Requirements
+  </button>
+)}
       </div>
     </div>
   </div>
@@ -1066,12 +1104,25 @@ const SoftwareDetailPage = ({ slug }) => {
                 </div>
                 
   
-                <button 
-                  onClick={() => setIsRfpFormOpen(true)}
-                  className="w-full mb-2 px-4 py-2 bg-[#1e2556] text-white rounded-md font-medium text-sm hover:bg-[#0f1729] transition-all duration-200"
-                >
-                  Share Requirements
-                </button>
+
+  
+               {/* Mobile Info Box - Replace the buttons section */}
+{isSpecialSlug ? (
+  <a 
+    href={signupUrl}
+    target="_blank"
+    className="w-full mb-2 px-4 py-2 bg-[#1e2556] text-white rounded-md font-medium text-sm hover:bg-[#0f1729] transition-all duration-200 text-center block"
+  >
+    Get Started
+  </a>
+) : (
+  <button 
+    onClick={() => setIsRfpFormOpen(true)}
+    className="w-full mb-2 px-4 py-2 bg-[#1e2556] text-white rounded-md font-medium text-sm hover:bg-[#0f1729] transition-all duration-200"
+  >
+    Share Requirements
+  </button>
+)}
                 
                 <button
                   onClick={() => setSidebarOpen(true)}
@@ -1487,6 +1538,8 @@ const SoftwareDetailPage = ({ slug }) => {
               {displaySoftware.isPremium && <VendorCommentTooltip section="reviews" />}
             </section>
 
+            
+
             {/* Premium Section: Case Studies (Below Reviews) */}
             {displaySoftware.isPremium && displaySoftware.caseStudies?.length > 0 && (
   <section id="case-studies" className={`mb-8 ${isMobile ? 'scroll-mt-40' : 'scroll-mt-24'}`}>
@@ -1647,6 +1700,56 @@ const SoftwareDetailPage = ({ slug }) => {
   </div>
 </section>
  )} 
+
+ {/* Special Signup Section for certain slugs
+{isSpecialSlug && (
+  <section className="mb-8">
+    <div className="bg-gradient-to-r from-[#1e2556] to-[#0f1729] rounded-xl p-8 text-center text-white">
+      <div className="max-w-2xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4">Ready to Get Started?</h2>
+        <p className="text-lg mb-6 opacity-90">
+          Join thousands of professionals who trust {displaySoftware.productName} for their business needs.
+        </p>
+        <a
+          href={signupUrl}
+          target="_blank"
+          className="inline-flex items-center gap-3 bg-white text-[#1e2556] px-8 py-3 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+          Start Your Journey
+        </a>
+      </div>
+    </div>
+  </section>
+)} */}
+{/* Special Signup Section for certain slugs */}
+{isSpecialSlug && (
+  <section className="mb-8">
+    <div className="bg-gradient-to-r from-[#1e2556] to-[#0f1729] rounded-xl p-8 text-center text-white">
+      <div className="max-w-2xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4">Ready to Get Started?</h2>
+        <p className="text-lg mb-4 opacity-90">
+          Join thousands of professionals who trust {displaySoftware.productName} for their business needs.
+        </p>
+        <p className="text-sm mb-6 opacity-75 font-medium">
+          ✨ No credit card required
+        </p>
+        <a
+          href={signupUrl}
+          target="_blank"
+          className="inline-flex items-center gap-3 bg-white text-[#1e2556] px-8 py-3 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+          Start Your Journey
+        </a>
+      </div>
+    </div>
+  </section>
+)}
 
             {/* Section 6: FAQs */}
              {software.faqs && software.faqs.length > 0 && ( 

@@ -13,9 +13,10 @@ import {
   BookOpen, 
   Eye 
 } from 'lucide-react';
-import ProductCategories from './_components/ProductsPart';
-import CategoriesProducts from "./_components/PaidFeaturing"
-import LandingSections from './_components/LandingSections';
+// import ProductCategories from './_components/ProductsPart';
+// import CategoriesProducts from "./_components/PaidFeaturing"
+import CategoriesProducts from "@/app/(home)/directory/_components/PaidFeaturing"
+import LandingSections from '@/app/(home)/directory/_components/LandingSections';
 
 // Updated categories
 const categoryOptions = [

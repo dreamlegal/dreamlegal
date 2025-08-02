@@ -5,11 +5,12 @@ import MainHomeComponent from "@/pages/MainHomeComponent";
 import "./globals.css";
 import MainHomePage from "@/components/MainHomePage";
 import LandingPage from "@/components/landingPage/LandingPage";
-
+import DirectoryLanding from "@/components/landingPage/two"
 export default async function Home() {
   return (
     <>
-      <LandingPage/>
+      {/* <LandingPage/> */}
+      <DirectoryLanding/>
     </>
   );
 }

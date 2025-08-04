@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
-
+import QuestionPanel from "@/app/admin/_components/QuestionPanel";
+import AdminComparisonPanel from "@/app/admin/_components/AdminComparisonPanel";
 const SendNotification = () => {
   const [message, setMessage] = useState("");
   const [notifyAllAccounts, setNotifyAllAccounts] = useState(false);
@@ -40,6 +41,7 @@ const SendNotification = () => {
   };
 
   return (
+    <>
     <div className="flex flex-col items-center justify-center py-10 px-4 space-y-6 md:py-20 md:px-6 lg:px-8">
       <div className="text-2xl font-bold md:text-3xl">Send Notification</div>
       <div className="w-full max-w-lg space-y-4">
@@ -124,6 +126,9 @@ const SendNotification = () => {
         </Button>
       </div>
     </div>
+    <QuestionPanel/>
+    <AdminComparisonPanel/>
+    </>
   );
 };
 

@@ -789,3 +789,33 @@ model BlogReaction {
   @@unique([blogId, vendorId, reaction])
   @@map("blog_reactions")
 }
+
+model Question {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  description String   // Law firm / Inhouse Professional/ Law Student/ Legal tech company
+  question    String   @db.Text
+  purpose     String   // Buying software / Market research / Just information
+  answer      String?  @db.Text // Admin will fill this
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("questions")
+}
+model Comparison {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  slug              String  @unique // e.g., "salesforce-crm-vs-hubspot-vs-leadhooper"
+  softwareSlugs     String[] // Array of software slugs being compared
+  description       String? @db.Text // Admin filled description
+  qna               Json?   // Questions and answers for comparison
+  
+  // SEO fields
+  metaTitle         String?
+  metaDescription   String?
+  
+  @@map("comparisons")
+}

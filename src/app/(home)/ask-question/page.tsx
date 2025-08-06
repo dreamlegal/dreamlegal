@@ -101,26 +101,30 @@ const SoftwareQALanding = () => {
       <div className="space-y-6 lg:space-y-8">
         <div className="space-y-4 lg:space-y-6">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#1e2556] leading-tight">
-            Anything About Software... Ask Experts!!
+          Anything About legal tech... Ask experts!!
           </h1>
           <p className="text-base sm:text-lg lg:text-xl text-[#334155] leading-relaxed">
-            Get expert advice on any software. Our verified professionals are here to help you make the right choice.
-          </p>
+           
+Get expert advice on any technology. Our legal tech experts are here to help you make the right choice.
+      </p>
         </div>
+        
+
+
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           <div className="text-center">
-            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1e2556]">5 Lac+</div>
-            <div className="text-xs sm:text-sm lg:text-base text-[#334155] font-medium">Verified Users</div>
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1e2556]">20,000+</div>
+            <div className="text-xs sm:text-sm lg:text-base text-[#334155] font-medium">visitors</div>
           </div>
           <div className="text-center">
-            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1e2556]">30k+</div>
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1e2556]">8543</div>
             <div className="text-xs sm:text-sm lg:text-base text-[#334155] font-medium">Queries Resolved</div>
           </div>
           <div className="text-center">
-            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1e2556]">500+</div>
-            <div className="text-xs sm:text-sm lg:text-base text-[#334155] font-medium">Software Experts</div>
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1e2556]">1300 </div>
+            <div className="text-xs sm:text-sm lg:text-base text-[#334155] font-medium">Software Mapped</div>
           </div>
         </div>
       </div>
@@ -285,7 +289,7 @@ const SoftwareQALanding = () => {
       {/* Testimonials Section */}
       <div className="py-16 bg-[#1e2556]">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">Over 30,000+ User Queries Resolved</h2>
+          <h2 className="text-3xl font-bold text-white text-center mb-12">Over 8500+ Queries Resolved</h2>
           <div className="bg-white rounded-xl p-8 max-w-4xl mx-auto">
             <div className="flex mb-4">
               {[...Array(5)].map((_, i) => (
@@ -293,9 +297,10 @@ const SoftwareQALanding = () => {
               ))}
             </div>
             <p className="text-[#2d2d2d] text-lg mb-6">
-              I was struggling to find the right software for my business needs, but this company's experts helped me narrow down my choices and choose the perfect fit.
-            </p>
-            <p className="text-[#334155] font-semibold">- Sanchit Singh</p>
+            A one-stop hub for LegalTech! The legal technology directory captures every essential tool, making it effortless to discover, compare, and choose the right solutions.
+
+  </p>
+            <p className="text-[#334155] font-semibold">- Suruchi Kanoongo,Senior Process Executive, Infosys</p>
           </div>
           
           <div className="flex justify-center mt-8 space-x-8">

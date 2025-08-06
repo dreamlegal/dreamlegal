@@ -466,6 +466,11 @@ const BlogInfo = () => {
 <option value="Buyer Perspective Report">Buyer Perspective Report</option>
 <option value="Inspiration Stories">Inspiration Stories</option>
 <option value="Blog">Blog</option>
+<option value="GC Stories">GC Stories</option>
+<option value="Lawfirm Stories">Lawfirm Stories</option>
+
+
+
 
 <option value="Client Relationship Management">Client Relationship Management</option>
 <option value="Governance Risk and Compliance">Governance Risk and Compliance</option>

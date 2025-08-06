@@ -212,7 +212,7 @@ const LandingSections = () => {
             Join thousands of legal professionals in discovering, comparing, and choosing the best legal technology for your needs.
           </p>
           <a 
-            href="/ask-a-question" 
+            href="/ask-question" 
             className="inline-block px-8 md:px-10 py-3 md:py-4 bg-[#1e2556] text-white rounded-lg font-semibold hover:bg-[#1e2556]/90 transition-colors text-lg"
           >
             Talk to advisor

@@ -7,7 +7,7 @@ import Link from 'next/link';
 import CreateRfps from '@/components/landingPage/CreateRfp';
 import { useAuth } from "@/context/authContext";
 import FinalSection from "@/app/(home)/category/_components/FinalSection";
-
+import MentionedProductsSection from "@/components/MentionedProductsSection";
 const SoftwareDetailPage = ({ slug }) => {
   const [software, setSoftware] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -1905,6 +1905,7 @@ const signupUrl = specialSlugsConfig[slug];
                 </div>
               </section>
             )}
+            <MentionedProductsSection productSlug={displaySoftware.slug} />
             <FinalSection category={displaySoftware.category} />
           </div>
         </div>

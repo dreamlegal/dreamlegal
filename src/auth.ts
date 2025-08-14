@@ -136,7 +136,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           
           // Check user type and redirect accordingly
           if (authData.type === 'vendor') {
-            return '/tech_vendor/dashboard';
+            return '/tech-vendor/dashboard';
           }
           
           // For user type, check if onboarding is completed
@@ -159,7 +159,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               return '/onboard';
             }
             
-            return '/legal_professionals/dashboard';
+            return '/legal-professionals/dashboard';
           }
         } catch (error) {
           console.error('Error parsing auth cookie:', error);
@@ -183,7 +183,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         
         // Check user type and redirect accordingly
         if (authData.type === 'vendor') {
-          return '/tech_vendor/dashboard';
+          return '/tech-vendor/dashboard';
         }
         
         // For user type, check if onboarding is completed
@@ -203,7 +203,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             return '/onboard';
           }
           
-          return '/legal_professionals/dashboard';
+          return '/legal-professionals/dashboard';
         }
       } catch (error) {
         console.error('Error parsing auth cookie:', error);

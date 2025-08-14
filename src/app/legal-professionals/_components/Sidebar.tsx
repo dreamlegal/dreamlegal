@@ -136,48 +136,48 @@ const Sidebar = ({ isOpen, setIsOpen, isMobile }) => {
   const { logout } = useAuth();
 
   const menuItems = [
-    { 
-      icon: LineChart, 
-      text: 'Workflow Analysis', 
-      path: '/legal_professionals/dashboard/workflow_analysis' 
-    },
-    { 
-      icon: FileText, 
-      text: 'Requirement Mapping', 
-      path: '/legal_professionals/dashboard/requirement_mapping' 
-    },
-    { 
-      icon: FolderSearch, 
-      text: 'Tech Directory', 
-      path: '/legal_professionals/dashboard/tech_directory' 
-    },
-    { 
-      icon: ArrowLeftRight, 
-      text: 'Comparison', 
-      path: '/legal_professionals/dashboard/comparison' 
-    },
-    { 
-      icon: Shuffle, 
-      text: 'Change Management', 
-      path: '/legal_professionals/dashboard/change_management' 
-    },
-    { 
-      icon: File, 
-      text: 'Create RFPs', 
-      path: '/legal_professionals/dashboard/create_rfps' 
-    },
-    { 
-      icon: Star, 
-      text: 'Saved Resources',
-      subItems: ['Bookmarks', 'Reviews', 'WorkFlow Reports', 'RFPs', 'Book My Calls'],
-      subItemPaths: [
-        '/legal_professionals/dashboard/bookmarks',
-        '/legal_professionals/dashboard/reviews',
-        '/legal_professionals/dashboard/workflow_reports',
-        '/legal_professionals/dashboard/rfps',
-        '/legal_professionals/dashboard/book_my_calls'
-      ]
-    },
+    // { 
+    //   icon: LineChart, 
+    //   text: 'Workflow Analysis', 
+    //   path: '/legal_professionals/dashboard/workflow_analysis' 
+    // },
+    // { 
+    //   icon: FileText, 
+    //   text: 'Requirement Mapping', 
+    //   path: '/legal_professionals/dashboard/requirement_mapping' 
+    // },
+    // { 
+    //   icon: FolderSearch, 
+    //   text: 'Tech Directory', 
+    //   path: '/legal_professionals/dashboard/tech_directory' 
+    // },
+    // { 
+    //   icon: ArrowLeftRight, 
+    //   text: 'Comparison', 
+    //   path: '/legal_professionals/dashboard/comparison' 
+    // },
+    // { 
+    //   icon: Shuffle, 
+    //   text: 'Change Management', 
+    //   path: '/legal_professionals/dashboard/change_management' 
+    // },
+    // { 
+    //   icon: File, 
+    //   text: 'Create RFPs', 
+    //   path: '/legal_professionals/dashboard/create_rfps' 
+    // },
+    // { 
+    //   icon: Star, 
+    //   text: 'Saved Resources',
+    //   subItems: ['Bookmarks', 'Reviews', 'WorkFlow Reports', 'RFPs', 'Book My Calls'],
+    //   subItemPaths: [
+    //     '/legal_professionals/dashboard/bookmarks',
+    //     '/legal_professionals/dashboard/reviews',
+    //     '/legal_professionals/dashboard/workflow_reports',
+    //     '/legal_professionals/dashboard/rfps',
+    //     '/legal_professionals/dashboard/book_my_calls'
+    //   ]
+    // },
     { 
       icon: UserCircle, 
       text: 'Profile', 

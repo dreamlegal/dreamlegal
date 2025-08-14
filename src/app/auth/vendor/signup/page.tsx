@@ -155,7 +155,7 @@ const handleVerifyOtp = async () => {
       setTimeout(() => {
         // Redirect based on user type
         if (data.type === 'vendor') {
-          router.push('/tech_vendor/dashboard');
+          router.push('/tech-vendor/dashboard');
         } else if (data.type === 'user') {
           router.push('/dashboard'); // or whatever your user dashboard route is
         }

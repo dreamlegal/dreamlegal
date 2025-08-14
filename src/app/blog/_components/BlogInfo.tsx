@@ -461,6 +461,7 @@ const BlogInfo = () => {
                 <option value="buyer-perspective-report">Buyer Perspective Report</option>
                 <option value="inspiration-stories">Inspiration Stories</option>
                 <option value="blog">blog</option> */}
+                <option value="Legal Tech Academy">Legal Tech Academy</option>
                 <option value="Industry Report">Industry Report</option>
 <option value="Market Trends">Market Trends</option>
 <option value="Buyer Perspective Report">Buyer Perspective Report</option>
@@ -575,7 +576,8 @@ const BlogInfo = () => {
               {/* Optional URL input as fallback */}
               <div className="mt-2">
                 <p className="text-sm text-gray-500 mb-2">
-                  Or enter an image URL directly:
+                  Or enter an image URL directly:(For Legal Tech Academy Drop Yt Links here)
+
                 </p>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

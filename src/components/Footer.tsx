@@ -755,18 +755,18 @@ export const Footer = () => {
   // For Vendors links
   const vendorLinks = [
     // { href: "/legal_tech", label: "For Technology Companies", icon: <Building size={14} /> },
-    { href: "/legal_tech", label: "Premium Profile" },
-    { href: "/legal_tech", label: "Marketing Strategy" },
-    { href: "/legal_tech", label: "Market Research" },
+    { href: "/legal-tech", label: "Premium Profile" },
+    { href: "/legal-tech", label: "Marketing Strategy" },
+    { href: "/legal-tech", label: "Market Research" },
   ];
 
   // Legal links
   const legalLinks = [
-    { href: "/privacy_policy", label: "Privacy Policy" },
-    { href: "/terms_of_use", label: "Terms of Use" },
-    { href: "/cookie_policy", label: "Cookie Policy" },
-    { href: "/community_guidelines", label: "Community Guidelines" },
-    { href: "/refund_policy", label: "Refund Policy" },
+    { href: "/privacy-policy", label: "Privacy Policy" },
+    { href: "/terms-of-use", label: "Terms of Use" },
+    { href: "/cookie-policy", label: "Cookie Policy" },
+    { href: "/community-guidelines", label: "Community Guidelines" },
+    { href: "/refund-policy", label: "Refund Policy" },
   ];
 
   // Common link style

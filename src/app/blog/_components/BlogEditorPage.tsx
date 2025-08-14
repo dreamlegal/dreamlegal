@@ -177,55 +177,7 @@ const BlogEditorPage = () => {
       setSaving(false);
     }
   };
-  // const handleSave = async (content, tableOfContents) => {
-  //   setSaving(true);
-  //   setSaveSuccess(false);
-  //   const blogId = localStorage.getItem('currentBlogId');
-    
-  //   if (!blogId) {
-  //     setError('No blog ID found. Please create a new blog.');
-  //     setSaving(false);
-  //     return;
-  //   }
-    
-  //   try {
-  //     // Combine the metadata with the blog content
-  //     const updatedBlog = {
-  //       ...blogInfo,
-  //       content,
-  //       extractedToc: tableOfContents
-  //     };
-      
-  //     const response = await fetch(`/api/blogs/${blogId}`, {
-  //       method: 'PUT',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(updatedBlog),
-  //     });
-      
-  //     if (!response.ok) {
-  //       throw new Error('Failed to save blog');
-  //     }
-      
-  //     setSaveSuccess(true);
-  //     setTimeout(() => setSaveSuccess(false), 3000);
-
-  //     // Update state with latest content
-  //     const updatedResponse = await fetch(`/api/blogs/${blogId}`);
-  //     if (updatedResponse.ok) {
-  //       const updatedBlog = await updatedResponse.json();
-  //       setBlogInfo(updatedBlog);
-  //       setEditedBlogInfo(updatedBlog);
-  //     }
-  //   } catch (err) {
-  //     setError(err.message || 'An unexpected error occurred');
-  //     console.error(err);
-  //   } finally {
-  //     setSaving(false);
-  //   }
-  // };
-
+  
   // Handle saving header info
   const handleSaveHeader = async () => {
     setHeaderSaving(true);
@@ -279,59 +231,7 @@ const BlogEditorPage = () => {
     }
   };
 
-  // Handle saving meta data
-  // const handleSaveMetaData = async () => {
-  //   setMetaDataSaving(true);
-  //   setSaveSuccess(false);
-  //   const blogId = localStorage.getItem('currentBlogId');
-    
-  //   if (!blogId) {
-  //     setError('No blog ID found. Please create a new blog.');
-  //     setMetaDataSaving(false);
-  //     return;
-  //   }
-    
-  //   try {
-  //     // Prepare the updated blog data
-  //     const updatedBlog = {
-  //       ...blogInfo,
-  //       ...editedBlogInfo
-  //     };
-      
-  //     const response = await fetch(`/api/blogs/${blogId}`, {
-  //       method: 'PUT',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(updatedBlog),
-  //     });
-      
-  //     if (!response.ok) {
-  //       throw new Error('Failed to save meta data');
-  //     }
-      
-  //     setSaveSuccess(true);
-  //     setTimeout(() => setSaveSuccess(false), 3000);
-
-  //     // Update blog info state with the edited data
-  //     setBlogInfo(editedBlogInfo);
-  //     setIsMetaDataModalOpen(false);
-      
-  //     // Refresh data from the server
-  //     const updatedResponse = await fetch(`/api/blogs/${blogId}`);
-  //     if (updatedResponse.ok) {
-  //       const updatedBlog = await updatedResponse.json();
-  //       setBlogInfo(updatedBlog);
-  //       setEditedBlogInfo(updatedBlog);
-  //     }
-  //   } catch (err) {
-  //     setError(err.message || 'An unexpected error occurred');
-  //     console.error(err);
-  //   } finally {
-  //     setMetaDataSaving(false);
-  //   }
-  // };
-  // Update the handleSaveMetaData function in the BlogEditorPage component
+  
 
 const handleSaveMetaData = async () => {
   setMetaDataSaving(true);
@@ -919,29 +819,7 @@ const handleSaveMetaData = async () => {
                       <FileSearch size={16} className="text-blue-500" />
                       <span className="font-medium">SEO & Meta Data</span>
                     </div>
-                    {/* <div className="grid grid-cols-1 md:grid-cols-1 gap-3">
-                      {blogInfo.htmlTitle && (
-                        <div className="text-xs text-gray-600">
-                          <span className="font-medium">HTML Title:</span> {blogInfo.htmlTitle}
-                        </div>
-                      )}
-                      {blogInfo.metaDescription && (
-                        <div className="text-xs text-gray-600 md:col-span-2">
-                          <span className="font-medium">Meta Description:</span> {blogInfo.metaDescription}
-                        </div>
-                      )}
-                      {blogInfo.ogTitle && (
-                        <div className="text-xs text-gray-600">
-                          <span className="font-medium">OG Title:</span> {blogInfo.ogTitle}
-                        </div>
-                      )}
-                      {blogInfo.ogImage && (
-                        <div className="text-xs text-gray-600">
-                          <span className="font-medium">OG Image:</span>
-                          <img src={blogInfo.ogImage} alt="OG Image" className="w-full h-32 object-contain mt-1" />
-                        </div>
-                      )}
-                    </div> */}
+                   
                     <div className="flex flex-col space-y-3">
   {blogInfo.htmlTitle && (
     <div className="text-xs text-gray-600">
@@ -1109,7 +987,7 @@ const handleSaveMetaData = async () => {
                     {/* Optional URL input as fallback */}
                     <div className="mt-3">
                       <label htmlFor="banner-url" className="block text-xs font-medium text-gray-500 mb-1">
-                        Or enter an image URL directly:
+                        Or enter an image URL directly:(For Legal Tech Academy Drop Yt Links here)
                       </label>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

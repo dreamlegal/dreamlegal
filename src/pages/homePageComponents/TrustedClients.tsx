@@ -2,7 +2,7 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from 'react';
-
+import Image from 'next/image';
 const useIntersectionObserver = (options = {}) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const targetRef = useRef(null);
@@ -145,10 +145,12 @@ const PremiumMarquee = () => {
                     </div>
 
                     {/* Logo image */}
-                    <img 
+                    <Image 
                       src={logo.imageUrl}
                       alt={logo.alt}
-                      className="w-full h-full object-contain p-2 transition-all duration-500 group-hover:brightness-105"
+                      layout="fill"
+                      object="contain"
+                      className="p-2 transition-all duration-500 group-hover:brightness-105"
                     />
                   </div>
 

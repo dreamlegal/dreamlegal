@@ -1896,7 +1896,7 @@ const Navbar = () => {
 
                 {/* For Vendors Button - Styled as outline button */}
                 <a 
-                  href="/legal_tech"
+                  href="/legal-tech"
                   className="inline-flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium border-2 transition-all duration-200 hover:shadow-md transform hover:scale-105"
                   style={{ 
                     color: '#1e2556', 
@@ -1958,14 +1958,14 @@ const Navbar = () => {
                               </div>
                               <div className="py-1">
                                 <a 
-                                  href={userType === 'vendor' ? '/tech_vendor/dashboard' : '/legal_professionals/dashboard'} 
+                                  href={userType === 'vendor' ? '/tech-vendor/dashboard' : '/legal-professionals/profile'} 
                                   className="flex items-center px-4 py-2 text-sm transition-colors"
                                   style={{ color: '#2d2d2d' }}
                                   onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f7fa'}
                                   onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
                                 >
                                   <User size={16} className="mr-3" style={{ color: '#334155' }} />
-                                  Dashboard
+                                  {userType === 'vendor' ? 'Dashboard' : 'Profile'}
                                 </a>
                                 <a 
                                   href="/community" 
@@ -2172,7 +2172,7 @@ const Navbar = () => {
                         <span>Ask a Question</span>
                       </a>
                       <a
-                        href="/legal_tech"
+                        href="/legal-tech"
                         className="w-full flex items-center justify-center space-x-2 p-3 rounded-lg text-sm font-medium border-2 transition-all duration-200"
                         style={{ 
                           color: '#1e2556', 
@@ -2210,11 +2210,11 @@ const Navbar = () => {
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <a
-                          href={userType === 'vendor' ? '/tech_vendor/dashboard' : '/legal_professionals/dashboard'}
+                          href={userType === 'vendor' ? '/tech-vendor/dashboard' : '/legal-professionals/profile'}
                           className="text-center text-xs font-medium bg-white py-2 px-3 rounded-md border border-gray-200 transition-colors"
                           style={{ color: '#1e2556' }}
                         >
-                          Dashboard
+                          {userType === 'vendor' ? 'Dashboard' : 'Profile'}
                         </a>
                         <button
                           onClick={handleLogout}

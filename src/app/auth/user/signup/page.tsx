@@ -22,11 +22,11 @@ const UserLoginPage = () => {
     if (isAuthenticated) {
       // Redirect based on user type and onboarding status
       if (userType === "vendor") {
-        router.push("/tech_vendor/dashboard");
+        router.push("/tech-vendor/dashboard");
       } else if (userType === "user" && !hasCompletedOnboarding) {
         router.push("/onboard");
       } else if (userType === "user" && hasCompletedOnboarding) {
-        router.push("/legal_professionals/dashboard");
+        router.push("/legal-professionals/dashboard");
       }
     }
   }, [isAuthenticated, userType, hasCompletedOnboarding, isLoading, router]);

@@ -3260,14 +3260,14 @@ const part4Prompts = [
   
   export const getDepartmentColor = (category: string): string => {
     const colorMap: { [key: string]: string } = {
-      "Contract management": "#ef9995",
-      "Litigation and case management": "#7cc6ee", 
-      "IP management": "#a8e6a3",
-      "Compliance & Regulatory": "#f4d06f",
-      "Due Diligence": "#dda0dd",
-      "Corporate Transactions": "#ffa07a",
+      "Contract management": "#87ceeb",
+      "Litigation and case management": "#87ceeb", 
+      "IP management": "#87ceeb",
+      "Compliance & Regulatory": "#87ceeb",
+      "Due Diligence": "#87ceeb",
+      "Corporate Transactions": "#87ceeb",
       "Legal research and opinions": "#87ceeb",
-      "Client Communications": "#98fb98"
+      "Client Communications": "#87ceeb"
     };
     return colorMap[category] || "#9ca3af";
   };

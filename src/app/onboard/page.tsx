@@ -1,13 +1,14 @@
+
 // "use client";
 
 // import { motion } from "framer-motion";
 // import { ArrowLeft, Check } from "lucide-react";
-// import { useSession } from "next-auth/react";
 // import { useRouter } from "next/navigation";
-// import { useState } from "react";
+// import { useState, useEffect } from "react";
+// import { useAuth } from "@/context/authContext"; // Adjust the path as needed
 
-// const onBoard = () => {
-//     const {data:session} = useSession()
+// const OnBoard = () => {
+//   const { userId, userType, isAuthenticated, isLoading, hasCompletedOnboarding, checkAuth } = useAuth();
 //   const router = useRouter();
 //   const [loading, setLoading] = useState(false);
 //   const [step, setStep] = useState(1);
@@ -16,6 +17,26 @@
 //     organizationType: "",
 //     teamSize: 1,
 //   });
+
+//   // Redirect if user is not authenticated or has already completed onboarding
+//   useEffect(() => {
+//     if (isLoading) return;
+    
+//     if (!isAuthenticated) {
+//       router.push("/auth/user/login");
+//       return;
+//     }
+    
+//     if (hasCompletedOnboarding) {
+//       router.push("/legal_professionals/dashboard");
+//       return;
+//     }
+    
+//     if (userType === "vendor") {
+//       router.push("/tech_vendor/dashboard");
+//       return;
+//     }
+//   }, [isAuthenticated, userType, hasCompletedOnboarding, isLoading, router]);
 
 //   const teamSizeOptions = [
 //     { value: 1, label: "1 person" },
@@ -65,15 +86,16 @@
 //     },
 //   ];
 
-//   const handleSubmit = (e:any) => {
+//   const handleSubmit = (e) => {
 //     e.preventDefault();
-//     if(step === 4) {
-//         return handleVerifyOtp();
+//     if (step < 3) {
+//       setStep((prev) => prev + 1);
+//     } else {
+//       handleCompleteSetup();
 //     }
-//     setStep((prev) => prev + 1);
 //   };
 
-//   const handleVerifyOtp = async () => {
+//   const handleCompleteSetup = async () => {
 //     try {
 //       setLoading(true);
 //       const res = await fetch('/api/onboard-user', {
@@ -82,7 +104,7 @@
 //           'Content-Type': 'application/json',
 //         },
 //         body: JSON.stringify({
-//             id: session?.user.id,
+//           id: userId,
 //           organizationName: formData.organizationName,
 //           organizationType: formData.organizationType,
 //           teamSize: formData.teamSize
@@ -91,12 +113,14 @@
       
 //       const data = await res.json();
 //       if (data.success) {
-//         setTimeout(() => {
-//           router.push('/legal_professionals/dashboard');
-//         }, 1500);
+//         // Update auth context to reflect completed onboarding
+//         await checkAuth();
+//         router.push('/legal_professionals/dashboard');
+//       } else {
+//         console.error('Failed to complete onboarding:', data.error);
 //       }
 //     } catch (error) {
-//         console.error(error);
+//       console.error('Error during onboarding:', error);
 //     } finally {
 //       setLoading(false);
 //     }
@@ -239,8 +263,6 @@
 //     }
 //   };
 
-  
-
 //   const renderButton = () => {
 //     if (loading) {
 //       return (
@@ -249,18 +271,6 @@
 //           className="px-6 py-2.5 rounded-2xl bg-gray-400 text-white cursor-not-allowed"
 //         >
 //           Loading...
-//         </button>
-//       );
-//     }
-
-//     if (step === 4) {
-//       return (
-//         <button
-//           type="submit"
-//           className="px-6 py-2.5 rounded-2xl bg-black text-white hover:bg-gray-800 transition-colors"
-//           onClick={handleVerifyOtp}
-//         >
-//           Complete Setup
 //         </button>
 //       );
 //     }
@@ -286,10 +296,19 @@
 //             : "bg-black text-white hover:bg-gray-800"
 //         }`}
 //       >
-//         {step === 2 ? "Complete Setup" : "Next step"}
+//         {step === 3 ? "Complete Setup" : "Next step"}
 //       </button>
 //     );
 //   };
+
+//   // Show loading state while checking session
+//   if (isLoading) {
+//     return (
+//       <div className="max-w-2xl mx-auto mt-8 pt-8 text-center">
+//         <p>Loading...</p>
+//       </div>
+//     );
+//   }
 
 //   return (
 //     <div className="max-w-2xl mx-auto mt-8 pt-8">
@@ -318,19 +337,19 @@
 //   );
 // };
 
-// export default onBoard;
-
+// export default OnBoard;
 "use client";
 
 import { motion } from "framer-motion";
 import { ArrowLeft, Check } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/authContext"; // Adjust the path as needed
 
 const OnBoard = () => {
   const { userId, userType, isAuthenticated, isLoading, hasCompletedOnboarding, checkAuth } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -339,17 +358,37 @@ const OnBoard = () => {
     teamSize: 1,
   });
 
+  // Get redirect parameter from URL
+  const redirectUrl = searchParams.get('redirect');
+
+  // Function to determine where to redirect after onboarding
+  const getPostOnboardingDestination = () => {
+    // Priority 1: Use redirect parameter if provided (e.g., back to prompts)
+    if (redirectUrl) {
+      return decodeURIComponent(redirectUrl);
+    }
+    
+    // Priority 2: Default dashboard
+    return '/legal-professionals/dashboard';
+  };
+
   // Redirect if user is not authenticated or has already completed onboarding
   useEffect(() => {
     if (isLoading) return;
     
     if (!isAuthenticated) {
-      router.push("/auth/user/login");
+      // Preserve redirect parameter when redirecting to login
+      const loginUrl = redirectUrl 
+        ? `/auth/user/login?redirect=${encodeURIComponent(redirectUrl)}`
+        : "/auth/user/login";
+      router.push(loginUrl);
       return;
     }
     
     if (hasCompletedOnboarding) {
-      router.push("/legal_professionals/dashboard");
+      // If already onboarded and there's a redirect, use it
+      const destination = getPostOnboardingDestination();
+      router.push(destination);
       return;
     }
     
@@ -357,7 +396,7 @@ const OnBoard = () => {
       router.push("/tech_vendor/dashboard");
       return;
     }
-  }, [isAuthenticated, userType, hasCompletedOnboarding, isLoading, router]);
+  }, [isAuthenticated, userType, hasCompletedOnboarding, isLoading, router, redirectUrl]);
 
   const teamSizeOptions = [
     { value: 1, label: "1 person" },
@@ -436,7 +475,10 @@ const OnBoard = () => {
       if (data.success) {
         // Update auth context to reflect completed onboarding
         await checkAuth();
-        router.push('/legal_professionals/dashboard');
+        
+        // Redirect to intended destination (prompts page or dashboard)
+        const destination = getPostOnboardingDestination();
+        router.push(destination);
       } else {
         console.error('Failed to complete onboarding:', data.error);
       }
@@ -463,6 +505,14 @@ const OnBoard = () => {
               <p className="text-gray-500 mt-2">
                 Tell us about your organization
               </p>
+              {/* Show redirect message if coming from prompts */}
+              {redirectUrl && redirectUrl.includes('/prompts') && (
+                <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-sm text-blue-800">
+                    🎯 You'll be redirected back to the prompt library after setup
+                  </p>
+                </div>
+              )}
             </div>
 
             <motion.div
@@ -591,7 +641,7 @@ const OnBoard = () => {
           disabled
           className="px-6 py-2.5 rounded-2xl bg-gray-400 text-white cursor-not-allowed"
         >
-          Loading...
+          {step === 3 ? "Completing Setup..." : "Loading..."}
         </button>
       );
     }
@@ -617,7 +667,13 @@ const OnBoard = () => {
             : "bg-black text-white hover:bg-gray-800"
         }`}
       >
-        {step === 3 ? "Complete Setup" : "Next step"}
+        {step === 3 
+          ? (redirectUrl && redirectUrl.includes('/prompts') 
+             ? "Complete & Go to Prompts" 
+             : "Complete Setup"
+            ) 
+          : "Next step"
+        }
       </button>
     );
   };

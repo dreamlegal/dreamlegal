@@ -1614,7 +1614,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { 
   Send, Share, Plus, Menu, X, ChevronDown, Bell, Search, User, Bookmark, LogOut, MessageCircle, 
   Home, Users, Briefcase, BookOpen, LineChart, Cpu, FileText, Building, Mail, Handshake, HelpCircle,
-  Scale, Brain, FolderOpen, Gavel, Shield, SearchIcon, Eye
+  Scale, Brain, FolderOpen, Gavel, Shield, SearchIcon, Eye,
+  Pencil
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/context/authContext';
@@ -1738,6 +1739,12 @@ const Navbar = () => {
       icon: <BookOpen size={16} />,
       hasDropdown: false,
       href: '/resources'
+    },
+    {
+      title: 'Prompts',
+      icon: <Pencil size={16} />,
+      hasDropdown: false,
+      href: '/prompts'
     }
   ];
 

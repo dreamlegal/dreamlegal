@@ -15,7 +15,8 @@ import {
   LogOut,
   ChevronRight,
   X,
-  File
+  File,
+  Pencil
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/context/authContext';
@@ -182,6 +183,11 @@ const Sidebar = ({ isOpen, setIsOpen, isMobile }) => {
       icon: UserCircle, 
       text: 'Profile', 
       path: '/legal_professionals/dashboard/profile' 
+    },
+    { 
+      icon: Pencil, 
+      text: 'Prompts', 
+      path: '/prompts' 
     },
   ];
 

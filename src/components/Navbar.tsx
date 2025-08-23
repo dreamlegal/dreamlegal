@@ -1965,7 +1965,7 @@ const Navbar = () => {
                               </div>
                               <div className="py-1">
                                 <a 
-                                  href={userType === 'vendor' ? '/tech-vendor/dashboard' : '/legal-professionals/profile'} 
+                                  href={userType === 'vendor' ? '/tech-vendor/dashboard' : '/legal-professionals/dashboard/profile'} 
                                   className="flex items-center px-4 py-2 text-sm transition-colors"
                                   style={{ color: '#2d2d2d' }}
                                   onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f7fa'}
@@ -2217,7 +2217,7 @@ const Navbar = () => {
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <a
-                          href={userType === 'vendor' ? '/tech-vendor/dashboard' : '/legal-professionals/profile'}
+                          href={userType === 'vendor' ? '/tech-vendor/dashboard' : '/legal-professionals/dashboard/profile'}
                           className="text-center text-xs font-medium bg-white py-2 px-3 rounded-md border border-gray-200 transition-colors"
                           style={{ color: '#1e2556' }}
                         >

@@ -819,3 +819,31 @@ model Comparison {
   
   @@map("comparisons")
 }
+
+
+
+model ArticleVote {
+  id         String   @id @default(cuid())
+  articleId  String   @map("article_id")
+  browserId  String   @map("browser_id")
+  voteType   VoteType @map("vote_type")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@unique([articleId, browserId])
+  @@map("article_votes")
+}
+
+enum VoteType {
+  LIKE
+  DISLIKE
+}
+model ComparisonVote {
+  id           String   @id @default(cuid())
+  comparisonId String   @map("comparison_id")
+  browserId    String   @map("browser_id")
+  voteType     VoteType @map("vote_type")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@unique([comparisonId, browserId])
+  @@map("comparison_votes")
+}

@@ -296,25 +296,12 @@
 // export default ContactFormSection;
 "use client"
 import React from "react";
-import { Sparkles, Calendar, ArrowRight } from 'lucide-react';
+import { Sparkles } from 'lucide-react'; // Removed Calendar and ArrowRight as they are no longer used
 
-const CalendlyContactSection = () => {
-  const handleCalendlyClick = () => {
-    // Option 1: Open Calendly in a new tab (most reliable)
-    window.open('https://calendly.com/ranjansinghania1909/30min', '_blank');
-  };
-
-  const handleCalendlyPopup = () => {
-    // Option 2: Use Calendly popup (if script is loaded globally)
-    if (window.Calendly) {
-      window.Calendly.initPopupWidget({
-        url: 'https://calendly.com/ranjansinghania1909/30min'
-      });
-    } else {
-      // Fallback to opening in new tab
-      window.open('https://calendly.com/ranjansinghania1909/30min', '_blank');
-    }
-  };
+// Renamed component to ContactFormSection to match the file's original export intention
+const ContactFormSection = () => {
+  // Removed handleCalendlyClick and handleCalendlyPopup functions
+  // as they were specific to Calendly and are not relevant for Google Calendar Appointment Scheduling.
 
   return (
     <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#f8fafc] to-[#f1f5f9] relative overflow-hidden">
@@ -340,23 +327,25 @@ const CalendlyContactSection = () => {
           </p>
         </div>
 
-        {/* Calendly Widget - Direct Embed */}
-        <div className="relative w-full h-[700px] rounded-xl overflow-hidden shadow-2xl">
+        {/* Google Calendar Appointment Scheduling Widget - Direct Embed */}
+        {/* Adjusted wrapper height to 600px to match the iframe's specified height */}
+        <div className="relative w-full h-[600px] rounded-xl overflow-hidden shadow-2xl">
           <iframe
-            src="https://calendly.com/ranjansinghania1909/30min"
+            src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0eWSLj-DBA00wuQ3grNZX5CldEF6ne-pVmLNFF63_2GCdZfG1Wj0plqeteyQLwXwoVlYyFmWtQ?gv=true"
             width="100%"
-            height="100%"
+            height="600" // Set fixed height as per Google Calendar embed code
             frameBorder="0"
-            title="Schedule a meeting"
-            className="rounded-xl"
+            title="Google Calendar Appointment Scheduling" // Updated title for clarity
+            className="rounded-xl" // Kept existing Tailwind styling
+            style={{ border: 0 }} // Added inline style for border: 0 as per Google embed code
           />
         </div>
         
-        {/* Backup options below the Calendly widget */}
+        {/* Removed "Backup options" comment as there are no longer alternative scheduling methods */}
       
       </div>
     </section>
   );
 };
 
-export default CalendlyContactSection;
+export default ContactFormSection; // Exporting the renamed component

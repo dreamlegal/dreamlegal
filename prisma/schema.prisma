@@ -717,6 +717,7 @@ model LegalSoftware {
   caseStudies            Json?
   valueMetrics           Json?
   vendorComments         Json?
+  userExperiences    UserExperience[]
 
 
 
@@ -846,4 +847,28 @@ model ComparisonVote {
 
   @@unique([comparisonId, browserId])
   @@map("comparison_votes")
+}
+
+// Add this to your existing schema.prisma file
+
+model UserExperience {
+  id                  String   @id @default(cuid())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  
+  // User and Product associations
+  userId             String
+  productId          String
+  
+  // Experience fields
+  beforeUsing        String   @db.Text
+  afterUsing         String   @db.Text
+  recommendationScore Int     // 1-10 scale
+  
+  // Relations
+  product            LegalSoftware @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  // Ensure one review per user per product
+  @@unique([userId, productId])
+  @@map("user_experiences")
 }

@@ -294,14 +294,79 @@
 // };
 
 // export default ContactFormSection;
-"use client"
-import React from "react";
-import { Sparkles } from 'lucide-react'; // Removed Calendar and ArrowRight as they are no longer used
+// "use client"
+// import React from "react";
+// import { Sparkles } from 'lucide-react'; // Removed Calendar and ArrowRight as they are no longer used
 
-// Renamed component to ContactFormSection to match the file's original export intention
+// // Renamed component to ContactFormSection to match the file's original export intention
+// const ContactFormSection = () => {
+
+//   return (
+//     <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#f8fafc] to-[#f1f5f9] relative overflow-hidden">
+//       {/* Background decoration */}
+//       <div className="absolute inset-0 bg-gradient-to-br from-[#7cc6ee]/5 to-[#1e2556]/5" />
+//       <div className="absolute top-5 sm:top-10 right-5 sm:right-10 w-32 h-32 sm:w-64 sm:h-64 bg-[#7cc6ee]/10 rounded-full blur-3xl" />
+//       <div className="absolute bottom-5 sm:bottom-10 left-5 sm:left-10 w-24 h-24 sm:w-48 sm:h-48 bg-[#1e2556]/10 rounded-full blur-3xl" />
+      
+//       <div className="max-w-4xl mx-auto relative" id="contact">
+//         {/* Header */}
+//         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+//           <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4">
+//             <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-[#7cc6ee] animate-pulse" />
+//             <span className="text-xs sm:text-sm font-semibold text-[#7cc6ee] tracking-wider uppercase">
+//               Schedule a Meeting
+//             </span>
+//           </div>
+//           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1e2556] mb-4 sm:mb-6 leading-tight px-4 sm:px-0">
+//             Let's Start a <span className="text-[#7cc6ee]">Conversation</span>
+//           </h2>
+//           <p className="text-base sm:text-lg lg:text-xl text-[#334155] max-w-2xl mx-auto px-4 sm:px-0">
+//             Ready to transform your business? Book a 30-minute consultation to discuss your needs and discover how we can help.
+//           </p>
+//         </div>
+
+//         {/* Google Calendar Appointment Scheduling Widget - Direct Embed */}
+//         {/* Adjusted wrapper height to 600px to match the iframe's specified height */}
+//         <div className="relative w-full h-[600px] rounded-xl overflow-hidden shadow-2xl">
+//           <iframe
+//             src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0eWSLj-DBA00wuQ3grNZX5CldEF6ne-pVmLNFF63_2GCdZfG1Wj0plqeteyQLwXwoVlYyFmWtQ?gv=true"
+//             width="100%"
+//             height="600" // Set fixed height as per Google Calendar embed code
+//             frameBorder="0"
+//             title="Google Calendar Appointment Scheduling" // Updated title for clarity
+//             className="rounded-xl" // Kept existing Tailwind styling
+//             style={{ border: 0 }} // Added inline style for border: 0 as per Google embed code
+//           />
+//         </div>
+        
+//         {/* Removed "Backup options" comment as there are no longer alternative scheduling methods */}
+      
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default ContactFormSection; // Exporting the renamed component
+// calendly one ahead
+"use client"
+import React, { useEffect } from "react";
+import { Sparkles } from 'lucide-react';
+
 const ContactFormSection = () => {
-  // Removed handleCalendlyClick and handleCalendlyPopup functions
-  // as they were specific to Calendly and are not relevant for Google Calendar Appointment Scheduling.
+  useEffect(() => {
+    // Load Calendly script
+    const script = document.createElement('script');
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    // Cleanup function to remove script when component unmounts
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
 
   return (
     <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#f8fafc] to-[#f1f5f9] relative overflow-hidden">
@@ -327,25 +392,21 @@ const ContactFormSection = () => {
           </p>
         </div>
 
-        {/* Google Calendar Appointment Scheduling Widget - Direct Embed */}
-        {/* Adjusted wrapper height to 600px to match the iframe's specified height */}
-        <div className="relative w-full h-[600px] rounded-xl overflow-hidden shadow-2xl">
-          <iframe
-            src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0eWSLj-DBA00wuQ3grNZX5CldEF6ne-pVmLNFF63_2GCdZfG1Wj0plqeteyQLwXwoVlYyFmWtQ?gv=true"
-            width="100%"
-            height="600" // Set fixed height as per Google Calendar embed code
-            frameBorder="0"
-            title="Google Calendar Appointment Scheduling" // Updated title for clarity
-            className="rounded-xl" // Kept existing Tailwind styling
-            style={{ border: 0 }} // Added inline style for border: 0 as per Google embed code
+        {/* Calendly Inline Widget */}
+        <div className="relative w-full rounded-xl overflow-hidden shadow-2xl bg-white">
+          <div 
+            className="calendly-inline-widget" 
+            data-url="https://calendly.com/ranjansinghania1909/30min" 
+            style={{ 
+              minWidth: '320px', 
+              height: '700px',
+              borderRadius: '12px'
+            }}
           />
         </div>
-        
-        {/* Removed "Backup options" comment as there are no longer alternative scheduling methods */}
-      
       </div>
     </section>
   );
 };
 
-export default ContactFormSection; // Exporting the renamed component
+export default ContactFormSection;

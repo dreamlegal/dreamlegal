@@ -717,7 +717,7 @@ model LegalSoftware {
   caseStudies            Json?
   valueMetrics           Json?
   vendorComments         Json?
-  userExperiences    UserExperience[]
+  userExperiences        UserExperience[]
 
 
 

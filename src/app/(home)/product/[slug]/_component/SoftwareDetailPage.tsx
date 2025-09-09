@@ -8,6 +8,8 @@
 // import { useAuth } from "@/context/authContext";
 // import FinalSection from "@/app/(home)/category/_components/FinalSection";
 // import MentionedProductsSection from "@/components/MentionedProductsSection";
+
+// import UserExperienceSection from '@/app/(home)/product/[slug]/_component/UserExperienceSection';
 // const SoftwareDetailPage = ({ slug }) => {
 //   const [software, setSoftware] = useState(null);
 //   const [loading, setLoading] = useState(true);
@@ -173,11 +175,34 @@
 //     }
 //   };
 
+//   // Review link generation functions
+//   const generateReviewLink = () => {
+//     const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+//     return `${baseUrl}/user-experiences?product=${slug}`;
+//   };
+
+//   const handleCopyReviewLink = async () => {
+//     try {
+//       const reviewLink = generateReviewLink();
+//       await navigator.clipboard.writeText(reviewLink);
+//       alert('Review link copied! Share this link to collect user experiences.');
+//     } catch (err) {
+//       // Fallback for older browsers
+//       const textArea = document.createElement('textarea');
+//       textArea.value = generateReviewLink();
+//       document.body.appendChild(textArea);
+//       textArea.select();
+//       document.execCommand('copy');
+//       document.body.removeChild(textArea);
+//       alert('Review link copied! Share this link to collect user experiences.');
+//     }
+//   };
+
 //   useEffect(() => {
 //     const handleScroll = () => {
 //       const sections = software?.isPremium 
-//         ? ['value-metrics', 'overview', 'features', 'pricing', 'reviews', 'case-studies', 'media', 'faqs', 'sources', 'alternatives']
-//         : ['overview', 'features', 'pricing', 'reviews', 'media', 'faqs', 'sources', 'alternatives'];
+//         ? ['value-metrics', 'overview','user-experiences', 'features', 'pricing', 'reviews',  'case-studies', 'media', 'faqs', 'sources', 'alternatives']
+//         : ['overview', 'user-experiences','features', 'pricing', 'reviews', 'user-experiences', 'media', 'faqs', 'sources', 'alternatives'];
 //       const scrollPosition = window.scrollY + 120;
 
 //       for (const section of sections) {
@@ -592,9 +617,11 @@
 //   const sections = [
 //     ...(software.isPremium && software.valueMetrics?.length > 0 ? [{ id: 'value-metrics', label: 'Value Metrics' }] : []),
 //     { id: 'overview', label: 'Overview' },
+//     { id: 'user-experiences', label: 'User Experiences' },
 //     { id: 'features', label: 'Features' },
 //     { id: 'pricing', label: 'Pricing' },
 //     { id: 'reviews', label: 'Reviews' },
+  
 //     ...(software.isPremium && software.caseStudies?.length > 0 ? [{ id: 'case-studies', label: 'Case Studies' }] : []),
 //     ...(allMedia.length > 0 ? [{ id: 'media', label: 'Media' }] : []),
 //     ...(software.faqs && software.faqs.length > 0 ? [{ id: 'faqs', label: 'FAQs' }] : []),
@@ -757,10 +784,7 @@
 //     }
 //   };
 
-//   // Remove the signup modal state, we don't need it anymore
-// // const [showSignupModal, setShowSignupModal] = useState(false);
-
-// // Special slugs configuration with their signup URLs
+//   // Special slugs configuration with their signup URLs
 // const specialSlugsConfig = {
 //   'zoho-contracts': 'https://store.zoho.in/ResellerCustomerSignUp.do?id=fa53a66d323346b43ea52de29f92eba1',
 //   // Add more slugs and their signup URLs as needed
@@ -943,45 +967,6 @@
 //         <div className={`flex-1 ${isMobile ? 'ml-0' : 'ml-[336px]'}`}>
           
 //           {/* Desktop Navigation Header */}
-//           {/* {!isMobile && (
-//             <div className="sticky top-16 bg-white shadow-md z-9999 border-b border-gray-100">
-//               <div className="flex items-center justify-between px-4 md:px-6 py-2">
-//                 <div className="flex space-x-1">
-//                   {sections.map((section, index) => (
-//                     <button
-//                       key={section.id}
-//                       onClick={() => scrollToSection(section.id)}
-//                       className={`px-3 py-1.5 rounded-md font-medium transition-all duration-300 text-xs whitespace-nowrap ${
-//                         activeSection === section.id
-//                           ? 'text-white shadow-sm'
-//                           : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-//                       }`}
-//                       style={{
-//                         backgroundColor: activeSection === section.id ? '#7cc6ee' : 'transparent'
-//                       }}
-//                     >
-//                       {section.label}
-//                     </button>
-//                   ))}
-//                 </div>
-                
-//                 <button
-//                   onClick={() => setIsRfpFormOpen(true)}
-//                   className="group whitespace-nowrap px-4 py-1.5 bg-[#1e2556]
-//                              text-white rounded-md font-medium hover:bg-[#0f1729]
-//                              transition-all duration-200 flex items-center
-//                              justify-center gap-2 shadow-sm hover:shadow-md text-xs
-//                              hover:scale-105 active:scale-95"
-//                 >
-//                   Share Requirements
-//                   <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-//                   </svg>
-//                 </button>
-//               </div>
-//             </div>
-//           )} */}
-//           {/* Desktop Navigation Header */}
 // {!isMobile && (
 //   <div className="sticky top-16 bg-white shadow-md z-9999 border-b border-gray-100">
 //     <div className="flex items-center justify-between px-4 md:px-6 py-2">
@@ -1029,43 +1014,33 @@
 //             </>
 //           )}
 //         </button>
+
+       
         
-//         {/* <button
-//           onClick={() => setIsRfpFormOpen(true)}
-//           className="group whitespace-nowrap px-4 py-1.5 bg-[#1e2556]
-//                      text-white rounded-md font-medium hover:bg-[#0f1729]
-//                      transition-all duration-200 flex items-center
-//                      justify-center gap-2 shadow-sm hover:shadow-md text-xs
-//                      hover:scale-105 active:scale-95"
-//         >
-//           Share Requirements
-//           <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-//           </svg>
-//         </button> */}
-//         {/* Mobile Info Box - Replace the buttons section */}
-// {isSpecialSlug ? (
-//   <a 
-//     href={signupUrl}
-//     target="_blank"
-//     className="group whitespace-nowrap px-4 py-1.5 bg-[#1e2556]
-//     text-white rounded-md font-medium hover:bg-[#0f1729]
-//     transition-all duration-200 flex items-center
-//     justify-center gap-2 shadow-sm hover:shadow-md text-xs
-//     hover:scale-105 active:scale-95"  >
-//    Get Started
-//   </a>
-// ) : (
-//   <button 
-//     onClick={() => setIsRfpFormOpen(true)}
-//     className="group whitespace-nowrap px-4 py-1.5 bg-[#1e2556]
-//     text-white rounded-md font-medium hover:bg-[#0f1729]
-//     transition-all duration-200 flex items-center
-//     justify-center gap-2 shadow-sm hover:shadow-md text-xs
-//     hover:scale-105 active:scale-95"  >
-//     Share Requirements
-//   </button>
-// )}
+//         {isSpecialSlug ? (
+//           <a 
+//             href={signupUrl}
+//             target="_blank"
+//             className="group whitespace-nowrap px-4 py-1.5 bg-[#1e2556]
+//             text-white rounded-md font-medium hover:bg-[#0f1729]
+//             transition-all duration-200 flex items-center
+//             justify-center gap-2 shadow-sm hover:shadow-md text-xs
+//             hover:scale-105 active:scale-95"
+//           >
+//            Get Started
+//           </a>
+//         ) : (
+//           <button 
+//             onClick={() => setIsRfpFormOpen(true)}
+//             className="group whitespace-nowrap px-4 py-1.5 bg-[#1e2556]
+//             text-white rounded-md font-medium hover:bg-[#0f1729]
+//             transition-all duration-200 flex items-center
+//             justify-center gap-2 shadow-sm hover:shadow-md text-xs
+//             hover:scale-105 active:scale-95"
+//           >
+//             Share Requirements
+//           </button>
+//         )}
 //       </div>
 //     </div>
 //   </div>
@@ -1103,54 +1078,53 @@
 //                   </div>
 //                 </div>
                 
-  
+            
 
-  
-//                {/* Mobile Info Box - Replace the buttons section */}
-// {isSpecialSlug ? (
-//   <a 
-//     href={signupUrl}
-//     target="_blank"
-//     className="w-full mb-2 px-4 py-2 bg-[#1e2556] text-white rounded-md font-medium text-sm hover:bg-[#0f1729] transition-all duration-200 text-center block"
-//   >
-//     Get Started
-//   </a>
-// ) : (
-//   <button 
-//     onClick={() => setIsRfpFormOpen(true)}
-//     className="w-full mb-2 px-4 py-2 bg-[#1e2556] text-white rounded-md font-medium text-sm hover:bg-[#0f1729] transition-all duration-200"
-//   >
-//     Share Requirements
-//   </button>
-// )}
+//                 {isSpecialSlug ? (
+//                   <a 
+//                     href={signupUrl}
+//                     target="_blank"
+//                     className="w-full mb-2 px-4 py-2 bg-[#1e2556] text-white rounded-md font-medium text-sm hover:bg-[#0f1729] transition-all duration-200 text-center block"
+//                   >
+//                     Get Started
+//                   </a>
+//                 ) : (
+//                   <button 
+//                     onClick={() => setIsRfpFormOpen(true)}
+//                     className="w-full mb-2 px-4 py-2 bg-[#1e2556] text-white rounded-md font-medium text-sm hover:bg-[#0f1729] transition-all duration-200"
+//                   >
+//                     Share Requirements
+//                   </button>
+//                 )}
                 
 //                 <button
 //                   onClick={() => setSidebarOpen(true)}
-//                   className="w-full px-4 py-2 border border-gray-300 rounded-md font-medium text-sm hover:bg-gray-50 transition-all duration-200"
+//                   className="w-full mb-2 px-4 py-2 border border-gray-300 rounded-md font-medium text-sm hover:bg-gray-50 transition-all duration-200"
 //                   style={{ color: '#1e2556' }}
 //                 >
 //                   View Company Details
 //                 </button>
+
 //                 <button
-//   onClick={handleCopyUrl}
-//   className="w-full mb-2 px-4 py-2 mt-2 border border-[#1e2556] text-[#1e2556] rounded-md font-medium text-sm hover:bg-[#1e2556] hover:text-white transition-all duration-200 flex items-center justify-center gap-2"
-// >
-//   {copySuccess ? (
-//     <>
-//       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-//       </svg>
-//       Copied!
-//     </>
-//   ) : (
-//     <>
-//       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-//       </svg>
-//       Share Product
-//     </>
-//   )}
-// </button>
+//                   onClick={handleCopyUrl}
+//                   className="w-full mb-2 px-4 py-2 mt-2 border border-[#1e2556] text-[#1e2556] rounded-md font-medium text-sm hover:bg-[#1e2556] hover:text-white transition-all duration-200 flex items-center justify-center gap-2"
+//                 >
+//                   {copySuccess ? (
+//                     <>
+//                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+//                       </svg>
+//                       Copied!
+//                     </>
+//                   ) : (
+//                     <>
+//                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+//                       </svg>
+//                       Share Product
+//                     </>
+//                   )}
+//                 </button>
 //               </div>
 //             )}
 
@@ -1213,16 +1187,12 @@
 //             )}
 
 //             {/* Premium Section: Value Metrics (Above Overview) */}
-    
-
 // {displaySoftware.isPremium && displaySoftware.valueMetrics?.length > 0 && (
 //   <section id="value-metrics" className={`mb-8 ${isMobile ? 'scroll-mt-40' : 'scroll-mt-24'}`}>
 //     <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>
 //       {displaySoftware.productName} Value Metrics
 //     </h2>
     
- 
-
 //     {/* Simple metrics grid - no complex positioning */}
 //     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 //       {displaySoftware.valueMetrics.map((metric, index) => (
@@ -1278,8 +1248,6 @@
 //   </section>
 // )}
 
-
-
 //             {/* Section 1: Overview */}
 //             <section id="overview" className={`mb-8 ${isMobile ? 'scroll-mt-40' : 'scroll-mt-24'}`}>
 //               <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>
@@ -1330,6 +1298,14 @@
               
 //               {displaySoftware.isPremium && <VendorCommentTooltip section="overview" />}
 //             </section>
+//             {/* Section 5: User Experiences */}
+//             <UserExperienceSection
+//               productId={displaySoftware.id}
+//               productName={displaySoftware.productName}
+//               slug={displaySoftware.slug}
+//               isMobile={isMobile}
+//             />
+
 
 //             {/* Section 2: Features and Functionalities */}
 //             <section id="features" className={`mb-8 ${isMobile ? 'scroll-mt-40' : 'scroll-mt-24'}`}>
@@ -1539,8 +1515,7 @@
 //             </section>
 
             
-
-//             {/* Premium Section: Case Studies (Below Reviews) */}
+//             {/* Premium Section: Case Studies (Below User Experiences) */}
 //             {displaySoftware.isPremium && displaySoftware.caseStudies?.length > 0 && (
 //   <section id="case-studies" className={`mb-8 ${isMobile ? 'scroll-mt-40' : 'scroll-mt-24'}`}>
 //     <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>
@@ -1559,9 +1534,6 @@
 //           <h3 className="text-sm font-bold" style={{ color: '#1e2556' }}>Customer Success Stories</h3>
 //           <p className="text-xs" style={{ color: '#334155' }}>Real experiences from users</p>
 //         </div>
-//         {/* <div className="ml-auto px-3 py-1 rounded-full text-xs font-bold text-white" style={{ backgroundColor: '#7cc6ee' }}>
-//           Premium Content
-//         </div> */}
 //       </div>
 //     </div>
     
@@ -1606,16 +1578,6 @@
 //                 </p>
 //               </div>
 //             </div>
-            
-//             {/* Simple verification badge */}
-//             {/* <div className="flex items-center justify-center mt-3">
-//               <div className="flex items-center gap-2 px-2 py-1 rounded-full" style={{ backgroundColor: '#f5f7fa' }}>
-//                 <svg className="w-3 h-3" style={{ color: '#7cc6ee' }} fill="currentColor" viewBox="0 0 20 20">
-//                   <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-//                 </svg>
-//                 <span className="text-xs font-medium" style={{ color: '#334155' }}>Verified</span>
-//               </div>
-//             </div> */}
 //           </div>
 //         </div>
 //       ))}
@@ -1624,7 +1586,8 @@
 //     {displaySoftware.isPremium && <VendorCommentTooltip section="case-studies" />}
 //   </section>
 // )}
-//             {/* Section 5: Images and Videos */}
+
+//             {/* Section 6: Images and Videos */}
 //             {allMedia.length > 0 && (
 //   <section id="media" className={`mb-8 ${isMobile ? 'scroll-mt-40' : 'scroll-mt-24'}`}>
 //   <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>
@@ -1701,29 +1664,6 @@
 // </section>
 //  )} 
 
-//  {/* Special Signup Section for certain slugs
-// {isSpecialSlug && (
-//   <section className="mb-8">
-//     <div className="bg-gradient-to-r from-[#1e2556] to-[#0f1729] rounded-xl p-8 text-center text-white">
-//       <div className="max-w-2xl mx-auto">
-//         <h2 className="text-2xl font-bold mb-4">Ready to Get Started?</h2>
-//         <p className="text-lg mb-6 opacity-90">
-//           Join thousands of professionals who trust {displaySoftware.productName} for their business needs.
-//         </p>
-//         <a
-//           href={signupUrl}
-//           target="_blank"
-//           className="inline-flex items-center gap-3 bg-white text-[#1e2556] px-8 py-3 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
-//         >
-//           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-//           </svg>
-//           Start Your Journey
-//         </a>
-//       </div>
-//     </div>
-//   </section>
-// )} */}
 // {/* Special Signup Section for certain slugs */}
 // {isSpecialSlug && (
 //   <section className="mb-8">
@@ -1751,7 +1691,7 @@
 //   </section>
 // )}
 
-//             {/* Section 6: FAQs */}
+//             {/* Section 7: FAQs */}
 //              {software.faqs && software.faqs.length > 0 && ( 
 //   <section id="faqs" className={`mb-8 ${isMobile ? 'scroll-mt-32' : 'scroll-mt-24'}`}>
 //     <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>{displaySoftware.productName} FAQs</h2>
@@ -1803,7 +1743,8 @@
 //     </div>
 //   </section>
 // )}
-//             {/* Section 7: Sources */}
+
+//             {/* Section 8: Sources */}
 //             <section id="sources" className={`mb-8 ${isMobile ? 'scroll-mt-32' : 'scroll-mt-24'}`}>
 //               <div className="flex items-center justify-between mb-4">
 //                 <h2 className="text-xl font-bold" style={{ color: '#1e2556' }}>{displaySoftware.productName} Sources</h2>
@@ -1865,7 +1806,7 @@
 //               </div>
 //             </section>
 
-//             {/* Section 8: Similar Products */}
+//             {/* Section 9: Similar Products */}
 //             {similarProducts.length > 0 && (
 //               <section id="alternatives" className={`mb-4 ${isMobile ? 'scroll-mt-32' : 'scroll-mt-24'}`}>
 //                 <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>{displaySoftware.productName} Alternatives</h2>
@@ -1934,10 +1875,9 @@
 // };
 
 // export default SoftwareDetailPage;
-
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import CreateRfps from '@/components/landingPage/CreateRfp';
@@ -1946,6 +1886,323 @@ import FinalSection from "@/app/(home)/category/_components/FinalSection";
 import MentionedProductsSection from "@/components/MentionedProductsSection";
 
 import UserExperienceSection from '@/app/(home)/product/[slug]/_component/UserExperienceSection';
+
+// ShareDropdown Component
+interface ShareDropdownProps {
+  productName: string;
+  slug: string;
+  onCopySuccess: () => void;
+}
+
+const ShareDropdown = ({ productName, slug, onCopySuccess }: ShareDropdownProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const generateShareableLink = () => {
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    return `${baseUrl}/product/${slug}`;
+  };
+
+  const shareText = `Check out ${productName} - a comprehensive software solution`;
+  const shareUrl = generateShareableLink();
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      onCopySuccess();
+      setIsOpen(false);
+    } catch (err) {
+      const textArea = document.createElement('textarea');
+      textArea.value = shareUrl;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      onCopySuccess();
+      setIsOpen(false);
+    }
+  };
+
+  const shareOptions = [
+    {
+      name: 'Copy Link',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+      ),
+      action: handleCopyLink,
+      color: '#64748b'
+    },
+    {
+      name: 'WhatsApp',
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+        </svg>
+      ),
+      action: () => {
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`, '_blank');
+        setIsOpen(false);
+      },
+      color: '#25D366'
+    },
+    {
+      name: 'Twitter',
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      ),
+      action: () => {
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+        setIsOpen(false);
+      },
+      color: '#1DA1F2'
+    },
+    {
+      name: 'Facebook',
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      ),
+      action: () => {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
+        setIsOpen(false);
+      },
+      color: '#1877F2'
+    },
+    {
+      name: 'LinkedIn',
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      ),
+      action: () => {
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank');
+        setIsOpen(false);
+      },
+      color: '#0A66C2'
+    },
+    {
+      name: 'Email',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      ),
+      action: () => {
+        window.location.href = `mailto:?subject=${encodeURIComponent(`Check out ${productName}`)}&body=${encodeURIComponent(`${shareText}\n\n${shareUrl}`)}`;
+        setIsOpen(false);
+      },
+      color: '#6B7280'
+    }
+  ];
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="group whitespace-nowrap px-4 py-1.5 border border-[#1e2556]
+                   text-[#1e2556] rounded-md font-medium hover:bg-[#1e2556] hover:text-white
+                   transition-all duration-200 flex items-center
+                   justify-center gap-2 shadow-sm hover:shadow-md text-xs
+                   hover:scale-105 active:scale-95"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+        </svg>
+        Share
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+          <div className="py-2">
+            {shareOptions.map((option, index) => (
+              <button
+                key={option.name}
+                onClick={option.action}
+                className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-3 transition-colors duration-150"
+              >
+                <div style={{ color: option.color }}>
+                  {option.icon}
+                </div>
+                <span className="text-gray-700">{option.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Mobile ShareDropdown (full width version)
+const MobileShareDropdown = ({ productName, slug, onCopySuccess }: ShareDropdownProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const generateShareableLink = () => {
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    return `${baseUrl}/product/${slug}`;
+  };
+
+  const shareText = `Check out ${productName} - a comprehensive software solution`;
+  const shareUrl = generateShareableLink();
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      onCopySuccess();
+      setIsOpen(false);
+    } catch (err) {
+      const textArea = document.createElement('textarea');
+      textArea.value = shareUrl;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      onCopySuccess();
+      setIsOpen(false);
+    }
+  };
+
+  const shareOptions = [
+    {
+      name: 'Copy Link',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+      ),
+      action: handleCopyLink,
+      color: '#64748b'
+    },
+    {
+      name: 'WhatsApp',
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+        </svg>
+      ),
+      action: () => {
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`, '_blank');
+        setIsOpen(false);
+      },
+      color: '#25D366'
+    },
+    {
+      name: 'Twitter',
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      ),
+      action: () => {
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+        setIsOpen(false);
+      },
+      color: '#1DA1F2'
+    },
+    {
+      name: 'Facebook',
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      ),
+      action: () => {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
+        setIsOpen(false);
+      },
+      color: '#1877F2'
+    },
+    {
+      name: 'LinkedIn',
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      ),
+      action: () => {
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank');
+        setIsOpen(false);
+      },
+      color: '#0A66C2'
+    },
+    {
+      name: 'Email',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      ),
+      action: () => {
+        window.location.href = `mailto:?subject=${encodeURIComponent(`Check out ${productName}`)}&body=${encodeURIComponent(`${shareText}\n\n${shareUrl}`)}`;
+        setIsOpen(false);
+      },
+      color: '#6B7280'
+    }
+  ];
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full mb-2 px-4 py-2 mt-2 border border-[#1e2556] text-[#1e2556] rounded-md font-medium text-sm hover:bg-[#1e2556] hover:text-white transition-all duration-200 flex items-center justify-center gap-2"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+        </svg>
+        Share Product
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+          <div className="py-2">
+            {shareOptions.map((option, index) => (
+              <button
+                key={option.name}
+                onClick={option.action}
+                className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-3 transition-colors duration-150"
+              >
+                <div style={{ color: option.color }}>
+                  {option.icon}
+                </div>
+                <span className="text-gray-700">{option.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const SoftwareDetailPage = ({ slug }) => {
   const [software, setSoftware] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -2109,6 +2366,11 @@ const SoftwareDetailPage = ({ slug }) => {
     } finally {
       setIsTogglingUser(false);
     }
+  };
+
+  const handleCopySuccess = () => {
+    setCopySuccess(true);
+    setTimeout(() => setCopySuccess(false), 2000);
   };
 
   // Review link generation functions
@@ -2702,25 +2964,7 @@ const SoftwareDetailPage = ({ slug }) => {
     }
   };
 
-  const handleCopyUrl = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 2000);
-    } catch (err) {
-      // Fallback for older browsers
-      const textArea = document.createElement('textarea');
-      textArea.value = window.location.href;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 2000);
-    }
-  };
-
-  // Special slugs configuration with their signup URLs
+// Special slugs configuration with their signup URLs
 const specialSlugsConfig = {
   'zoho-contracts': 'https://store.zoho.in/ResellerCustomerSignUp.do?id=fa53a66d323346b43ea52de29f92eba1',
   // Add more slugs and their signup URLs as needed
@@ -2926,44 +3170,15 @@ const signupUrl = specialSlugsConfig[slug];
       </div>
       
       <div className="flex items-center gap-2">
-        <button
-          onClick={handleCopyUrl}
-          className="group whitespace-nowrap px-4 py-1.5 border border-[#1e2556]
-                     text-[#1e2556] rounded-md font-medium hover:bg-[#1e2556] hover:text-white
-                     transition-all duration-200 flex items-center
-                     justify-center gap-2 shadow-sm hover:shadow-md text-xs
-                     hover:scale-105 active:scale-95"
-        >
-          {copySuccess ? (
-            <>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              Copied!
-            </>
-          ) : (
-            <>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-              </svg>
-              Share
-            </>
-          )}
-        </button>
-
-        <button
-          onClick={handleCopyReviewLink}
-          className="group whitespace-nowrap px-4 py-1.5 border border-[#7cc6ee]
-                     text-[#7cc6ee] rounded-md font-medium hover:bg-[#7cc6ee] hover:text-white
-                     transition-all duration-200 flex items-center
-                     justify-center gap-2 shadow-sm hover:shadow-md text-xs
-                     hover:scale-105 active:scale-95"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-          </svg>
-          Get Reviews
-        </button>
+        {copySuccess && (
+          <span className="text-xs text-green-600 font-medium">Copied!</span>
+        )}
+        
+        <ShareDropdown 
+          productName={displaySoftware.productName}
+          slug={displaySoftware.slug}
+          onCopySuccess={handleCopySuccess}
+        />
         
         {isSpecialSlug ? (
           <a 
@@ -3026,13 +3241,6 @@ const signupUrl = specialSlugsConfig[slug];
                   </div>
                 </div>
                 
-                <button 
-                  onClick={handleCopyReviewLink}
-                  className="w-full mb-2 px-4 py-2 border border-[#7cc6ee] text-[#7cc6ee] rounded-md font-medium text-sm hover:bg-[#7cc6ee] hover:text-white transition-all duration-200"
-                >
-                  Get Reviews Link
-                </button>
-
                 {isSpecialSlug ? (
                   <a 
                     href={signupUrl}
@@ -3058,26 +3266,17 @@ const signupUrl = specialSlugsConfig[slug];
                   View Company Details
                 </button>
 
-                <button
-                  onClick={handleCopyUrl}
-                  className="w-full mb-2 px-4 py-2 mt-2 border border-[#1e2556] text-[#1e2556] rounded-md font-medium text-sm hover:bg-[#1e2556] hover:text-white transition-all duration-200 flex items-center justify-center gap-2"
-                >
-                  {copySuccess ? (
-                    <>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Copied!
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-                      </svg>
-                      Share Product
-                    </>
-                  )}
-                </button>
+                <MobileShareDropdown 
+                  productName={displaySoftware.productName}
+                  slug={displaySoftware.slug}
+                  onCopySuccess={handleCopySuccess}
+                />
+                
+                {copySuccess && (
+                  <div className="text-center mt-2">
+                    <span className="text-xs text-green-600 font-medium">Copied!</span>
+                  </div>
+                )}
               </div>
             )}
 
@@ -3251,6 +3450,7 @@ const signupUrl = specialSlugsConfig[slug];
               
               {displaySoftware.isPremium && <VendorCommentTooltip section="overview" />}
             </section>
+            
             {/* Section 5: User Experiences */}
             <UserExperienceSection
               productId={displaySoftware.id}
@@ -3258,7 +3458,6 @@ const signupUrl = specialSlugsConfig[slug];
               slug={displaySoftware.slug}
               isMobile={isMobile}
             />
-
 
             {/* Section 2: Features and Functionalities */}
             <section id="features" className={`mb-8 ${isMobile ? 'scroll-mt-40' : 'scroll-mt-24'}`}>
@@ -3322,8 +3521,6 @@ const signupUrl = specialSlugsConfig[slug];
                   {displaySoftware.isPremium && <VendorCommentTooltip section="impactonlifecycle" />}
                 </div>
               </div>
-              
-              
             </section>
 
             {/* Section 3: Pricing Plans */}
@@ -3467,235 +3664,234 @@ const signupUrl = specialSlugsConfig[slug];
               {displaySoftware.isPremium && <VendorCommentTooltip section="reviews" />}
             </section>
 
-            
             {/* Premium Section: Case Studies (Below User Experiences) */}
             {displaySoftware.isPremium && displaySoftware.caseStudies?.length > 0 && (
-  <section id="case-studies" className={`mb-8 ${isMobile ? 'scroll-mt-40' : 'scroll-mt-24'}`}>
-    <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>
-      {displaySoftware.productName} Case Studies
-    </h2>
-    
-    {/* Simple header card like other sections */}
-    <div className="bg-white rounded-lg p-4 mb-4 shadow-sm border border-gray-100">
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#1e2556' }}>
-          <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-          </svg>
-        </div>
-        <div>
-          <h3 className="text-sm font-bold" style={{ color: '#1e2556' }}>Customer Success Stories</h3>
-          <p className="text-xs" style={{ color: '#334155' }}>Real experiences from users</p>
-        </div>
-      </div>
-    </div>
-    
-    {/* Simple case studies grid - no complex positioning */}
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {displaySoftware.caseStudies.map((study, index) => (
-        <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
-          
-          <div className="p-4">
-            {/* Simple user profile header */}
-            <div className="flex items-start gap-4 mb-4">
-              {study.photo ? (
-                <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 ring-2" style={{ ringColor: '#7cc6ee' }}>
-                  <img
-                    src={study.photo}
-                    alt={study.name}
-                    className="w-full h-full object-cover"
-                  />
+              <section id="case-studies" className={`mb-8 ${isMobile ? 'scroll-mt-40' : 'scroll-mt-24'}`}>
+                <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>
+                  {displaySoftware.productName} Case Studies
+                </h2>
+                
+                {/* Simple header card like other sections */}
+                <div className="bg-white rounded-lg p-4 mb-4 shadow-sm border border-gray-100">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#1e2556' }}>
+                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold" style={{ color: '#1e2556' }}>Customer Success Stories</h3>
+                      <p className="text-xs" style={{ color: '#334155' }}>Real experiences from users</p>
+                    </div>
+                  </div>
                 </div>
-              ) : (
-                <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ring-2 text-white" style={{ backgroundColor: '#1e2556', ringColor: '#7cc6ee' }}>
-                  <span className="font-bold text-sm">
-                    {study.name.charAt(0).toUpperCase()}
-                  </span>
+                
+                {/* Simple case studies grid - no complex positioning */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {displaySoftware.caseStudies.map((study, index) => (
+                    <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
+                      
+                      <div className="p-4">
+                        {/* Simple user profile header */}
+                        <div className="flex items-start gap-4 mb-4">
+                          {study.photo ? (
+                            <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 ring-2" style={{ ringColor: '#7cc6ee' }}>
+                              <img
+                                src={study.photo}
+                                alt={study.name}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ring-2 text-white" style={{ backgroundColor: '#1e2556', ringColor: '#7cc6ee' }}>
+                              <span className="font-bold text-sm">
+                                {study.name.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                          )}
+                          <div className="flex-1">
+                            <h3 className="font-bold text-sm" style={{ color: '#1e2556' }}>{study.name}</h3>
+                            <p className="text-xs" style={{ color: '#334155' }}>{study.designation}</p>
+                            <p className="text-xs font-semibold" style={{ color: '#7cc6ee' }}>{study.companyName}</p>
+                          </div>
+                        </div>
+                        
+                        {/* Simple testimonial */}
+                        <div className="p-3 rounded-lg" style={{ backgroundColor: '#f5f7fa' }}>
+                          <div className="flex items-start gap-2">
+                            <svg className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#7cc6ee' }} fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                            </svg>
+                            <p className="text-xs leading-relaxed italic" style={{ color: '#2d2d2d' }}>
+                              "{study.comment}"
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              )}
-              <div className="flex-1">
-                <h3 className="font-bold text-sm" style={{ color: '#1e2556' }}>{study.name}</h3>
-                <p className="text-xs" style={{ color: '#334155' }}>{study.designation}</p>
-                <p className="text-xs font-semibold" style={{ color: '#7cc6ee' }}>{study.companyName}</p>
-              </div>
-            </div>
-            
-            {/* Simple testimonial */}
-            <div className="p-3 rounded-lg" style={{ backgroundColor: '#f5f7fa' }}>
-              <div className="flex items-start gap-2">
-                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#7cc6ee' }} fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                </svg>
-                <p className="text-xs leading-relaxed italic" style={{ color: '#2d2d2d' }}>
-                  "{study.comment}"
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-    
-    {displaySoftware.isPremium && <VendorCommentTooltip section="case-studies" />}
-  </section>
-)}
+                
+                {displaySoftware.isPremium && <VendorCommentTooltip section="case-studies" />}
+              </section>
+            )}
 
             {/* Section 6: Images and Videos */}
             {allMedia.length > 0 && (
-  <section id="media" className={`mb-8 ${isMobile ? 'scroll-mt-40' : 'scroll-mt-24'}`}>
-  <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>
-    {displaySoftware.productName} Media
-  </h2>
-  
-  <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
-    <div className="relative">
-      {/* Responsive grid: 1 column on mobile, 2 on desktop */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
-        {allMedia.slice(currentMediaIndex, currentMediaIndex + itemsPerPage).map((media, index) => (
-          <div key={currentMediaIndex + index} className="aspect-video relative overflow-hidden rounded-lg bg-gray-100">
-            {renderMediaItem(media, currentMediaIndex + index)}
-          </div>
-        ))}
-      </div>
-      
-      {/* Navigation Arrows - show only if needed */}
-      {totalMedia > itemsPerPage && (
-        <>
-          <button
-            onClick={prevMedia}
-            className="absolute left-1 md:left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white p-2 md:p-3 rounded-full shadow-lg transition-all z-10"
-            aria-label="Previous media"
-          >
-            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <button
-            onClick={nextMedia}
-            className="absolute right-1 md:right-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white p-2 md:p-3 rounded-full shadow-lg transition-all z-10"
-            aria-label="Next media"
-          >
-            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </>
-      )}
-    </div>
-    
-    {/* Compact Thumbnail Navigation - responsive */}
-    {totalMedia > 1 && (
-      <div className="flex gap-1 overflow-x-auto pb-2 justify-center">
-        {allMedia.map((media, index) => {
-          const isActive = isMobile 
-            ? currentMediaIndex === index 
-            : Math.floor(currentMediaIndex / 2) === Math.floor(index / 2);
-          
-          return (
-            <button
-              key={index}
-              onClick={() => setCurrentMediaIndex(isMobile ? index : Math.floor(index / 2) * 2)}
-              className={`relative flex-shrink-0 w-10 h-10 md:w-14 md:h-14 rounded-lg overflow-hidden border-2 transition-all hover:scale-105 ${
-                isActive ? 'border-[#7cc6ee] shadow-md' : 'border-gray-200 hover:border-gray-300'
-              }`}
-              aria-label={`Go to media ${index + 1}`}
-            >
-              {renderThumbnail(media, index)}
-            </button>
-          );
-        })}
-      </div>
-    )}
-    
-    {/* Media counter */}
-    <div className="text-center mt-2">
-      <span className="text-sm text-gray-500">
-        {isMobile ? currentMediaIndex + 1 : Math.floor(currentMediaIndex / 2) + 1} of {isMobile ? totalMedia : Math.ceil(totalMedia / 2)}
-      </span>
-    </div>
-  </div>
-</section>
- )} 
+              <section id="media" className={`mb-8 ${isMobile ? 'scroll-mt-40' : 'scroll-mt-24'}`}>
+                <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>
+                  {displaySoftware.productName} Media
+                </h2>
+                
+                <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+                  <div className="relative">
+                    {/* Responsive grid: 1 column on mobile, 2 on desktop */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
+                      {allMedia.slice(currentMediaIndex, currentMediaIndex + itemsPerPage).map((media, index) => (
+                        <div key={currentMediaIndex + index} className="aspect-video relative overflow-hidden rounded-lg bg-gray-100">
+                          {renderMediaItem(media, currentMediaIndex + index)}
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Navigation Arrows - show only if needed */}
+                    {totalMedia > itemsPerPage && (
+                      <>
+                        <button
+                          onClick={prevMedia}
+                          className="absolute left-1 md:left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white p-2 md:p-3 rounded-full shadow-lg transition-all z-10"
+                          aria-label="Previous media"
+                        >
+                          <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={nextMedia}
+                          className="absolute right-1 md:right-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white p-2 md:p-3 rounded-full shadow-lg transition-all z-10"
+                          aria-label="Next media"
+                        >
+                          <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      </>
+                    )}
+                  </div>
+                  
+                  {/* Compact Thumbnail Navigation - responsive */}
+                  {totalMedia > 1 && (
+                    <div className="flex gap-1 overflow-x-auto pb-2 justify-center">
+                      {allMedia.map((media, index) => {
+                        const isActive = isMobile 
+                          ? currentMediaIndex === index 
+                          : Math.floor(currentMediaIndex / 2) === Math.floor(index / 2);
+                        
+                        return (
+                          <button
+                            key={index}
+                            onClick={() => setCurrentMediaIndex(isMobile ? index : Math.floor(index / 2) * 2)}
+                            className={`relative flex-shrink-0 w-10 h-10 md:w-14 md:h-14 rounded-lg overflow-hidden border-2 transition-all hover:scale-105 ${
+                              isActive ? 'border-[#7cc6ee] shadow-md' : 'border-gray-200 hover:border-gray-300'
+                            }`}
+                            aria-label={`Go to media ${index + 1}`}
+                          >
+                            {renderThumbnail(media, index)}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                  
+                  {/* Media counter */}
+                  <div className="text-center mt-2">
+                    <span className="text-sm text-gray-500">
+                      {isMobile ? currentMediaIndex + 1 : Math.floor(currentMediaIndex / 2) + 1} of {isMobile ? totalMedia : Math.ceil(totalMedia / 2)}
+                    </span>
+                  </div>
+                </div>
+              </section>
+            )} 
 
-{/* Special Signup Section for certain slugs */}
-{isSpecialSlug && (
-  <section className="mb-8">
-    <div className="bg-gradient-to-r from-[#1e2556] to-[#0f1729] rounded-xl p-8 text-center text-white">
-      <div className="max-w-2xl mx-auto">
-        <h2 className="text-2xl font-bold mb-4">Ready to Get Started?</h2>
-        <p className="text-lg mb-4 opacity-90">
-          Join thousands of professionals who trust {displaySoftware.productName} for their business needs.
-        </p>
-        <p className="text-sm mb-6 opacity-75 font-medium">
-          ✨ No credit card required
-        </p>
-        <a
-          href={signupUrl}
-          target="_blank"
-          className="inline-flex items-center gap-3 bg-white text-[#1e2556] px-8 py-3 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-          Start Your Journey
-        </a>
-      </div>
-    </div>
-  </section>
-)}
+            {/* Special Signup Section for certain slugs */}
+            {isSpecialSlug && (
+              <section className="mb-8">
+                <div className="bg-gradient-to-r from-[#1e2556] to-[#0f1729] rounded-xl p-8 text-center text-white">
+                  <div className="max-w-2xl mx-auto">
+                    <h2 className="text-2xl font-bold mb-4">Ready to Get Started?</h2>
+                    <p className="text-lg mb-4 opacity-90">
+                      Join thousands of professionals who trust {displaySoftware.productName} for their business needs.
+                    </p>
+                    <p className="text-sm mb-6 opacity-75 font-medium">
+                      ✨ No credit card required
+                    </p>
+                    <a
+                      href={signupUrl}
+                      target="_blank"
+                      className="inline-flex items-center gap-3 bg-white text-[#1e2556] px-8 py-3 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
+                    >
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                      Start Your Journey
+                    </a>
+                  </div>
+                </div>
+              </section>
+            )}
 
             {/* Section 7: FAQs */}
-             {software.faqs && software.faqs.length > 0 && ( 
-  <section id="faqs" className={`mb-8 ${isMobile ? 'scroll-mt-32' : 'scroll-mt-24'}`}>
-    <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>{displaySoftware.productName} FAQs</h2>
-    
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
-      <div className="space-y-2">
-        {software.faqs.map((faq, index) => (
-          <div 
-            key={index} 
-            className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-sm transition-shadow"
-          >
-            <button
-              onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
-              className="w-full p-3 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
-            >
-              <h3 className="text-sm font-semibold pr-3" style={{ color: '#1e2556' }}>
-                {faq.heading}
-              </h3>
-              <div className="flex-shrink-0">
-                <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${
-                  expandedFaq === index ? 'bg-[#7cc6ee] rotate-180' : 'bg-gray-200 hover:bg-[#7cc6ee]'
-                }`}>
-                  <svg
-                    className={`w-3 h-3 transition-colors ${
-                      expandedFaq === index ? 'text-white' : 'text-gray-600'
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+            {software.faqs && software.faqs.length > 0 && ( 
+              <section id="faqs" className={`mb-8 ${isMobile ? 'scroll-mt-32' : 'scroll-mt-24'}`}>
+                <h2 className="text-xl font-bold mb-4" style={{ color: '#1e2556' }}>{displaySoftware.productName} FAQs</h2>
+                
+                <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+                  <div className="space-y-2">
+                    {software.faqs.map((faq, index) => (
+                      <div 
+                        key={index} 
+                        className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-sm transition-shadow"
+                      >
+                        <button
+                          onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+                          className="w-full p-3 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                        >
+                          <h3 className="text-sm font-semibold pr-3" style={{ color: '#1e2556' }}>
+                            {faq.heading}
+                          </h3>
+                          <div className="flex-shrink-0">
+                            <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${
+                              expandedFaq === index ? 'bg-[#7cc6ee] rotate-180' : 'bg-gray-200 hover:bg-[#7cc6ee]'
+                            }`}>
+                              <svg
+                                className={`w-3 h-3 transition-colors ${
+                                  expandedFaq === index ? 'text-white' : 'text-gray-600'
+                                }`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </div>
+                          </div>
+                        </button>
+                        
+                        {expandedFaq === index && (
+                          <div className="px-3 pb-3">
+                            <div className="border-t border-gray-100 pt-2">
+                              <p className="text-sm leading-relaxed text-gray-700">
+                                {faq.answer}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </button>
-            
-            {expandedFaq === index && (
-              <div className="px-3 pb-3">
-                <div className="border-t border-gray-100 pt-2">
-                  <p className="text-sm leading-relaxed text-gray-700">
-                    {faq.answer}
-                  </p>
-                </div>
-              </div>
+              </section>
             )}
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-)}
 
             {/* Section 8: Sources */}
             <section id="sources" className={`mb-8 ${isMobile ? 'scroll-mt-32' : 'scroll-mt-24'}`}>
@@ -3799,6 +3995,7 @@ const signupUrl = specialSlugsConfig[slug];
                 </div>
               </section>
             )}
+            
             <MentionedProductsSection productSlug={displaySoftware.slug} />
             <FinalSection category={displaySoftware.category} />
           </div>

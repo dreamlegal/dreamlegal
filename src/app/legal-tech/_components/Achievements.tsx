@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Rocket, Target, Zap } from 'lucide-react';
+import { Rocket, Target, Zap,TrendingUp,Clock } from 'lucide-react';
 
 // Custom hook for intersection observer
 const useIntersectionObserver = (options = {}) => {
@@ -82,28 +82,28 @@ const AnimatedAchievements = () => {
   const [sectionRef, isInView] = useIntersectionObserver();
   const achievements = [
     {
-      icon: <Target className="w-6 h-6" />,
+      icon: <TrendingUp className="w-6 h-6" />,
       metric: "130",
       suffix: "%",
-      title: "Optimize Client Engagement",
-      description: "Reduce client nurturing cost by engaging warm and high intent leads.",
+      title: "More Buyer Visibility",
+      description: "Stand out in a crowded market. Vendors on DreamLegal gain significant increases in qualified buyer discovery, ensuring your solution is noticed by the right decision-makers.",
       accentColor: "bg-[#7cc6ee]"
     },
     {
-      icon: <Rocket className="w-6 h-6" />,
+      icon: <Zap className="w-6 h-6" />,
       metric: "10",
       prefix: "",
       suffix: "x",
-      title: "Data driven product strategy",
-      description: "Leverage analytics to guide product development and align with market demands.",
+      title: "Faster Client Conversions",
+      description: "Skip the long chase. By engaging warm, high-intent leads, our platform helps you shorten the sales cycle and connect directly with buyers who are ready to act.",
       accentColor: "bg-[#1e2556]"
     },
     {
-      icon: <Zap className="w-6 h-6" />,
+      icon: <Clock className="w-6 h-6" />,
       metric: "24",
       suffix: "/7",
-      title: "Enhanced Market Fit",
-      description: "Use customer feedback and usage data to refine features and ensure the product meets evolving market needs.",
+      title: "Credibility Showcase",
+      description: "Your profile never sleeps. DreamLegal builds round-the-clock trust with potential clients, positioning your brand as credible and reliable — even when you’re not in the room.",
       accentColor: "bg-[#7cc6ee]"
     }
   ];
@@ -125,7 +125,7 @@ const AnimatedAchievements = () => {
                            ${isInView ? 'scale-x-100' : 'scale-x-0'}`} />
             </h2>
             <p className="text-sm sm:text-base text-white/80 mt-4 max-w-xl mx-auto px-4 sm:px-0">
-              Transforming your client journey with cutting-edge solutions & measurable results
+              Legal tech vendors on DreamLegal don’t just get listed — they get seen, trusted, and chosen. Here’s how we create measurable impact:
             </p>
           </div>
         </div>

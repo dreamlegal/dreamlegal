@@ -1,8 +1,30 @@
-
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
 
 const ThreeSectionLayout = () => {
+  const testimonials = [
+    {
+      id: 1,
+      text: "DreamLegal is a highly valuable partner for any company in the legal tech sector. They helped us navigate the unique challenges of the Indian market and effectively position our product.",
+      author: "Akansh Tayal",
+      position: "Founder",
+      company: "Casebench"
+    },
+    {
+      id: 2,
+      text: "DreamLegal is a great platform for legal tech vendors looking to reach a focused and relevant audience. The listing process was easy, and the intuitive structure makes it simple for potential buyers.",
+      author: "Garvish Singh",
+      position: "Marketing Manager",
+      company: "Lucio"
+    },
+    {
+      id: 3,
+      text: "DreamLegal got our first inbound client when we launched our CLM module.",
+      author: "Manu Grover",
+      position: "Founder",
+      company: "Legal Buddy"
+    }
+  ];
+
   return (
     <div className="w-full">
       {/* Section 1 - Light Background: Image Left, Text Right */}
@@ -26,12 +48,12 @@ const ThreeSectionLayout = () => {
                 Build product profiles that bring trust
               </h2>
               <p className="text-base sm:text-lg lg:text-xl leading-relaxed mb-6 sm:mb-8" style={{ color: '#334155' }}>
-              Upgrade your product profile to a premium vendor in our marketplace. Priority placement, enhanced presence and more content to build trust. Verified reviews, transparent features, and accessible insights on your product — all in one place.
-
+                Upgrade your product profile to a premium vendor in our marketplace. Priority placement, enhanced presence and more content to build trust. Verified reviews, transparent features, and accessible insights on your product — all in one place.
               </p>
-              <a href="#contact" className="inline-flex items-center px-5 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white rounded-full transition-all duration-300 hover:opacity-90 hover:scale-105 border-2 sm:border-4 border-black w-full sm:w-auto justify-center sm:justify-start" style={{ backgroundColor: '#1e2556' }}>
-              Become a premium vendor
-              </a>
+              
+              <p className="text-base sm:text-lg italic" style={{ color: '#334155' }}>
+                "DreamLegal is a highly valuable partner..." - {testimonials[0].author}, {testimonials[0].position}, {testimonials[0].company}
+              </p>
             </div>
           </div>
         </div>
@@ -44,24 +66,15 @@ const ThreeSectionLayout = () => {
             {/* Left - Text */}
             <div className="order-1">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 sm:mb-6 leading-tight">
-              Bullet proof Marketing
-
-
+                Bullet proof Marketing
               </h2>
               <p className="text-base sm:text-lg lg:text-xl leading-relaxed mb-6 sm:mb-8 text-white/90">
-              We craft a unique ICP and product positioning that targets the user segment where your solution wins hands down. Then, we build a tailored legal tech marketing funnel that delivers clarity, confidence, trust, and conversions — all without chasing the wrong leads or wasting spend on the wrong channels.
+                We craft a unique ICP and product positioning that targets the user segment where your solution wins hands down. Dreamlegal content delivers clarity, confidence, trust, and conversions — all without chasing the wrong leads or wasting spend on the wrong channels.
               </p>
               
-              <div className="space-y-4">
-                <a 
-                  href="#contact" 
-                  className="inline-flex items-center gap-2 sm:gap-3 text-base sm:text-lg font-medium hover:underline transition-all duration-300 group" 
-                  style={{ color: '#7cc6ee' }}
-                >
-                  <span>Partner with us</span>
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </a>
-              </div>
+              <p className="text-base sm:text-lg italic text-white/90">
+                "DreamLegal is a great platform for legal..." - {testimonials[1].author}, {testimonials[1].position}, {testimonials[1].company}
+              </p>
             </div>
 
             {/* Right - Image */}
@@ -100,9 +113,9 @@ const ThreeSectionLayout = () => {
                 Catch market trends, competitive intel, and buyer preference with real-time intelligence from the DreamLegal marketplace and 100+ trusted web sources. Better product roadmaps, client proposals and competitive edge
               </p>
 
-              <a href="#contact" className="inline-flex items-center px-5 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold bg-white rounded-full transition-all duration-300 hover:opacity-90 hover:scale-105 border-2 sm:border-4 border-black w-full sm:w-auto justify-center sm:justify-start" style={{ color: '#1e2556' }}>
-                Book a demo
-              </a>
+              <p className="text-base sm:text-lg italic" style={{ color: '#334155' }}>
+                "DreamLegal got our first inbound client..." - {testimonials[2].author}, {testimonials[2].position}, {testimonials[2].company}
+              </p>
             </div>
           </div>
         </div>

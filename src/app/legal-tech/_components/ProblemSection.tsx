@@ -70,7 +70,7 @@ const ProblemSection = () => {
                            ${isInView ? 'scale-x-100' : 'scale-x-0'}`} />
             </h2>
             <p className="text-white/80 mt-4 md:mt-6 max-w-2xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed px-4 sm:px-0">
-              Break out of the noise, earn credibility faster, and create consistent demand—no matter your size.
+              Break out of the noise, earn credibility faster, and create consistent demand—no  matter your stage.
             </p>
           </div>
         </div>

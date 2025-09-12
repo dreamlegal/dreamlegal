@@ -216,7 +216,7 @@ const HeroSection = () => {
             {/* CTA Button */}
             <div className="mb-6 md:mb-8 text-left">
               <a 
-                href="#contact" 
+                href="#vendor-pricing" 
                 className="inline-flex items-center px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 text-base sm:text-lg md:text-xl font-semibold text-white rounded-md transition-all duration-300 hover:opacity-90 hover:scale-105 hover:shadow-2xl shadow-lg"
                 style={{ backgroundColor: '#1e2556' }}
               >

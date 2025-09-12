@@ -1,8 +1,68 @@
 
-import React from 'react';
-import { ArrowRight, Users, Star, Headphones, Sparkles } from 'lucide-react';
+"use client"
+import React, { useState, useEffect } from 'react';
+import { ArrowRight, Users, Star, Headphones, Sparkles, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 
 const TestimonialSection = () => {
+  const [currentSlide, setCurrentSlide] = useState(1); // Changed from 1 to 0
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  const testimonials = [
+    {
+      id: 1,
+      text: "DreamLegal is a highly valuable partner for any company in the legal tech sector. They helped us navigate the unique challenges of the Indian market and effectively position our product.",
+      author: "Akansh Tayal",
+      position: "Founder",
+      company: "Casebench"
+    },
+    {
+      id: 2,
+      text: "DreamLegal is a great platform for legal tech vendors looking to reach a focused and relevant audience. The listing process was easy, and the intuitive structure makes it simple for potential buyers.",
+      author: "Garvish Singh",
+      position: "Marketing Manager",
+      company: "Lucio"
+    },
+    {
+      id: 3,
+      text: "DreamLegal got our first inbound client when we launched our CLM module.",
+      author: "Manu Grover",
+      position: "Founder",
+      company: "Legal Buddy"
+    },
+    {
+      id: 4,
+      text: "Collaborated posts with DreamLegal have increased our inbound presence tremendously.",
+      author: "Tushar Bhargava",
+      position: "Co-founder",
+      company: "Mikelegal"
+    }
+  ];
+
+  // Auto-slide functionality with proper looping
+  useEffect(() => {
+    if (isAutoPlaying) {
+      const interval = setInterval(() => {
+        setCurrentSlide((prev) => {
+          const nextSlide = (prev + 1) % testimonials.length;
+          return nextSlide;
+        });
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [isAutoPlaying, testimonials.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
+
   return (
     <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#f8fafc] to-[#f1f5f9] relative overflow-hidden">
       {/* Background decoration */}
@@ -18,8 +78,81 @@ const TestimonialSection = () => {
           </h2>
         </div>
 
-        {/* Mobile-Optimized Blue Strip */}
-        <div className="mb-8 sm:mb-12 lg:mb-16">
+        {/* Centered Testimonial Carousel */}
+        <div className="relative flex justify-center">
+          {/* Carousel Container - Smaller and Centered */}
+          <div 
+            className="max-w-3xl w-full " // Added overflow-hidden
+            onMouseEnter={() => setIsAutoPlaying(false)}
+            onMouseLeave={() => setIsAutoPlaying(true)}
+          >
+            {/* Slides Container */}
+            <div 
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            >
+              {testimonials.map((testimonial, index) => (
+                <div key={testimonial.id} className="w-full flex-shrink-0 flex justify-center">
+                  {/* Smaller, Centered Card */}
+                  <div className="bg-[#f5f7fa] rounded-2xl p-6 sm:p-8 mx-4 shadow-lg border border-gray-100 max-w-2xl w-full text-center">
+                    
+                    {/* Centered Testimonial Text */}
+                    <blockquote className="text-[#2d2d2d] text-sm sm:text-base lg:text-lg leading-relaxed mb-6 font-medium text-center">
+                      "{testimonial.text}"
+                    </blockquote>
+                    
+                    {/* Centered Author Info */}
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="text-center">
+                        <div className="font-bold text-[#1e2556] text-sm sm:text-base">
+                          {testimonial.author}
+                        </div>
+                        <div className="text-[#334155] text-xs sm:text-sm">
+                          {testimonial.position} @ {testimonial.company}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation Arrows */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-[#1e2556] text-white p-2 sm:p-3 rounded-full shadow-lg hover:bg-[#1e2556]/90 transition-colors z-10"
+            aria-label="Previous testimonial"
+          >
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+          
+          <button
+            onClick={nextSlide}
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-[#1e2556] text-white p-2 sm:p-3 rounded-full shadow-lg hover:bg-[#1e2556]/90 transition-colors z-10"
+            aria-label="Next testimonial"
+          >
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+        </div>
+
+        {/* Centered Dots Indicator */}
+        <div className="flex justify-center gap-2 sm:gap-3 mt-6 sm:mt-8">
+          {testimonials.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide 
+                  ? 'bg-[#1e2556] w-6 sm:w-8' 
+                  : 'bg-[#7cc6ee]/40 hover:bg-[#7cc6ee]/60'
+              }`}
+              aria-label={`Go to testimonial ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        <div className="mb-8 sm:mt-12 lg:mt-16">
           <div className="bg-[#7cc6ee] rounded-2xl shadow-lg mx-4 sm:mx-auto sm:max-w-5xl">
             <div className="px-6 py-8 sm:px-8 sm:py-10">
               {/* Mobile-Optimized Heading */}
@@ -78,69 +211,6 @@ const TestimonialSection = () => {
             </div>
           </div>
         </div>
-
-        {/* Premium Testimonial Card */}
-        {/* <div className="max-w-6xl mx-auto">
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-2xl border border-[#7cc6ee]/20 p-6 sm:p-8 lg:p-10 xl:p-12 relative overflow-hidden">
-           
-            <div className="absolute top-0 right-0 w-32 h-32 sm:w-64 sm:h-64 bg-gradient-to-bl from-[#7cc6ee]/10 to-transparent rounded-full blur-2xl" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 sm:w-48 sm:h-48 bg-gradient-to-tr from-[#1e2556]/10 to-transparent rounded-full blur-2xl" />
-            
-            <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center relative z-10">
-              
-              <div className="flex justify-center lg:justify-start order-2 lg:order-1">
-                <div className="relative group">
-                  <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-r from-[#7cc6ee] to-[#1e2556] rounded-full blur opacity-75 group-hover:opacity-100 transition duration-500 animate-pulse" />
-                  <div className="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-40 lg:h-40 rounded-full overflow-hidden shadow-2xl border-2 sm:border-4 border-white">
-                    <div className="w-full h-full bg-gradient-to-br from-[#7cc6ee] to-[#1e2556] flex items-center justify-center transform group-hover:scale-105 transition-transform duration-300">
-                      <span className="text-white text-3xl sm:text-4xl lg:text-5xl font-bold">IH</span>
-                    </div>
-                  </div>
-                 
-                  <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-4 h-4 sm:w-6 sm:h-6 bg-[#7cc6ee] rounded-full animate-bounce delay-100" />
-                  <div className="absolute -bottom-2 -left-2 sm:-bottom-3 sm:-left-3 w-3 h-3 sm:w-4 sm:h-4 bg-[#1e2556] rounded-full animate-bounce delay-300" />
-                </div>
-              </div>
-
-              <div className="order-1 lg:order-2">
-                <div className="mb-6 sm:mb-8">
-                  <div className="text-4xl sm:text-5xl lg:text-6xl text-[#7cc6ee]/30 font-serif leading-none mb-3 sm:mb-4">"</div>
-                  <blockquote className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight text-[#1e2556] relative">
-                    We realized every customer that we 
-                    <span className="text-[#7cc6ee]"> closed a deal with</span> checked us out on 
-                    <span className="text-[#7cc6ee]"> Capterra beforehand.</span>
-                  </blockquote>
-                </div>
-                
-              
-                <div className="mb-6 sm:mb-8">
-                  <h4 className="text-xl sm:text-2xl font-bold mb-2 text-[#1e2556]">
-                    Ilan Hertz
-                  </h4>
-                  <p className="text-base sm:text-lg mb-3 sm:mb-4 text-[#334155]">
-                    VP of Marketing at Gaviti
-                  </p>
-                  
-                 
-                  <div className="font-bold text-lg sm:text-xl mb-4 sm:mb-6 text-[#1e2556] tracking-wider">
-                    GAVITI
-                  </div>
-                </div>
-                
-                
-                <a 
-                  href="#" 
-                  className="group inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#7cc6ee]/10 to-[#1e2556]/10 hover:from-[#7cc6ee]/20 hover:to-[#1e2556]/20 border border-[#7cc6ee]/20 hover:border-[#7cc6ee]/40 text-[#7cc6ee] font-semibold text-base sm:text-lg transition-all duration-300 hover:shadow-lg hover:scale-105"
-                >
-                  <span className="group-hover:text-[#1e2556] transition-colors duration-300">
-                    Read the Success Story
-                  </span>
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div> */}
       </div>
     </section>
   );

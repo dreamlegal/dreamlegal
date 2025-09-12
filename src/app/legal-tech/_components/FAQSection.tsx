@@ -140,7 +140,7 @@ const FAQSection = () => {
         </div>
 
         {/* Final CTA */}
-        <div className={`text-center transition-all duration-700 transform
+        {/* <div className={`text-center transition-all duration-700 transform
                        ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
              style={{ transitionDelay: '800ms' }}>
           <div className="bg-[#1e2556] rounded-xl md:rounded-2xl p-6 md:p-8 lg:p-10">
@@ -154,23 +154,42 @@ const FAQSection = () => {
               Join hundreds of legal tech vendors who trust DreamLegal to connect them with qualified buyers.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-              <button className="bg-[#7cc6ee] text-white px-6 md:px-8 py-3 md:py-3.5 rounded-lg md:rounded-xl font-semibold 
-                               hover:bg-[#6bb3db] transition-all duration-300 shadow-lg hover:shadow-xl
-                               flex items-center justify-center gap-2 text-sm md:text-base">
-                Start Free Profile
-                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-              </button>
-              <button className="border-2 border-white text-white px-6 md:px-8 py-3 md:py-3.5 rounded-lg md:rounded-xl font-semibold 
+         
+              <a href="#contact" className="border-2 border-white text-white px-6 md:px-8 py-3 md:py-3.5 rounded-lg md:rounded-xl font-semibold 
                                hover:bg-white hover:text-[#1e2556] transition-all duration-300
                                flex items-center justify-center gap-2 text-sm md:text-base">
                 Talk to Partnership Team
-              </button>
+              </a>
             </div>
           </div>
+        </div> */}
+        <div className={`text-center transition-all duration-700 transform
+                     ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+         style={{ transitionDelay: '800ms' }}>
+      <div className="bg-[#1e2556] rounded-xl md:rounded-2xl p-6 md:p-8 lg:p-10">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-3 md:mb-4">
+          <Users className="w-6 h-6 md:w-8 md:h-8 text-[#7cc6ee]" />
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white text-center">
+            Ready to accelerate your growth?
+          </h3>
         </div>
+        <p className="text-white/80 mb-6 md:mb-8 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
+          Join hundreds of legal tech vendors who trust DreamLegal to connect them with qualified buyers.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+          <a href="#contact" className="border-2 border-white text-white px-6 md:px-8 py-3 md:py-3.5 rounded-lg md:rounded-xl font-semibold 
+                           hover:bg-white hover:text-[#1e2556] transition-all duration-300
+                           flex items-center justify-center gap-2 text-sm md:text-base">
+            Talk to Partnership Team
+          </a>
+        </div>
+        
+      </div>
+    </div>
+
 
         {/* Still have questions? */}
-        <div className={`text-center mt-8 md:mt-12 transition-all duration-700 transform
+        {/* <div className={`text-center mt-8 md:mt-12 transition-all duration-700 transform
                        ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
              style={{ transitionDelay: '900ms' }}>
           <div className="flex items-center justify-center gap-2 text-[#334155]">
@@ -182,7 +201,28 @@ const FAQSection = () => {
               </a>
             </span>
           </div>
-        </div>
+        </div> */}
+        <div className={`text-center mt-8 md:mt-12 transition-all duration-700 transform
+                     ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+         style={{ transitionDelay: '900ms' }}>
+      <div className="flex items-center justify-center gap-2 text-[#334155]">
+        <HelpCircle className="w-5 h-5" />
+        <span className="text-sm md:text-base">
+          Still have questions? 
+          <a href="#contact" className="text-[#7cc6ee] hover:text-[#6bb3db] font-semibold ml-1 transition-colors">
+            
+          </a>
+          {' '} - {' '}
+          <a href="https://calendly.com/ranjansinghania1909/30min" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             className="text-[#7cc6ee] hover:text-[#6bb3db] font-semibold transition-colors">
+            Talk to our founder
+          </a>
+        </span>
+      </div>
+    </div>
+
       </div>
     </div>
   );

@@ -558,8 +558,8 @@ const VendorPricingSection = () => {
             <tr className="bg-gray-50 border-b">
               <th className="text-left p-4 font-semibold text-blue-900">Feature</th>
               <th className="text-center p-4 font-semibold text-blue-900">Free</th>
-              <th className="text-center p-4 font-semibold text-blue-900">Verified</th>
-              <th className="text-center p-4 font-semibold text-blue-900">Premium</th>
+              <th className="text-center p-4 font-semibold text-blue-900">Launchpad</th>
+              <th className="text-center p-4 font-semibold text-blue-900">Growth Program</th>
               <th className="text-center p-4 font-semibold text-blue-900">Custom Partnership</th>
             </tr>
           </thead>

@@ -380,7 +380,7 @@ const VendorPricingSection = () => {
       popular: false
     },
     {
-      name: "Verified",
+      name: "Launchpad",
       icon: <Star className="w-6 h-6" />,
       price: "₹85,000",
       priceUS: "$1,100",
@@ -397,7 +397,7 @@ const VendorPricingSection = () => {
       popular: false
     },
     {
-      name: "Premium",
+      name: "Growth Program",
       icon: <Crown className="w-6 h-6" />,
       price: "₹4,20,000",
       priceUS: "$5,500",

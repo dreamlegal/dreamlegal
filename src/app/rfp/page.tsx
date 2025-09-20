@@ -21,7 +21,10 @@ const RfpPage = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-[#1e2556] mb-2">Please Sign In</h2>
-          <p className="text-[#334155]">You need to be signed in to create an RFP.</p>
+          <p className="text-[#334155] mb-4">You need to be signed in to create an RFP.</p>
+          <p className="text-[#334155]">
+            <a href="/auth/user/login" className="text-[#7cc6ee] hover:underline">Click here to log in</a>
+          </p>
         </div>
       </div>
     );

@@ -913,7 +913,9 @@ model RfpStructured {
 
   // 4 Key Requirements
   keyRequirements     Json     // Array of {head: string, description: string}
-  
+
   // 5 Additional Questions
   additionalQuestions Json     // Array of question strings
+
+  vendors             String[]
 }

@@ -872,3 +872,48 @@ model UserExperience {
   @@unique([userId, productId])
   @@map("user_experiences")
 }
+
+model RfpAi {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  // Page 1
+  category    String?   // category solution user selects
+  // Page 2
+  coreProblem String?   // short answer
+  priority    String?   // e.g. "Easy to use / simple setup", "Affordable pricing"
+  // Page 3
+  implementationTimeline String? // e.g. "Immediately (0–3 months)"
+  budgetMin              Int?    // minimum budget
+  budgetMax              Int?    // maximum budget
+  budgetCurrent          String?    // current allocated budget
+  // Page 4
+  teamType      String?  // e.g. "Law firm", "Legal department"
+  teamSize      String?  // store chosen team size option
+  vendorCountry String?  // country name or code
+}
+// New RfpStructured schema
+model RfpStructured {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // 1 Tabular Information
+  teamType            String
+  category            String
+  requirementUrgency  String
+  locationPreference  String
+  contactEmail        String
+
+  // 2 Problem Statement
+  problemStatement    String
+
+  // 3 Objectives
+  objectives          Json     // Array of 5 objective strings
+
+  // 4 Key Requirements
+  keyRequirements     Json     // Array of {head: string, description: string}
+  
+  // 5 Additional Questions
+  additionalQuestions Json     // Array of question strings
+}

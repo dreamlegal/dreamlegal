@@ -900,6 +900,7 @@ model RfpStructured {
 
   // 1 Tabular Information
   teamType            String
+  teamSize            String?   
   category            String
   requirementUrgency  String
   locationPreference  String
@@ -911,11 +912,17 @@ model RfpStructured {
   // 3 Objectives
   objectives          Json     // Array of 5 objective strings
 
+  // 4 Key Features (NEW - replaces keyRequirements)
+  keyFeatures         Json?     // Array of {name: string, description: string}
+
+  // 5 Key Functionalities (NEW)
+  keyFunctionalities  Json?     // Array of {name: string, description: string}
+
   // 4 Key Requirements
-  keyRequirements     Json     // Array of {head: string, description: string}
+  keyRequirements     Json?     // Array of {head: string, description: string}
 
   // 5 Additional Questions
-  additionalQuestions Json     // Array of question strings
+  additionalQuestions Json?     // Array of question strings
 
   vendors             String[]
 }

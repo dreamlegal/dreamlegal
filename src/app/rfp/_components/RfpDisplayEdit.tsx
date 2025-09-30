@@ -1,4 +1,4 @@
-// // app/rfp/components/RfpDisplayEdit.jsx
+
 // 'use client'
 // import React, { useState, useEffect } from 'react';
 // import { Edit2, Save, Copy, Plus, Trash2, X, Check, Building, Calendar, MapPin, Mail, Target, FileText, HelpCircle, Share2, Users } from 'lucide-react';
@@ -47,6 +47,7 @@
 //   const [tempArray, setTempArray] = useState([]);
 //   const [isSaving, setIsSaving] = useState(false);
 //   const [shareMessage, setShareMessage] = useState('');
+//   const [isMatchingVendors, setIsMatchingVendors] = useState(false);
 
 //   useEffect(() => {
 //     fetchRfpData();
@@ -175,6 +176,36 @@
 //     setTimeout(() => setShareMessage(''), 3000);
 //   };
 
+//   const handleVendorMatching = async () => {
+//     setIsMatchingVendors(true);
+//     try {
+//       const response = await fetch(`/api/rfp/${rfpId}/match-vendors`, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         }
+//       });
+
+//       const result = await response.json();
+      
+//       if (result.success) {
+//         setShareMessage('Vendors matched successfully!');
+//         setTimeout(() => setShareMessage(''), 3000);
+//         // Redirect to vendors page
+//         window.location.href = `/rfp/${rfpId}/vendors`;
+//       } else {
+//         setShareMessage(`Error: ${result.message}`);
+//         setTimeout(() => setShareMessage(''), 5000);
+//       }
+//     } catch (error) {
+//       console.error('Error matching vendors:', error);
+//       setShareMessage('Failed to match vendors. Please try again.');
+//       setTimeout(() => setShareMessage(''), 5000);
+//     } finally {
+//       setIsMatchingVendors(false);
+//     }
+//   };
+
 //   const generateRfpText = () => {
 //     if (!rfpData) return '';
     
@@ -280,6 +311,27 @@
 //           </div>
 //           <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full lg:w-auto">
 //             <button
+//               onClick={handleVendorMatching}
+//               disabled={isMatchingVendors}
+//               className={`flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+//                 isMatchingVendors 
+//                   ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+//                   : 'bg-[#1e2556] text-white hover:bg-opacity-90'
+//               }`}
+//             >
+//               {isMatchingVendors ? (
+//                 <>
+//                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+//                   Finding Vendors...
+//                 </>
+//               ) : (
+//                 <>
+//                   <Target className="w-5 h-5 mr-2" />
+//                   Find Vendors
+//                 </>
+//               )}
+//             </button>
+//             <button
 //               onClick={shareLink}
 //               className="flex items-center justify-center px-4 py-2 bg-gray-100 text-[#334155] rounded-lg hover:bg-gray-200 transition-all duration-200"
 //             >
@@ -295,7 +347,7 @@
 //             </button>
 //             <Link
 //               href="/rfp"
-//               className="flex items-center justify-center px-4 py-2 bg-[#1e2556] text-white rounded-lg hover:bg-opacity-90 transition-all duration-200"
+//               className="flex items-center justify-center px-4 py-2 bg-gray-200 text-[#334155] rounded-lg hover:bg-gray-300 transition-all duration-200"
 //             >
 //               <Plus className="w-4 h-4 mr-2" />
 //               New RFP
@@ -669,10 +721,9 @@
 // };
 
 // export default RfpDisplayEdit;
-// app/rfp/components/RfpDisplayEdit.jsx
 'use client'
 import React, { useState, useEffect } from 'react';
-import { Edit2, Save, Copy, Plus, Trash2, X, Check, Building, Calendar, MapPin, Mail, Target, FileText, HelpCircle, Share2, Users } from 'lucide-react';
+import { Edit2, Save, Copy, Plus, Trash2, X, Check, Building, Calendar, MapPin, Mail, Target, FileText, Share2, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/context/authContext';
 
@@ -823,8 +874,12 @@ const RfpDisplayEdit = ({ rfpId }) => {
     setTempArray(tempArray.filter((_, i) => i !== index));
   };
 
-  const addKeyRequirement = () => {
-    setTempArray([...tempArray, { head: '', description: '' }]);
+  const addKeyRequirement = (type) => {
+    if (type === 'keyFeatures') {
+      setTempArray([...tempArray, { name: '', description: '' }]);
+    } else {
+      setTempArray([...tempArray, { name: '', description: '' }]);
+    }
   };
 
   const updateKeyRequirement = (index, field, value) => {
@@ -885,6 +940,7 @@ REQUEST FOR PROPOSAL
 
 TABULAR INFORMATION
 Team Type: ${rfpData.teamType}
+Team Size: ${rfpData.teamSize}
 Category: ${rfpData.category}
 Requirement Urgency: ${rfpData.requirementUrgency}
 Location Preference: ${rfpData.locationPreference}
@@ -896,11 +952,11 @@ ${rfpData.problemStatement}
 OBJECTIVES
 ${rfpData.objectives.map((obj, i) => `${i + 1}. ${obj}`).join('\n')}
 
-KEY REQUIREMENTS
-${rfpData.keyRequirements.map(req => `• ${req.head}: ${req.description}`).join('\n')}
+KEY FEATURES
+${rfpData.keyFeatures ? rfpData.keyFeatures.map(feature => `• ${feature.name}: ${feature.description}`).join('\n') : ''}
 
-ADDITIONAL QUESTIONS
-${rfpData.additionalQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n')}
+KEY FUNCTIONALITIES
+${rfpData.keyFunctionalities ? rfpData.keyFunctionalities.map(func => `• ${func.name}: ${func.description}`).join('\n') : ''}
     `.trim();
   };
 
@@ -1036,8 +1092,8 @@ ${rfpData.additionalQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n')}
                   { id: 'info', label: 'Key Information', icon: Building },
                   { id: 'problem', label: 'Problem Statement', icon: FileText },
                   { id: 'objectives', label: 'Objectives', icon: Target },
-                  { id: 'requirements', label: 'Key Requirements', icon: FileText },
-                  { id: 'questions', label: 'Additional Questions', icon: HelpCircle }
+                  { id: 'features', label: 'Key Features', icon: FileText },
+                  { id: 'functionalities', label: 'Key Functionalities', icon: FileText }
                 ].map(({ id, label, icon: Icon }) => (
                   <a
                     key={id}
@@ -1060,6 +1116,7 @@ ${rfpData.additionalQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n')}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {[
                   { icon: Building, label: 'Team Type', field: 'teamType' },
+                  { icon: Users, label: 'Team Size', field: 'teamSize' },
                   { icon: FileText, label: 'Category', field: 'category' },
                   { icon: Calendar, label: 'Requirement Urgency', field: 'requirementUrgency' },
                   { icon: MapPin, label: 'Location Preference', field: 'locationPreference' },
@@ -1234,14 +1291,14 @@ ${rfpData.additionalQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n')}
               )}
             </section>
 
-            {/* Key Requirements */}
-            <section id="requirements" className="bg-white rounded-lg shadow-sm p-6">
+            {/* Key Features */}
+            <section id="features" className="bg-white rounded-lg shadow-sm p-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-2 sm:space-y-0">
-                <h2 className="text-xl lg:text-2xl font-bold text-[#1e2556]">Key Requirements</h2>
-                {editingField === 'keyRequirements' ? (
+                <h2 className="text-xl lg:text-2xl font-bold text-[#1e2556]">Key Features</h2>
+                {editingField === 'keyFeatures' ? (
                   <div className="flex items-center space-x-2">
                     <button
-                      onClick={() => handleSave('keyRequirements')}
+                      onClick={() => handleSave('keyFeatures')}
                       disabled={isSaving}
                       className="flex items-center px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700"
                     >
@@ -1258,7 +1315,7 @@ ${rfpData.additionalQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n')}
                   </div>
                 ) : (
                   <button
-                    onClick={() => handleEdit('keyRequirements', rfpData.keyRequirements)}
+                    onClick={() => handleEdit('keyFeatures', rfpData.keyFeatures || [])}
                     className="flex items-center px-3 py-1 bg-[#7cc6ee] text-white rounded text-sm hover:bg-opacity-90"
                   >
                     <Edit2 className="w-4 h-4 mr-1" />
@@ -1266,16 +1323,16 @@ ${rfpData.additionalQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n')}
                   </button>
                 )}
               </div>
-              {editingField === 'keyRequirements' ? (
+              {editingField === 'keyFeatures' ? (
                 <div className="space-y-4">
-                  {tempArray.map((requirement, index) => (
+                  {tempArray.map((feature, index) => (
                     <div key={index} className="border border-gray-200 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
                         <input
                           type="text"
-                          value={requirement.head}
-                          onChange={(e) => updateKeyRequirement(index, 'head', e.target.value)}
-                          placeholder="Requirement heading"
+                          value={feature.name || ''}
+                          onChange={(e) => updateKeyRequirement(index, 'name', e.target.value)}
+                          placeholder="Feature name"
                           className="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#7cc6ee] focus:border-transparent mr-2"
                         />
                         <button
@@ -1286,42 +1343,42 @@ ${rfpData.additionalQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n')}
                         </button>
                       </div>
                       <textarea
-                        value={requirement.description}
+                        value={feature.description || ''}
                         onChange={(e) => updateKeyRequirement(index, 'description', e.target.value)}
-                        placeholder="Requirement description"
+                        placeholder="Feature description"
                         rows={3}
                         className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#7cc6ee] focus:border-transparent"
                       />
                     </div>
                   ))}
                   <button
-                    onClick={addKeyRequirement}
+                    onClick={() => addKeyRequirement('keyFeatures')}
                     className="flex items-center px-3 py-1 bg-[#1e2556] text-white rounded text-sm hover:bg-opacity-90"
                   >
                     <Plus className="w-4 h-4 mr-1" />
-                    Add Requirement
+                    Add Feature
                   </button>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {rfpData.keyRequirements.map((requirement, index) => (
+                  {(rfpData.keyFeatures || []).map((feature, index) => (
                     <div key={index} className="border-l-4 border-[#7cc6ee] pl-4">
-                      <h4 className="font-semibold text-[#1e2556] mb-2">{requirement.head}</h4>
-                      <p className="text-[#2d2d2d]">{requirement.description}</p>
+                      <h4 className="font-semibold text-[#1e2556] mb-2">{feature.name}</h4>
+                      <p className="text-[#2d2d2d]">{feature.description}</p>
                     </div>
                   ))}
                 </div>
               )}
             </section>
 
-            {/* Additional Questions */}
-            <section id="questions" className="bg-white rounded-lg shadow-sm p-6">
+            {/* Key Functionalities */}
+            <section id="functionalities" className="bg-white rounded-lg shadow-sm p-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-2 sm:space-y-0">
-                <h2 className="text-xl lg:text-2xl font-bold text-[#1e2556]">Additional Questions</h2>
-                {editingField === 'additionalQuestions' ? (
+                <h2 className="text-xl lg:text-2xl font-bold text-[#1e2556]">Key Functionalities</h2>
+                {editingField === 'keyFunctionalities' ? (
                   <div className="flex items-center space-x-2">
                     <button
-                      onClick={() => handleSave('additionalQuestions')}
+                      onClick={() => handleSave('keyFunctionalities')}
                       disabled={isSaving}
                       className="flex items-center px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700"
                     >
@@ -1338,7 +1395,7 @@ ${rfpData.additionalQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n')}
                   </div>
                 ) : (
                   <button
-                    onClick={() => handleEdit('additionalQuestions', rfpData.additionalQuestions)}
+                    onClick={() => handleEdit('keyFunctionalities', rfpData.keyFunctionalities || [])}
                     className="flex items-center px-3 py-1 bg-[#7cc6ee] text-white rounded text-sm hover:bg-opacity-90"
                   >
                     <Edit2 className="w-4 h-4 mr-1" />
@@ -1346,42 +1403,51 @@ ${rfpData.additionalQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n')}
                   </button>
                 )}
               </div>
-              {editingField === 'additionalQuestions' ? (
-                <div className="space-y-3">
-                  {tempArray.map((question, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <span className="text-[#7cc6ee] font-medium flex-shrink-0">{index + 1}.</span>
-                      <input
-                        type="text"
-                        value={question}
-                        onChange={(e) => updateArrayItem(index, e.target.value)}
-                        className="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#7cc6ee] focus:border-transparent"
+              {editingField === 'keyFunctionalities' ? (
+                <div className="space-y-4">
+                  {tempArray.map((functionality, index) => (
+                    <div key={index} className="border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <input
+                          type="text"
+                          value={functionality.name || ''}
+                          onChange={(e) => updateKeyRequirement(index, 'name', e.target.value)}
+                          placeholder="Functionality name"
+                          className="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#7cc6ee] focus:border-transparent mr-2"
+                        />
+                        <button
+                          onClick={() => removeArrayItem(index)}
+                          className="p-1 text-red-600 hover:bg-red-50 rounded flex-shrink-0"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <textarea
+                        value={functionality.description || ''}
+                        onChange={(e) => updateKeyRequirement(index, 'description', e.target.value)}
+                        placeholder="Functionality description"
+                        rows={3}
+                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#7cc6ee] focus:border-transparent"
                       />
-                      <button
-                        onClick={() => removeArrayItem(index)}
-                        className="p-1 text-red-600 hover:bg-red-50 rounded flex-shrink-0"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
                     </div>
                   ))}
                   <button
-                    onClick={addArrayItem}
+                    onClick={() => addKeyRequirement('keyFunctionalities')}
                     className="flex items-center px-3 py-1 bg-[#1e2556] text-white rounded text-sm hover:bg-opacity-90"
                   >
                     <Plus className="w-4 h-4 mr-1" />
-                    Add Question
+                    Add Functionality
                   </button>
                 </div>
               ) : (
-                <ol className="space-y-2">
-                  {rfpData.additionalQuestions.map((question, index) => (
-                    <li key={index} className="flex items-start">
-                      <span className="text-[#7cc6ee] font-medium mr-3 flex-shrink-0 mt-0.5">{index + 1}.</span>
-                      <span className="text-[#2d2d2d]">{question}</span>
-                    </li>
+                <div className="space-y-4">
+                  {(rfpData.keyFunctionalities || []).map((functionality, index) => (
+                    <div key={index} className="border-l-4 border-[#00d4aa] pl-4">
+                      <h4 className="font-semibold text-[#1e2556] mb-2">{functionality.name}</h4>
+                      <p className="text-[#2d2d2d]">{functionality.description}</p>
+                    </div>
                   ))}
-                </ol>
+                </div>
               )}
             </section>
           </div>

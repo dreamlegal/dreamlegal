@@ -1,5 +1,5 @@
 
-// // app/api/rfp/[id]/route.js
+// // app/api/rfp/[id]/route.js - GET, UPDATE, DELETE RFP
 // import prisma from "@/lib/prisma";
 // import { NextResponse } from 'next/server';
 
@@ -69,7 +69,7 @@
 //     const allowedFields = [
 //       'teamType', 'category', 'requirementUrgency', 'locationPreference', 
 //       'contactEmail', 'problemStatement', 'objectives', 'keyRequirements', 
-//       'additionalQuestions'
+//       'additionalQuestions', 'vendors'
 //     ];
     
 //     const updateData = {};
@@ -156,7 +156,6 @@
 //     }, { status: 500 });
 //   }
 // }
-
 // app/api/rfp/[id]/route.js - GET, UPDATE, DELETE RFP
 import prisma from "@/lib/prisma";
 import { NextResponse } from 'next/server';
@@ -223,11 +222,12 @@ export async function PUT(request, { params }) {
       }, { status: 404 });
     }
 
-    // Filter allowed fields for update
+    // Updated allowed fields to include new fields
     const allowedFields = [
-      'teamType', 'category', 'requirementUrgency', 'locationPreference', 
-      'contactEmail', 'problemStatement', 'objectives', 'keyRequirements', 
-      'additionalQuestions', 'vendors'
+      'teamType', 'teamSize', 'category', 'requirementUrgency', 'locationPreference', 
+      'contactEmail', 'problemStatement', 'objectives', 'keyFeatures', 'keyFunctionalities',
+      'vendors'
+      // Note: keeping additionalQuestions available but not using in UI
     ];
     
     const updateData = {};

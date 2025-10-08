@@ -176,7 +176,7 @@ export const data = [
         ]
       }
     ],
-    {
+   
       "CASE_MANAGEMENT": [
         {
           "slug": "case-management",
@@ -254,6 +254,6 @@ export const data = [
           ]
         }
       ]
-    }
+    
   }
 ];

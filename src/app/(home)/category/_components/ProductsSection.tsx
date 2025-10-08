@@ -28,7 +28,10 @@ const categorySlugToEnum = {
   'litigation-management-and-analytics': 'LITIGATION_MANAGEMENT_AND_ANALYTICS',
   'intellectual-property-management': 'IP_MANAGEMENT',
   'legal-research': 'LEGAL_RESEARCH',
-  'e-discovery': 'E_DISCOVERY'
+  'e-discovery': 'E_DISCOVERY',
+  'case-management': 'CASE_MANAGEMENT',
+'governance-risk-compliance': 'GOVERNANCE_RISK_COMPLIANCE',
+'legal-due-diligence': 'LEGAL_DUE_DILIGENCE'
 };
 
 const pricingTierOptions = [

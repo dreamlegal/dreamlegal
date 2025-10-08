@@ -13,7 +13,10 @@ const getCategoriesByOrgType = (orgType) => {
     "Document Management System", 
     "Governance, Risk and Compliance",
     "Intellectual Property Management",
-    "Litigation Management and Analytics"
+    "Litigation Management and Analytics",
+    "Case Management Software",
+"Governance, Risk and Compliance (GRC)",
+"Legal Due Diligence Software"
   ];
   
   const lawFirmCategories = [
@@ -23,7 +26,9 @@ const getCategoriesByOrgType = (orgType) => {
     "E-billing and Invoicing", 
     "Intellectual Property Management",
     "Legal Research",
-    "Litigation Management and Analytics"
+    "Litigation Management and Analytics",
+    "Case Management Software",
+"Legal Due Diligence Software"
   ];
   
   const allCategories = [
@@ -37,7 +42,10 @@ const getCategoriesByOrgType = (orgType) => {
     "E-discovery",
     "Intellectual Property Management", 
     "Litigation Management and Analytics",
-    "Legal Workflow Automation"
+    "Legal Workflow Automation",
+    "Case Management Software",
+"Governance, Risk and Compliance (GRC)",
+"Legal Due Diligence Software"
   ];
 
   if (orgType === "In-House Counsels") return inHouseLegalCategories;
@@ -337,6 +345,37 @@ const categoryOptions = {
       'Law and compliance updates',
     ],
   },
+
+  'Case Management Software': {
+  'Internal Collaboration': ['Messaging and Communication', 'Notification', 'Document sharing', 'Real time Document editing'],
+  'External Collaboration': ['Messaging and Communication', 'Notification', 'Document sharing', 'Real time Document editing'],
+  'Analytics and Reporting': ['Analytics dashboard', 'Report generation', 'Dashboard Customization', 'Report Customization'],
+  'Tool Administration and Control': ['Multiple User role', 'Granular Permission', 'Information access control', 'Role based access control'],
+  'Case Intake and Assignment': ['Case intake forms', 'Automated case assignment', 'Priority tagging'],
+  'Document and Evidence Management': ['Document repository', 'Evidence tracking', 'Version control'],
+  'Task and Deadline Tracking': ['Task management', 'Deadline alerts', 'Calendar integration'],
+  'Communication and Collaboration Tools': ['Client portal', 'Team messaging', 'Email integration']
+},
+'Governance, Risk and Compliance (GRC)': {
+  'Internal Collaboration': ['Messaging and Communication', 'Notification', 'Document sharing', 'Real time Document editing'],
+  'External Collaboration': ['Messaging and Communication', 'Notification', 'Document sharing', 'Real time Document editing'],
+  'Analytics and Reporting': ['Analytics dashboard', 'Report generation', 'Dashboard Customization', 'Report Customization'],
+  'Tool Administration and Control': ['Multiple User role', 'Granular Permission', 'Information access control', 'Role based access control'],
+  'Risk Identification and Assessment': ['Risk mapping', 'Risk scoring', 'Impact analysis'],
+  'Policy and Procedure Management': ['Policy creation', 'Version control', 'Policy distribution'],
+  'Compliance Tracking and Reporting': ['Regulatory tracking', 'Compliance reports', 'Audit trail'],
+  'Incident and Issue Management': ['Incident reporting', 'Issue tracking', 'Resolution workflow']
+},
+'Legal Due Diligence Software': {
+  'Internal Collaboration': ['Messaging and Communication', 'Notification', 'Document sharing', 'Real time Document editing'],
+  'External Collaboration': ['Messaging and Communication', 'Notification', 'Document sharing', 'Real time Document editing'],
+  'Analytics and Reporting': ['Analytics dashboard', 'Report generation', 'Dashboard Customization', 'Report Customization'],
+  'Tool Administration and Control': ['Multiple User role', 'Granular Permission', 'Information access control', 'Role based access control'],
+  'Data Room and Document Management': ['Virtual data room', 'Document organization', 'Access control'],
+  'Automated Document Review and Tagging': ['AI-powered review', 'Auto-tagging', 'OCR capabilities'],
+  'Issue and Risk Flagging': ['Red flag detection', 'Risk assessment', 'Issue tracking'],
+  'Collaboration and Task Management': ['Team collaboration', 'Task assignment', 'Progress tracking']
+}
 };
 
 const categoryLifecycleOptions = {
@@ -372,7 +411,16 @@ const categoryLifecycleOptions = {
   ],
   'Legal Research': [
     'Query Identification', 'Source and Type Selection', 'Filtration and sorting', 'Data extraction', 'Data Analysis and Organization', 'Storage or retrieval'
-  ]
+  ],
+  'Case Management Software': [
+  'Case Intake', 'Case Assignment', 'Document Collection', 'Task Management', 'Case Review', 'Closure'
+],
+'Governance, Risk and Compliance (GRC)': [
+  'Risk Identification', 'Policy Definition', 'Compliance Assessment', 'Monitoring', 'Audit', 'Continuous Improvement'
+],
+'Legal Due Diligence Software': [
+  'Data Collection', 'Document Review', 'Risk Identification', 'Collaboration', 'Reporting', 'Deal Closure'
+]
 };
 
 const ProgressBar = ({ currentStep, totalSteps }) => {

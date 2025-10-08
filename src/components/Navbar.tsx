@@ -301,14 +301,14 @@ const Navbar = () => {
               <div className="hidden md:flex items-center space-x-3">
                 {/* Ask a Question Button */}
                 <a 
-                  href="/ask-question"
+                  href="/rfp"
                   className="inline-flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-white transition-all duration-200 hover:shadow-lg transform hover:scale-105"
                   style={{ backgroundColor: '#1e2556' }}
                   onMouseEnter={(e) => e.target.style.backgroundColor = '#2d3564'}
                   onMouseLeave={(e) => e.target.style.backgroundColor = '#1e2556'}
                 >
                   <HelpCircle size={16} />
-                  <span>Ask a Question</span>
+                  <span>Create Rfp</span>
                 </a>
 
                 {/* For Vendors Button - Styled as outline button */}

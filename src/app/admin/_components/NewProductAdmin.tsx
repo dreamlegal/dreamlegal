@@ -59,75 +59,7 @@ const NewProductAdmin = () => {
     return slug;
   };
 
-  // const parseJSON = async () => {
-  //   try {
-  //     const parsed = JSON.parse(jsonInput);
-  //     setErrors({});
-      
-  //     const productName = parsed.section1_product_overview?.sidebar_information?.product_name || '';
-  //     const slug = await generateUniqueSlug(productName);
-      
-  //     // Transform the JSON data to match our form structure
-  //     const transformedData = {
-  //       // Section 1: Product Overview
-  //       logoUrl: '', // Logo will be uploaded separately
-  //       productName: productName,
-  //       slug: slug, // Auto-generated unique slug
-  //       category: parsed.section1_product_overview?.sidebar_information?.category?.toUpperCase().replace(/ /g, '_') || '',
-  //       description: parsed.section1_product_overview?.sidebar_information?.description || '',
-        
-  //       companyName: parsed.section1_product_overview?.company_information?.company_name || '',
-  //       headquarters: parsed.section1_product_overview?.company_information?.headquarters || '',
-  //       founded: parsed.section1_product_overview?.company_information?.founded || '',
-  //       founders: parsed.section1_product_overview?.company_information?.founders || '',
-        
-  //       phone: parsed.section1_product_overview?.contact_information?.phone || '',
-  //       website: parsed.section1_product_overview?.contact_information?.website || '',
-  //       email: parsed.section1_product_overview?.contact_information?.email || '',
-  //       socialMedia: parsed.section1_product_overview?.contact_information?.social_media || '',
-        
-  //       // Section 2: Detailed Overview
-  //       briefDescription: parsed.section2_detailed_overview?.brief_description || '',
-  //       targetUsers: parsed.section2_detailed_overview?.target_users || '',
-  //       primaryPurpose: parsed.section2_detailed_overview?.primary_purpose || '',
-  //       technologyStack: parsed.section2_detailed_overview?.technology_stack || '',
-  //       deploymentOptions: parsed.section2_detailed_overview?.deployment_options || '',
-        
-  //       // Section 3: Functionality and Features
-  //       coreFunctionalities: parsed.section3_functionality_and_features?.core_functionalities || [],
-  //       keyFeatures: parsed.section3_functionality_and_features?.key_features || [],
-  //       lifecycleStages: parsed.section3_functionality_and_features?.lifecycle_stages_supported || [],
-        
-  //       // Section 4: Pricing
-  //       pricingTier: parsed.section4_pricing?.pricing_tier || '',
-  //       startingPrice: parsed.section4_pricing?.pricing_details?.starting_price || '',
-  //       pricingModel: parsed.section4_pricing?.pricing_details?.pricing_model || '',
-  //       freeTrial: parsed.section4_pricing?.pricing_details?.free_trial || '',
-  //       customPricing: parsed.section4_pricing?.pricing_details?.custom_pricing || '',
-        
-  //       // Section 5: Market Perception
-  //       bestKnownFor: parsed.section5_market_perception?.best_known_for || [],
-  //       criticalOpinions: parsed.section5_market_perception?.critical_opinions || [],
-  //       topUseCases: parsed.section5_market_perception?.top_use_cases || [],
-  //       userSatisfaction: parsed.section5_market_perception?.user_satisfaction || '',
-        
-  //       // Section 6: Sources
-  //       sources: parsed.section6_sources || {},
-        
-  //       // Section 7: Media (not from JSON, initialized empty)
-  //       images: [],
-  //       videos: [],
-        
-  //       // Section 8: FAQs (not from JSON, initialized empty)
-  //       faqs: []
-  //     };
-      
-  //     setFormData(transformedData);
-  //   } catch (error) {
-  //     setErrors({ json: 'Invalid JSON format. Please check your input.' });
-  //   }
-  // };
-// In your NewProductAdmin component, update the parseJSON function:
+
 
 const parseJSON = async () => {
   try {
@@ -578,6 +510,15 @@ const parseJSON = async () => {
     }
   };
 
+  // const categoryOptions = [
+  //   'CONTRACT_LIFECYCLE_MANAGEMENT',
+  //   'LEGAL_AI',
+  //   'DOCUMENT_MANAGEMENT_SYSTEM',
+  //   'LITIGATION_MANAGEMENT_AND_ANALYTICS',
+  //   'IP_MANAGEMENT',
+  //   'LEGAL_RESEARCH',
+  //   'E_DISCOVERY'
+  // ];
   const categoryOptions = [
     'CONTRACT_LIFECYCLE_MANAGEMENT',
     'LEGAL_AI',
@@ -585,7 +526,10 @@ const parseJSON = async () => {
     'LITIGATION_MANAGEMENT_AND_ANALYTICS',
     'IP_MANAGEMENT',
     'LEGAL_RESEARCH',
-    'E_DISCOVERY'
+    'E_DISCOVERY',
+    'CASE_MANAGEMENT',
+    'GOVERNANCE_RISK_COMPLIANCE',
+    'LEGAL_DUE_DILIGENCE'
   ];
 
 

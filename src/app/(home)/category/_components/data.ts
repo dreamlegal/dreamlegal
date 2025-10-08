@@ -1,73 +1,4 @@
 
-// export const data = [
-//   {
-//     "CONTRACT_LIFECYCLE_MANAGEMENT": [
-//       {
-//         "slug": "contract-lifecycle-management",
-//         "name": "Contract Lifecycle Management (CLM)",
-//         "description": "From creation to execution, streamline the entire contract lifecycle by centralising document storage, automating workflows, and facilitating secure digital signatures, empowering your firm to manage contracts efficiently while minimising errors and delays",
-//         "image": "/CLM.jpg",
-        
-//       }
-//     ],
-//     "LEGAL_AI": [
-//       {
-//         "slug": "legal-ai",
-//         "name": "Legal Ai",
-//         "description": "Automate routine tasks and workflows across your firm's processes, from case intake to resolution, increasing efficiency, reducing errors, and freeing up time for strategic legal work",
-//         "image": "/workflow.jpg",
-        
-//       }
-//     ],
-//     "DOCUMENT_MANAGEMENT_SYSTEM": [
-//       {
-//         "slug": "document-management-system",
-//         "name": "Document Management System (DMS)",
-//         "description": "Effortlessly organise, retrieve, and create legal documents while reducing manual tasks through automation features, enhancing productivity and accuracy in your law practice",
-//         "image": "/DMS.jpg",
-      
-//       },
-    
-//     ],
-//     "LITIGATION_MANAGEMENT_AND_ANALYTICS": [
-//       {
-//         "slug": "litigation-management-and-analytics",
-//         "name": "Litigation management and analytics",
-//         "description": "Gain insights into case strategies and outcomes through data-driven analysis, optimising case management processes and empowering informed decision-making for your legal team",
-//         "image": "/Litigation.jpg",
-        
-//       }
-//     ],
-//     "IP_MANAGEMENT": [
-//       {
-//         "slug": "intellectual-property-management",
-//         "name": "Intellectual Property Management",
-//         "description": "Safeguard your valuable intellectual assets by efficiently managing patents, trademarks, and copyrights, ensuring proper registration, protection, and enforcement of your creative rights",
-//         "image": "/IPR.jpg",
-        
-//       }
-//     ],
-//     "LEGAL_RESEARCH": [
-//       {
-//         "slug": "legal-research",
-//         "name": "Legal Research",
-//         "description": "Instant access to a vast repository of case law, statutes, and legal literature. With advanced search capabilities, AI-driven insights, and seamless integration into your workflow, streamline your research process, ensuring you stay ahead of the curve and deliver precise, informed legal advice",
-//         "image": "/Legal Research.jpg",
-       
-//       }
-//     ],
-//     "E_DISCOVERY": [
-//       {
-//         "slug": "e-discovery",
-//         "name": "E-discovery",
-//         "description": "Uncover critical evidence from vast digital datasets with powerful search and analysis tools, facilitating efficient and thorough investigations for litigation preparation and compliance purposes",
-//         "image": "/ediscovery.jpg",
-        
-//       }
-//     ]
-//   }
-  
-// ];
 export const data = [
   {
     "CONTRACT_LIFECYCLE_MANAGEMENT": [
@@ -244,6 +175,85 @@ export const data = [
           "Present"
         ]
       }
-    ]
+    ],
+    {
+      "CASE_MANAGEMENT": [
+        {
+          "slug": "case-management",
+          "name": "Case Management Software",
+          "description": "Case Management software centralizes the handling of legal cases, from initiation to closure. It enables law firms and legal teams to manage case information, documents, deadlines, and communications in a unified system. By automating workflows and providing real-time visibility into case progress, it enhances collaboration, efficiency, and client satisfaction.",
+          "image": "/case-management.jpg",
+          "functionalities": [
+            "Case Intake and Assignment",
+            "Document and Evidence Management",
+            "Task and Deadline Tracking",
+            "Calendar and Hearing Management",
+            "Communication and Collaboration Tools",
+            "Timekeeping and Billing Integration",
+            "Case Progress Monitoring and Reporting"
+          ],
+          "lifecycle": [
+            "Case Intake",
+            "Case Assignment",
+            "Document & Evidence Collection",
+            "Task & Hearing Management",
+            "Case Review & Updates",
+            "Closure & Archival"
+          ]
+        }
+      ],
+      "GOVERNANCE_RISK_COMPLIANCE": [
+        {
+          "slug": "governance-risk-compliance",
+          "name": "Governance, Risk, and Compliance (GRC) Software",
+          "description": "GRC software helps organizations align their governance structures, manage enterprise risks, and maintain compliance with legal and regulatory requirements. It integrates policies, audits, risk assessments, and reporting into a unified framework, reducing exposure to compliance failures and promoting a culture of accountability.",
+          "image": "/grc.jpg",
+          "functionalities": [
+            "Risk Identification and Assessment",
+            "Policy and Procedure Management",
+            "Compliance Tracking and Reporting",
+            "Audit Management",
+            "Incident and Issue Management",
+            "Regulatory Change Management",
+            "Dashboard and Analytics"
+          ],
+          "lifecycle": [
+            "Risk Identification",
+            "Policy Definition",
+            "Compliance Assessment",
+            "Monitoring & Control",
+            "Audit & Reporting",
+            "Continuous Improvement"
+          ]
+        }
+      ],
+      "LEGAL_DUE_DILIGENCE": [
+        {
+          "slug": "legal-due-diligence",
+          "name": "Legal Due Diligence Software",
+          "description": "Legal Due Diligence software automates and streamlines the process of evaluating legal, financial, and compliance risks during mergers, acquisitions, or partnerships. It enables faster document review, red flag detection, and collaboration among stakeholders—ensuring accuracy and transparency throughout the transaction.",
+          "image": "/due-diligence.jpg",
+          "functionalities": [
+            "Data Room and Document Management",
+            "Litigation Report",
+            "Asset Verification",
+            "Automated Document Review and Tagging",
+            "Issue and Risk Flagging",
+            "Collaboration and Task Management",
+            "Customizable Checklists and Templates",
+            "Reporting and Analytics",
+            "Integration with Contract and Compliance Systems"
+          ],
+          "lifecycle": [
+            "Data Collection",
+            "Document Review",
+            "Risk Identification",
+            "Collaboration & Queries",
+            "Reporting & Recommendations",
+            "Deal Closure"
+          ]
+        }
+      ]
+    }
   }
 ];

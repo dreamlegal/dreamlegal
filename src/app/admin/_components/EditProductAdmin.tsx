@@ -771,6 +771,15 @@ const parseJSON = async () => {
     }
   };
 
+  // const categoryOptions = [
+  //   'CONTRACT_LIFECYCLE_MANAGEMENT',
+  //   'LEGAL_AI',
+  //   'DOCUMENT_MANAGEMENT_SYSTEM',
+  //   'LITIGATION_MANAGEMENT_AND_ANALYTICS',
+  //   'IP_MANAGEMENT',
+  //   'LEGAL_RESEARCH',
+  //   'E_DISCOVERY'
+  // ];
   const categoryOptions = [
     'CONTRACT_LIFECYCLE_MANAGEMENT',
     'LEGAL_AI',
@@ -778,9 +787,11 @@ const parseJSON = async () => {
     'LITIGATION_MANAGEMENT_AND_ANALYTICS',
     'IP_MANAGEMENT',
     'LEGAL_RESEARCH',
-    'E_DISCOVERY'
+    'E_DISCOVERY',
+    'CASE_MANAGEMENT',
+    'GOVERNANCE_RISK_COMPLIANCE',
+    'LEGAL_DUE_DILIGENCE'
   ];
-
   const pricingTierOptions = [
     { value: 'BUDGET', label: '$' },
     { value: 'MID_RANGE', label: '$$' },

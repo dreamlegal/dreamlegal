@@ -18,7 +18,10 @@ const FinalSection = ({ category }) => {
     'DOCUMENT_MANAGEMENT_SYSTEM': 'https://dreamlegal.in/blog/guide-to-find-best-document-management-system-dms-for-lawyers-1',
     'LEGAL_RESEARCH': 'https://dreamlegal.in/blog/guide-to-find-best-legal-research-tools',
     'LITIGATION_MANAGEMENT_AND_ANALYTICS': 'https://dreamlegal.in/blog/guide-to-find-best-litigation-management-analytics-tools-for-lawyers',
-    'LEGAL_AI': 'https://dreamlegal.in/blog/ai-in-legal-practice-a-strategic-guide-for-modern-law-firms'
+    'LEGAL_AI': 'https://dreamlegal.in/blog/ai-in-legal-practice-a-strategic-guide-for-modern-law-firms',
+    'CASE_MANAGEMENT': 'https://dreamlegal.in/blog/guide-to-find-best-case-management-tools-for-lawyers',
+'GOVERNANCE_RISK_COMPLIANCE': 'https://dreamlegal.in/blog/guide-to-find-best-grc-tools-for-lawyers',
+'LEGAL_DUE_DILIGENCE': 'https://dreamlegal.in/blog/guide-to-find-best-due-diligence-tools-for-lawyers'
   };
 
   // Display name mapping for categories
@@ -29,7 +32,10 @@ const FinalSection = ({ category }) => {
     'DOCUMENT_MANAGEMENT_SYSTEM': 'Document Management System',
     'LEGAL_RESEARCH': 'Legal Research',
     'LITIGATION_MANAGEMENT_AND_ANALYTICS': 'Litigation Management and Analytics',
-    'LEGAL_AI': 'Legal AI'
+    'LEGAL_AI': 'Legal AI',
+    'CASE_MANAGEMENT': 'Case Management Software',
+'GOVERNANCE_RISK_COMPLIANCE': 'Governance, Risk & Compliance (GRC)',
+'LEGAL_DUE_DILIGENCE': 'Legal Due Diligence Software'
   };
 
   // Fetch latest blogs

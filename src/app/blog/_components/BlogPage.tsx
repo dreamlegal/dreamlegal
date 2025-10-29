@@ -705,11 +705,7 @@ export default function BlogPage() {
           </div>
         )}
       </div>
-      <img 
-  src="/images/campaign.jpg" 
-  alt="Resources Banner" 
-  className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover" 
-/>
+      <img src="/images/campaign.jpg" alt="Resources Banner" className="w-full h-full object-cover" />
 
 
 

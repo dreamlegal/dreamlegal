@@ -109,7 +109,8 @@ const ResourcesPage = () => {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-       
+       <img src="/images/campaign.jpg" alt="Resources Banner" className="w-full h-full object-cover" />
+
         {/* Browse Resources By Topic Section */}
         <div className="mb-12 mt-8">
         <h2 className="text-3xl font-bold text-[#1e2556] mb-8">Browse Resources By Topic</h2>

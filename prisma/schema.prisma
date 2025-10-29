@@ -719,6 +719,10 @@ model LegalSoftware {
   vendorComments         Json?
   userExperiences        UserExperience[]
 
+  productActivities ProductActivity[]
+  monthlyScores     MonthlyScore[]
+
+
 
 
 
@@ -925,4 +929,95 @@ model RfpStructured {
   additionalQuestions Json?     // Array of question strings
 
   vendors             String[]
+}
+
+
+model ProductActivity {
+  id                  String   @id @default(cuid())
+  productId           String
+  category            SoftwareCategory
+  month               Int      // 1-12
+  year                Int      // e.g., 2025
+
+  // Individual tracked actions
+  profileClicks       Int      @default(0)
+  shareButtonClicks   Int      @default(0)
+  reviewsAdded        Int      @default(0)
+  articleMentions     Int      @default(0)
+  vendorRecommends    Int      @default(0)
+  demoRequests        Int      @default(0)
+  comparisonsCreated  Int      @default(0)
+  bookmarks           Int      @default(0)
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  product             LegalSoftware @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, month, year])
+  @@index([month, year])
+  @@index([category, month, year])
+  @@map("product_activity")
+}
+
+//
+// 2️⃣ MonthlyScore - Processed & Weighted Scores per month
+//
+model MonthlyScore {
+  id                       String   @id @default(cuid())
+  productId                String
+  category                 SoftwareCategory
+  month                    Int      // 1-12
+  year                     Int      // e.g., 2025
+
+  // Computed category counts (from ProductActivity)
+  engagementMomentumCount   Int      @default(0)
+  trustCredibilityCount     Int      @default(0)
+  buyerIntentCount          Int      @default(0)
+
+  // Percentile scores (0-100)
+  engagementMomentumPercent Float?
+  trustCredibilityPercent   Float?
+  buyerIntentPercent        Float?
+
+  // Final DL Score (0-100)
+  dlScore                   Float?
+  dlBand                    DLScoreBand?
+
+  createdAt                 DateTime @default(now())
+
+  product                   LegalSoftware @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, month, year], name: "productId_month_year")
+  @@index([category, month, year])
+  @@index([dlScore])
+  @@index([dlBand])
+  @@map("monthly_score")
+}
+
+//
+// 3️⃣ CategoryWeight - Optional table for dynamic weight configuration
+//
+model CategoryWeight {
+  id                  String   @id @default(cuid())
+  name                String   @unique // e.g., "engagementMomentum", "trustCredibility", "buyerIntent"
+  weight              Float    // e.g., 0.3, 0.4
+  description         String?  // Optional description of what this weight controls
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@map("category_weight")
+}
+
+//
+// 4️⃣ Enum for DL Score Bands
+//
+enum DLScoreBand {
+  TOP_PERFORMER       // 80-100
+  STRONG_MOMENTUM     // 60-79
+  STEADY_PLAYER       // 40-59
+  LOW_VISIBILITY      // 20-39
+  DORMANT             // 0-19
+
+  @@map("dl_score_band")
 }

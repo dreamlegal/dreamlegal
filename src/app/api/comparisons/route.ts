@@ -1,3 +1,4 @@
+
 // import { NextRequest, NextResponse } from 'next/server';
 // import prisma from "@/lib/prisma";
 
@@ -17,21 +18,28 @@
 //     const sortedSlugs = [...softwareSlugs].sort();
 //     const comparisonSlug = sortedSlugs.join('-vs-');
 
-//     // Check if comparison already exists (considering different orders)
-//     let existingComparison = await prisma.comparison.findFirst({
-//       where: {
-//         OR: [
-//           { slug: comparisonSlug },
-//           // Check all possible permutations of the slugs
-//           {
-//             AND: [
-//               { softwareSlugs: { hasEvery: softwareSlugs } },
-//               { softwareSlugs: { array_length: softwareSlugs.length } }
-//             ]
-//           }
-//         ]
-//       }
+//     // Check if comparison already exists by slug first
+//     let existingComparison = await prisma.comparison.findUnique({
+//       where: { slug: comparisonSlug }
 //     });
+
+//     // If not found by slug, check for existing comparisons with same software (different orders)
+//     if (!existingComparison) {
+//       const potentialMatches = await prisma.comparison.findMany({
+//         where: {
+//           softwareSlugs: {
+//             hasSome: sortedSlugs
+//           }
+//         }
+//       });
+
+//       // Find exact match manually (same software, same count)
+//       existingComparison = potentialMatches.find(comp => {
+//         const compSlugs = [...comp.softwareSlugs].sort();
+//         return compSlugs.length === sortedSlugs.length &&
+//                compSlugs.every((slug, index) => slug === sortedSlugs[index]);
+//       }) || null;
+//     }
 
 //     if (existingComparison) {
 //       return NextResponse.json({
@@ -89,10 +97,11 @@
 //     );
 //   }
 // }
+// with tracking  
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from "@/lib/prisma";
 
-// POST - Create or find existing comparison
+// POST - Create or find existing comparison WITH TRACKING
 export async function POST(request: NextRequest) {
   try {
     const { softwareSlugs } = await request.json();
@@ -139,7 +148,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Verify all software exist
+    // Verify all software exist and get their IDs
     const softwareList = await prisma.legalSoftware.findMany({
       where: {
         slug: {
@@ -147,6 +156,7 @@ export async function POST(request: NextRequest) {
         }
       },
       select: {
+        id: true,
         slug: true,
         productName: true
       }
@@ -166,12 +176,39 @@ export async function POST(request: NextRequest) {
       data: {
         slug: comparisonSlug,
         softwareSlugs: sortedSlugs,
-        description: null, // To be filled by admin
-        qna: null, // To be filled by admin
+        description: null,
+        qna: null,
         metaTitle: `${softwareList.map(s => s.productName).join(' vs ')} - Detailed Comparison`,
         metaDescription: `Compare ${softwareList.map(s => s.productName).join(', ')} side by side. Features, pricing, pros and cons.`
       }
     });
+
+    // Track comparison activity for all products involved (NEW COMPARISON ONLY)
+    try {
+      const trackingPromises = softwareList.map(async (software) => {
+        try {
+          await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/track-activity`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              productId: software.id,
+              actionType: 'comparison',
+              increment: 1
+            }),
+          });
+        } catch (err) {
+          console.error(`Failed to track comparison for ${software.id}:`, err);
+        }
+      });
+
+      await Promise.allSettled(trackingPromises);
+      console.log(`Tracked comparison activity for ${softwareList.length} products`);
+    } catch (trackError) {
+      console.error('Failed to track comparison activity:', trackError);
+      // Don't fail the request if tracking fails
+    }
 
     return NextResponse.json({
       success: true,

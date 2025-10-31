@@ -705,7 +705,7 @@ export default function BlogPage() {
           </div>
         )}
       </div>
-      <img src="/images/campaign.jpg" alt="Resources Banner" className="w-full h-full object-cover" />
+      
 
 
 
@@ -729,6 +729,7 @@ export default function BlogPage() {
       )}
       
       <div ref={contentRef} className="max-w-7xl mx-auto p-3 md:p-6 pt-16 md:pt-24 pb-8 md:pb-16">
+        
         {/* Navigation */}
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
@@ -744,8 +745,16 @@ export default function BlogPage() {
             <span>Back to Blogs</span>
           </button>
         </motion.div>
-        
+        <a href="https://techsommet.com/legal-automation-india/" target="_blank" rel="noopener noreferrer">
+  <img
+    src="/images/campaign.jpg"
+    alt="Resources Banner"
+    className="w-full h-full object-cover cursor-pointer"
+  />
+</a>
+
         <div className="flex flex-col lg:flex-row gap-4 md:gap-8">
+          
           {/* Main Blog Content */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -755,6 +764,7 @@ export default function BlogPage() {
           >
             {blog && (
               <>
+              
                 {/* Blog Header */}
                 <div className="md:bg-white md:rounded-2xl md:shadow-lg p-4 md:p-8 mb-4 md:mb-8">
                   <h1 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4 text-gray-900">{blog.title}</h1>

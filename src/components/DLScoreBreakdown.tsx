@@ -291,112 +291,113 @@ const DLScoreBreakdown = ({ productId, slug, isMobile = false }: DLScoreBreakdow
   const bandColor = getBandColor(scoreData.dlBand);
 
   return (
-    <div className="bg-white rounded-lg border border-gray-100 overflow-hidden shadow-sm">
-      {/* Compact Main Score */}
-      <div className="p-3" style={{ backgroundColor: '#f5f7fa' }}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div 
-              className="w-10 h-10 rounded-full flex items-center justify-center shadow-sm"
-              style={{ backgroundColor: bandColor }}
-            >
-              <span className="text-white text-base font-bold">{scoreData.dlScore}</span>
-            </div>
-            <div>
-              <p className="text-xs font-bold" style={{ color: '#1e2556' }}>DL Score</p>
-              <p className="text-xs" style={{ color: bandColor }}>{getBandLabel(scoreData.dlBand)}</p>
-            </div>
-          </div>
+    // <div className="bg-white rounded-lg border border-gray-100 overflow-hidden shadow-sm">
+    //   {/* Compact Main Score */}
+    //   <div className="p-3" style={{ backgroundColor: '#f5f7fa' }}>
+    //     <div className="flex items-center justify-between">
+    //       <div className="flex items-center gap-2">
+    //         <div 
+    //           className="w-10 h-10 rounded-full flex items-center justify-center shadow-sm"
+    //           style={{ backgroundColor: bandColor }}
+    //         >
+    //           <span className="text-white text-base font-bold">{scoreData.dlScore}</span>
+    //         </div>
+    //         <div>
+    //           <p className="text-xs font-bold" style={{ color: '#1e2556' }}>DL Score</p>
+    //           <p className="text-xs" style={{ color: bandColor }}>{getBandLabel(scoreData.dlBand)}</p>
+    //         </div>
+    //       </div>
           
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="p-1.5 rounded-md hover:bg-white transition-colors"
-            title={isExpanded ? "Hide breakdown" : "Show breakdown"}
-          >
-            {isExpanded ? (
-              <ChevronUp className="w-4 h-4" style={{ color: '#334155' }} />
-            ) : (
-              <ChevronDown className="w-4 h-4" style={{ color: '#334155' }} />
-            )}
-          </button>
-        </div>
-      </div>
+    //       <button
+    //         onClick={() => setIsExpanded(!isExpanded)}
+    //         className="p-1.5 rounded-md hover:bg-white transition-colors"
+    //         title={isExpanded ? "Hide breakdown" : "Show breakdown"}
+    //       >
+    //         {isExpanded ? (
+    //           <ChevronUp className="w-4 h-4" style={{ color: '#334155' }} />
+    //         ) : (
+    //           <ChevronDown className="w-4 h-4" style={{ color: '#334155' }} />
+    //         )}
+    //       </button>
+    //     </div>
+    //   </div>
 
-      {/* Compact Breakdown */}
-      {isExpanded && scoreData.breakdown && (
-        <div className="px-3 pb-3 space-y-2">
-          {/* Engagement */}
-          <div className="pt-2 border-t border-gray-100">
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#7cc6ee' }}></div>
-                <span className="text-xs font-medium" style={{ color: '#334155' }}>Features</span>
-              </div>
-              <span className="text-xs font-bold" style={{ color: '#7cc6ee' }}>
-                {scoreData.breakdown.engagementMomentum.percent}%
-              </span>
-            </div>
-            <div className="w-full bg-gray-100 rounded-full h-1">
-              <div 
-                className="h-1 rounded-full transition-all duration-500"
-                style={{ 
-                  backgroundColor: '#7cc6ee',
-                  width: `${scoreData.breakdown.engagementMomentum.percent}%` 
-                }}
-              ></div>
-            </div>
-          </div>
+    //   {/* Compact Breakdown */}
+    //   {isExpanded && scoreData.breakdown && (
+    //     <div className="px-3 pb-3 space-y-2">
+    //       {/* Engagement */}
+    //       <div className="pt-2 border-t border-gray-100">
+    //         <div className="flex items-center justify-between mb-1">
+    //           <div className="flex items-center gap-1.5">
+    //             <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#7cc6ee' }}></div>
+    //             <span className="text-xs font-medium" style={{ color: '#334155' }}>Features</span>
+    //           </div>
+    //           <span className="text-xs font-bold" style={{ color: '#7cc6ee' }}>
+    //             {scoreData.breakdown.engagementMomentum.percent}%
+    //           </span>
+    //         </div>
+    //         <div className="w-full bg-gray-100 rounded-full h-1">
+    //           <div 
+    //             className="h-1 rounded-full transition-all duration-500"
+    //             style={{ 
+    //               backgroundColor: '#7cc6ee',
+    //               width: `${scoreData.breakdown.engagementMomentum.percent}%` 
+    //             }}
+    //           ></div>
+    //         </div>
+    //       </div>
 
-          {/* Trust */}
-          <div>
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-                <span className="text-xs font-medium" style={{ color: '#334155' }}>Reviews</span>
-              </div>
-              <span className="text-xs font-bold text-green-600">
-                {scoreData.breakdown.trustCredibility.percent}%
-              </span>
-            </div>
-            <div className="w-full bg-gray-100 rounded-full h-1">
-              <div 
-                className="bg-green-500 h-1 rounded-full transition-all duration-500"
-                style={{ width: `${scoreData.breakdown.trustCredibility.percent}%` }}
-              ></div>
-            </div>
-          </div>
+    //       {/* Trust */}
+    //       <div>
+    //         <div className="flex items-center justify-between mb-1">
+    //           <div className="flex items-center gap-1.5">
+    //             <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+    //             <span className="text-xs font-medium" style={{ color: '#334155' }}>Reviews</span>
+    //           </div>
+    //           <span className="text-xs font-bold text-green-600">
+    //             {scoreData.breakdown.trustCredibility.percent}%
+    //           </span>
+    //         </div>
+    //         <div className="w-full bg-gray-100 rounded-full h-1">
+    //           <div 
+    //             className="bg-green-500 h-1 rounded-full transition-all duration-500"
+    //             style={{ width: `${scoreData.breakdown.trustCredibility.percent}%` }}
+    //           ></div>
+    //         </div>
+    //       </div>
 
-          {/* Buyer Intent */}
-          <div>
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#1e2556' }}></div>
-                <span className="text-xs font-medium" style={{ color: '#334155' }}>Momentum</span>
-              </div>
-              <span className="text-xs font-bold" style={{ color: '#1e2556' }}>
-                {scoreData.breakdown.buyerIntent.percent}%
-              </span>
-            </div>
-            <div className="w-full bg-gray-100 rounded-full h-1">
-              <div 
-                className="h-1 rounded-full transition-all duration-500"
-                style={{ 
-                  backgroundColor: '#1e2556',
-                  width: `${scoreData.breakdown.buyerIntent.percent}%` 
-                }}
-              ></div>
-            </div>
-          </div>
+    //       {/* Buyer Intent */}
+    //       <div>
+    //         <div className="flex items-center justify-between mb-1">
+    //           <div className="flex items-center gap-1.5">
+    //             <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#1e2556' }}></div>
+    //             <span className="text-xs font-medium" style={{ color: '#334155' }}>Momentum</span>
+    //           </div>
+    //           <span className="text-xs font-bold" style={{ color: '#1e2556' }}>
+    //             {scoreData.breakdown.buyerIntent.percent}%
+    //           </span>
+    //         </div>
+    //         <div className="w-full bg-gray-100 rounded-full h-1">
+    //           <div 
+    //             className="h-1 rounded-full transition-all duration-500"
+    //             style={{ 
+    //               backgroundColor: '#1e2556',
+    //               width: `${scoreData.breakdown.buyerIntent.percent}%` 
+    //             }}
+    //           ></div>
+    //         </div>
+    //       </div>
 
-          {/* Compact Info */}
-          <div className="pt-2 text-center">
-            <p className="text-xs" style={{ color: '#9ca3af' }}>
-              Updated {new Date().toLocaleDateString('default', { month: 'short' })} {new Date().getFullYear()}
-            </p>
-          </div>
-        </div>
-      )}
-    </div>
+    //       {/* Compact Info */}
+    //       <div className="pt-2 text-center">
+    //         <p className="text-xs" style={{ color: '#9ca3af' }}>
+    //           Updated {new Date().toLocaleDateString('default', { month: 'short' })} {new Date().getFullYear()}
+    //         </p>
+    //       </div>
+    //     </div>
+    //   )}
+    // </div>
+    <></>
   );
 };
 

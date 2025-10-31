@@ -109,7 +109,14 @@ const ResourcesPage = () => {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-       <img src="/images/campaign.jpg" alt="Resources Banner" className="w-full h-full object-cover" />
+      <a href="https://techsommet.com/legal-automation-india/" target="_blank" rel="noopener noreferrer">
+  <img
+    src="/images/campaign.jpg"
+    alt="Resources Banner"
+    className="w-full h-full object-cover cursor-pointer"
+  />
+</a>
+
 
         {/* Browse Resources By Topic Section */}
         <div className="mb-12 mt-8">

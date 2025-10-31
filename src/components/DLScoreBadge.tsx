@@ -65,26 +65,28 @@ const DLScoreBadge = ({ productId, slug, size = 'medium' }: DLScoreBadgeProps) =
   const bandColor = getBandColor(scoreData.dlBand);
 
   return (
-    <div 
-      className={`flex items-center justify-center shadow-sm ${
-        size === 'small' ? 'px-2 py-1' : size === 'large' ? 'px-4 py-2' : 'px-3 py-1.5'
-      }`}
-      style={{ backgroundColor: bandColor }}
-      title={`DL Score: ${scoreData.dlScore}/100 - ${scoreData.dlBand?.replace(/_/g, ' ')}`}
-    >
-      <div className="flex items-center gap-1">
-        <span className={`font-bold ${
-          size === 'small' ? 'text-sm' : size === 'large' ? 'text-xl' : 'text-base'
-        }`} style={{ color: 'white' }}>
-          {scoreData.dlScore}
-        </span>
-        <span className={`font-semibold ${
-          size === 'small' ? 'text-xs' : size === 'large' ? 'text-sm' : 'text-xs'
-        }`} style={{ color: 'white' }}>
-          DL Score
-        </span>
-      </div>
-    </div>
+    // <div 
+    //   className={`flex items-center justify-center shadow-sm ${
+    //     size === 'small' ? 'px-2 py-1' : size === 'large' ? 'px-4 py-2' : 'px-3 py-1.5'
+    //   }`}
+    //   style={{ backgroundColor: bandColor }}
+    //   title={`DL Score: ${scoreData.dlScore}/100 - ${scoreData.dlBand?.replace(/_/g, ' ')}`}
+    // >
+    //   <div className="flex items-center gap-1">
+    //     <span className={`font-bold ${
+    //       size === 'small' ? 'text-sm' : size === 'large' ? 'text-xl' : 'text-base'
+    //     }`} style={{ color: 'white' }}>
+    //       {scoreData.dlScore}
+    //     </span>
+    //     <span className={`font-semibold ${
+    //       size === 'small' ? 'text-xs' : size === 'large' ? 'text-sm' : 'text-xs'
+    //     }`} style={{ color: 'white' }}>
+    //       DL Score
+    //     </span>
+    //   </div>
+    // </div>
+    <>
+    </>
   );
 };
 

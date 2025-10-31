@@ -25,6 +25,7 @@ const categoryDisplayNames = {
   'LEGAL_RESEARCH': 'Legal Research',
   'E_DISCOVERY': 'E-Discovery'
 };
+import BadgesList from '@/components/BadgesList';
 
 // Pricing tier display names
 const pricingTierDisplayNames = {
@@ -140,6 +141,7 @@ const ProductCard = ({
                     alt={product.productName}
                     className="w-full h-full object-contain p-2"
                   />
+
                 </div>
               </div>
 
@@ -147,6 +149,7 @@ const ProductCard = ({
                 <h3 className="text-base sm:text-lg font-semibold text-[#1e2556] break-words mb-2 leading-tight">
                   {product.productName}
                 </h3>
+                {/* <BadgesList /> */}
                
                 <div className="flex flex-wrap gap-1 sm:gap-2">
                   <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full 

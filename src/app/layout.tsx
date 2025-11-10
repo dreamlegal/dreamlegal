@@ -14,16 +14,37 @@ import { Metadata } from "next"
 //   },
 //   description: "Premier Legal Tech Directory & Strategy Company is DreamLegal",
 // }
+// export const metadata: Metadata = {
+//   title: {
+//     default: "DreamLegal",
+//     template: "%s | DreamLegal", // This makes dynamic titles like "About Us | DreamLegal"
+//   },
+//   description: "Premier Legal Tech Directory & Strategy Company is DreamLegal",
+//   openGraph: {
+//     images: [
+//       {
+//         url: "/icons/favicon.png", // ✅ path inside /public
+//         width: 1200,
+//         height: 630,
+//         alt: "DreamLegal - Legal Tech Directory",
+//       },
+//     ],
+//   },
+//   twitter: {
+//     card: "summary_large_image",
+//     images: ["/icons/favicon.png"], // ✅ same image for Twitter
+//   },
+// }
 export const metadata: Metadata = {
   title: {
     default: "DreamLegal",
-    template: "%s | DreamLegal", // This makes dynamic titles like "About Us | DreamLegal"
+    template: "%s | DreamLegal",
   },
   description: "Premier Legal Tech Directory & Strategy Company is DreamLegal",
   openGraph: {
     images: [
       {
-        url: "/icons/favicon.png", // ✅ path inside /public
+        url: "https://dreamlegal.in/icons/favicon.png", // ✅ full URL
         width: 1200,
         height: 630,
         alt: "DreamLegal - Legal Tech Directory",
@@ -32,9 +53,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/icons/favicon.png"], // ✅ same image for Twitter
+    images: ["https://dreamlegal.in/icons/favicon.png"], // ✅ full URL
   },
-}
+};
 
 
 export default function RootLayout({

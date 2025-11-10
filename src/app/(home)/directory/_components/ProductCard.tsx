@@ -150,6 +150,7 @@ const ProductCard = ({
                   {product.productName}
                 </h3>
                 {/* <BadgesList /> */}
+                <BadgesList />
                
                 <div className="flex flex-wrap gap-1 sm:gap-2">
                   <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full 

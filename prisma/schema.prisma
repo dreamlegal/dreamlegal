@@ -738,6 +738,9 @@ enum SoftwareCategory {
   IP_MANAGEMENT
   LEGAL_RESEARCH
   E_DISCOVERY
+  CASE_MANAGEMENT
+  GOVERNANCE_RISK_COMPLIANCE
+  LEGAL_DUE_DILIGENCE
 
   @@map("software_category")
 }

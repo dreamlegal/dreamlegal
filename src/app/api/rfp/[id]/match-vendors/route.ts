@@ -157,6 +157,9 @@ export async function POST(request, { params }) {
       'IP MANAGEMENT': 'IP_MANAGEMENT',
       'LEGAL RESEARCH': 'LEGAL_RESEARCH',
       'E DISCOVERY': 'E_DISCOVERY',
+      'CASE MANAGEMENT': 'CASE_MANAGEMENT',
+      'GOVERNANCE RISK COMPLIANCE': 'GOVERNANCE_RISK_COMPLIANCE',
+      'LEGAL DUE DILIGENCE': 'LEGAL_DUE_DILIGENCE'
     };
 
     const mappedCategory = categoryMapping[rfpData.category];

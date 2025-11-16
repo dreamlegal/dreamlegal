@@ -652,6 +652,7 @@ model LegalSoftware {
   productName String
   category    SoftwareCategory
   description String @db.Text // 140 words max
+  categories  SoftwareCategory[] @default([])
 
   // Section 1: Product Overview - Company Information
   companyName  String
@@ -721,6 +722,7 @@ model LegalSoftware {
 
   productActivities ProductActivity[]
   monthlyScores     MonthlyScore[]
+  badges                ProductBadge[]  
 
 
 
@@ -1023,4 +1025,23 @@ enum DLScoreBand {
   DORMANT             // 0-19
 
   @@map("dl_score_band")
+}
+
+model ProductBadge {
+  id           String   @id @default(cuid())
+  productId    String   // Links to LegalSoftware.id
+  category     String   // e.g., "LEGAL AI", "ENTERPRISE"
+  text         String   // Multi-line text (e.g., "High\nPerformer")
+  borderColor  String   // Hex color code (e.g., "#7cc6ee")
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relation to LegalSoftware
+  software     LegalSoftware @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([isActive])
+  @@map("product_badges")
 }

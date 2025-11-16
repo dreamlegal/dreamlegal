@@ -1,10 +1,10 @@
 
-import React from "react";
+import React, { useState, useEffect } from 'react';
 
-const DLBadge = ({ text, category, borderColor, logoUrl }) => {
+const DLBadge = ({ text, category, borderColor }) => {
+  const logoUrl = '/icons/favicon.png';
   const currentYear = new Date().getFullYear();
 
-  // 🔹 Added transform scale to reduce size uniformly
   const svgContent = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 810 850">
       <g transform="scale(0.6)" transform-origin="center">
@@ -33,14 +33,14 @@ const DLBadge = ({ text, category, borderColor, logoUrl }) => {
                L 650.46875 245.800781 L 580.855469 585.628906 L 579.007812 586.820312 Z"/>
         </g>
 
-        <!-- Square logo border box -->
+        <!-- Square logo border box (fixed #7cc6ee) -->
         <rect 
           x="340" 
           y="110" 
           width="130" 
           height="100" 
           fill="#1e2556" 
-          stroke="${borderColor}" 
+          stroke="#7cc6ee" 
           stroke-width="2" 
         />
 
@@ -55,21 +55,15 @@ const DLBadge = ({ text, category, borderColor, logoUrl }) => {
         />
 
         <!-- Title Text -->
-        <text x="405" y="370" font-family="Arial" font-size="66" font-weight="700" fill="${borderColor}" text-anchor="middle">
-          ${text.split("\n")[0]}
+        <text x="405" y="370" font-family="Arial" font-size="66" font-weight="700" fill="#7cc6ee" text-anchor="middle">
+          ${text.split("\\n")[0]}
         </text>
-        <text x="405" y="430" font-family="Arial" font-size="62" font-weight="700" fill="${borderColor}" text-anchor="middle">
-          ${text.split("\n")[1] || ""}
-        </text>
-
-        <!-- Category Box -->
-        <rect x="250" y="470" width="310" height="70" rx="14" fill="#f5f7fa"/>
-        <text x="405" y="515" font-family="Arial" font-size="34" font-weight="900" fill="#000" text-anchor="middle">
-          ${category}
+        <text x="405" y="430" font-family="Arial" font-size="62" font-weight="700" fill="#7cc6ee" text-anchor="middle">
+          ${text.split("\\n")[1] || ""}
         </text>
 
-        <!-- Year Ellipse -->
-        <ellipse cx="405" cy="600" rx="58" ry="30" fill="${borderColor}"/>
+        <!-- Year Ellipse (fixed #7cc6ee) -->
+        <ellipse cx="405" cy="600" rx="58" ry="30" fill="#7cc6ee"/>
         <text x="405" y="612" font-family="Arial" font-size="30" font-weight="700" fill="#fff" text-anchor="middle">
           ${currentYear}
         </text>
@@ -77,38 +71,69 @@ const DLBadge = ({ text, category, borderColor, logoUrl }) => {
     </svg>
   `;
 
-  // 🔹 Reduced outer container size too
   return (
-    <div style={{ width: "180px", height: "210px" }}>
+    <div className="w-[180px] h-[210px]">
       <div dangerouslySetInnerHTML={{ __html: svgContent }} />
     </div>
   );
 };
 
-const BadgesList = () => {
-  const badgesData = [
-    {
-      text: "High\nPerformer",
-      category: "LEGAL AI",
-      borderColor: "#7cc6ee",
-    },
-  ];
+const ProductBadges = ({ productId }) => {
+  const [badges, setBadges] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const logoUrl = "/icons/favicon.png";
+  useEffect(() => {
+    const fetchBadges = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/admin/badges/get', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productId }),
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch badges');
+
+        const data = await response.json();
+        setBadges(data.badges || []);
+      } catch (err) {
+        setError('Failed to load badges');
+        console.error('Badge fetch error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (productId) {
+      fetchBadges();
+    }
+  }, [productId]);
+
+  if (loading) {
+    return (
+      <div className="flex gap-4 items-center justify-center py-4">
+        <div className="animate-pulse bg-gray-200 rounded-lg w-[180px] h-[210px]"></div>
+      </div>
+    );
+  }
+
+  if (error || badges.length === 0) {
+    return null;
+  }
 
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "20px", padding: "20px" }}>
-      {badgesData.map((badge, index) => (
-        <DLBadge
-          key={index}
-          text={badge.text}
-          category={badge.category}
-          borderColor={badge.borderColor}
-          logoUrl={logoUrl}
-        />
-      ))}
-    </div>
+     <div className="flex gap-4 justify-end py-2">
+    {badges.map((badge) => (
+      <DLBadge
+        key={badge.id}
+        text={badge.text}
+        category={badge.category}
+        borderColor={badge.borderColor}
+      />
+    ))}
+  </div>
   );
 };
 
-export default BadgesList;
+export default ProductBadges;

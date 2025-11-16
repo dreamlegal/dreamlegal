@@ -1325,6 +1325,7 @@ const UsersPage = () => {
         <h1 className="text-2xl font-bold text-[#1e2556] mb-2">User Management</h1>
         <p className="text-[#334155]">Manage all user accounts, view user activity, and monitor engagement</p>
       </div>
+      {/* <UserAnalytics /> */}
 
       {/* Action Bar */}
       <div className="mb-6 flex flex-col sm:flex-row space-y-4 sm:space-y-0 items-start sm:items-center justify-between">
@@ -1632,3 +1633,122 @@ const UsersPage = () => {
 };
 
 export default UsersPage;
+
+
+
+
+import  { useMemo } from "react";
+
+
+const UserAnalytics = () => {
+  // Fixed user count = 7153
+  const TOTAL_USERS = 7153;
+
+  // Org Types + Team Sizes
+  const orgTypes = [
+    "Startup",
+    "Individual",
+    "Law Firm",
+    "Enterprise",
+    "Government",
+    "Judiciary",
+  ];
+
+  const teamSizes = [
+    "1 person",
+    "2-20 people",
+    "21-50 people",
+    "51-200 people",
+    "201-500 people",
+    "500+ people",
+  ];
+
+  // Fake counts — totals will sum to 7153
+  const orgCounts = {
+    Startup: 2200,
+    Individual: 1800,
+    "Law Firm": 1500,
+    Enterprise: 800,
+    Government: 500,
+    Judiciary: 353,
+  };
+
+  const teamCounts = {
+    "1 person": 1700,
+    "2-20 people": 2200,
+    "21-50 people": 1300,
+    "51-200 people": 900,
+    "201-500 people": 600,
+    "500+ people": 453,
+  };
+
+  return (
+    <div className="mb-6">
+      {/* HEADER CARD */}
+      <div className="bg-white shadow-sm border border-gray-200 rounded-lg p-4 mb-6 flex items-center gap-3">
+        <div className="bg-[#1e2556] text-white rounded-full p-3">
+          <Users className="w-5 h-5" />
+        </div>
+        <div>
+          <h2 className="text-sm font-semibold text-[#1e2556]">Total Users</h2>
+          <p className="text-xl font-bold text-[#1e2556]">{TOTAL_USERS}</p>
+        </div>
+      </div>
+
+      {/* ANALYTICS GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        {/* ORG TYPE CARD */}
+        <div className="bg-white shadow-sm border border-gray-200 rounded-lg p-4">
+          <h3 className="text-sm font-semibold text-[#1e2556] mb-3">Organization Types</h3>
+
+          <div className="space-y-3">
+            {orgTypes.map((name) => (
+              <div key={name}>
+                <div className="flex justify-between text-xs font-medium text-[#2d2d2d]">
+                  <span>{name}</span>
+                  <span>{orgCounts[name]}</span>
+                </div>
+
+                <div className="w-full h-1.5 bg-gray-200 rounded-full mt-1 overflow-hidden">
+                  <div
+                    className="h-full bg-[#1e2556] rounded-full"
+                    style={{
+                      width: `${(orgCounts[name] / TOTAL_USERS) * 100}%`,
+                    }}
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* TEAM SIZE CARD */}
+        <div className="bg-white shadow-sm border border-gray-200 rounded-lg p-4">
+          <h3 className="text-sm font-semibold text-[#1e2556] mb-3">Team Sizes</h3>
+
+          <div className="space-y-3">
+            {teamSizes.map((name) => (
+              <div key={name}>
+                <div className="flex justify-between text-xs font-medium text-[#2d2d2d]">
+                  <span>{name}</span>
+                  <span>{teamCounts[name]}</span>
+                </div>
+
+                <div className="w-full h-1.5 bg-gray-200 rounded-full mt-1 overflow-hidden">
+                  <div
+                    className="h-full bg-[#7cc6ee] rounded-full"
+                    style={{
+                      width: `${(teamCounts[name] / TOTAL_USERS) * 100}%`,
+                    }}
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};

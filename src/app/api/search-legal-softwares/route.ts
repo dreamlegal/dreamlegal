@@ -152,6 +152,7 @@ export async function POST(request: Request) {
           productName: true,
           description: true,
           briefDescription: true,
+          categories:true,
           slug: true,
           logoUrl: true,
           category: true,

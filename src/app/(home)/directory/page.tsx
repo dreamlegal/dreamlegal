@@ -25,7 +25,10 @@ const categoryOptions = [
   'LITIGATION_MANAGEMENT_AND_ANALYTICS',
   'IP_MANAGEMENT',
   'LEGAL_RESEARCH',
-  'E_DISCOVERY'
+  'E_DISCOVERY',
+  'CASE_MANAGEMENT',
+  'GOVERNANCE_RISK_COMPLIANCE',
+  'LEGAL_DUE_DILIGENCE'
 ];
 
 // Category data with icons and display names using theme colors

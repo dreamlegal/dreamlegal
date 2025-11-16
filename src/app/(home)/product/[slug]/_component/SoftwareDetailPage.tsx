@@ -12,7 +12,7 @@ import MentionedProductsSection from "@/components/MentionedProductsSection";
 import UserExperienceSection from '@/app/(home)/product/[slug]/_component/UserExperienceSection';
 import DLScoreBreakdown from '@/components/DLScoreBreakdown';
 import ProfileClickTracker from '@/components/ProfileClickTracker';
-
+import ProductBadges from '@/components/ProductBadges';
 // In your product page:
 
 
@@ -1210,10 +1210,18 @@ const signupUrl = specialSlugsConfig[slug];
                 />
               </div>
               <h1 className="text-base font-bold mb-1" style={{ color: '#1e2556' }}>{displaySoftware.productName}</h1>
-              <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium"
-                    style={{ backgroundColor: '#f5f7fa', color: '#1e2556' }}>
-                {formatCategoryName(displaySoftware.category)}
-              </span>
+             <div className="flex flex-wrap gap-1 mt-1">
+  {displaySoftware.categories?.map((cat, index) => (
+    <span
+      key={index}
+      className="inline-block px-2 py-0.5 rounded-full text-xs font-medium"
+      style={{ backgroundColor: '#f5f7fa', color: '#1e2556' }}
+    >
+      {formatCategoryName(cat)}
+    </span>
+  ))}
+</div>
+
             </div>
 
             {/* User Toggle Button - Below Category */}
@@ -1442,10 +1450,18 @@ const signupUrl = specialSlugsConfig[slug];
                   </div>
                   <div className="flex-1">
                     <h1 className="text-sm font-bold" style={{ color: '#1e2556' }}>{displaySoftware.productName}</h1>
-                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium mt-1"
-                          style={{ backgroundColor: '#f5f7fa', color: '#1e2556' }}>
-                      {formatCategoryName(displaySoftware.category)}
-                    </span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+  {displaySoftware.categories?.map((cat, index) => (
+    <span
+      key={index}
+      className="inline-block px-2 py-0.5 rounded-full text-xs font-medium"
+      style={{ backgroundColor: '#f5f7fa', color: '#1e2556' }}
+    >
+      {formatCategoryName(cat)}
+    </span>
+  ))}
+</div>
+
                   </div>
                 </div>
                 <div className="mb-3">
@@ -1501,8 +1517,24 @@ const signupUrl = specialSlugsConfig[slug];
             )}
 
             {/* Product Title */}
-            <h1 className={`font-bold mb-4 ${isMobile ? 'text-lg' : 'text-2xl'}`} style={{ color: '#1e2556' }}>{productTitle}</h1>
-            
+            {/* <h1 className={`font-bold mb-4 ${isMobile ? 'text-lg' : 'text-2xl'}`} style={{ color: '#1e2556' }}>{productTitle}</h1>
+            <ProductBadges productId={displaySoftware.id} />
+             */}
+           <div className="relative w-full">
+  <h1
+    className={`font-bold mb-2 ${isMobile ? 'text-lg' : 'text-2xl'}`}
+    style={{ color: '#1e2556' }}
+  >
+    {productTitle}
+  </h1>
+
+  <div className="absolute top-[-75px] right-0">
+    <ProductBadges productId={displaySoftware.id} />
+  </div>
+</div>
+
+
+
             {/* Mobile Navigation Header */}
             {isMobile && (
               <div className="fixed top-16 left-0 right-0 bg-white shadow-sm border-b border-gray-100 mb-6 z-50">

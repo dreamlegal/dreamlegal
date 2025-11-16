@@ -57,7 +57,8 @@ const EditProductAdmin = () => {
         logoUrl: data.logoUrl || '',
         productName: data.productName || '',
         slug: data.slug || '',
-        category: data.category || '',
+        // category: data.category || '',
+        categories: data.categories || [],
         description: data.description || '',
         companyName: data.companyName || '',
         headquarters: data.headquarters || '',
@@ -133,136 +134,6 @@ const EditProductAdmin = () => {
     return slug;
   };
 
-  // const parseJSON = async () => {
-  //   try {
-  //     const parsed = JSON.parse(jsonInput);
-  //     setErrors({});
-      
-  //     const productName = parsed.section1_product_overview?.sidebar_information?.product_name || formData.productName;
-  //     let slug = formData.slug; // Keep existing slug by default
-      
-  //     // Only generate new slug if product name changed
-  //     if (productName !== formData.productName) {
-  //       slug = await generateUniqueSlug(productName);
-  //     }
-      
-  //     // Merge JSON data with existing form data
-  //     const mergedData = {
-  //       // Keep existing data as defaults
-  //       ...formData,
-        
-  //       // Section 1: Product Overview - Update if present in JSON
-  //       ...(parsed.section1_product_overview?.sidebar_information?.product_name && {
-  //         productName: parsed.section1_product_overview.sidebar_information.product_name,
-  //         slug: slug
-  //       }),
-  //       ...(parsed.section1_product_overview?.sidebar_information?.category && {
-  //         category: parsed.section1_product_overview.sidebar_information.category.toUpperCase().replace(/ /g, '_')
-  //       }),
-  //       ...(parsed.section1_product_overview?.sidebar_information?.description && {
-  //         description: parsed.section1_product_overview.sidebar_information.description
-  //       }),
-        
-  //       ...(parsed.section1_product_overview?.company_information?.company_name && {
-  //         companyName: parsed.section1_product_overview.company_information.company_name
-  //       }),
-  //       ...(parsed.section1_product_overview?.company_information?.headquarters && {
-  //         headquarters: parsed.section1_product_overview.company_information.headquarters
-  //       }),
-  //       ...(parsed.section1_product_overview?.company_information?.founded && {
-  //         founded: parsed.section1_product_overview.company_information.founded
-  //       }),
-  //       ...(parsed.section1_product_overview?.company_information?.founders && {
-  //         founders: parsed.section1_product_overview.company_information.founders
-  //       }),
-        
-  //       ...(parsed.section1_product_overview?.contact_information?.phone && {
-  //         phone: parsed.section1_product_overview.contact_information.phone
-  //       }),
-  //       ...(parsed.section1_product_overview?.contact_information?.website && {
-  //         website: parsed.section1_product_overview.contact_information.website
-  //       }),
-  //       ...(parsed.section1_product_overview?.contact_information?.email && {
-  //         email: parsed.section1_product_overview.contact_information.email
-  //       }),
-  //       ...(parsed.section1_product_overview?.contact_information?.social_media && {
-  //         socialMedia: parsed.section1_product_overview.contact_information.social_media
-  //       }),
-        
-  //       // Section 2: Detailed Overview
-  //       ...(parsed.section2_detailed_overview?.brief_description && {
-  //         briefDescription: parsed.section2_detailed_overview.brief_description
-  //       }),
-  //       ...(parsed.section2_detailed_overview?.target_users && {
-  //         targetUsers: parsed.section2_detailed_overview.target_users
-  //       }),
-  //       ...(parsed.section2_detailed_overview?.primary_purpose && {
-  //         primaryPurpose: parsed.section2_detailed_overview.primary_purpose
-  //       }),
-  //       ...(parsed.section2_detailed_overview?.technology_stack && {
-  //         technologyStack: parsed.section2_detailed_overview.technology_stack
-  //       }),
-  //       ...(parsed.section2_detailed_overview?.deployment_options && {
-  //         deploymentOptions: parsed.section2_detailed_overview.deployment_options
-  //       }),
-        
-  //       // Section 3: Functionality and Features
-  //       ...(parsed.section3_functionality_and_features?.core_functionalities && {
-  //         coreFunctionalities: parsed.section3_functionality_and_features.core_functionalities
-  //       }),
-  //       ...(parsed.section3_functionality_and_features?.key_features && {
-  //         keyFeatures: parsed.section3_functionality_and_features.key_features
-  //       }),
-  //       ...(parsed.section3_functionality_and_features?.lifecycle_stages_supported && {
-  //         lifecycleStages: parsed.section3_functionality_and_features.lifecycle_stages_supported
-  //       }),
-        
-  //       // Section 4: Pricing
-  //       ...(parsed.section4_pricing?.pricing_tier && {
-  //         pricingTier: parsed.section4_pricing.pricing_tier
-  //       }),
-  //       ...(parsed.section4_pricing?.pricing_details?.starting_price && {
-  //         startingPrice: parsed.section4_pricing.pricing_details.starting_price
-  //       }),
-  //       ...(parsed.section4_pricing?.pricing_details?.pricing_model && {
-  //         pricingModel: parsed.section4_pricing.pricing_details.pricing_model
-  //       }),
-  //       ...(parsed.section4_pricing?.pricing_details?.free_trial && {
-  //         freeTrial: parsed.section4_pricing.pricing_details.free_trial
-  //       }),
-  //       ...(parsed.section4_pricing?.pricing_details?.custom_pricing && {
-  //         customPricing: parsed.section4_pricing.pricing_details.custom_pricing
-  //       }),
-        
-  //       // Section 5: Market Perception
-  //       ...(parsed.section5_market_perception?.best_known_for && {
-  //         bestKnownFor: parsed.section5_market_perception.best_known_for
-  //       }),
-  //       ...(parsed.section5_market_perception?.critical_opinions && {
-  //         criticalOpinions: parsed.section5_market_perception.critical_opinions
-  //       }),
-  //       ...(parsed.section5_market_perception?.top_use_cases && {
-  //         topUseCases: parsed.section5_market_perception.top_use_cases
-  //       }),
-  //       ...(parsed.section5_market_perception?.user_satisfaction && {
-  //         userSatisfaction: parsed.section5_market_perception.user_satisfaction
-  //       }),
-        
-  //       // Section 6: Sources
-  //       ...(parsed.section6_sources && {
-  //         sources: parsed.section6_sources
-  //       })
-  //     };
-      
-  //     setFormData(mergedData);
-  //     setSuccessMessage('JSON data merged successfully!');
-  //     setTimeout(() => setSuccessMessage(''), 3000);
-  //   } catch (error) {
-  //     setErrors({ json: 'Invalid JSON format. Please check your input.' });
-  //   }
-  // };
-// In your EditProductAdmin component, update the parseJSON function:
-
 const parseJSON = async () => {
   try {
     const parsed = JSON.parse(jsonInput);
@@ -294,9 +165,28 @@ const parseJSON = async () => {
         productName: parsed.section1_product_overview.sidebar_information.product_name,
         slug: slug
       }),
-      ...(parsed.section1_product_overview?.sidebar_information?.category && {
-        category: parsed.section1_product_overview.sidebar_information.category.toUpperCase().replace(/ /g, '_')
-      }),
+      // ...(parsed.section1_product_overview?.sidebar_information?.category && {
+      //   category: parsed.section1_product_overview.sidebar_information.category.toUpperCase().replace(/ /g, '_')
+      // }),
+//       ...(parsed.section1_product_overview?.sidebar_information?.category && {
+//   categories: [
+//     parsed.section1_product_overview.sidebar_information.category
+//       .toUpperCase()
+//       .replace(/ /g, '_')
+//   ]
+// }),
+...(parsed.section1_product_overview?.sidebar_information?.category && {
+  categories: Array.isArray(parsed.section1_product_overview.sidebar_information.category)
+    ? parsed.section1_product_overview.sidebar_information.category.map(c =>
+        c.toUpperCase().replace(/ /g, '_')
+      )
+    : [
+        parsed.section1_product_overview.sidebar_information.category
+          .toUpperCase()
+          .replace(/ /g, '_')
+      ]
+}),
+
       ...(parsed.section1_product_overview?.sidebar_information?.description && {
         description: parsed.section1_product_overview.sidebar_information.description
       }),
@@ -771,15 +661,7 @@ const parseJSON = async () => {
     }
   };
 
-  // const categoryOptions = [
-  //   'CONTRACT_LIFECYCLE_MANAGEMENT',
-  //   'LEGAL_AI',
-  //   'DOCUMENT_MANAGEMENT_SYSTEM',
-  //   'LITIGATION_MANAGEMENT_AND_ANALYTICS',
-  //   'IP_MANAGEMENT',
-  //   'LEGAL_RESEARCH',
-  //   'E_DISCOVERY'
-  // ];
+  
   const categoryOptions = [
     'CONTRACT_LIFECYCLE_MANAGEMENT',
     'LEGAL_AI',
@@ -968,7 +850,7 @@ const parseJSON = async () => {
                         <label className="block text-sm font-medium mb-2" style={{ color: '#334155' }}>
                           Category
                         </label>
-                        <select
+                        {/* <select
                           value={formData.category}
                           onChange={(e) => handleInputChange('category', e.target.value)}
                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -980,7 +862,52 @@ const parseJSON = async () => {
                               {cat.replace(/_/g, ' ')}
                             </option>
                           ))}
-                        </select>
+                        </select> */}
+                   <div className="space-y-2">
+  <div className="flex flex-wrap gap-2">
+    {formData.categories.map((cat, idx) => (
+      <span
+        key={idx}
+        className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm flex items-center gap-2"
+      >
+        {cat.replace(/_/g, " ")}
+        <button
+          onClick={() =>
+            handleInputChange(
+              'categories',
+              formData.categories.filter((c) => c !== cat)
+            )
+          }
+          className="text-red-500 hover:text-red-700"
+        >
+          ×
+        </button>
+      </span>
+    ))}
+  </div>
+
+  <select
+    onChange={(e) => {
+      const val = e.target.value;
+      if (val && !formData.categories.includes(val)) {
+        handleInputChange('categories', [...formData.categories, val]);
+      }
+    }}
+    className="w-full p-3 border border-gray-300 rounded-lg"
+    value=""
+  >
+    <option value="">Select another category</option>
+    {categoryOptions.map((cat) => (
+      <option key={cat} value={cat}>
+        {cat.replace(/_/g, " ")}
+      </option>
+    ))}
+  </select>
+</div>
+
+
+
+
                       </div>
                       <div className="md:col-span-2">
                         <label className="block text-sm font-medium mb-2" style={{ color: '#334155' }}>

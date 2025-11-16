@@ -81,7 +81,13 @@ const parseJSON = async () => {
       logoUrl: '', // Logo will be uploaded separately
       productName: productName,
       slug: slug, // Auto-generated unique slug
-      category: parsed.section1_product_overview?.sidebar_information?.category?.toUpperCase().replace(/ /g, '_') || '',
+      // category: parsed.section1_product_overview?.sidebar_information?.category?.toUpperCase().replace(/ /g, '_') || '',
+      categories: parsed.section1_product_overview?.sidebar_information?.category
+  ? [parsed.section1_product_overview?.sidebar_information?.category
+      .toUpperCase()
+      .replace(/ /g, '_')]
+  : [],
+
       description: parsed.section1_product_overview?.sidebar_information?.description || '',
       
       companyName: parsed.section1_product_overview?.company_information?.company_name || '',
@@ -510,15 +516,7 @@ const parseJSON = async () => {
     }
   };
 
-  // const categoryOptions = [
-  //   'CONTRACT_LIFECYCLE_MANAGEMENT',
-  //   'LEGAL_AI',
-  //   'DOCUMENT_MANAGEMENT_SYSTEM',
-  //   'LITIGATION_MANAGEMENT_AND_ANALYTICS',
-  //   'IP_MANAGEMENT',
-  //   'LEGAL_RESEARCH',
-  //   'E_DISCOVERY'
-  // ];
+  
   const categoryOptions = [
     'CONTRACT_LIFECYCLE_MANAGEMENT',
     'LEGAL_AI',
@@ -679,24 +677,60 @@ const parseJSON = async () => {
                           This will be used in the URL. Only lowercase letters, numbers, and hyphens allowed.
                         </p>
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-2" style={{ color: '#334155' }}>
-                          Category
-                        </label>
-                        <select
-                          value={formData.category}
-                          onChange={(e) => handleInputChange('category', e.target.value)}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                          style={{ color: '#2d2d2d' }}
-                        >
-                          <option value="">Select a category</option>
-                          {categoryOptions.map(cat => (
-                            <option key={cat} value={cat}>
-                              {cat.replace(/_/g, ' ')}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                      {/* Multi-Category Selector */}
+<div className="md:col-span-2">
+  <label className="block text-sm font-medium mb-2" style={{ color: '#334155' }}>
+    Categories (Select Multiple)
+  </label>
+
+  {/* Selected category tags */}
+  <div className="flex flex-wrap gap-2 mb-2">
+    {formData.categories?.map(cat => (
+      <span
+        key={cat}
+        className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs flex items-center gap-2"
+      >
+        {cat.replace(/_/g, ' ')}
+        <button
+          onClick={() =>
+            handleInputChange(
+              'categories',
+              formData.categories.filter(c => c !== cat)
+            )
+          }
+          className="text-red-500 hover:text-red-700"
+        >
+          ×
+        </button>
+      </span>
+    ))}
+  </div>
+
+  {/* Dropdown to add category */}
+  <select
+    onChange={(e) => {
+      const value = e.target.value;
+      if (!value) return;
+
+      const updated = formData.categories.includes(value)
+        ? formData.categories
+        : [...formData.categories, value];
+
+      handleInputChange('categories', updated);
+      e.target.value = "";
+    }}
+    className="w-full p-3 border border-gray-300 rounded-lg"
+    defaultValue=""
+  >
+    <option value="">Add Category</option>
+    {categoryOptions.map(cat => (
+      <option key={cat} value={cat}>
+        {cat.replace(/_/g, ' ')}
+      </option>
+    ))}
+  </select>
+</div>
+
                       <div className="md:col-span-2">
                         <label className="block text-sm font-medium mb-2" style={{ color: '#334155' }}>
                           Description (140 words max)

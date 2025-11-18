@@ -227,7 +227,7 @@ const targetUsers = [
               return (
                 <Link
                   key={user.id}
-                 href={`/directory?targetUser=${user.id}`}
+                 href={`/directory/products?targetUser=${user.id}`}
                   className="group bg-white rounded-2xl p-8 text-center transition-all duration-300 border border-gray-200 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(30,37,86,0.15)] hover:border-[#7cc6ee] block"
                 >
                   <div className="w-20 h-20 mx-auto mb-6 bg-[#7cc6ee] rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:bg-[#1e2556]">

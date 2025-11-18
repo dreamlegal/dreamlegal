@@ -364,7 +364,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { FolderKanban, ShieldCheck, FileSearch } from 'lucide-react';
-
+import NewPage from './newpage';
 // Category data with icons and display names
 const categoryData = [
   {
@@ -708,9 +708,10 @@ const DirectoryLanding = () => {
           </div>
         </div>
       </div>
+      <NewPage/>
 
       {/* Browse by Category Section - Separated with White Background */}
-      <div className="bg-white py-12 sm:py-14 md:py-16 relative z-10">
+      {/* <div className="bg-white py-12 sm:py-14 md:py-16 relative z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#1e2556] text-center mb-3 sm:mb-4">
             Browse by Category
@@ -728,14 +729,14 @@ const DirectoryLanding = () => {
                   onClick={() => handleCategoryClick(category.id)}
                   className="flex flex-col items-center cursor-pointer group transform hover:scale-105 active:scale-95 transition-all duration-200"
                 >
-                  {/* Icon Container */}
+                  
                   <div className={`w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 ${category.color} rounded-xl sm:rounded-2xl 
                                  flex items-center justify-center shadow-lg group-hover:shadow-xl
                                  transition-all duration-200 mb-2 sm:mb-3 group-hover:bg-[#1e2556]`}>
                     <IconComponent className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white" />
                   </div>
                   
-                  {/* Category Name */}
+                  
                   <span className="text-xs sm:text-sm md:text-base font-medium text-[#2d2d2d] text-center
                                  group-hover:text-[#7cc6ee] transition-colors duration-200
                                  leading-tight max-w-[80px] sm:max-w-[100px] md:max-w-[120px] px-1">
@@ -746,7 +747,7 @@ const DirectoryLanding = () => {
             })}
           </div>
         </div>
-      </div>
+      </div> */}
       
       {/* Categories Products and Landing Sections */}
       <CategoriesProducts/>

@@ -203,7 +203,7 @@ const LandingSections = () => {
       </section>
 
       {/* 3. Talk to Advisor Section */}
-      <section className="py-16 md:py-20 bg-white text-center">
+      {/* <section className="py-16 md:py-20 bg-white text-center">
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1e2556] mb-6">
             Unlock Smarter Legal Tech Choices. Talk to advisor today
@@ -218,7 +218,7 @@ const LandingSections = () => {
             Talk to advisor
           </a>
         </div>
-      </section>
+      </section> */}
 
       {/* 4. Insights Section */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-[#f5f7fa] to-white relative overflow-hidden">

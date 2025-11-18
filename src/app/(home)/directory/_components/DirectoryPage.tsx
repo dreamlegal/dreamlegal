@@ -693,6 +693,38 @@ export default function DirectoryPage() {
 
     return filters;
   };
+  useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+
+  const targetUser = params.get("targetUser");
+  const category = params.get("category");
+  const pricing = params.get("pricing");
+  const search = params.get("search");
+
+  if (targetUser) {
+    setSelectedTargetUser(targetUser);
+  }
+
+  if (category) {
+    setSelectedCategories([category]);
+  }
+
+  if (pricing) {
+    setSelectedPricingTier(pricing);
+  }
+
+  if (search) {
+    setSearchTerm(search);
+  }
+
+  // Now fetch based on these params
+  fetchProducts(1, {
+    categories: category ? [category] : [],
+    pricingTiers: pricing ? [pricing] : [],
+    targetUserGroup: targetUser || "",
+  });
+}, []);
+
 
   // Fetch products
   const fetchProducts = async (page = 1, override = {}) => {
@@ -762,6 +794,19 @@ export default function DirectoryPage() {
     if (term.trim()) debouncedSearch(term);
     else fetchProducts(1);
   };
+
+  const toggleCompareProduct = (product) => {
+  setCompareProducts(prev => {
+    if (prev.find(p => p.id === product.id)) {
+      return prev.filter(p => p.id !== product.id);
+    }
+    if (prev.length >= 2) {
+      alert("You can only compare up to 2 products");
+      return prev;
+    }
+    return [...prev, product];
+  });
+};
 
   useEffect(() => {
     fetchProducts(1);
@@ -927,6 +972,35 @@ export default function DirectoryPage() {
   </div>
 </div>
 
+
+{compareProducts.length > 0 && (
+  <div className="mb-6 sm:mb-8">
+    <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-200">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-[#7cc6ee] text-white flex items-center justify-center text-sm font-bold">
+            {compareProducts.length}
+          </div>
+          <span className="font-medium text-[#1e2556]">
+            {compareProducts.length} products selected for comparison
+          </span>
+        </div>
+
+        {compareProducts.length === 2 && (
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-4 py-2 bg-[#1e2556] text-white rounded-lg"
+          >
+            Compare Products
+          </button>
+        )}
+
+      </div>
+    </div>
+  </div>
+)}
+
         {/* Products */}
         {loading ? (
           <div className="py-10 text-center">Loading...</div>
@@ -936,11 +1010,13 @@ export default function DirectoryPage() {
           <>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
               {products.map((p) => (
-                <ProductCard
-                  key={p.id}
-                  product={p}
-                  onCompare={() => {}}
-                />
+               <ProductCard
+  key={p.id}
+  product={p}
+  onCompare={toggleCompareProduct}
+  isCompared={compareProducts.some(cp => cp.id === p.id)}
+/>
+
               ))}
             </div>
 
@@ -960,6 +1036,13 @@ export default function DirectoryPage() {
             </div>
           </>
         )}
+
+        <ProductComparison
+  products={compareProducts}
+  isOpen={isModalOpen}
+  onClose={() => setIsModalOpen(false)}
+/>
+
       </div>
     </div>
   );

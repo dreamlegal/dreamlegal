@@ -695,7 +695,7 @@ import {
   Send, Share, Plus, Menu, X, ChevronDown, Bell, Search, User, Bookmark, LogOut, MessageCircle, 
   Home, Users, Briefcase, BookOpen, LineChart, Cpu, FileText, Building, Mail, Handshake, HelpCircle,
   Scale, Brain, FolderOpen, Gavel, Shield, SearchIcon, Eye,
-  Pencil
+  Pencil,Clock 
 } from 'lucide-react';
 import { FolderKanban, ShieldCheck, FileSearch } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';

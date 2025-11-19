@@ -15,7 +15,10 @@ const categories = [
     "Intellectual Property Management",
     "Legal Research",
     "Legal Workflow Automation",
-     "Litigation Management and Analytics"
+     "Litigation Management and Analytics",
+     "Timekeeping Software",
+     "Legal Intake Software",
+     "Transaction Management Software"
 ];
 
 

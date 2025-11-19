@@ -47,6 +47,9 @@ const categories = [
   "Litigation Management and Analytics",
   "Legal Workflow Automation",
   "Legal Research",
+  "Timekeeping Software",
+  "Legal Intake Software",
+  "Transaction Management Software",
 ];
 
 // Initial data structure

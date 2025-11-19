@@ -13,8 +13,11 @@ const categories = [
   "Legal Research",
   "E-discovery",
   "Case Management Software",
-"Governance, Risk and Compliance (GRC)",
-"Legal Due Diligence Software"
+  "Governance, Risk and Compliance (GRC)",
+  "Legal Due Diligence Software",
+  "Timekeeping Software",
+  "Legal Intake Software",
+  "Transaction Management Software"
 ];
 
 // Mapping from display names to enum values
@@ -27,6 +30,9 @@ const categoryMapping = {
   "Legal Research": "LEGAL_RESEARCH",
   "E-discovery": "E_DISCOVERY",
   "Case Management Software": "CASE_MANAGEMENT",
+  "Timekeeping Software": "TIMEKEEPING_SOFTWARE",
+  "Legal Intake Software": "LEGAL_INTAKE_SOFTWARE",
+  "Transaction Management Software": "TRANSACTION_MANAGEMENT_SOFTWARE",
 "Governance, Risk and Compliance (GRC)": "GOVERNANCE_RISK_COMPLIANCE",
 "Legal Due Diligence Software": "LEGAL_DUE_DILIGENCE"
 };

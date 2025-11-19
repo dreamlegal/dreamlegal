@@ -253,7 +253,83 @@ export const data = [
             "Deal Closure"
           ]
         }
+      ],
+      "TIMEKEEPING_SOFTWARE": [
+    {
+      "slug": "timekeeping-software",
+      "name": "Timekeeping Software",
+      "description": "Timekeeping software enables lawyers and legal teams to track their work accurately without interrupting their workflow. By capturing billable and non-billable hours in real time, these tools eliminate guesswork, reduce revenue leakage, and ensure billing transparency. Automated timers, activity capture, and integrations help professionals record time directly from emails, calls, documents, and casework.",
+      "image": "/Timekeeping Software.jpg",
+      "functionalities": [
+        "Internal/External Collaboration",
+        "Analytics and Reporting",
+        "Tool Administration and Control",
+        "Time Capture",
+        "Billing & Invoicing",
+        "Matter/Project Association",
+        "Approvals & Compliance"
+      ],
+      "lifecycle": [
+        "Activity Tracking",
+        "Time Logging",
+        "Classification",
+        "Review & Correction",
+        "Approval",
+        "Billing Integration"
       ]
+    }
+  ],
+  "LEGAL_INTAKE_SOFTWARE": [
+    {
+      "slug": "legal-intake-software",
+      "name": "Legal Intake Software",
+      "description": "Legal intake software helps legal teams manage incoming requests, queries, and matters in a structured and organized way. It replaces scattered emails and informal communication with a standardized intake form and automated triage workflow. The system captures essential information, validates details, and routes each request to the right team member based on priority and expertise.",
+      "image": "/Legal Intake Software.jpg",
+      "functionalities": [
+        "Internal/External Collaboration",
+        "Analytics and Reporting",
+        "Tool Administration and Control",
+        "Request Capture",
+        "Triage & Routing",
+        "Information Validation",
+        "Workflow Management"
+      ],
+      "lifecycle": [
+        "Submission",
+        "Intake Review",
+        "Triage",
+        "Assignment",
+        "Processing",
+        "Closure"
+      ]
+    }
+  ],
+  "TRANSACTION_MANAGEMENT_SOFTWARE": [
+    {
+      "slug": "transaction-management-software",
+      "name": "Transaction Management Software",
+      "description": "Transaction management software centralizes and organizes all documents, checklists, signatures, and workflows involved in complex legal transactions such as M&A, financings, real estate deals, and corporate reorganizations. It enables teams to collaborate more efficiently by providing a unified workspace where parties can track obligations, monitor progress, and execute closing steps smoothly.",
+      "image": "/Transaction Management Software.jpg",
+      "functionalities": [
+        "Internal/External Collaboration",
+        "Analytics and Reporting",
+        "Tool Administration and Control",
+        "Transaction Checklists",
+        "Document Management",
+        "Collaboration Hub",
+        "Signatures & Closing",
+        "Closing Books"
+      ],
+      "lifecycle": [
+        "Planning",
+        "Document Preparation",
+        "Review & Negotiation",
+        "Execution",
+        "Closing Management",
+        "Closing Book Creation"
+      ]
+    }
+  ]
     
   }
 ];

@@ -30,6 +30,9 @@ const categorySlugToEnum = {
   'legal-research': 'LEGAL_RESEARCH',
   'e-discovery': 'E_DISCOVERY',
   'case-management': 'CASE_MANAGEMENT',
+  'timekeeping-software': 'TIMEKEEPING_SOFTWARE',
+  'legal-intake-software': 'LEGAL_INTAKE_SOFTWARE',
+  'transaction-management-software': 'TRANSACTION_MANAGEMENT_SOFTWARE',
 'governance-risk-compliance': 'GOVERNANCE_RISK_COMPLIANCE',
 'legal-due-diligence': 'LEGAL_DUE_DILIGENCE'
 };

@@ -34,8 +34,11 @@ const FinalSection = ({ category }) => {
     'LITIGATION_MANAGEMENT_AND_ANALYTICS': 'Litigation Management and Analytics',
     'LEGAL_AI': 'Legal AI',
     'CASE_MANAGEMENT': 'Case Management Software',
-'GOVERNANCE_RISK_COMPLIANCE': 'Governance, Risk & Compliance (GRC)',
-'LEGAL_DUE_DILIGENCE': 'Legal Due Diligence Software'
+    'TIMEKEEPING_SOFTWARE': 'Timekeeping Software',
+    'LEGAL_INTAKE_SOFTWARE': 'Legal Intake Software',
+    'TRANSACTION_MANAGEMENT_SOFTWARE': 'Transaction Management Software',
+    'GOVERNANCE_RISK_COMPLIANCE': 'Governance, Risk & Compliance (GRC)',
+    'LEGAL_DUE_DILIGENCE': 'Legal Due Diligence Software'
   };
 
   // Fetch latest blogs

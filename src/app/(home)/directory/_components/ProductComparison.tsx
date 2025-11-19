@@ -12,7 +12,10 @@ const categoryDisplayNames = {
   'LITIGATION_MANAGEMENT_AND_ANALYTICS': 'Litigation Management & Analytics',
   'IP_MANAGEMENT': 'Intellectual Property Management',
   'LEGAL_RESEARCH': 'Legal Research',
-  'E_DISCOVERY': 'E-Discovery'
+  'E_DISCOVERY': 'E-Discovery',
+  'TIMEKEEPING_SOFTWARE': 'Timekeeping Software',
+  'LEGAL_INTAKE_SOFTWARE': 'Legal Intake Software',
+  'TRANSACTION_MANAGEMENT_SOFTWARE': 'Transaction Management Software'
 };
 
 // Pricing tier display names

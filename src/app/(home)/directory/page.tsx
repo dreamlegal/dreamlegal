@@ -11,7 +11,7 @@ import {
   Scale, 
   Shield, 
   BookOpen, 
-  Eye 
+  Eye ,Clock
 } from 'lucide-react';
 import ProductCategories from './_components/ProductsPart';
 import CategoriesProducts from "./_components/PaidFeaturing"
@@ -28,7 +28,10 @@ const categoryOptions = [
   'E_DISCOVERY',
   'CASE_MANAGEMENT',
   'GOVERNANCE_RISK_COMPLIANCE',
-  'LEGAL_DUE_DILIGENCE'
+  'LEGAL_DUE_DILIGENCE',
+  'TIMEKEEPING_SOFTWARE',
+  'LEGAL_INTAKE_SOFTWARE',
+  'TRANSACTION_MANAGEMENT_SOFTWARE'
 ];
 
 // Category data with icons and display names using theme colors
@@ -54,7 +57,7 @@ const categoryData = [
     name: 'Document Management System',
     shortName: 'Documents',
     icon: FolderOpen,
-   
+    
     color: 'bg-[#7cc6ee]'
   },
   {
@@ -70,7 +73,7 @@ const categoryData = [
     name: 'IP Management',
     shortName: 'IP Management',
     icon: Shield,
-   
+    
     color: 'bg-[#7cc6ee]'
   },
   {
@@ -78,7 +81,7 @@ const categoryData = [
     name: 'Legal Research',
     shortName: 'Research',
     icon: BookOpen,
-   
+    
     color: 'bg-[#7cc6ee]'
   },
   {
@@ -86,7 +89,31 @@ const categoryData = [
     name: 'E-Discovery',
     shortName: 'E-Discovery',
     icon: Eye,
-   
+    
+    color: 'bg-[#7cc6ee]'
+  },
+  {
+    id: 'TIMEKEEPING-SOFTWARE',
+    name: 'Timekeeping Software',
+    shortName: 'Timekeeping',
+    icon: Clock,
+    
+    color: 'bg-[#7cc6ee]'
+  },
+  {
+    id: 'LEGAL-INTAKE-SOFTWARE',
+    name: 'Legal Intake Software',
+    shortName: 'Legal Intake',
+    icon: FileText,
+    
+    color: 'bg-[#7cc6ee]'
+  },
+  {
+    id: 'TRANSACTION-MANAGEMENT-SOFTWARE',
+    name: 'Transaction Management Software',
+    shortName: 'Transactions',
+    icon: FileText,
+    
     color: 'bg-[#7cc6ee]'
   }
 ];

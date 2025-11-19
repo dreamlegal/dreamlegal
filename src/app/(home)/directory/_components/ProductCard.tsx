@@ -363,7 +363,10 @@ const categoryDisplayNames = {
   'E_DISCOVERY': 'E-Discovery',
   'CASE_MANAGEMENT': 'Case Management',
   'GOVERNANCE_RISK_COMPLIANCE': 'Governance, Risk & Compliance',
-  'LEGAL_DUE_DILIGENCE': 'Legal Due Diligence'
+  'LEGAL_DUE_DILIGENCE': 'Legal Due Diligence',
+  'TIMEKEEPING_SOFTWARE': 'Timekeeping Software',
+  'LEGAL_INTAKE_SOFTWARE': 'Legal Intake Software',
+  'TRANSACTION_MANAGEMENT_SOFTWARE': 'Transaction Management Software',
 };
 
 const pricingTierDisplayNames = {

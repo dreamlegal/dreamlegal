@@ -644,7 +644,10 @@ const categoryOptions = [
   { value: "E_DISCOVERY", label: "E-Discovery" },
   { value: "CASE_MANAGEMENT", label: "Case Management" },
   { value: "GOVERNANCE_RISK_COMPLIANCE", label: "Governance, Risk & Compliance (GRC)" },
-  { value: "LEGAL_DUE_DILIGENCE", label: "Legal Due Diligence" }
+  { value: "LEGAL_DUE_DILIGENCE", label: "Legal Due Diligence" },
+  { value: "TIMEKEEPING_SOFTWARE", label: "Timekeeping Software" },
+  { value: "LEGAL_INTAKE_SOFTWARE", label: "Legal Intake Software" },
+  { value: "TRANSACTION_MANAGEMENT_SOFTWARE", label: "Transaction Management Software" }
 ];
 
 const pricingTierOptions = [

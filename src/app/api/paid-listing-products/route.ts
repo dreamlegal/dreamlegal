@@ -255,7 +255,10 @@ export async function GET(request: NextRequest) {
       "E_DISCOVERY",
       "CASE_MANAGEMENT",
       "GOVERNANCE_RISK_COMPLIANCE",
-      "LEGAL_DUE_DILIGENCE"
+      "LEGAL_DUE_DILIGENCE",
+      "TIMEKEEPING_SOFTWARE",
+      "LEGAL_INTAKE_SOFTWARE",
+      "TRANSACTION_MANAGEMENT_SOFTWARE"
     ];
 
     if (!validCategories.includes(category)) {

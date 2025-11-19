@@ -3227,7 +3227,11 @@ const getCategoriesByOrgType = (orgType) => {
     "E-discovery",
     "Intellectual Property Management", 
     "Litigation Management and Analytics",
-    "Legal Workflow Automation"
+    "Legal Workflow Automation",
+    "Timekeeping Software",
+    "Legal Intake Software",
+    "Transaction Management Software"
+     
   ];
 
   if (orgType === "In-House Counsels") return inHouseLegalCategories;

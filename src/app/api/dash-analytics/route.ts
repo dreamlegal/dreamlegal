@@ -36,6 +36,9 @@ export async function GET(request: NextRequest) {
       "Litigation Management and Analytics",
       "Legal Workflow Automation",
       "Legal Research",
+      "Timekeeping Software",
+      "Legal Intake Software",
+      "Transaction Management Software",
     ];
 
     const categoryDistribution = categories.map((category) => {

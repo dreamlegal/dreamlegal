@@ -805,6 +805,24 @@ const Navbar = () => {
       name: 'Legal Due Diligence Software',
       icon: <FileSearch size={16} />,
       description: 'Automated due diligence for M&A and partnerships'
+    },
+    {
+      slug: 'timekeeping-software',
+      name: 'Timekeeping Software',
+      icon: <Clock size={16} />,
+      description: 'Timekeeping solutions for legal professionals'
+    },
+    {
+      slug: 'legal-intake-software',
+      name: 'Legal Intake Software',
+      icon: <FileText size={16} />,
+      description: 'Legal intake and case management solutions'
+    },
+    {
+      slug: 'transaction-management-software',
+      name: 'Transaction Management Software',
+      icon: <FileText size={16} />,
+      description: 'Transaction management for legal practices'
     }
   ];
 

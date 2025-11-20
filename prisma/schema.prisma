@@ -650,7 +650,7 @@ model LegalSoftware {
   slug        String?
   logoUrl     String
   productName String
-  category    SoftwareCategory
+  category    SoftwareCategory?
   description String @db.Text // 140 words max
   categories  SoftwareCategory[] @default([])
 

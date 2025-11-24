@@ -204,13 +204,13 @@ const HeroSection = () => {
           <div className="max-w-3xl mr-auto">
             {/* Main Heading */}
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-tight mb-6 md:mb-8 text-white tracking-tight text-left">
-              Be The First Choice {' '}
-              <span className="block">Of Legal Teams</span>
+             Become the Trusted Tech Partner {' '}
+              <span className="block">for Legal Teams</span>
             </h1>
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 md:mb-10 text-white/95 leading-relaxed max-w-2xl font-light text-left">
-              For legal tech vendors who want to be seen, trusted, and chosen — without getting lost in competition or stuck in long client chases
+             For legal tech vendors ready to stand out, earn credibility, and connect with high-intent buyers without the endless outbound grind.
             </p>
 
             {/* CTA Button */}

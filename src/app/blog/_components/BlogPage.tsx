@@ -745,9 +745,9 @@ export default function BlogPage() {
             <span>Back to Blogs</span>
           </button>
         </motion.div>
-        <a href="https://techsommet.com/legal-automation-india/" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.zoho.com/contracts/ebooks/state-of-contract-management.html" target="_blank" rel="noopener noreferrer">
   <img
-    src="/images/campaign.jpg"
+    src="/images/banner.jpg"
     alt="Resources Banner"
     className="w-full h-full object-cover cursor-pointer"
   />

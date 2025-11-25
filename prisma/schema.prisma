@@ -1033,7 +1033,7 @@ enum DLScoreBand {
 model ProductBadge {
   id           String   @id @default(cuid())
   productId    String   // Links to LegalSoftware.id
-  category     String   // e.g., "LEGAL AI", "ENTERPRISE"
+  category     String?   // e.g., "LEGAL AI", "ENTERPRISE"
   text         String   // Multi-line text (e.g., "High\nPerformer")
   borderColor  String   // Hex color code (e.g., "#7cc6ee")
   displayOrder Int      @default(0)

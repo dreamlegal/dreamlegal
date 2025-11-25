@@ -109,9 +109,9 @@ const ResourcesPage = () => {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-      <a href="https://techsommet.com/legal-automation-india/" target="_blank" rel="noopener noreferrer">
+      <a href="https://www.zoho.com/contracts/ebooks/state-of-contract-management.html" target="_blank" rel="noopener noreferrer">
   <img
-    src="/images/campaign.jpg"
+    src="/images/banner.jpg"
     alt="Resources Banner"
     className="w-full h-full object-cover cursor-pointer"
   />

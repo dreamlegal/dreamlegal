@@ -572,10 +572,10 @@ model TocItem {
 }
 model CommonLead {
   id            String   @id @default(uuid())
-  email         String   @unique
-  organization  String
-  designation   String
-  message       String
+  email         String   
+  organization  String?
+  designation   String?
+  message       String?
   createdAt     DateTime @default(now())
 }
 

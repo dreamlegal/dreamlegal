@@ -1,209 +1,4 @@
-// // rfp create
-// import prisma from "@/lib/prisma";
-// import { NextResponse } from 'next/server';
 
-// export async function POST(request) {
-//   try {
-//     const {
-//       userId,
-//       category,
-//       coreProblem,
-//       priority,
-//       implementationTimeline,
-//       budgetMin,
-//       budgetMax,
-//       currency,
-//       teamType,
-//       teamSize,
-//       vendorCountry
-//     } = await request.json();
-
-//     // Validate required fields
-//     if (!category || !coreProblem || !priority || !implementationTimeline || 
-//         !budgetMin || !budgetMax || !currency || !teamType || !teamSize || !vendorCountry) {
-//       return NextResponse.json({
-//         success: false,
-//         message: 'Missing required fields'
-//       }, { status: 400 });
-//     }
-
-//     // Save to RfpAi table
-//     const rfpAi = await prisma.rfpAi.create({
-//       data: {
-//         category,
-//         coreProblem,
-//         priority,
-//         implementationTimeline,
-//         budgetMin: parseInt(budgetMin) || null,
-//         budgetMax: parseInt(budgetMax) || null,
-//         teamType,
-//         teamSize,
-//         vendorCountry
-//       }
-//     });
-
-//     // Get currency symbol for display
-//     const currencySymbols = {
-//       'USD': '$', 'EUR': '€', 'GBP': '£', 'CAD': 'C$', 
-//       'AUD': 'A$', 'INR': '₹', 'JPY': '¥', 'SGD': 'S$'
-//     };
-//     const currencySymbol = currencySymbols[currency] || '$';
-
-//     // Generate RFP using AI
-//     const aiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-//       method: 'POST',
-//       headers: {
-//         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({
-//         model: 'gpt-4',
-//         messages: [{
-//           role: 'system',
-//           content: `You are an expert RFP writer specializing in legal technology procurement. Generate a professional RFP structure based on the user's requirements.
-
-// Your response must be a valid JSON object with this exact structure:
-// {
-//   "problemStatement": "A detailed problem statement (200-300 words)",
-//   "objectives": ["objective1", "objective2", "objective3", "objective4", "objective5"],
-//   "keyRequirements": [
-//     {"head": "Requirement Title", "description": "Detailed requirement description"},
-//     {"head": "Another Requirement", "description": "Another detailed description"}
-//   ],
-//   "additionalQuestions": ["question1", "question2", "question3", "question4", "question5"]
-// }
-
-// Make sure all strings are properly escaped for JSON and the response is complete and valid.`
-//         }, {
-//           role: 'user',
-//           content: `Generate a comprehensive RFP for legal software procurement with the following specifications:
-
-// BUSINESS CONTEXT:
-// - Category: ${category.replace(/-/g, ' ').toLowerCase()}
-// - Team Type: ${teamType}
-// - Team Size: ${teamSize}
-// - Location: ${vendorCountry}
-
-// REQUIREMENTS:
-// - Core Problem: ${coreProblem}
-// - Priority: ${priority}
-// - Implementation Timeline: ${implementationTimeline}
-// - Budget Range: ${currencySymbol}${parseInt(budgetMin).toLocaleString()} - ${currencySymbol}${parseInt(budgetMax).toLocaleString()} ${currency}
-
-// Please create a professional RFP that:
-// 1. Clearly articulates the business problem and context
-// 2. Sets 5 specific, measurable objectives aligned with their priority (${priority})
-// 3. Defines 5-7 key technical and business requirements
-// 4. Includes 5 strategic questions for vendor evaluation
-
-// Focus on ${priority.toLowerCase()} as the primary evaluation criteria. Consider the team size (${teamSize}) and implementation timeline (${implementationTimeline}) in your requirements.`
-//         }],
-//         temperature: 0.7,
-//         max_tokens: 2500
-//       })
-//     });
-
-//     if (!aiResponse.ok) {
-//       throw new Error(`AI API failed: ${aiResponse.status}`);
-//     }
-
-//     const aiData = await aiResponse.json();
-    
-//     if (!aiData.choices || !aiData.choices[0] || !aiData.choices[0].message) {
-//       throw new Error('Invalid AI response format');
-//     }
-
-//     let generatedRfp;
-//     try {
-//       generatedRfp = JSON.parse(aiData.choices[0].message.content);
-//     } catch (parseError) {
-//       console.error('AI response parse error:', parseError);
-//       // Fallback RFP structure
-//       generatedRfp = {
-//         problemStatement: `Our ${teamType.toLowerCase()} is seeking a ${category.replace(/-/g, ' ').toLowerCase()} solution to address: ${coreProblem}. With a team of ${teamSize} and ${implementationTimeline.toLowerCase()}, we need a solution that prioritizes ${priority.toLowerCase()}.`,
-//         objectives: [
-//           "Streamline current workflows and processes",
-//           "Improve operational efficiency and productivity", 
-//           "Enhance collaboration and communication",
-//           "Ensure compliance and risk management",
-//           "Achieve measurable ROI within 12 months"
-//         ],
-//         keyRequirements: [
-//           {"head": "Ease of Implementation", "description": "Solution must be deployable within the specified timeline with minimal disruption"},
-//           {"head": "Scalability", "description": "Must accommodate current team size and future growth"},
-//           {"head": "Integration Capabilities", "description": "Seamless integration with existing legal and business systems"},
-//           {"head": "Security & Compliance", "description": "Enterprise-grade security meeting legal industry standards"},
-//           {"head": "Training & Support", "description": "Comprehensive training and ongoing support services"}
-//         ],
-//         additionalQuestions: [
-//           "What is your implementation timeline and methodology?",
-//           "How do you handle data migration from existing systems?",
-//           "What training and change management support do you provide?",
-//           "Can you provide references from similar organizations?",
-//           "What are your pricing models and total cost of ownership?"
-//         ]
-//       };
-//     }
-
-//     // Get user email from auth context or use placeholder
-//     const contactEmail = userId ? `user-${userId}@company.com` : 'contact@company.com';
-
-//     // Save structured RFP
-//     const rfpStructured = await prisma.rfpStructured.create({
-//       data: {
-//         teamType,
-//         category: category.replace(/-/g, ' '),
-//         requirementUrgency: implementationTimeline,
-//         locationPreference: vendorCountry,
-//         contactEmail,
-//         problemStatement: generatedRfp.problemStatement,
-//         objectives: generatedRfp.objectives,
-//         keyRequirements: generatedRfp.keyRequirements,
-//         additionalQuestions: generatedRfp.additionalQuestions,
-//         vendors: [] // Initialize empty vendors array
-//       }
-//     });
-
-//     return NextResponse.json({
-//       success: true,
-//       rfpId: rfpStructured.id,
-//       message: 'RFP generated successfully',
-//       data: {
-//         rfpAiId: rfpAi.id,
-//         rfpStructuredId: rfpStructured.id
-//       }
-//     });
-
-//   } catch (error) {
-//     console.error('Error creating RFP:', error);
-    
-//     // Return appropriate error message
-//     if (error.message.includes('AI API')) {
-//       return NextResponse.json({
-//         success: false,
-//         message: 'AI service temporarily unavailable. Please try again.',
-//         error: 'AI_SERVICE_ERROR'
-//       }, { status: 503 });
-//     }
-    
-//     if (error.message.includes('Database')) {
-//       return NextResponse.json({
-//         success: false,
-//         message: 'Database error. Please try again.',
-//         error: 'DATABASE_ERROR'
-//       }, { status: 500 });
-//     }
-
-//     return NextResponse.json({
-//       success: false,
-//       message: 'Failed to create RFP. Please try again.',
-//       error: 'INTERNAL_ERROR'
-//     }, { status: 500 });
-//   }
-// }
-
-
-// app/api/rfp/create/route.js
 import prisma from "@/lib/prisma";
 import { NextResponse } from 'next/server';
 
@@ -330,7 +125,133 @@ const CATEGORY_FUNCTIONALITIES = {
       'Budget, Expense and Time Tracking': ['Budget Management', 'Time tracking', 'Approval Management', 'Client invoicing', 'Payment processing'],
       'Litigation Docketing Features': ['Collaborative timeline tracking', 'Court Rule tracking', 'Court database integration', 'Customized docket entries']
     }
+  },
+  'CASE-MANAGEMENT': {
+  functionalities: [
+    'Internal/External Collaboration',
+    'Analytics and Reporting',
+    'Tool Administration and Control',
+    'Case Intake and Assignment',
+    'Document and Evidence Management',
+    'Task and Deadline Tracking',
+    'Calendar and Hearing Management',
+    'Communication and Collaboration Tools',
+    'Timekeeping and Billing Integration',
+    'Case Progress Monitoring and Reporting'
+  ],
+  features: {
+    'Case Intake and Assignment': ['Case intake forms', 'Automated assignment rules', 'Client information management'],
+    'Document and Evidence Management': ['Centralized document repository', 'Evidence tracking', 'Version control'],
+    'Task and Deadline Tracking': ['Task management', 'Deadline alerts', 'Milestone tracking'],
+    'Calendar and Hearing Management': ['Court date scheduling', 'Hearing reminders', 'Calendar integration'],
+    'Communication and Collaboration Tools': ['Internal messaging', 'Client communication portal', 'Team collaboration workspace'],
+    'Timekeeping and Billing Integration': ['Time tracking', 'Billing integration', 'Expense management'],
+    'Case Progress Monitoring and Reporting': ['Case status dashboards', 'Progress reports', 'Performance analytics']
   }
+},
+'TIMEKEEPING-SOFTWARE': {
+  functionalities: [
+    'Internal/External Collaboration',
+    'Analytics and Reporting',
+    'Tool Administration and Control',
+    'Time Capture',
+    'Billing & Invoicing',
+    'Matter/Project Association',
+    'Approvals & Compliance'
+  ],
+  features: {
+    'Time Capture': ['Automated timers', 'Manual time entry', 'Activity-based capture', 'Email and document integration'],
+    'Billing & Invoicing': ['Billable vs non-billable classification', 'Rate management', 'Invoice generation'],
+    'Matter/Project Association': ['Matter linking', 'Client association', 'Project categorization'],
+    'Approvals & Compliance': ['Time entry approval workflow', 'Compliance tracking', 'Audit trail']
+  }
+},
+'LEGAL-INTAKE-SOFTWARE': {
+  functionalities: [
+    'Internal/External Collaboration',
+    'Analytics and Reporting',
+    'Tool Administration and Control',
+    'Request Capture',
+    'Triage & Routing',
+    'Information Validation',
+    'Workflow Management'
+  ],
+  features: {
+    'Request Capture': ['Intake forms', 'Multi-channel submission', 'Request categorization'],
+    'Triage & Routing': ['Automated routing rules', 'Priority assessment', 'Assignment logic'],
+    'Information Validation': ['Data validation', 'Conflict checking', 'Completeness verification'],
+    'Workflow Management': ['Status tracking', 'Automated notifications', 'Workflow customization']
+  }
+},
+'TRANSACTION-MANAGEMENT-SOFTWARE': {
+  functionalities: [
+    'Internal/External Collaboration',
+    'Analytics and Reporting',
+    'Tool Administration and Control',
+    'Transaction Checklists',
+    'Document Management',
+    'Collaboration Hub',
+    'Signatures & Closing',
+    'Closing Books'
+  ],
+  features: {
+    'Transaction Checklists': ['Customizable checklists', 'Obligation tracking', 'Progress monitoring'],
+    'Document Management': ['Document repository', 'Version control', 'Document organization'],
+    'Collaboration Hub': ['Unified workspace', 'Real-time collaboration', 'Stakeholder communication'],
+    'Signatures & Closing': ['E-signature integration', 'Closing coordination', 'Document execution'],
+    'Closing Books': ['Automated closing book generation', 'Document compilation', 'Final deliverable creation']
+  }
+},
+'GOVERNANCE-RISK-COMPLIANCE': {
+  functionalities: [
+    'Internal/External Collaboration',
+    'Analytics and Reporting',
+    'Tool Administration and Control',
+    'Risk Identification and Assessment',
+    'Policy and Procedure Management',
+    'Compliance Tracking and Reporting',
+    'Audit Management',
+    'Incident and Issue Management',
+    'Regulatory Change Management',
+    'Dashboard and Analytics'
+  ],
+  features: {
+    'Risk Identification and Assessment': ['Risk register', 'Risk scoring', 'Risk assessment workflows', 'Heat maps'],
+    'Policy and Procedure Management': ['Policy library', 'Version control', 'Policy distribution', 'Acknowledgement tracking'],
+    'Compliance Tracking and Reporting': ['Compliance calendar', 'Requirement tracking', 'Automated reporting', 'Compliance dashboards'],
+    'Audit Management': ['Audit planning', 'Finding tracking', 'Corrective action management', 'Audit trail'],
+    'Incident and Issue Management': ['Incident reporting', 'Investigation workflow', 'Root cause analysis', 'Issue resolution tracking'],
+    'Regulatory Change Management': ['Regulatory updates', 'Change impact assessment', 'Implementation tracking'],
+    'Dashboard and Analytics': ['Executive dashboards', 'Risk analytics', 'Compliance metrics', 'Trend analysis']
+  }
+},
+'LEGAL-DUE-DILIGENCE': {
+  functionalities: [
+    'Internal/External Collaboration',
+    'Analytics and Reporting',
+    'Tool Administration and Control',
+    'Data Room and Document Management',
+    'Litigation Report',
+    'Asset Verification',
+    'Automated Document Review and Tagging',
+    'Issue and Risk Flagging',
+    'Collaboration and Task Management',
+    'Customizable Checklists and Templates',
+    'Reporting and Analytics',
+    'Integration with Contract and Compliance Systems'
+  ],
+  features: {
+    'Data Room and Document Management': ['Virtual data room', 'Document organization', 'Access control', 'Activity tracking'],
+    'Litigation Report': ['Litigation history', 'Case summaries', 'Risk assessment'],
+    'Asset Verification': ['Asset inventory', 'Ownership verification', 'Lien searches'],
+    'Automated Document Review and Tagging': ['AI-powered review', 'Automatic tagging', 'Document classification'],
+    'Issue and Risk Flagging': ['Red flag detection', 'Risk categorization', 'Issue tracking'],
+    'Collaboration and Task Management': ['Task assignment', 'Q&A management', 'Stakeholder collaboration'],
+    'Customizable Checklists and Templates': ['Due diligence checklists', 'Template library', 'Workflow customization'],
+    'Reporting and Analytics': ['Due diligence reports', 'Risk summaries', 'Analytics dashboards'],
+    'Integration with Contract and Compliance Systems': ['Contract integration', 'Compliance data linking', 'System interoperability']
+  }
+}
 };
 
 export async function POST(request) {

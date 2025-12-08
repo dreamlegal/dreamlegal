@@ -7,7 +7,7 @@ import { RiProfileLine } from "react-icons/ri";
 import { ShoppingCart } from 'lucide-react'
 import Link from "next/link";
 import { useRouter, usePathname } from 'next/navigation';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const SupportInfo = () => (
   <div className="p-4 bg-white rounded-xl shadow-md shadow-blue-500/10 border border-blue-100">
@@ -95,7 +95,7 @@ const MenuItem = ({ item, isActive, defaultOpen }) => {
 const VendorSidebar = ({ className = "" }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { logout } = useAuth();
+  const { logout } = useNewAuth();
 
   const handleLogout = async () => {
     await logout();

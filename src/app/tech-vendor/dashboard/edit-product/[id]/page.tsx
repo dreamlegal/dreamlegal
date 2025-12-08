@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 import { Package, AlertCircle } from 'lucide-react';
 
 // Import the ProductForm component with SSR disabled
@@ -23,7 +23,7 @@ const ProductForm = dynamic(() => import('@/components/ProductForm'), {
 const EditProductPage = ({ params }) => {
   const router = useRouter();
   const { id } = params;
-  const { isLoading, vendorId } = useAuth();
+  const { isLoading, vendorId } = useNewAuth();
   const [product, setProduct] = useState(null);
   const [fetchError, setFetchError] = useState(null);
   const [isLoadingProduct, setIsLoadingProduct] = useState(true);

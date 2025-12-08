@@ -117,102 +117,224 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return false;
       }
     },
-    async redirect({ url, baseUrl }) {
-      // Special handling for the /auth/success route which is our generic success redirect
-      if (url.includes('/auth/success')) {
-        // This is after a successful auth, so check onboarding status
-        const authCookie = cookies().get('auth');
-        if (!authCookie) {
-          return '/auth/user/login';
-        }
-        
-        try {
-          const authData = JSON.parse(authCookie.value);
-          
-          // If cookie is expired
-          if (authData.exp && authData.exp < Date.now()) {
-            return '/auth/user/login';
-          }
-          
-          // Check user type and redirect accordingly
-          if (authData.type === 'vendor') {
-            return '/tech-vendor/dashboard';
-          }
-          
-          // For user type, check if onboarding is completed
-          if (authData.type === 'user') {
-            console.log('Checking onboarding status for user:', authData.id);
-            const userAccount = await prisma.userAccount.findFirst({
-              where: { userId: authData.id },
-            });
-            
-            const hasCompletedOnboarding = !!(
-              userAccount && 
-              userAccount.CompanyAddress && 
-              userAccount.OrgType && 
-              userAccount.TeamSize
-            );
-            
-            console.log('Onboarding status:', hasCompletedOnboarding);
-            
-            if (!hasCompletedOnboarding) {
-              return '/onboard';
-            }
-            
-            return '/legal-professionals/dashboard';
-          }
-        } catch (error) {
-          console.error('Error parsing auth cookie:', error);
-          return '/auth/user/login';
-        }
-      }
+
+    // In auth.ts - Update redirect callback
+// REPLACE YOUR REDIRECT CALLBACK IN auth.ts WITH THIS:
+
+async redirect({ url, baseUrl }) {
+  console.log('NextAuth redirect callback:', { url, baseUrl });
+  
+  // Parse the URL to check for returnUrl parameter
+  try {
+    const urlObj = new URL(url, baseUrl);
+    const returnUrlFromParam = urlObj.searchParams.get('returnUrl');
+    
+    console.log('returnUrl from URL param:', returnUrlFromParam);
+    
+    if (returnUrlFromParam) {
+      // We have a returnUrl in the callback URL - use it!
+      const decodedUrl = decodeURIComponent(returnUrlFromParam);
+      console.log('Redirecting to returnUrl:', decodedUrl);
+      return decodedUrl;
+    }
+  } catch (error) {
+    console.error('Error parsing URL:', error);
+  }
+  
+  // If no returnUrl in params, check cookies
+  const cookieStore = cookies();
+  const returnUrlCookie = cookieStore.get('returnUrl');
+  
+  if (returnUrlCookie) {
+    const decodedUrl = decodeURIComponent(returnUrlCookie.value);
+    console.log('Redirecting to returnUrl from cookie:', decodedUrl);
+    // Clean up the cookie
+    cookieStore.delete('returnUrl');
+    return decodedUrl;
+  }
+  
+  // Special handling for /auth/success route (legacy)
+  if (url.includes('/auth/success')) {
+    const authCookie = cookieStore.get('auth');
+    if (!authCookie) {
+      return '/auth/user/login';
+    }
+    
+    try {
+      const authData = JSON.parse(authCookie.value);
       
-      // For other redirects
-      const authCookie = cookies().get('auth');
-      if (!authCookie) {
-        return '/auth/user/login'; // If no auth cookie, redirect to login
-      }
-      
-      try {
-        const authData = JSON.parse(authCookie.value);
-        
-        // If cookie is expired
-        if (authData.exp && authData.exp < Date.now()) {
-          return '/auth/user/login';
-        }
-        
-        // Check user type and redirect accordingly
-        if (authData.type === 'vendor') {
-          return '/tech-vendor/dashboard';
-        }
-        
-        // For user type, check if onboarding is completed
-        if (authData.type === 'user') {
-          const userAccount = await prisma.userAccount.findFirst({
-            where: { userId: authData.id },
-          });
-          
-          const hasCompletedOnboarding = !!(
-            userAccount && 
-            userAccount.CompanyAddress && 
-            userAccount.OrgType && 
-            userAccount.TeamSize
-          );
-          
-          if (!hasCompletedOnboarding) {
-            return '/onboard';
-          }
-          
-          return '/legal-professionals/dashboard';
-        }
-      } catch (error) {
-        console.error('Error parsing auth cookie:', error);
+      if (authData.exp && authData.exp < Date.now()) {
         return '/auth/user/login';
       }
       
-      // Default fallback
-      return url.startsWith(baseUrl) ? url : baseUrl;
-    },
+      if (authData.type === 'vendor') {
+        return '/tech-vendor/dashboard';
+      }
+      
+      if (authData.type === 'user') {
+        const userAccount = await prisma.userAccount.findFirst({
+          where: { userId: authData.id },
+        });
+        
+        const hasCompletedOnboarding = !!(
+          userAccount && 
+          userAccount.CompanyAddress && 
+          userAccount.OrgType && 
+          userAccount.TeamSize
+        );
+        
+        if (!hasCompletedOnboarding) {
+          return '/onboard';
+        }
+        
+        return '/legal-professionals/dashboard';
+      }
+    } catch (error) {
+      console.error('Error parsing auth cookie:', error);
+      return '/auth/user/login';
+    }
+  }
+  
+  // Default: redirect based on user type
+  const authCookie = cookieStore.get('auth');
+  if (!authCookie) {
+    return '/auth/user/login';
+  }
+  
+  try {
+    const authData = JSON.parse(authCookie.value);
+    
+    if (authData.exp && authData.exp < Date.now()) {
+      return '/auth/user/login';
+    }
+    
+    if (authData.type === 'vendor') {
+      return '/tech-vendor/dashboard';
+    }
+    
+    if (authData.type === 'user') {
+      const userAccount = await prisma.userAccount.findFirst({
+        where: { userId: authData.id },
+      });
+      
+      const hasCompletedOnboarding = !!(
+        userAccount && 
+        userAccount.CompanyAddress && 
+        userAccount.OrgType && 
+        userAccount.TeamSize
+      );
+      
+      if (!hasCompletedOnboarding) {
+        return '/onboard';
+      }
+      
+      return '/legal-professionals/dashboard';
+    }
+  } catch (error) {
+    console.error('Error parsing auth cookie:', error);
+    return '/auth/user/login';
+  }
+  
+  // Final fallback
+  return url.startsWith(baseUrl) ? url : baseUrl;
+},
+    // async redirect({ url, baseUrl }) {
+    //   // Special handling for the /auth/success route which is our generic success redirect
+    //   if (url.includes('/auth/success')) {
+    //     // This is after a successful auth, so check onboarding status
+    //     const authCookie = cookies().get('auth');
+    //     if (!authCookie) {
+    //       return '/auth/user/login';
+    //     }
+        
+    //     try {
+    //       const authData = JSON.parse(authCookie.value);
+          
+    //       // If cookie is expired
+    //       if (authData.exp && authData.exp < Date.now()) {
+    //         return '/auth/user/login';
+    //       }
+          
+    //       // Check user type and redirect accordingly
+    //       if (authData.type === 'vendor') {
+    //         return '/tech-vendor/dashboard';
+    //       }
+          
+    //       // For user type, check if onboarding is completed
+    //       if (authData.type === 'user') {
+    //         console.log('Checking onboarding status for user:', authData.id);
+    //         const userAccount = await prisma.userAccount.findFirst({
+    //           where: { userId: authData.id },
+    //         });
+            
+    //         const hasCompletedOnboarding = !!(
+    //           userAccount && 
+    //           userAccount.CompanyAddress && 
+    //           userAccount.OrgType && 
+    //           userAccount.TeamSize
+    //         );
+            
+    //         console.log('Onboarding status:', hasCompletedOnboarding);
+            
+    //         if (!hasCompletedOnboarding) {
+    //           return '/onboard';
+    //         }
+            
+    //         return '/legal-professionals/dashboard';
+    //       }
+    //     } catch (error) {
+    //       console.error('Error parsing auth cookie:', error);
+    //       return '/auth/user/login';
+    //     }
+    //   }
+      
+    //   // For other redirects
+    //   const authCookie = cookies().get('auth');
+    //   if (!authCookie) {
+    //     return '/auth/user/login'; // If no auth cookie, redirect to login
+    //   }
+      
+    //   try {
+    //     const authData = JSON.parse(authCookie.value);
+        
+    //     // If cookie is expired
+    //     if (authData.exp && authData.exp < Date.now()) {
+    //       return '/auth/user/login';
+    //     }
+        
+    //     // Check user type and redirect accordingly
+    //     if (authData.type === 'vendor') {
+    //       return '/tech-vendor/dashboard';
+    //     }
+        
+    //     // For user type, check if onboarding is completed
+    //     if (authData.type === 'user') {
+    //       const userAccount = await prisma.userAccount.findFirst({
+    //         where: { userId: authData.id },
+    //       });
+          
+    //       const hasCompletedOnboarding = !!(
+    //         userAccount && 
+    //         userAccount.CompanyAddress && 
+    //         userAccount.OrgType && 
+    //         userAccount.TeamSize
+    //       );
+          
+    //       if (!hasCompletedOnboarding) {
+    //         return '/onboard';
+    //       }
+          
+    //       return '/legal-professionals/dashboard';
+    //     }
+    //   } catch (error) {
+    //     console.error('Error parsing auth cookie:', error);
+    //     return '/auth/user/login';
+    //   }
+      
+    //   // Default fallback
+    //   return url.startsWith(baseUrl) ? url : baseUrl;
+    // },
+    
     // Add a session callback to pass user data to the client
     async session({ session, token }) {
       if (token && session.user) {

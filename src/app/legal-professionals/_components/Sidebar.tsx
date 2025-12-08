@@ -19,7 +19,7 @@
 //   Pencil
 // } from 'lucide-react';
 // import { motion, AnimatePresence } from 'framer-motion';
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 
 // const SubMenuItem = ({ text, path, onClick }) => {
 //   const router = useRouter();
@@ -134,7 +134,7 @@
 // const Sidebar = ({ isOpen, setIsOpen, isMobile }) => {
 //   const pathname = usePathname();
 //   const router = useRouter();
-//   const { logout } = useAuth();
+//   const { logout } = useNewAuth();
 
 //   const menuItems = [
 //     // { 
@@ -322,7 +322,7 @@ import {
   Pencil
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const SubMenuItem = ({ text, path, onClick }) => {
   const router = useRouter();
@@ -443,7 +443,7 @@ const MenuItem = ({ icon: Icon, text, path, subItems, subItemPaths, isActive, on
 const Sidebar = ({ isOpen, setIsOpen, isMobile }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { logout } = useAuth();
+  const { logout } = useNewAuth();
 
   const menuItems = [
     // { 

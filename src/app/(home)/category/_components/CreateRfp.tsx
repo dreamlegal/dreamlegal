@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Check, X } from "lucide-react";
-import { useAuth } from "@/context/authContext";
+import { useNewAuth } from '@/context/NewAuthContext';
 import { useRouter } from "next/navigation";
 
 // Categories filtered by organization type

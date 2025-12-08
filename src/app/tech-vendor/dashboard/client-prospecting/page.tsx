@@ -12,10 +12,10 @@
 "use client"
 import React from 'react'
 import VendorProposalGenerator from "@/components/VendorProposalGenerator"
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const Page = () => {
-  const { isLoading } = useAuth();
+  const { isLoading } = useNewAuth();
   
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;

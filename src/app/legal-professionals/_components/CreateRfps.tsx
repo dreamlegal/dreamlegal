@@ -3,7 +3,7 @@
 
 // // import React, { useState, useEffect } from "react";
 // // import { X } from "lucide-react";
-// // import { useAuth } from "@/context/authContext"; // Adjust path as needed
+// // import { useNewAuth } from '@/context/NewAuthContext'; // Adjust path as needed
 // // import { useRouter } from "next/navigation";
 
 // // // Categories and options from your original code
@@ -359,7 +359,7 @@
 // //   .flatMap(subcategories => Object.values(subcategories).flatMap(features => features));
 
 // // const RfpFormPage = () => {
-// //   const { userId, userType, isLoading } = useAuth();
+// //   const { userId, userType, isLoading } = useNewAuth();
 // //   console.log(`User Type: ${userType}, User ID: ${userId}`);
 // //   const router = useRouter();
 
@@ -1098,7 +1098,7 @@
 // // import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 
 // // // Mock auth context - replace with your actual auth context
-// // const useAuth = () => ({
+// // const useNewAuth = () => ({
 // //   userId: "user123",
 // //   userType: "user",
 // //   isLoading: false
@@ -1495,7 +1495,7 @@
 // // };
 
 // // const PremiumRfpForm = () => {
-// //   const { userId, userType, isLoading } = useAuth();
+// //   const { userId, userType, isLoading } = useNewAuth();
 // //   const router = useRouter();
   
 // //   const [currentStep, setCurrentStep] = useState(1);
@@ -2130,7 +2130,7 @@
 // import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 
 // // Mock auth context - replace with your actual auth context
-// const useAuth = () => ({
+// const useNewAuth = () => ({
 //   userId: "user123",
 //   userType: "user",
 //   isLoading: false
@@ -2527,7 +2527,7 @@
 // };
 
 // const PremiumRfpForm = () => {
-//   const { userId, userType, isLoading } = useAuth();
+//   const { userId, userType, isLoading } = useNewAuth();
 //   const router = useRouter();
   
 //   const [currentStep, setCurrentStep] = useState(1);
@@ -3193,7 +3193,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Check } from "lucide-react";
-import { useAuth } from "@/context/authContext";
+import { useNewAuth } from '@/context/NewAuthContext';
 import { useRouter } from "next/navigation";
 
 // Categories filtered by organization type
@@ -3583,7 +3583,7 @@ const ProgressBar = ({ currentStep, totalSteps }) => {
 };
 
 const PremiumRfpForm = () => {
-  const { userId, userType, isLoading } = useAuth();
+  const { userId, userType, isLoading } = useNewAuth();
   const router = useRouter();
   
   const [currentStep, setCurrentStep] = useState(1);

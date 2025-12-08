@@ -1,7 +1,7 @@
 // 'use client';
 
 // import { useState, useEffect } from 'react';
-// import { useAuth } from "@/context/authContext";
+// import { useNewAuth } from '@/context/NewAuthContext';
 
 // interface UserExperienceModalProps {
 //   isOpen: boolean;
@@ -36,7 +36,7 @@
 //   onSuccess,
 //   showProductSearch = false 
 // }: UserExperienceModalProps) => {
-//   const { userId, vendorId } = useAuth();
+//   const { userId, vendorId } = useNewAuth();
   
 //   const [formData, setFormData] = useState({
 //     beforeUsing: '',
@@ -427,7 +427,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from "@/context/authContext";
+import { useNewAuth } from '@/context/NewAuthContext';
 
 interface UserExperienceModalProps {
   isOpen: boolean;
@@ -462,7 +462,7 @@ const UserExperienceModal = ({
   onSuccess,
   showProductSearch = false 
 }: UserExperienceModalProps) => {
-  const { userId, vendorId } = useAuth();
+  const { userId, vendorId } = useNewAuth();
   
   const [formData, setFormData] = useState({
     beforeUsing: '',

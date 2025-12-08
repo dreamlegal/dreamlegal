@@ -97,6 +97,8 @@
     "html2canvas": "^1.4.1",
     "html2pdf": "^0.0.11",
     "html2pdf.js": "^0.10.2",
+    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.1",
     "langchain": "^0.3.29",
     "lowlight": "2.9.0",

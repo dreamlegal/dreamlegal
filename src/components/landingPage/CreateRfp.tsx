@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Check, X } from "lucide-react";
-import { useAuth } from "@/context/authContext";
+import { useNewAuth } from '@/context/NewAuthContext';
 import { useRouter } from "next/navigation";
 
 // Categories filtered by organization type
@@ -393,7 +393,7 @@ const ProgressBar = ({ currentStep, totalSteps }) => {
 };
 
 const PremiumRfpForm = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const { userId, userType, isLoading } = useAuth();
+  const { userId, userType, isLoading } = useNewAuth();
   const router = useRouter();
   
   const [currentStep, setCurrentStep] = useState(1);

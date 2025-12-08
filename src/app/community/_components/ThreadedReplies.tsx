@@ -1,7 +1,7 @@
 // app/_components/ThreadedReplies.jsx
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 import { Loader, ChevronDown, ChevronRight, Send } from 'lucide-react';
 import Link from 'next/link';
 
@@ -15,9 +15,9 @@ const ThreadedReplies = ({ postId }) => {
   const [replyingTo, setReplyingTo] = useState(null);
   
   const replyInputRef = useRef(null);
-  const { userId, vendorId, userType, userEmail } = useAuth();
+  const { userId, vendorId, userType, userEmail } = useNewAuth();
     
-  // const { userId, userEmail } = useAuth();
+  // const { userId, userEmail } = useNewAuth();
   const getActualUserId = () => {
     if (userType === 'vendor') {
       return vendorId;

@@ -1,7 +1,7 @@
 
 "use client"
 import React, { Suspense, useEffect, useState } from 'react'
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 import ProfilePage from '../../_components/ProfilePage';
 
 interface UserProfile {
@@ -34,7 +34,7 @@ const fetchProfile = async (userId: string): Promise<UserProfile | null> => {
 };
 
 const Page = () => {
-    const { userId, userType } = useAuth();
+    const { userId, userType } = useNewAuth();
     const [data, setData] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);

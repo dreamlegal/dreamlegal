@@ -3,7 +3,7 @@
 // "use client"
 // import React, { useState, useEffect } from 'react';
 // import { ThumbsUp, ThumbsDown, MessageCircle, Eye, Check ,Share ,ExternalLink ,Send} from 'lucide-react';
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 // import ThreadedReplies from './ThreadedReplies';
 
 // // Helper function to get domain from URL for preview
@@ -31,7 +31,7 @@
 //   views = 0 // New prop for view count
 // }) => {
 //   // Get the current user ID from auth hook
-//   const { userId, vendorId, userType, userEmail } = useAuth();
+//   const { userId, vendorId, userType, userEmail } = useNewAuth();
   
 //   // Get the correct user ID based on user type
 //   const getCurrentUserId = () => {
@@ -737,7 +737,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { ThumbsUp, ThumbsDown, MessageCircle, Eye, Check, Share, ExternalLink, Send, Calendar, Clock, Award, BookmarkPlus, ChevronDown } from 'lucide-react';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 import ThreadedReplies from './ThreadedReplies';
 
 // Helper function to get domain from URL for preview
@@ -781,7 +781,7 @@ const PostRenderer = ({
   categories = []
 }) => {
   // Get the current user ID from auth hook
-  const { userId, vendorId, userType, userEmail } = useAuth();
+  const { userId, vendorId, userType, userEmail } = useNewAuth();
   
   // Get the correct user ID based on user type
   const getCurrentUserId = () => {

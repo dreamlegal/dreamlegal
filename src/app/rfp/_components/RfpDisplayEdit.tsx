@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Edit2, Save, Copy, Plus, Trash2, X, Check, Building, Calendar, MapPin, Mail, Target, FileText, Share2, Users } from 'lucide-react';
 import Link from 'next/link';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 // Import the same options from form
 const categoryData = [
@@ -38,7 +38,7 @@ const timelineOptions = [
 ];
 
 const RfpDisplayEdit = ({ rfpId }) => {
-  const { userId } = useAuth();
+  const { userId } = useNewAuth();
   const [rfpData, setRfpData] = useState(null);
   const [userEmail, setUserEmail] = useState('');
   const [isLoading, setIsLoading] = useState(true);

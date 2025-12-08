@@ -2,7 +2,7 @@
 
 // import React, { useState, useEffect } from 'react';
 // import { useRouter } from "next/navigation";
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 // import { Building2, Users, Star, Calendar, RefreshCw, Globe, Mail, Phone, MapPin, Award } from 'lucide-react';
 
 // const VendorProfile = ({ verified, getProfile }) => {
@@ -11,7 +11,7 @@
 //   const [loading, setLoading] = useState(true);
 //   const [isRefreshing, setIsRefreshing] = useState(false);
 //   const router = useRouter();
-//   const { vendorId, userType } = useAuth();
+//   const { vendorId, userType } = useNewAuth();
 
 //   useEffect(() => {
 //     if (vendorId) {
@@ -380,12 +380,12 @@
 // export default VendorProfile;
 // import React, { useState, useEffect, useCallback } from 'react';
 // import { useRouter } from "next/navigation";
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 // import { Building2, Users, Star, Calendar, RefreshCw, Globe, Mail, Phone, MapPin, Award } from 'lucide-react';
 
 // const VendorProfile = ({ verified, getProfile }) => {
 //   const router = useRouter();
-//   const { vendorId, userType } = useAuth();
+//   const { vendorId, userType } = useNewAuth();
   
 //   const [isEditing, setIsEditing] = useState(false);
 //   const [loading, setLoading] = useState(true);
@@ -781,12 +781,12 @@
 // "use client"
 // import React, { useState, useEffect } from 'react';
 // import { useRouter } from "next/navigation";
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 // import { Building2, Users, Star, Calendar, RefreshCw, Globe, Mail, Phone, MapPin, Award } from 'lucide-react';
 
 // const VendorProfile = ({ verified, getProfile }) => {
 //   const router = useRouter();
-//   const { vendorId, userType } = useAuth();
+//   const { vendorId, userType } = useNewAuth();
   
 //   const [isEditing, setIsEditing] = useState(false);
 //   const [loading, setLoading] = useState(true);
@@ -1079,7 +1079,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 import { Building2, Users, Star, Calendar, RefreshCw, Globe, Mail, Phone, MapPin, Award, Edit2 } from 'lucide-react';
 
 
@@ -1282,7 +1282,7 @@ const countries = [
 ];
 const VendorProfile = ({ verified, getProfile }) => {
   const router = useRouter();
-  const { vendorId, userType } = useAuth();
+  const { vendorId, userType } = useNewAuth();
   
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);

@@ -16,12 +16,12 @@
 // import { FiShare2 } from 'react-icons/fi';
 // import { IoIosArrowRoundForward } from 'react-icons/io';
 // import { data } from "@/app/(home)/category/_components/data";
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 
 // const ProductCard = ({ id, image, title, description, category, product }) => {
 //   // ... keep existing state and effects code ...
 //   // const userId = typeof window !== "undefined" && localStorage.getItem("userId");
-//    const { userId, userType } = useAuth();
+//    const { userId, userType } = useNewAuth();
 //    console.log(`userId: ${userId}, userType: ${userType}`);
 //   const [isBookmarked, setIsBookmarked] = useState(false);
 //   const [ratings, setRatings] = useState({ overallRating: 0, message: "" });

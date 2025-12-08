@@ -2,7 +2,7 @@
 // "use client"
 
 // import React, { useEffect, useState } from "react";
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 // import { 
 //   RefreshCw, Box, ClipboardCheck, AlertTriangle, Building2, 
 //   Users, Settings, Clock, Wallet2, CheckCircle2, XCircle, 
@@ -146,7 +146,7 @@
 // };
 
 // function RfpMarketplacePage() {
-//   const { vendorId, userType } = useAuth();
+//   const { vendorId, userType } = useNewAuth();
 //   const [rfps, setRfps] = useState([]);
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState(null);
@@ -1062,7 +1062,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 import { 
   RefreshCw, Box, ClipboardCheck, AlertTriangle, Building2, 
   Users, Settings, Clock, Wallet2, CheckCircle2, XCircle, 
@@ -1220,7 +1220,7 @@ const FormFieldRow = ({ label, children, className = "" }) => {
 };
 
 function RfpMarketplacePage() {
-  const { vendorId, userType } = useAuth();
+  const { vendorId, userType } = useNewAuth();
   const [rfps, setRfps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

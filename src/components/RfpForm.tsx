@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
-import { useAuth } from "@/context/authContext"; // Adjust path as needed
+import { useNewAuth } from '@/context/NewAuthContext'; // Adjust path as needed
 import { useRouter } from "next/navigation";
 
 // Categories and options from your original code
@@ -357,7 +357,7 @@ const allFeatures = Object.values(categoryOptions)
   .flatMap(subcategories => Object.values(subcategories).flatMap(features => features));
 
 const RfpFormPage = () => {
-  const { userId, userType, isLoading } = useAuth();
+  const { userId, userType, isLoading } = useNewAuth();
   const router = useRouter();
 
   // Organization details

@@ -2,10 +2,10 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import VendorDashborad from '@/components/VendorDashborad'
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const Page = () => {  // Changed from 'page' to 'Page'
-    const { vendorId, userType } = useAuth();
+    const { vendorId, userType } = useNewAuth();
     const [profile, setProfile] = useState(null);
     const [productId, setProductId] = useState(null);
     const [products, setProducts] = useState([]);

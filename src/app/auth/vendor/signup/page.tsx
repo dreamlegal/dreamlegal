@@ -395,14 +395,14 @@
 // app/auth/new/vendor/login/page.tsx
 'use client';
 export const dynamic = 'force-dynamic';
-import { useState, useEffect } from 'react';
+import { useState, useEffect ,Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Mail } from 'lucide-react';
 import { useNewAuth } from '@/context/NewAuthContext';
 import Link from 'next/link';
 
-export default function VendorLoginPage() {
-  const router = useRouter();
+function VendorSignupContent() {
+    const router = useRouter();
   const searchParams = useSearchParams();
   const { isAuthenticated, userType, isLoading } = useNewAuth();
   
@@ -552,5 +552,16 @@ export default function VendorLoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+export default function VendorSignupPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#f5f7fa] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1e2556]"></div>
+      </div>
+    }>
+      <VendorSignupContent />
+    </Suspense>
   );
 }

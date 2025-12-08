@@ -162,10 +162,10 @@ export function AuthProvider({ children }) {
   );
 }
 
-export function useAuth() {
+export function useNewAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useNewAuth must be used within an AuthProvider');
   }
   return context;
 }

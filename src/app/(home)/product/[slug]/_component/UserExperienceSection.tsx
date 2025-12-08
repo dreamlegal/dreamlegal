@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useAuth } from "@/context/authContext";
+import { useNewAuth } from '@/context/NewAuthContext';
 import UserExperienceModal from './UserExperienceModal';
 
 interface UserExperience {
@@ -183,7 +183,7 @@ const ShareDropdown = ({ productName, slug, onCopySuccess }: ShareDropdownProps)
 };
 
 const UserExperienceSection = ({ productId, productName, slug, isMobile = false }: UserExperienceSectionProps) => {
-  const { userId, vendorId, isLoading: authLoading } = useAuth();
+  const { userId, vendorId, isLoading: authLoading } = useNewAuth();
   const isAuthenticated = !!(userId || vendorId);
 
   const [experiences, setExperiences] = useState<UserExperience[]>([]);

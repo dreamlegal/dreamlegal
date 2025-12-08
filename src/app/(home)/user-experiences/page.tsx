@@ -3,7 +3,7 @@
 
 // import { useState, useEffect, Suspense } from 'react';
 // import { useSearchParams, useRouter } from 'next/navigation';
-// import { useAuth } from "@/context/authContext";
+// import { useNewAuth } from '@/context/NewAuthContext';
 // import Link from 'next/link';
 
 // interface Product {
@@ -28,7 +28,7 @@
 // const ReviewPageContent = () => {
 //   const searchParams = useSearchParams();
 //   const router = useRouter();
-//   const { userId, vendorId, isLoading: authLoading } = useAuth();
+//   const { userId, vendorId, isLoading: authLoading } = useNewAuth();
   
 //   // Product selection state
 //   const [searchQuery, setSearchQuery] = useState('');
@@ -716,7 +716,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useAuth } from "@/context/authContext";
+import { useNewAuth } from '@/context/NewAuthContext';
 import Link from 'next/link';
 
 interface Product {
@@ -741,7 +741,7 @@ interface UserExperience {
 const ReviewPageContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { userId, vendorId, isLoading: authLoading } = useAuth();
+  const { userId, vendorId, isLoading: authLoading } = useNewAuth();
   
   // Product selection state
   const [searchQuery, setSearchQuery] = useState('');

@@ -15,7 +15,7 @@
 // import CheckUpload from './ProductForms/CheckUpload';
 // import 'react-toastify/dist/ReactToastify.css';
 // import { useToast } from "./ui/use-toast";
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 // import Alert from '@/components/Alert';
 
 // interface ProductFormWithProgressProps {
@@ -282,7 +282,7 @@
 //     return <ActiveComponent />;
 //   };
   
-//   const { vendorId, userType } = useAuth();
+//   const { vendorId, userType } = useNewAuth();
 //   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
 //   // Function to normalize values to array format
@@ -643,7 +643,7 @@ import { ChevronDown, ChevronUp, ArrowRight, Check, RefreshCw, Menu, X } from 'l
 import CheckUpload from './ProductForms/CheckUpload';
 import 'react-toastify/dist/ReactToastify.css';
 import { useToast } from "./ui/use-toast";
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 import Alert from '@/components/Alert';
 
 interface ProductFormWithProgressProps {
@@ -910,7 +910,7 @@ const ProductFormWithProgress: React.FC<ProductFormWithProgressProps> = ({ editi
     return <ActiveComponent />;
   };
   
-  const { vendorId, userType } = useAuth();
+  const { vendorId, userType } = useNewAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Function to normalize values to array format

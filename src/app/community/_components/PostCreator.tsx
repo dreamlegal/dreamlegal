@@ -2,11 +2,11 @@
 // "use client"
 // import React, { useState, useRef, useEffect } from 'react';
 // import { Image, Link, Plus, X, Send, PlusCircle, Upload, BarChart2, Eye, EyeOff, UserPlus } from 'lucide-react';
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 
 // const PostCreator = () => {
 //   // Get user data from auth context
-//   const { userId, vendorId, userType, userEmail } = useAuth();
+//   const { userId, vendorId, userType, userEmail } = useNewAuth();
   
 //   // Extract username from email (everything before @)
 //   const extractedUsername = userEmail ? userEmail.split('@')[0] : '';
@@ -1230,11 +1230,11 @@
 // "use client"
 // import React, { useState, useRef, useEffect } from 'react';
 // import { Image, Link, Plus, X, Send, PlusCircle, Upload, BarChart2, Eye, EyeOff, UserPlus } from 'lucide-react';
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 
 // const PostCreator = ({ initialMode = null }) => {
 //   // Get user data from auth context
-//   const { userId, vendorId, userType, userEmail } = useAuth();
+//   const { userId, vendorId, userType, userEmail } = useNewAuth();
   
 //   // Extract username from email (everything before @)
 //   const extractedUsername = userEmail ? userEmail.split('@')[0] : '';
@@ -2368,11 +2368,11 @@
 "use client"
 import React, { useState, useRef, useEffect } from 'react';
 import { Image, Link, Plus, X, Send, PlusCircle, Upload, BarChart2,Check,ChevronDown , Eye, EyeOff, UserPlus, Edit2 } from 'lucide-react';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const PostCreator = ({ initialMode = null, onClose }) => {
   // Get user data from auth context
-  const { userId, vendorId, userType, userEmail } = useAuth();
+  const { userId, vendorId, userType, userEmail } = useNewAuth();
   
   // Extract username from email (everything before @)
   const extractedUsername = userEmail ? userEmail.split('@')[0] : '';

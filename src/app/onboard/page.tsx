@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useAuth } from "@/context/authContext"; // Adjust the path as needed
+import { useNewAuth } from '@/context/NewAuthContext'; // Adjust the path as needed
 
 const OnBoard = () => {
-  const { userId, userType, isAuthenticated, isLoading, hasCompletedOnboarding, checkAuth } = useAuth();
+  const { userId, userType, isAuthenticated, isLoading, hasCompletedOnboarding, checkAuth } = useNewAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);

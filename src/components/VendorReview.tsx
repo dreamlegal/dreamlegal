@@ -16,7 +16,7 @@ import {
   ArrowRight,
   FileText
 } from "lucide-react";
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 // Star Rating Component
 const StarRating = ({ value, size = "md", showValue = true }) => {
   const starSizes = {
@@ -270,7 +270,7 @@ const VendorReviews = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
-    const { vendorId, userType } = useAuth();
+    const { vendorId, userType } = useNewAuth();
     const userId= vendorId
   const fetchReviews = async () => {
     try {

@@ -185,7 +185,7 @@ const countryNames: { [key: string]: string } = {
 };
 import ChatInterface from "./ChatInterface";
 import ReactToPrint from "react-to-print";
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 function PageComponent({ data }: any) {
   console.log(data);
@@ -194,7 +194,7 @@ function PageComponent({ data }: any) {
   console.log(countryName);
   const componentRef = useRef(null);
 
-    const { userId, userType } = useAuth();
+    const { userId, userType } = useNewAuth();
   // const userId =
   //   typeof window !== "undefined" ? localStorage.getItem("userId") : null; // Check if window is defined
 

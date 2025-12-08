@@ -3,14 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, Bell, Search, User, Bookmark, LogOut, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const { isLoading, userType, userEmail } = useAuth();
+  const { isLoading, userType, userEmail } = useNewAuth();
 
   useEffect(() => {
     const handleScroll = () => {

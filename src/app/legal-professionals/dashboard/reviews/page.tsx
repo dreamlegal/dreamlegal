@@ -1,11 +1,11 @@
 // "use client"
 // import React from 'react'
 // import ReviewsPage from '../../_components/ReviewsPage'
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 
 
 // const page = () => {
-//       const { userId, userType } = useAuth();
+//       const { userId, userType } = useNewAuth();
 //       console.log(userId, userType)
 //   return (
 //     <ReviewsPage userId={userId} />
@@ -26,10 +26,10 @@
 "use client"
 import React, { Suspense } from 'react'
 import ReviewsPage from '../../_components/ReviewsPage'
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const Page = () => {
-  const { userId, userType } = useAuth();
+  const { userId, userType } = useNewAuth();
   console.log(userId, userType)
   
   return (

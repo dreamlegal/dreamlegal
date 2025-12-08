@@ -2,10 +2,10 @@
 "use client"
 import React, { Suspense } from 'react'
 import DirectoryPage from '../../_components/DirectoryPage'
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const Page = () => {
-  const { userId, userType } = useAuth();
+  const { userId, userType } = useNewAuth();
   console.log(userId, userType)
   
   return (

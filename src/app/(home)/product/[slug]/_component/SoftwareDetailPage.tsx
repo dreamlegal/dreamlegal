@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import CreateRfps from '@/components/landingPage/CreateRfp';
-import { useAuth } from "@/context/authContext";
+// import { useNewAuth } from '@/context/NewAuthContext';
 import FinalSection from "@/app/(home)/category/_components/FinalSection";
 import MentionedProductsSection from "@/components/MentionedProductsSection";
 
@@ -15,7 +15,8 @@ import ProfileClickTracker from '@/components/ProfileClickTracker';
 import ProductBadges from '@/components/ProductBadges';
 // In your product page:
 
-
+import LoginGate from '@/components/LoginGate';
+import { useNewAuth } from '@/context/NewAuthContext';
 // ShareDropdown Component
 interface ShareDropdownProps {
   productName: string;
@@ -403,8 +404,8 @@ const SoftwareDetailPage = ({ slug }) => {
   
   // New state for vendor comments tooltips
   const [activeVendorComment, setActiveVendorComment] = useState(null);
-  
-  const { userId, vendorId, userType, isLoading: authLoading } = useAuth();
+  const { userId, vendorId, userType, isLoading: authLoading } = useNewAuth();
+  // const { userId, vendorId, userType, isLoading: authLoading } = useNewAuth();
   const isAuthenticated = !!(userId || vendorId);
 
   useEffect(() => {
@@ -1704,12 +1705,17 @@ const signupUrl = specialSlugsConfig[slug];
             </section>
             
             {/* Section 5: User Experiences */}
+             <LoginGate message="Sign in to see user experiences">
+       
+     
             <UserExperienceSection
               productId={displaySoftware.id}
               productName={displaySoftware.productName}
               slug={displaySoftware.slug}
               isMobile={isMobile}
             />
+
+             </LoginGate>
 
             {/* Section 2: Features and Functionalities */}
             <section id="features" className={`mb-8 ${isMobile ? 'scroll-mt-40' : 'scroll-mt-24'}`}>

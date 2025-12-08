@@ -15,14 +15,14 @@
 //   Star
 // } from 'lucide-react';
 // import { Card, CardContent } from '@/components/ui/card';
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 // const VendorProposalGenerator = () => {
 //   const [products, setProducts] = useState([]);
 //   const [productsLoading, setProductsLoading] = useState(true);
 //   const [selectedProduct, setSelectedProduct] = useState(null);
 //   const [loading, setLoading] = useState(false);
 //   const [proposalResponse, setProposalResponse] = useState(null);
-//    const { vendorId, userType } = useAuth()
+//    const { vendorId, userType } = useNewAuth()
   
 //   // Client Profile State
 //   const [clientSector, setClientSector] = useState('');
@@ -550,7 +550,7 @@ import {
   Star
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const VendorProposalGenerator = () => {
   const router = useRouter();
@@ -558,7 +558,7 @@ const VendorProposalGenerator = () => {
   const [productsLoading, setProductsLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { vendorId } = useAuth();
+  const { vendorId } = useNewAuth();
   // const vendorId ="cm164le6u0000vaf5r6hehl1f";
   const [credits, setCredits] = useState(null);
 

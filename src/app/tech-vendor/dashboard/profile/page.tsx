@@ -3,11 +3,11 @@
 // "use client"
 // import VendorProfile from '@/components/VendorProfile';
 // import React, { useEffect, useState } from 'react'
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 
 // const Page = () => {  // Changed from 'page' to 'Page'
 //     const [verified, setVerified] = useState(true);
-//     const { vendorId, userType } = useAuth();
+//     const { vendorId, userType } = useNewAuth();
 //     const [profile, setProfile] = useState(null);
     
 //     useEffect(() => {
@@ -40,11 +40,11 @@
 "use client"
 import VendorProfile from '@/components/VendorProfile';
 import React, { useEffect, useState } from 'react'
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const Page = () => {
     const [verified, setVerified] = useState(true);
-    const { vendorId, userType, isLoading } = useAuth();
+    const { vendorId, userType, isLoading } = useNewAuth();
     const [profile, setProfile] = useState(null);
     const [profileLoading, setProfileLoading] = useState(false);
     

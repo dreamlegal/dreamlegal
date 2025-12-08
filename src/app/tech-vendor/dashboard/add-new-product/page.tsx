@@ -2,14 +2,14 @@
 // "use client";
 // import React, { useState } from 'react';
 // import ProductForm from '@/components/ProductForm';
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 // import { ProductInfo } from '@/store/useStore';
 // import { useRouter } from "next/navigation";
 // import { RefreshCw } from 'lucide-react';
 // import Alert from '@/components/Alert';
 
 // const Page = () => {
-//   const { isLoading: authLoading } = useAuth();
+//   const { isLoading: authLoading } = useNewAuth();
 //   const router = useRouter();
 //   const reset = ProductInfo((state) => state.reset);
   
@@ -89,14 +89,14 @@
 "use client";
 import React, { useState } from 'react';
 import ProductForm from '@/components/ProductForm';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 import { ProductInfo } from '@/store/useStore';
 import { useRouter } from "next/navigation";
 import { RefreshCw } from 'lucide-react';
 import Alert from '@/components/Alert';
 
 const Page = () => {
-  const { vendorId, isLoading: authLoading } = useAuth();
+  const { vendorId, isLoading: authLoading } = useNewAuth();
   const router = useRouter();
   const reset = ProductInfo((state) => state.reset);
   

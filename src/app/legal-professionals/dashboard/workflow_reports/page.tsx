@@ -1,10 +1,10 @@
 "use client"
 import React, { Suspense } from 'react'
 import WorkFlowReportsPage from '../../_components/WorkFlowReportsPage'
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const Page = () => {
-  const { userId, userType } = useAuth();
+  const { userId, userType } = useNewAuth();
   console.log(userId, userType)
   // const userId= "cm4r50izk0000uet8smvf7s7j"
   

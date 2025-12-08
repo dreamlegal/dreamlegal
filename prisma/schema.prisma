@@ -545,6 +545,7 @@ model Blog {
   publishedAt DateTime?
   refLinks    RefLink[]
   tocItems    TocItem[]
+  tags        Json  @default("[]")
 
   htmlTitle       String? // For <title> tag
   metaDescription String? @db.Text // For meta description

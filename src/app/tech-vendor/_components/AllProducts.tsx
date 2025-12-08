@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Package, RefreshCw, AlertCircle, Search, Grid, List } from "lucide-react";
 import VendorProductCard from "./VendorProductCard";
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 import Alert from '@/components/Alert';
 
 const AllProducts = () => {
@@ -15,7 +15,7 @@ const AllProducts = () => {
   const [alert, setAlert] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   
-  const { vendorId } = useAuth();
+  const { vendorId } = useNewAuth();
 
   const showAlert = (message, type = 'success') => {
     setAlert({ message, type });

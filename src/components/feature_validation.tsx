@@ -16,13 +16,13 @@ import {
   Sparkles
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 const FeatureAnalysisDashboard = () => {
   const [featureName, setFeatureName] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [analysisResult, setAnalysisResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { vendorId, userType } = useAuth()
+  const { vendorId, userType } = useNewAuth()
 
    const categories = [
     "Client Relationship Management",

@@ -598,7 +598,7 @@
 // };
 
 
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 
 
 // const WorkflowForm = () => {
@@ -606,7 +606,7 @@
 //   // const CustomerUserId =
 //   //   typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
-//   const { userId, userType } = useAuth();
+//   const { userId, userType } = useNewAuth();
 
 //   const CustomerUserId = userId;
 //   console.log(userId, userType)
@@ -2941,7 +2941,7 @@ const CustomNotification = ({ notification, position = "bottom-right" }) => {
 };
 
 
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 
 const WorkflowForm = () => {
@@ -2949,7 +2949,7 @@ const WorkflowForm = () => {
   // const CustomerUserId =
   //   typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
-  const { userId, userType } = useAuth();
+  const { userId, userType } = useNewAuth();
 
   const CustomerUserId = userId;
   console.log(userId, userType)

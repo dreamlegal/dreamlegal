@@ -1,7 +1,7 @@
 
 // "use client"
 // import React, { useState, useEffect, useCallback, useRef } from 'react';
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 // import { FaSearch, FaBookmark, FaCheck } from 'react-icons/fa';
 // import { IoIosArrowRoundForward } from 'react-icons/io';
 // import { HiOutlineOfficeBuilding } from 'react-icons/hi';
@@ -11,7 +11,7 @@
 // const ClaimProductsPage = () => {
 //   // Use a ref to track component mounted state
 //   const isMounted = React.useRef(true);
-//   const { vendorId, userType, isLoading: authLoading } = useAuth();
+//   const { vendorId, userType, isLoading: authLoading } = useNewAuth();
   
 //   // Handle component unmount
 //   useEffect(() => {
@@ -332,7 +332,7 @@
 // export default ClaimProductsPage;
 "use client"
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 import { FaSearch, FaBookmark, FaCheck } from 'react-icons/fa';
 import { IoIosArrowRoundForward } from 'react-icons/io';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
@@ -359,7 +359,7 @@ const useDebounce = (callback, delay) => {
 };
 
 const ClaimLegalSoftwarePage = () => {
-  const { vendorId, userType, isLoading: authLoading } = useAuth();
+  const { vendorId, userType, isLoading: authLoading } = useNewAuth();
   
   // Debug auth
   useEffect(() => {

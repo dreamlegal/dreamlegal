@@ -1,12 +1,12 @@
 
 'use client'
 import React, { Suspense } from 'react'
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 import { useRouter, useSearchParams } from 'next/navigation';
 import RfpFormFlow from './_components/RfpFormFlow';
 
 const RfpPageContent = () => {
-  const { userId, userType } = useAuth();
+  const { userId, userType } = useNewAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get('category');

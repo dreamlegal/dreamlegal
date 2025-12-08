@@ -9,14 +9,14 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 // import VendorSidebar from "/VendorSidebar";
 import VendorSidebar from "./VendorSidebar";
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const VendorLayout = ({ children }) => {
   const router = useRouter();
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   
-const { vendorId, userType } = useAuth();
+const { vendorId, userType } = useNewAuth();
 
   console.log(vendorId, userType)
 

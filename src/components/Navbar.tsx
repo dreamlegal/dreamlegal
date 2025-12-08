@@ -10,14 +10,14 @@
 // } from 'lucide-react';
 // import { FolderKanban, ShieldCheck, FileSearch } from 'lucide-react';
 // import { motion, AnimatePresence } from 'framer-motion';
-// import { useAuth } from '@/context/authContext';
+// import { useNewAuth } from '@/context/NewAuthContext';;
 
 // const Navbar = () => {
 //   const [isOpen, setIsOpen] = useState(false);
 //   const [scrolled, setScrolled] = useState(false);
 //   const [activeDropdown, setActiveDropdown] = useState(null);
 //   const [showUserMenu, setShowUserMenu] = useState(false);
-//   const { isLoading, userType, userEmail, logout } = useAuth();
+//   const { isLoading, userType, userEmail, logout } = useNewAuth();
 //   const router = useRouter();
   
 //   useEffect(() => {
@@ -699,14 +699,14 @@ import {
 } from 'lucide-react';
 import { FolderKanban, ShieldCheck, FileSearch } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/context/authContext';
-
+// import { useNewAuth } from '@/context/NewAuthContext';;
+import { useNewAuth } from '@/context/NewAuthContext';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const { isLoading, userType, userEmail, logout } = useAuth();
+  const { isLoading, userType, userEmail, logout } = useNewAuth();
   const router = useRouter();
   
   useEffect(() => {

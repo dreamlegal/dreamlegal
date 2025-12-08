@@ -5,14 +5,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Menu } from 'lucide-react';
 import { IoIosNotificationsOutline } from "react-icons/io";
 import Sidebar from './Sidebar';
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 
 const LegalProfessionalsLayout = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const { userId, userType } = useAuth();
+  const { userId, userType } = useNewAuth();
   console.log(userId, userType)
   
   useEffect(() => {

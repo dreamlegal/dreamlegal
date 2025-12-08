@@ -4,7 +4,8 @@
 import { usePathname } from "next/navigation"
 import Navbar from "@/components/Navbar"
 import Footer from "./Footer"
-import { useAuth } from '@/context/authContext'
+// import { useNewAuth } from '@/context/NewAuthContext';
+import { useNewAuth } from '@/context/NewAuthContext';
 import "@/app/globals.css"
 
 interface MainLayoutProps {
@@ -13,7 +14,7 @@ interface MainLayoutProps {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   const pathname = usePathname()
-  const { isLoading } = useAuth()
+  const { isLoading } = useNewAuth()
 
   const showNavbarAndFooter = !pathname?.startsWith("/tech_vendor/dashboard") && 
                              !pathname?.startsWith("/web-admin") && 

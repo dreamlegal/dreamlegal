@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { RefreshCw,RotateCw, Box, ClipboardCheck, AlertTriangle, Building2, Users, Settings, Clock, Wallet2, CheckCircle2, XCircle, ChevronDown } from "lucide-react";
-import { useAuth } from '@/context/authContext';
+import { useNewAuth } from '@/context/NewAuthContext';;
 // Custom Card Component instead of shadcn
 const CustomCard = ({ children, className = "" }) => {
   return (
@@ -38,7 +38,7 @@ const CustomSelect = ({ options, onChange, className = "", placeholder = "Select
 
 function VendorRfps() {
   
-  const { vendorId, userType } = useAuth();
+  const { vendorId, userType } = useNewAuth();
     const userId= vendorId
   const [rfpLeads, setRfpLeads] = useState([]);
   const [loading, setLoading] = useState(true);

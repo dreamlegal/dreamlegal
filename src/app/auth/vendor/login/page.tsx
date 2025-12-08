@@ -325,7 +325,7 @@
 
 // app/auth/new/vendor/login/page.tsx
 'use client';
-
+export const dynamic = 'force-dynamic';
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Mail } from 'lucide-react';

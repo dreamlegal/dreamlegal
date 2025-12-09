@@ -324,6 +324,7 @@
 
 // export default PremiumChatInterface;
 "use client"
+export const dynamic = "force-dynamic";
 
 import React, { useState } from 'react';
 import { Send, Check } from 'lucide-react';

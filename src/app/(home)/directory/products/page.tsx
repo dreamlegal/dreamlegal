@@ -14,6 +14,7 @@
 // export default Page;
 // /directory/products/page.js
 import DirectoryPage from "../_components/DirectoryPage";
+export const dynamic = "force-dynamic";
 
 import { Suspense } from 'react'
 

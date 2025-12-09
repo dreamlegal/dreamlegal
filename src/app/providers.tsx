@@ -19,12 +19,13 @@
 
 import { NewAuthProvider } from '@/context/NewAuthContext';
 import OnboardingPopup from '@/components/OnboardingPopup';
-
+import EventAuthModal from '@/components/EventAuthModal'; // NEW
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <NewAuthProvider>
       {children}
       <OnboardingPopup />
+       <EventAuthModal /> 
     </NewAuthProvider>
   );
 }

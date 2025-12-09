@@ -187,6 +187,9 @@ export async function GET() {
   try {
     // Fetch ALL blogs (published or not for demo)
     const allBlogs = await prisma.blog.findMany({
+      where: {
+         published: true
+         },
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,

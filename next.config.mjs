@@ -6,10 +6,11 @@ const nextConfig = {
     eslint:{
         ignoreBuildErrors:true
     },
+    
     experimental: {
         // This is for App Router API routes
         bodySizeLimit: '10mb'
-        missingSuspenseWithCSRBailout: false,
+        
       },
       // This is for Server Actions (form submissions, etc.)
       serverActions: {

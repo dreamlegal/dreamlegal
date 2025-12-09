@@ -1,4 +1,6 @@
 "use client"
+export const dynamic = "force-dynamic";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { signIn } from "next-auth/react";
 import { useState } from "react";

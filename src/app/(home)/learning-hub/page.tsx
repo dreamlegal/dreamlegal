@@ -1,4 +1,5 @@
 import LearningHubPage from "@/components/LearningHubPage";
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Learning Hub | Legal Resources & Educational Content",

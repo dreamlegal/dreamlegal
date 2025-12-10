@@ -853,29 +853,31 @@ const Navbar = () => {
       href: '/compare'
     },
     {
-      title: 'Resources',
+      title: 'Insights',
       icon: <BookOpen size={16} />,
-      hasDropdown: true,
-      dropdownItems: [
-        {
-          title: 'Insights',
-          description: 'Latest trends and insights',
-          icon: <BookOpen size={16} />,
-          href: '/resources'
-        },
-        {
-          title: 'Prompts',
-          description: 'AI prompts library',
-          icon: <Pencil size={16} />,
-          href: '/prompts'
-        },
-        {
-          title: 'Legal Tech Map',
-          description: 'Explore the legal tech landscape',
-          icon: <LineChart size={16} />,
-          href: '/legal-tech-map'
-        }
-      ]
+      hasDropdown: false,
+      href: '/resources'
+
+      // dropdownItems: [
+      //   {
+      //     title: 'Insights',
+      //     description: 'Latest trends and insights',
+      //     icon: <BookOpen size={16} />,
+      //     href: '/resources'
+      //   },
+      //   {
+      //     title: 'Prompts',
+      //     description: 'AI prompts library',
+      //     icon: <Pencil size={16} />,
+      //     href: '/prompts'
+      //   },
+      //   {
+      //     title: 'Legal Tech Map',
+      //     description: 'Explore the legal tech landscape',
+      //     icon: <LineChart size={16} />,
+      //     href: '/legal-tech-map'
+      //   }
+      // ]
     }
   ];
 

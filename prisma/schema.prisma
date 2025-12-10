@@ -546,7 +546,7 @@ model Blog {
   refLinks    RefLink[]
   tocItems    TocItem[]
   tags        Json  @default("[]")
-
+  featured      Boolean  @default(false)  // ADD THIS
   htmlTitle       String? // For <title> tag
   metaDescription String? @db.Text // For meta description
   ogTitle         String? // For Open Graph title
